@@ -1,4 +1,4 @@
-<p align= "center" > <img width="250px" height = "250px" src = "https://user-images.githubusercontent.com/73443014/165978561-4cbcb1b8-4468-45bf-a691-fd2339bfcc73.jpg" /></p>
+<p align= "center" > <img width="320px" height = "320px" src = "https://user-images.githubusercontent.com/73443014/165978561-4cbcb1b8-4468-45bf-a691-fd2339bfcc73.jpg" /></p>
 <h1 align="center">Japanese-Writing-Evaluator</h1>
 
 <a href= "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/pulls">
@@ -19,6 +19,8 @@ The system should allow the user to log into the system using their own credenti
 
 # Demo Videos
 
+
+
 # SRS Document
 [SRS Document Latest](https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS "SRS Document - Demo 1")
 
@@ -29,5 +31,5 @@ The system should allow the user to log into the system using their own credenti
 |<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/100767058?v=4">        |Maryam Mohamad Al Mahdi|                           |                           |
 |<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/93662067?v=4">       |Sechaba Raymond Mache|                           |                           |
 |<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/68788485?v=4">          |Philippa Zizipho Dufana|                           |                           |
-|<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/73443014?v=4">         |Siphesihle Vezi|                           |                           |
+|<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/73443014?v=4">         |<div align = "center">Siphesihle Princess Vezi<br/><br/><a href = "https://www.linkedin.com/in/siphesihle-vezi-471103210/"><img width="30px" height = "30px" src = "https://user-images.githubusercontent.com/73443014/166081171-8bb058cf-c441-4dc9-a9f4-919a31f80c0b.png"/>        </a><a href = "https://github.com/Siphesihle05"><img width="30px" height = "30px" src = "https://user-images.githubusercontent.com/73443014/166081604-23fd716c-eabb-4d7a-a9b5-2293423685b7.png"/></a>        <a href = "mailto:u19078286@tuks.co.za"><img width="30px" height = "30px" src = "https://user-images.githubusercontent.com/73443014/166081515-b37d35f6-c108-4acf-93bd-9b82d594f75a.png"/></a><div/>|                           |                           |
 |<img width="150px" height = "150px" src="https://avatars.githubusercontent.com/u/49733146?v=4">         |Phumudzo Vhulenda Ndou|                           |                           |
