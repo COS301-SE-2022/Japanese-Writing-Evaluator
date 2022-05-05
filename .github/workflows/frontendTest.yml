@@ -16,6 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: run test
-        run: npm test
+        run: yarn test
 
   
