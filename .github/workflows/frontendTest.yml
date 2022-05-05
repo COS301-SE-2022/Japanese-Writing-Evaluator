@@ -4,18 +4,30 @@ name: frontendTest
 on: [pull_request,push]
 
 jobs:
-  react_linting_test:
-    name: react_linting test
+  Set_up:
+    name: setup react
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: eslint '**/*.{js,jsx,ts,tsx}'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-  run_Jest_test:
-    name: run jest test
-    runs-on: ubuntu-latest
-    steps:
+      - name: yarn
+        run: npm install -g yarn
+
+      - name: creating yarn.lock
+        run: yarn install
+
+      - name: installing eslint
+        run: yarn add eslint
+
+      - name: react_linting test
+        run: yarn run eslint '**/*.{js,jsx,ts,tsx}'
+
       - name: run test
         run: yarn test
+
+      
 
   
