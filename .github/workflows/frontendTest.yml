@@ -20,7 +20,7 @@ jobs:
         run: yarn install
 
       - name: installing eslint
-        run: yarn add eslint
+        run: yarn add -g eslint
 
       - name: react_linting test
         run: eslint '**/*.{js,jsx,ts,tsx}'
