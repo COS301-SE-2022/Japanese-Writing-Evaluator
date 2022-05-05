@@ -1,1 +1,24 @@
 #Frontend unit tests and linting
+name: frontendTest
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  react_linting_test:
+    name: react_linting test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v1
+      - uses: eslint '**/*.{js,jsx,ts,tsx}'
+
+  run_Jest_test:
+    name: react_linting test
+    runs-on: ubuntu-latest
+    steps:
+      - name: run test
+        run: npm test
+
+  
