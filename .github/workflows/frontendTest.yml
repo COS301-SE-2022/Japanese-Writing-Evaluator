@@ -8,7 +8,7 @@ jobs:
     name: react_linting test
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v1
+      - uses: actions/checkout@v1
       - run: eslint '**/*.{js,jsx,ts,tsx}'
 
   run_Jest_test:
