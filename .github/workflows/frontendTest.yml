@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: action/checkout@v1
-      - uses: eslint '**/*.{js,jsx,ts,tsx}'
+      - run: eslint '**/*.{js,jsx,ts,tsx}'
 
   run_Jest_test:
-    name: react_linting test
+    name: run jest test
     runs-on: ubuntu-latest
     steps:
       - name: run test
