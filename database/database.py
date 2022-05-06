@@ -23,17 +23,24 @@ class Database:
         self.curr.execute(q,)
         users = self.curr.fetchall()
         return users
-
+#function used to add a user to the database
     def addUser(self, username, password, email):
         q = "INSERT INTO users(username, password,email) VALUES(%s, %s,%s);"
         self.curr.execute(q, (username, password))
         self.conn.commit()
 
-    def findUser(self,username,password,email):
-        q = "SELECT * FROM users WHERE username = %s AND password = %s AND email = %s;"
-        self.curr.execute(q, (username,password,email))
+#function to find user with their email and return their username
+    def getUser(self,password,email):
+        q = "SELECT username FROM users WHERE password = %s AND email = %s;"
+        self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
         return user
+    
+    # def findUser(self,password,email):
+    #     q = "SELECT username FROM users WHERE password = %s AND email = %s;"
+    #     self.curr.execute(q, (password,email))
+    #     user = self.curr.fetchone()
+    #     return username
     
     def getAllUsers(self):
         q = "SELECT * FROM users;"
