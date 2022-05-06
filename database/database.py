@@ -24,14 +24,14 @@ class Database:
         users = self.curr.fetchall()
         return users
 
-    def addUser(self, username, password):
-        q = "INSERT INTO users(username, password) VALUES(%s, %s);"
+    def addUser(self, username, password, email):
+        q = "INSERT INTO users(username, password,email) VALUES(%s, %s,%s);"
         self.curr.execute(q, (username, password))
         self.conn.commit()
 
-    def findUser(self, username):
-        q = "SELECT * FROM users WHERE username = %s;"
-        self.curr.execute(q, (username,))
+    def findUser(self,username,password,email):
+        q = "SELECT * FROM users WHERE username = %s AND password = %s AND email = %s;"
+        self.curr.execute(q, (username,password,email))
         user = self.curr.fetchone()
         return user
     
