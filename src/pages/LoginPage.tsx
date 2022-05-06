@@ -1,6 +1,6 @@
 import React from "react";
 import { IonPage } from "@ionic/react";
-import 'LoginPage.css';
+import './LoginPage.css';
 
 const LoginPage: React.FC = () => {
     return(
