@@ -1,7 +1,0 @@
-{
-  "name": "japanese-writing-evaluator",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react"
-}
