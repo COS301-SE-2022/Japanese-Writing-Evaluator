@@ -5,7 +5,7 @@ on: [pull_request,push]
 
 jobs:
   Set_up:
-    name: setup react
+    name: setup angular
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -30,6 +30,9 @@ jobs:
       - name: yarn
         run: npm install -g yarn
 
+      - name: link angular/cli
+        run: npm link @angular/cli  
+
       - name: creating yarn.lock
         run: yarn install
 
@@ -37,7 +40,7 @@ jobs:
         run: yarn add cypress --dev
 
       - name: linting test
-        run: ng lint
+        run: yarn run lint
 
       - name: run test
         run: yarn run test
