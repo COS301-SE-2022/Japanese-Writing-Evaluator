@@ -1,4 +1,4 @@
-<p align= "center" > <img width="320px" height = "320px" src = "https://user-images.githubusercontent.com/73443014/165978561-4cbcb1b8-4468-45bf-a691-fd2339bfcc73.jpg" /></p>
+<p align= "center" > <img width="325px" height = "325px" src = "https://user-images.githubusercontent.com/73443014/165978561-4cbcb1b8-4468-45bf-a691-fd2339bfcc73.jpg" /></p>
 <h1 align="center">Japanese-Writing-Evaluator</h1>
 
 <a href= "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/pulls">
