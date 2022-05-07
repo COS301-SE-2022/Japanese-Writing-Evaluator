@@ -24,11 +24,30 @@ class Database:
         users = self.curr.fetchall()
         return users
 
+    """
+        getUserByEmail function:
+            functionality: number of rows modified for bound checking
+        aguments: 
+            email
+        return:
+            the name of the user with the given email
+    """
+
     def getUserByEmail(self, email):
         query = " SELECT username FROM users WHERE email = %s"
         self.curr.execute(query, (email,))
         name = self.curr.fetchone()
         return name
+
+    """
+        update password function:
+            functionality: number of rows modified for bound checking
+        aguments: 
+            email
+            password
+        return:
+            number of rows modified for bound checking
+    """
 
     def updatePassword(self, email, password):
         update_query = "UPDATE users SET password = %s WHERE email = %s"
