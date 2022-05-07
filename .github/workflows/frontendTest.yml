@@ -26,12 +26,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
 
-
+      - name: installing angular cli
+        run: npm install -g @angular/cli
+      
       - name: yarn
-        run: npm install -g yarn
-
-      - name: link angular/cli
-        run: npm link @angular/cli  
+        run: npm install -g yarn 
 
       - name: creating yarn.lock
         run: yarn install
