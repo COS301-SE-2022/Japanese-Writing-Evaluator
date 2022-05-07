@@ -29,3 +29,13 @@ class Database:
         self.curr.execute(query, (email,))
         name = self.curr.fetchone()
         return name
+
+    def updatePassword(self, email, password):
+        update_query = "UPDATE users SET password = %s WHERE email = %s"
+        try:
+            self.curr.execute(update_query, (password, email))
+            self.conn.commit()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+        finally:
+            return self.curr.rowcount    
