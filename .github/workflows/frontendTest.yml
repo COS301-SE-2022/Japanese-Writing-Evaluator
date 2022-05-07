@@ -1,0 +1,38 @@
+#Frontend unit tests and linting
+name: frontendTest
+
+on: [pull_request,push]
+
+jobs:
+  Set_up:
+    name: setup react
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+    #https://github.com/marketplace/actions/yarn-install-cache used to cache yarn
+      - name: cache yarn
+        uses: c-hive/gha-yarn-cache@v1
+
+
+      - name: yarn
+        run: npm install -g yarn
+
+      - name: creating yarn.lock
+        run: yarn install
+
+      - name: installing cypress
+        run: yarn add cypress --dev
+
+      - name: linting test
+        run: yarn run lint
+
+      - name: run test
+        run: yarn run test
+
+      
+
+  
