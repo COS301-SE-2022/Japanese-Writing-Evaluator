@@ -1,0 +1,49 @@
+#Frontend unit tests and linting
+name: frontendTest
+
+on: [pull_request,push]
+
+jobs:
+  Set_up:
+    name: setup angular
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: installing angular cli
+        run: npm install -g @angular/cli
+      
+      - name: yarn
+        run: npm install -g yarn 
+
+    #https://github.com/actions/cache/blob/main/examples.md#node---yarn
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v3
+        id: yarn-cache 
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: creating yarn.lock
+        run: yarn install
+
+      - name: installing cypress
+        run: yarn add cypress --dev
+
+      - name: linting test
+        run: yarn run lint
+
+      - name: run test
+        run: yarn run test
+
+      
+
+  
