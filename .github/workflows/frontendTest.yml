@@ -37,7 +37,7 @@ jobs:
         run: yarn add cypress --dev
 
       - name: linting test
-        run: yarn run lint
+        run: ng lint
 
       - name: run test
         run: yarn run test
