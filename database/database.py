@@ -35,13 +35,7 @@ class Database:
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
         return user
-    
-    # def findUser(self,password,email):
-    #     q = "SELECT username FROM users WHERE password = %s AND email = %s;"
-    #     self.curr.execute(q, (password,email))
-    #     user = self.curr.fetchone()
-    #     return username
-    
+        
     def getAllUsers(self):
         q = "SELECT * FROM users;"
         self.curr.execute(q,)
