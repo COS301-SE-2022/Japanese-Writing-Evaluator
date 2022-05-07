@@ -1,0 +1,7 @@
+{
+  "name": "Japanese-Writing-Evaluator",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
