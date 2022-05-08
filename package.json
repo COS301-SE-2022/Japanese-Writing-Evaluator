@@ -5,6 +5,7 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "start": "ng serve",
+    "api": "cd backend/api && app.py",
     "build": "ng build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
