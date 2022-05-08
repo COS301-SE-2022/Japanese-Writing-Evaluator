@@ -30,4 +30,5 @@ npm-debug.log*
 /platforms
 /plugins
 /www
-
+#database config
+.env
