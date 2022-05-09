@@ -17,12 +17,7 @@ class Database:
         except print(0):
             print("Could not connect to database")
             return None
-    
-    def findAll(self):
-        q = "SELECT * FROM users;"
-        self.curr.execute(q,)
-        users = self.curr.fetchall()
-        return users
+
 #function used to add a user to the database
     def addUser(self, username, password, email):
         q = "INSERT INTO users(username, password,email) VALUES(%s, %s,%s);"
