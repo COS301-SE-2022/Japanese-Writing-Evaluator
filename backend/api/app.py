@@ -32,6 +32,22 @@ def resetPassword():
     else:
         return jsonify({'response': "password reset failed."}), 401
 
+@app.rout('/register', methods = ('POST, GET'))
+def register():
+    try:
+        email = str(request.json['username'])
+        user = db.getUserByEmail(email)
+        if(user == email)
+            res = "User already exists"
+            return jsonify({"response": res}), 200
+        else
+            db.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+            res = "Registration Successful"
+            return jsonify({'response': res}), 200
+
+    except Exception as e
+        return jsonify({'response': str(e)}), 400
+
 
 if __name__ == '__main__':
     app.run(debug = True)

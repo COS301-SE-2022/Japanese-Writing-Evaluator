@@ -1,6 +1,8 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
+import hashlib
+import uuid
 
 load_dotenv()
 class Database:
@@ -57,4 +59,20 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
-            return self.curr.rowcount    
+            return self.curr.rowcount 
+
+
+    """
+        register user function:
+            registers a user and adds them to the database
+        arguments:
+            email, password, username
+        
+        Only registers non-admin users
+    """
+    def register(self, email, password, username):
+        salt = uuid.uuid4().hex
+        passwordSalt = hashlib.sha512(password + salt).hexdigest()
+        self.curr.execute('INSERT INTO users (email, admin, password, passwordSalt, username, averageScore)'
+                            'VALUES (%s, %s, %s, %s, %s, %s)', (email, false, password, passwordSalt, username, 0))
+        self.curr.commit()   
