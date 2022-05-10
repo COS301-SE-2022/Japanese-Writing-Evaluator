@@ -1,4 +1,5 @@
 import os
+from pickle import FALSE, TRUE
 import psycopg2
 from dotenv import load_dotenv
 import hashlib
@@ -15,9 +16,8 @@ class Database:
         try:
             self.conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
             self.curr = self.conn.cursor()
-            print("connected")
-        except print(0):
-            print("Could not connect to database")
+        except Exception as e:
+            print("Could not connect to database", e)
             return None
     
     def findAll(self):
@@ -59,20 +59,41 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
-            return self.curr.rowcount 
+            return self.curr.rowcount    
 
+#function used to add a user to the database
+    def addUser(self, username, password, email, admin, passwordSalt, avgScore):
+        q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+        self.curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+        self.conn.commit()
 
-    """
-        register user function:
-            registers a user and adds them to the database
-        arguments:
-            email, password, username
+#function to find user with their email and return their username
+    def getUser(self,password,email):
+        q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+        self.curr.execute(q, (password,email))
+        user = self.curr.fetchone()
+        print(user)
+        return user
         
-        Only registers non-admin users
+    def getAllUsers(self):
+        q = "SELECT * FROM users;"
+        self.curr.execute(q,)
+        users = self.curr.fetchall()
+        return users
+
     """
-    def register(self, email, password, username):
-        salt = uuid.uuid4().hex
-        passwordSalt = hashlib.sha512(password + salt).hexdigest()
-        self.curr.execute('INSERT INTO users (email, admin, password, passwordSalt, username, averageScore)'
-                            'VALUES (%s, %s, %s, %s, %s, %s)', (email, False, password, passwordSalt, username, 0))
-        self.curr.commit()   
+        save Image function:
+            functionality: adds an image to the userImage table
+        aguments: 
+            image_path
+            username
+            image_char
+        return:
+            None
+    """
+    def saveImage(self, id, image_path, image_char, score):
+        upload_query = "INSERT INTO images(id, image_path, character, score) VALUES(%s, %s, %s, %s);"
+        self.curr.execute(upload_query, (id, image_path, image_char, score))
+        self.conn.commit()
+        return True
+ 
