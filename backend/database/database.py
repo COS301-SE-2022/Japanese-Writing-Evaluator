@@ -2,6 +2,8 @@ import os
 from pickle import FALSE, TRUE
 import psycopg2
 from dotenv import load_dotenv
+import hashlib
+import uuid
 
 load_dotenv()
 class Database:
