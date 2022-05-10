@@ -37,7 +37,7 @@ def register():
     try:
         email = str(request.json['username'])
         user = db.getUserByEmail(email)
-        if(user == email)
+        if user == email:
             res = "User already exists"
             return jsonify({"response": res}), 200
         else
