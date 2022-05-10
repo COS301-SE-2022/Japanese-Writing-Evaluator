@@ -34,6 +34,13 @@ def resetPassword():
     else:
         return jsonify({'response': "password reset failed."}), 401
 
+"""
+
+    Register
+    Takes in a post or get request and adds the user to the database
+
+"""
+
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
     try:
@@ -43,11 +50,9 @@ def register():
             res = "User already exists"
             return jsonify({"response": res}), 200
         else:
-            print("here")
             password = str(request.json['password'])
             salt = uuid.uuid4().hex
             passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-            print(passwordSalt)
             db.addUser(str(request.json['username']), str(request.json['password']), str(request.json['email']), False, passwordSalt, 0)
             res = "Registration Successful"
             return jsonify({'response': res}), 200
