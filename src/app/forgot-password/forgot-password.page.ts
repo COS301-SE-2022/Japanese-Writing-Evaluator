@@ -12,7 +12,7 @@ export class ForgotPasswordPage implements OnInit {
 
   forgotPasswordPage()
   {
-    this.router.navigate(['home'])
+    this.router.navigate(['home']);
   }
 
   ngOnInit() {
