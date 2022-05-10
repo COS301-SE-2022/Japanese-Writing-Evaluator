@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,15 +7,6 @@ import { Router } from '@angular/router';
 })
 export class HomePage {
 
-  constructor(private router: Router) {}
-  signUpPage()
-  {
-    this.router.navigate(['sign-up']);
-  }
-
-  forgotPasswordPage()
-  {
-    this.router.navigate(['forgot-password']);
-  }
+  constructor() {}
 
 }
