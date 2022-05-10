@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+import hashlib
+import uuid
 
 import sys
 sys.path.append('../database')
@@ -32,16 +34,21 @@ def resetPassword():
     else:
         return jsonify({'response': "password reset failed."}), 401
 
-@app.rout('/register', methods = ('POST, GET'))
+@app.route('/register', methods = ['POST', 'GET'])
 def register():
     try:
-        email = str(request.json['username'])
-        user = db.getUserByEmail(email)
-        if user == email:
+        user = str(request.json['username'])
+        Finduser = db.getUserByEmail(str(request.json['email']))
+        if Finduser == user:
             res = "User already exists"
             return jsonify({"response": res}), 200
         else:
-            db.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+            print("here")
+            password = str(request.json['password'])
+            salt = uuid.uuid4().hex
+            passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
+            print(passwordSalt)
+            db.addUser(str(request.json['username']), str(request.json['password']), str(request.json['email']), False, passwordSalt, 0)
             res = "Registration Successful"
             return jsonify({'response': res}), 200
 
