@@ -75,3 +75,16 @@ class Database:
         self.conn.commit()
         return True
  
+    """
+        getImage function:
+            functionality: return images for the user
+        aguments: 
+            id
+        return:
+            None
+    """
+    def getImage(self, id):
+        view_query = "SELECT image_path FROM images WHERE id=%s;"
+        self.curr.execute(view_query, (id))
+        images_url = self.curr.fetchall()
+        return images_url
