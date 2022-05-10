@@ -40,7 +40,7 @@ def register():
         if user == email:
             res = "User already exists"
             return jsonify({"response": res}), 200
-        else
+        else:
             db.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
             res = "Registration Successful"
             return jsonify({'response': res}), 200
