@@ -37,9 +37,9 @@ def resetPassword():
 
 @app.route('/login', methods=['GET'])
 def login():
-    username = str(request.json["username"])
+    email = str(request.json["email"])
     password = str(request.json["password"])
-    user = db.getUser(password, username)
+    user = db.getUser(password, email)
     print(user)
     #user holds username and user id to be stored locally
     if user == None: 
