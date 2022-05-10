@@ -74,5 +74,5 @@ class Database:
         salt = uuid.uuid4().hex
         passwordSalt = hashlib.sha512(password + salt).hexdigest()
         self.curr.execute('INSERT INTO users (email, admin, password, passwordSalt, username, averageScore)'
-                            'VALUES (%s, %s, %s, %s, %s, %s)', (email, false, password, passwordSalt, username, 0))
+                            'VALUES (%s, %s, %s, %s, %s, %s)', (email, False, password, passwordSalt, username, 0))
         self.curr.commit()   
