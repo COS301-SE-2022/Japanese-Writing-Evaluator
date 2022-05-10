@@ -8,10 +8,12 @@ import { Router } from '@angular/router';
 })
 export class ForgotPasswordPage implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   forgotPasswordPage()
-  {}
+  {
+    this.router.navigate(['/login']);
+  }
 
   ngOnInit() {
   }

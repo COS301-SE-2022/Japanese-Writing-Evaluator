@@ -1,0 +1,23 @@
+<ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" >
+  <!-- logo -->
+  <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
+  
+  <!-- login form -->
+  <div class="flexbox">
+    <form [formGroup]="login" (ngSubmit)="onLogin()"><!---->
+      <ion-input class="ion-input form-control" type="text" placeholder="    Username"></ion-input><br/>
+      <ion-input class="ion-input form-control" type="password" placeholder="    Password"></ion-input><br/>
+      <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
+    </form>
+    
+  </div>
+  <div class="horizontalflexbox">
+      <a [routerLink]="['/forgot-password']" style="color:rgb(50, 116, 239);">Forgot Password?</a>
+      
+  </div>
+
+  <div class="horizontalflexbox">
+    <p style="color: rgb(50, 116, 239);">Don't have an account?<a [routerLink]="['/sign-up']">SignUp</a></p>
+    
+</div>
+</ion-content>
