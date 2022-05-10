@@ -1,4 +1,5 @@
 import os
+from pickle import FALSE, TRUE
 import psycopg2
 from dotenv import load_dotenv
 
@@ -13,9 +14,8 @@ class Database:
         try:
             self.conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
             self.curr = self.conn.cursor()
-            print("connected")
-        except print(0):
-            print("Could not connect to database")
+        except Exception as e:
+            print("Could not connect to database", e)
             return None
     
     def findAll(self):
@@ -57,4 +57,21 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
-            return self.curr.rowcount    
+            return self.curr.rowcount
+
+    """
+        save Image function:
+            functionality: adds an image to the userImage table
+        aguments: 
+            image_path
+            username
+            image_char
+        return:
+            None
+    """
+    def saveImage(self, id, image_path, image_char, score):
+        upload_query = "INSERT INTO images(id, image_path, character, score) VALUES(%s, %s, %s, %s);"
+        self.curr.execute(upload_query, (id, image_path, image_char, score))
+        self.conn.commit()
+        return True
+ 
