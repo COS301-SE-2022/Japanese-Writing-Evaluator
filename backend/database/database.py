@@ -58,3 +58,30 @@ class Database:
             print(error)
         finally:
             return self.curr.rowcount    
+
+#function used to add a user to the database
+    def addUser(self, username, password, email, admin, passwordSalt, avgScore):
+        q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+        self.curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+        self.conn.commit()
+
+#function to find user with their email and return their username
+    def getUser(self,password,email):
+        q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+        self.curr.execute(q, (password,email))
+        user = self.curr.fetchone()
+        print(user)
+        return user
+        
+    def getAllUsers(self):
+        q = "SELECT * FROM users;"
+        self.curr.execute(q,)
+        users = self.curr.fetchall()
+        return users
+
+
+if __name__ == '__main__':
+    db = Database()
+    # username, password, email, admin, passwordSalt, avgScore
+    db.addUser("Philippa","P@55w0rd","dufanaphilippa@gmail.com", False, "salt", 0)
+    print(db.getUser("P@55w0rd","dufanaphilippa@gmail.com"));
