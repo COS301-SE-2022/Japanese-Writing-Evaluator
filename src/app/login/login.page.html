@@ -4,7 +4,7 @@
   
   <!-- login form -->
   <div class="flexbox">
-    <form ><!--[formGroup]="login" (ngSubmit)="onLogin()"-->
+    <form [formGroup]="login" (ngSubmit)="onLogin()"><!---->
       <ion-input class="ion-input form-control" type="text" placeholder="    Username"></ion-input><br/>
       <ion-input class="ion-input form-control" type="password" placeholder="    Password"></ion-input><br/>
       <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
@@ -12,12 +12,12 @@
     
   </div>
   <div class="horizontalflexbox">
-      <a href="mailto:" style="color:rgb(50, 116, 239);">Forgot Password?</a>
+      <a [routerLink]="['/forgot-password']" style="color:rgb(50, 116, 239);">Forgot Password?</a>
       
   </div>
 
   <div class="horizontalflexbox">
-    <p style="color: rgb(50, 116, 239);">Don't have an account?<a >SignUp</a></p>-<!--[routerLink]="['/signup']"-->
+    <p style="color: rgb(50, 116, 239);">Don't have an account?<a [routerLink]="['/sign-up']">SignUp</a></p>
     
 </div>
 </ion-content>
