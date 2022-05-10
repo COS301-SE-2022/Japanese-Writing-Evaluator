@@ -58,7 +58,6 @@ def login():
     email = str(request.json["email"])
     password = str(request.json["password"])
     user = db.getUser(password, email)
-    print(user)
     #user holds username and user id to be stored locally
     if user == None: 
         return jsonify({'response': "user not found."}), 401
