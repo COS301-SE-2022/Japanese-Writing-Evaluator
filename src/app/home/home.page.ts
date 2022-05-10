@@ -11,12 +11,12 @@ export class HomePage {
   constructor(private router: Router) {}
   signUpPage()
   {
-    this.router.navigate(['sign-up'])
+    this.router.navigate(['sign-up']);
   }
 
   forgotPasswordPage()
   {
-    this.router.navigate(['forgot-password'])
+    this.router.navigate(['forgot-password']);
   }
 
 }
