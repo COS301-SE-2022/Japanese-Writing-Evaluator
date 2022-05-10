@@ -45,7 +45,7 @@ def register():
             res = "Registration Successful"
             return jsonify({'response': res}), 200
 
-    except Exception as e
+    except Exception as e:
         return jsonify({'response': str(e)}), 400
 
 
