@@ -32,6 +32,19 @@ def resetPassword():
     else:
         return jsonify({'response': "password reset failed."}), 401
 
+    #get the user details 
+    #return json response being the user id and username
 
+@app.route('/login', methods=['GET'])
+def login():
+    username = str(request.json["username"])
+    password = str(request.json["password"])
+    user = db.getUser(password, username)
+    print(user)
+    #user holds username and user id to be stored locally
+    if user == None: 
+        return jsonify({'response': "user not found."}), 401
+    else: 
+        return jsonify({'response': user}), 200
 if __name__ == '__main__':
     app.run(debug = True)
