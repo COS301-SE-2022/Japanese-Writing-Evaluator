@@ -4,6 +4,7 @@ import {RouterTestingModule} from '@angular/router/testing';
 // import { Router } from '@angular/router';
 import { ForgotPasswordPage } from './forgot-password.page';
 import { LoginPage } from '../login/login.page';
+import { FormGroup, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 describe('ForgotPasswordPage', () => {
@@ -18,7 +19,7 @@ describe('ForgotPasswordPage', () => {
       declarations: [ ForgotPasswordPage,
                       // LoginPage,
       ],
-      imports: [IonicModule.forRoot(),RouterTestingModule],
+      imports: [IonicModule.forRoot(),RouterTestingModule, FormsModule],
       providers: [
         {
            provide: Router,
