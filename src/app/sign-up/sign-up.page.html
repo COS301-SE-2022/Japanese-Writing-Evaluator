@@ -1,9 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>signUp</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content style="--background: url('../../assets/images/backgroundTop.jpeg');">
 
-<ion-content>
+  <p class="ion-text-center">
+    <img id="logo" src="../../assets/images/JWE-logos_wb.png"/>
+  </p>
 
+    <div class="flexbox">
+        <form class="ion-text-center" #form="ngForm" (ngSubmit)="signUp(form)">
+          <ion-item lines="none">
+            <ion-input class="input" type="text" name="Username" placeholder="Username" ngModel required ></ion-input>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-input class="input" type="text" name="Email" placeholder="Email" ngModel required ></ion-input>
+          </ion-item>
+
+          <ion-item lines="none">
+            <ion-input class="input" type="password" name="Password" placeholder="Password" ngModel required></ion-input>
+          </ion-item>
+
+          <p class="ion-text-center">
+            <ion-button type="submit" [disabled]="form.invalid">SignUp</ion-button>
+          </p>
+
+        </form>
+    </div>
 </ion-content>
