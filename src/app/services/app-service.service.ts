@@ -10,7 +10,7 @@ import { SignUp } from '../sign-up/sign-up';
 })
 export class AppServiceService {
 
-  baseURL:  'http://localhost:5000/';
+  baseURL: string =  'http://localhost:5000/';
 
   constructor(private httpclient: HttpClient) { }//
 
@@ -34,11 +34,11 @@ export class AppServiceService {
   }
 
   isUser(name: string, pass: string){
-    const user: User = {
+    const user = JSON.stringify({
       username: name,
       password: pass
-    };
-    return this.httpclient.post<User>('',user);
+    });
+    return this.httpclient.get<User>(this.baseURL + '/login');
   }
 
 }

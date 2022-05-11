@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import jwt
 import hashlib
 import uuid
+from flask_cors import CORS;
 
 import sys
 sys.path.append('../database')
@@ -13,6 +14,7 @@ from database import Database
 app = Flask(__name__)
 app.config['SECRET_KEY']='459758192b5ba092efb54f9094237481'
 db = Database()
+CORS(app)
 
 def token_required(function):
     @wraps(function)
@@ -64,7 +66,7 @@ def resetPassword():
 
 """
 
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['POST'])
 def register():
     try:
         user = str(request.json['username'])
