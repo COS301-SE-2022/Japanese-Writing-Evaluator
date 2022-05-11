@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
-
+import { storage , app } from 'Storage/firebaseConfig';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
