@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppServiceService } from '../services/app-service.service';
 import { SignUp } from './sign-up';
 
 @Component({
@@ -11,9 +12,9 @@ export class SignUpPage implements OnInit {
   username = '';
   email = '';
   password = '';
-  str = 'skjokso';
+  user;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private apiService: AppServiceService) { }
 
   ngOnInit() {
   }
@@ -24,7 +25,6 @@ export class SignUpPage implements OnInit {
     this.password = data.Password;
 
     this.sendData();
-    alert(this.str);
 
     this.router.navigate(['login']);
     form.reset();
@@ -32,7 +32,16 @@ export class SignUpPage implements OnInit {
 
   sendData()
   {
-    SignUp.getData(this.username, this.email, this.password);
+    this.user = new SignUp(this.username, this.email, this.password);
+    this.addUser(this.user);
+  }
+
+  addUser(obj)
+  {
+    this.apiService.addUser(SignUp)
+      .subscribe(data => {
+        console.log(data);
+      });
   }
 
 }
