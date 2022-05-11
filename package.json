@@ -9,12 +9,14 @@
     "build": "ng build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "serve": "ionic serve"
   },
   "private": true,
   "dependencies": {
     "@angular/common": "~13.2.2",
     "@angular/core": "~13.2.2",
+    "@angular/fire": "^7.3.0",
     "@angular/forms": "~13.2.2",
     "@angular/platform-browser": "~13.2.2",
     "@angular/platform-browser-dynamic": "~13.2.2",

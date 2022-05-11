@@ -1,20 +1,58 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Homepage
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Homepage</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <ion-button (click)="signUpPage()">Sign-Up</ion-button>
-    <ion-button (click)="forgotPasswordPage()">Forgotten Password</ion-button>
+  <div id="Suggestions">
+    <h1>Suggestions</h1>
+    <ion-row>
+      <ion-item><!-- *ngFor="let character of characters"load all possible characters-->
+        <div id="outerlayer">
+          <ion-row>
+            <ion-col>
+               <ion-img  alt="character image"></ion-img><!--[src]=""character.path -->
+            </ion-col>
+            <ion-col>
+              <ion-button  color="dark">Try</ion-button>
+            </ion-col>
+          </ion-row>
+        </div>
+      </ion-item>
+    </ion-row>
   </div>
+
+
+  <div id="Progress">
+    <h1>Progress</h1>
+    <ion-item>
+    </ion-item>
+  </div>
+<!--floating button with the plus icon, Upload button-->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
+
+<!-- tabs for the navigation bar-->
+<ion-footer>
+  <ion-tab-bar>
+    <ion-tabs>
+      <ion-row>
+        <ion-col size="6">
+          <a ><!--direct to suggestions-->
+            <ion-tab-button >
+              <ion-icon name="language"></ion-icon>
+              <ion-label>Characters</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+        <ion-col size="4">
+          <a href="#Progress">
+            <ion-tab-button >
+              <ion-icon name="analytics"></ion-icon>
+              <ion-label>Progress</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ion-tabs>
+  </ion-tab-bar>
+</ion-footer>
