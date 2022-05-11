@@ -1,12 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+// import { AppServiceService } from '../services/app-service.service';
+// import { Character } from '../shared/character';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
+export class HomePage implements OnInit {
+  // characters: Character[] = [];
+  constructor() {}//private repository: AppServiceService
 
-  constructor() {}
+  ngOnInit(): void {
+    // this.repository.getCharacters().subscribe(res => {
+    //   this.characters = res;
+    // });
 
+    // this.repository.getProgress();
+  }
+
+  // uploadImage(){
+  //   //when uploadimage button is click
+  //   this.repository.uploadImage();
+  // }
 }

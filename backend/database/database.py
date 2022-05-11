@@ -2,6 +2,8 @@ import os
 from pickle import FALSE, TRUE
 import psycopg2
 from dotenv import load_dotenv
+import hashlib
+import uuid
 
 load_dotenv()
 class Database:
@@ -57,7 +59,27 @@ class Database:
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
         finally:
-            return self.curr.rowcount
+            return self.curr.rowcount    
+
+#function used to add a user to the database
+    def addUser(self, username, password, email, admin, passwordSalt, avgScore):
+        q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+        self.curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+        self.conn.commit()
+
+#function to find user with their email and return their username
+    def getUser(self,password,email):
+        q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+        self.curr.execute(q, (password,email))
+        user = self.curr.fetchone()
+        print(user)
+        return user
+        
+    def getAllUsers(self):
+        q = "SELECT * FROM users;"
+        self.curr.execute(q,)
+        users = self.curr.fetchall()
+        return users
 
     """
         save Image function:
