@@ -4,19 +4,27 @@ import {RouterTestingModule} from '@angular/router/testing';
 // import { Router } from '@angular/router';
 import { ForgotPasswordPage } from './forgot-password.page';
 import { LoginPage } from '../login/login.page';
+import { Router } from '@angular/router';
 
 describe('ForgotPasswordPage', () => {
   let component: ForgotPasswordPage;
   // let router: Router;
   // let location: Location;
   let fixture: ComponentFixture<ForgotPasswordPage>;
+  const spy = jasmine.createSpyObj('Router',['navigate']);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ForgotPasswordPage,
                       // LoginPage,
       ],
-      imports: [IonicModule.forRoot(),RouterTestingModule]
+      imports: [IonicModule.forRoot(),RouterTestingModule],
+      providers: [
+        {
+           provide: Router,
+           useValue: spy
+        }
+      ],
     }).compileComponents();
 
     // router = TestBed.inject(Router);
@@ -27,11 +35,11 @@ describe('ForgotPasswordPage', () => {
     // router.initialNavigation();
   }));
 
-  // it('Navigation', fakeAsync(() => {
-  //   const spy = spyOn(router,'navigate');
-  //   component.forgotPasswordPage();
-  //   expect(spy).toHaveBeenCalledWith(['/login']);
-  // }));
+  it('Navigation', () => {
+    component.forgotPasswordPage();
+    const navigationArguments = spy.navigate.calls.first().args[0];
+    expect(navigationArguments).toEqual(['/login']);
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
