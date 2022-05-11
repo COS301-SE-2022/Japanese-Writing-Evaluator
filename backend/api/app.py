@@ -79,6 +79,23 @@ def uplaodImage():
     else:
         return jsonify({'response': "image upload failed."}), 401
 
+"""
+    viewImages function:
+        calls get images to send the url to front-end 
+    request body: 
+        id: the user id
+    return:
+        json response
+"""
+
+@app.route('/view', methods = ['GET'])
+def viewImages():
+    images = db.getImage(str(request.json["id"]))
+    if images:
+        return jsonify({'response': images}), 200
+    else:
+        return jsonify({'response': "view image failed."}), 401
+
 #get the user details 
 #return json response being the user id and username
 @app.route('/login', methods=['GET'])
