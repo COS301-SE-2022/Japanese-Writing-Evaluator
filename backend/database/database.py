@@ -28,11 +28,11 @@ class Database:
 
     """
         getUserByEmail function:
-            functionality: number of rows modified for bound checking
+            functionality: get user by theire eamil
         aguments: 
             email
         return:
-            the name of the user with the given email
+            the username of the user with the given email
     """
 
     def getUserByEmail(self, email):
@@ -42,8 +42,23 @@ class Database:
         return name
 
     """
-        update password function:
+        getUserByID function:
             functionality: number of rows modified for bound checking
+        aguments: 
+            id
+        return:
+            the user with the given id
+    """
+
+    def getUserByID(self, id):
+        query = " SELECT * FROM users WHERE id = %s"
+        self.curr.execute(query, (id,))
+        user = self.curr.fetchone()
+        return user
+
+    """
+        update password function:
+            functionality: updates the password of the user
         aguments: 
             email
             password
@@ -97,3 +112,16 @@ class Database:
         self.conn.commit()
         return True
  
+    """
+        getImage function:
+            functionality: return images for the user
+        aguments: 
+            id
+        return:
+            None
+    """
+    def getImage(self, id):
+        view_query = "SELECT image_path FROM images WHERE id=%s;"
+        self.curr.execute(view_query, ([id]))
+        images_url = self.curr.fetchall()
+        return images_url
