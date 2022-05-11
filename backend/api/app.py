@@ -5,7 +5,7 @@ import uuid
 import sys
 sys.path.append('../database')
 
-from database import Database
+from backend.database.database import Database
 
 app = Flask(__name__)
 db = Database()
@@ -44,11 +44,10 @@ def resetPassword():
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
     try:
-        user = str(request.json['username'])
         Finduser = db.getUserByEmail(str(request.json['email']))
-        if Finduser == user:
+        if Finduser != None:
             res = "User already exists"
-            return jsonify({"response": res}), 200
+            return jsonify({"response": res}), 409
         else:
             password = str(request.json['password'])
             salt = uuid.uuid4().hex
