@@ -90,7 +90,7 @@ def uplaodImage():
 
 @app.route('/view', methods = ['GET'])
 def viewImages():
-    images = db.getImage(str(request.json["id"]))
+    images = db.getImage(int(request.json["id"]))
     if images:
         return jsonify({'response': images}), 200
     else:
