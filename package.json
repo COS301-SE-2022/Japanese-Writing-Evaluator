@@ -5,16 +5,18 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "start": "ng serve",
-    "api": "cd backend/api && python3 app.py",
+    "api": "cd backend/api && python app.py",
     "build": "ng build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
-    "e2e": "cypress open"
+    "e2e": "cypress open",
+    "serve": "ionic serve"
   },
   "private": true,
   "dependencies": {
     "@angular/common": "~13.2.2",
     "@angular/core": "~13.2.2",
+    "@angular/fire": "^7.3.0",
     "@angular/forms": "~13.2.2",
     "@angular/platform-browser": "~13.2.2",
     "@angular/platform-browser-dynamic": "~13.2.2",
@@ -27,6 +29,7 @@
     "@ionic/angular": "^6.0.0",
     "cypress": "^9.6.0",
     "e2e": "0.0.8",
+    "firebase": "^9.8.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"
