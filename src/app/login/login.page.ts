@@ -23,6 +23,8 @@ export class LoginPage implements OnInit {
 
   onLogin(){
     //authentication
+    // call isUser which checks if user exists ...
+    //assign the response to a variable which goes in the if
     if (true) {
       //redirect to home
       console.log('logged in');
