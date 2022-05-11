@@ -1,10 +1,13 @@
-export class SignUpPage
+export class SignUp
 {
-  username: string;
-  email: string;
-  password: string;
+  static username: string;
+  static email: string;
+  static password: string;
 
-  constructor(username, email, password)
+  constructor()
+  {}
+
+  static getData(username: string, email: string, password: string)
   {
     this.username = username;
     this.email = email;
