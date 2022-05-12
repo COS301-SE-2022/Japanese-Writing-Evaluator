@@ -10,8 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { AngularFireModule } from '@angular/fire/compat';
-import { environment } from 'src/environments/environment';
 
 
 @NgModule({
@@ -23,8 +21,7 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig, 'cloud')],
+    HttpClientModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
   bootstrap: [AppComponent],
 })

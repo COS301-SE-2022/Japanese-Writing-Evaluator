@@ -9,7 +9,10 @@ import { User } from '../shared/user';
 })
 export class AppServiceService {
 
-  constructor(private httpclient: HttpClient) { }//
+  constructor(private httpclient: HttpClient) {
+    // const id: number;
+    // id = httpclient.get()
+  }//
 
   // getCharacters(): Observable<Character[]>{
   //   return this.httpclient.get<Character[]>(''); /// calling api to get the character images stored in firebase
@@ -17,10 +20,6 @@ export class AppServiceService {
 
   getProgress(){
     // get users progress, feedback for each character practiced
-  }
-
-  uploadImage(image: any ){// pass through the image as a parameter
-    // send image to backend to be evaluated
   }
 
   isUser(name: string, pass: string){
