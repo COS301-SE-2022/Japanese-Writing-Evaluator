@@ -26,11 +26,11 @@ export class HomePage implements OnInit {
 
   uploadImage(){
     //const storage = getStorage();
-    console.log(this.upload.controls.image.value.split('\\').length-1);
     const imageurl= this.upload.controls.image.value.split('\\');//
-    const imageRef = ref(storage,`users/${imageurl[imageurl.length-1]}`);
-    const uploadTask = uploadBytesResumable(imageRef, this.image);
-    uploadTask.on('state_changed',(err) =>{
+    const id = localStorage.getItem('id');
+    const imageRef = ref(storage,`users/${id}/${imageurl[imageurl.length-1]}`);
+    const uploadingTask = uploadBytesResumable(imageRef, this.image);
+    uploadingTask.on('state_changed',(err) =>{
       console.log(err);
     });
     const progress =[

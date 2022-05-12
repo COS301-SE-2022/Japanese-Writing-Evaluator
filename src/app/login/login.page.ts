@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,12 +28,11 @@ export class LoginPage implements OnInit {
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
    this.appService.isUser(username,password )
     .subscribe(data =>{
-      console.log(data.body);
+      console.log(data.body['data'][1].toString());
       if(data.status === 200){
-        localStorage.setItem('user-token', data.body['user-token']);
-        // localStorage.setItem('username', data.body.data[1]);
-        // localStorage.setItem('id', data.body.data[0]);
-        console.log('logged in');
+        if (!localStorage.getItem('id')) {
+          localStorage.setItem('id',data.body['data'][1].toString());
+        }
         this.router.navigate(['/home']);
       }
       else{
