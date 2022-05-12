@@ -18,7 +18,7 @@ export class HomePage implements OnInit {
     //   this.characters = res;
     // });
 
-    suggestCharacter();
+    this.suggestCharacter();
     // this.repository.getProgress();
       // var images = suggestCharacter();
       // var suggestion1 = document.getElementById("Suggestion1");
@@ -32,16 +32,12 @@ export class HomePage implements OnInit {
       // + '<ion-button  color="dark" id="try">Try</ion-button>';
   }
 
-  // uploadImage(){
-  //   //when uploadimage button is click
-  //   this.repository.uploadImage();
-  // }
-
-}
-
-suggestCharacter()
+  suggestCharacter()
   {
-    let images: string[];
+    //eslint-disable-nextline prefer-const
+    const images: string[] = [];
+    //eslint-disable-nextline prefer-const
+    const suggested: string[] = [];
     const folderRef = ref(storage, 'characters/Hiragana');
 
     listAll(folderRef).then((response) => {
@@ -50,8 +46,8 @@ suggestCharacter()
           images.push(urls.toString());
           if(response.items.length === images.length)
           {
+
             let random = 0;
-            let suggested = [];
             let chosen = 0;
             for(let i = 0; i < 2; i++)
             {
@@ -81,13 +77,18 @@ suggestCharacter()
 
             console.log(suggested);
             console.log(suggested.length);
-            let img1 = document.getElementById('suggest1');
+            const img1 = document.getElementById('suggest1');
             img1.setAttribute('src', suggested[0]);
-            let img2 = document.getElementById('suggest2');
+            const img2 = document.getElementById('suggest2');
             img2.setAttribute('src', suggested[1]);
-          
           }
         });
       });
     });
   }
+  // uploadImage(){
+  //   //when uploadimage button is click
+  //   this.repository.uploadImage();
+  // }
+
+}
