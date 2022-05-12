@@ -42,10 +42,10 @@ export class HomePage implements OnInit {
 function suggestCharacter()
   {
     let images = [];
-    const folderRef = ref(storage, "characters/Hiragana")
+    const folderRef = ref(storage, "characters/Hiragana");
 
     listAll(folderRef).then((response) => {
-      console.log(response)
+    
       response.items.forEach((pictures) => {
         getDownloadURL(pictures).then((urls) => {
           images.push(urls);
@@ -77,7 +77,7 @@ function suggestCharacter()
                 }
               }
 
-              chosen = random
+              chosen = random;
             }
 
             console.log(suggested);
