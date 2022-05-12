@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { PrgressPageRoutingModule } from './prgress-routing.module';
+import { ProgressPageRoutingModule } from './progress-routing.module';
 
-import { PrgressPage } from './prgress.page';
+import { ProgressPage } from './progress.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    PrgressPageRoutingModule
+    ProgressPageRoutingModule
   ],
-  declarations: [PrgressPage]
+  declarations: [ProgressPage]
 })
-export class PrgressPageModule {}
+export class ProgressPageModule {}

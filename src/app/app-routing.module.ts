@@ -24,8 +24,8 @@ const routes: Routes = [
     loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
   },
   {
-    path: 'prgress',
-    loadChildren: () => import('./prgress/prgress.module').then( m => m.PrgressPageModule)
+    path: 'progress',
+    loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule)
   },
 ];
 
