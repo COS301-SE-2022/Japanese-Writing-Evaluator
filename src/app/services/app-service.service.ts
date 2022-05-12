@@ -19,7 +19,7 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(){// pass through the image as a parameter
+  uploadImage(image: any ){// pass through the image as a parameter
     // send image to backend to be evaluated
   }
 
