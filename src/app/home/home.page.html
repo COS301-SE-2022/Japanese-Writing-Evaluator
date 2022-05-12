@@ -4,7 +4,7 @@
         <div id="outerlayer">
           <ion-row>
             <ion-col>
-               <ion-img  alt="character image"></ion-img>[src]=""character.path 
+               <ion-img  alt="character image"></ion-img>[src]=""character.path
             </ion-col>
             <ion-col>
               <ion-button  color="dark">Try</ion-button>
@@ -14,9 +14,12 @@
       </ion-item>
     </ion-row>
   </div> -->
-  
+
   <div id="Suggestions">
+<<<<<<< HEAD
+=======
     <h1>Character Suggestions To Try</h1>
+>>>>>>> 5c37ab6ec381f7d1be899c9e0bcafec4f46d9676
 
     <div id="SuggestionBlock">
       <ion-row>
@@ -29,7 +32,7 @@
           <ion-button  color="dark" id="try">Try</ion-button>
         </div>
       </ion-row>
-      
+
     </div>
   </div>
 
@@ -71,7 +74,7 @@
           <ion-card-header>
             <ion-card-title>Upload Image</ion-card-title>
           </ion-card-header>
-        
+
           <ion-card-content>
             <form [formGroup]="upload" (ngSubmit)="uploadImage()">
               <ion-input type="file" formControlName="image" (change)="getImage($event)" accept=".png,.jpeg,.jpg"></ion-input>
