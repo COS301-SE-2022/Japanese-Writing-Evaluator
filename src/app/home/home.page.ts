@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ref, getDownloadURL, listAll, getStorage } from 'firebase/storage';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
-import { storage, app } from 'Storage/firebaseConfig'
+import { storage, app } from 'Storage/firebaseConfig';
 
 @Component({
   selector: 'app-home',
@@ -22,12 +22,12 @@ export class HomePage implements OnInit {
     // this.repository.getProgress();
       // var images = suggestCharacter();
       // var suggestion1 = document.getElementById("Suggestion1");
-      // suggestion1.innerHTML = 
+      // suggestion1.innerHTML =
       // '<img alt="Suggestion" src="'+images[0]+'"/>'
       // + '<ion-button  color="dark" id="try">Try</ion-button>';
 
       // var suggestion2 = document.getElementById("Suggestion2");
-      // suggestion2.innerHTML = 
+      // suggestion2.innerHTML =
       // '<img alt="Suggestion" src="'+images[1]+'"/>'
       // + '<ion-button  color="dark" id="try">Try</ion-button>';
   }
@@ -39,33 +39,32 @@ export class HomePage implements OnInit {
 
 }
 
-function suggestCharacter()
+suggestCharacter()
   {
-    let images = [];
-    const folderRef = ref(storage, "characters/Hiragana");
+    let images: string[];
+    const folderRef = ref(storage, 'characters/Hiragana');
 
     listAll(folderRef).then((response) => {
-    
       response.items.forEach((pictures) => {
         getDownloadURL(pictures).then((urls) => {
-          images.push(urls);
-          if(response.items.length == images.length)
+          images.push(urls.toString());
+          if(response.items.length === images.length)
           {
-            var random = 0;
-            var suggested = [];
-            var chosen = 0;
-            for(var i = 0; i < 2; i++)
+            let random = 0;
+            let suggested = [];
+            let chosen = 0;
+            for(let i = 0; i < 2; i++)
             {
               random = Math.floor(Math.random() * images.length);
-              if(i == 0)
+              if(i === 0)
               {
                 suggested.push(images[random]);
               }
               else
               {
-                if(chosen == random)
+                if(chosen === random)
                 {
-                  while(chosen == random)
+                  while(chosen === random)
                   {
                     random = Math.floor(Math.random() * images.length);
                   }
@@ -82,14 +81,13 @@ function suggestCharacter()
 
             console.log(suggested);
             console.log(suggested.length);
-            var img1 = document.getElementById("suggest1");
-            img1.setAttribute("src", suggested[0]);
-            var img2 = document.getElementById("suggest2");
-            img2.setAttribute("src", suggested[1]);
+            let img1 = document.getElementById('suggest1');
+            img1.setAttribute('src', suggested[0]);
+            let img2 = document.getElementById('suggest2');
+            img2.setAttribute('src', suggested[1]);
           
           }
-        })
-      })
-    })
-    
+        });
+      });
+    });
   }
