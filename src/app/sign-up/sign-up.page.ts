@@ -26,7 +26,6 @@ export class SignUpPage implements OnInit {
 
     this.sendData();
 
-    this.router.navigate(['login']);
     form.reset();
   }
 
@@ -38,9 +37,14 @@ export class SignUpPage implements OnInit {
 
   addUser(obj)
   {
-    this.apiService.addUser(SignUp)
+    this.apiService.addUser(this.username, this.email, this.password)
       .subscribe(data => {
-        console.log(data);
+        if(data.status === 200){
+          this.router.navigate(['/login']);
+        }
+        else{
+          alert('Incorrect user information or user already exist');
+        }
       });
   }
 
