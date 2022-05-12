@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProgressPage implements OnInit {
 
+  char = '';
+  percent = 0;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  setDisplay(char: string, percent: number)
+  {
+    this.char = char;
+    this.percent = percent;
   }
 
 }
