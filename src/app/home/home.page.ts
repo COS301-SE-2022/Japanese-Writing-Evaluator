@@ -25,8 +25,6 @@ export class HomePage implements OnInit {
   }
 
   uploadImage(){
-    this.progressProp.setDisplay('',80);
-
     //const storage = getStorage();
     console.log(this.upload.controls.image.value.split('\\').length-1);
     const imageurl= this.upload.controls.image.value.split('\\');//
@@ -34,6 +32,14 @@ export class HomePage implements OnInit {
     const uploadTask = uploadBytesResumable(imageRef, this.image);
     uploadTask.on('state_changed',(err) =>{
       console.log(err);
+    });
+    const progress =[
+      {char: 'i', percent: 80},
+      {char: 'e', percent: 26},
+      {char: 'a', percent: 54},
+    ];
+    progress.forEach(elem => {
+      this.progressProp.setDisplay(elem.char,elem.percent);
     });
 
   //  this.repository.uploadImage(this.upload.controls.image.value);

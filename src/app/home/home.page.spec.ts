@@ -9,8 +9,11 @@ import { HomePage } from './home.page';
 describe('HomePage', () => {
   let component: HomePage;
   let fixture: ComponentFixture<HomePage>;
+  let timeout;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(waitForAsync((done) => {
+    timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
     TestBed.configureTestingModule({
       declarations: [ HomePage ],
       imports: [IonicModule.forRoot(),RouterTestingModule,
@@ -22,8 +25,35 @@ describe('HomePage', () => {
     fixture = TestBed.createComponent(HomePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    const data = {};
+    const testLocalStorage = {
+      getItem: (key: string): string=> key in data ? data[key] : null,
+      setItem: (key: string, val: string) => data[key] = val,
+    };
+    spyOn(localStorage, 'getItem')
+      .and.callFake(testLocalStorage .getItem);
+    spyOn(localStorage, 'setItem')
+      .and.callFake(testLocalStorage .setItem);
+
+    localStorage.setItem('id','84');
   }));
 
+  afterEach(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = timeout;
+  });
+
+  it('check if localStorage is set',() => {
+      component.uploadImage();
+      expect(localStorage.getItem('id')).toEqual('84');
+  });
+  it('check if form input has no value',() =>{
+    const upload = component.upload;
+    const uploadValues = {
+      image: ''
+    };
+    expect(upload.value).toEqual(uploadValues);
+  });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
