@@ -34,9 +34,9 @@ export class HomePage implements OnInit {
       console.log(err);
     });
     const progress =[
-      {char: 'i', percent: 80},
-      {char: 'e', percent: 26},
-      {char: 'a', percent: 54},
+      {char: 'i', percent: 0.8},
+      {char: 'e', percent: 0.26},
+      {char: 'a', percent: 0.54},
     ];
     progress.forEach(elem => {
       this.progressProp.setDisplay(elem.char,elem.percent);
