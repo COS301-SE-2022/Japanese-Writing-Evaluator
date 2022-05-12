@@ -33,8 +33,64 @@ a {
   height: 100px;
 }
 
+
 ion-popover{
   --offset-y: -150px;
   --offset-x: -90px;
+}
+
+#Suggestions
+{
+  width: 100%;
+  height: 30%;
+  background-color: grey;
+}
+
+#SuggestionBlock
+{
+  width: 100%;
+  height: 80%;
+  background-color: white;
+}
+
+#Suggestion1
+{
+  display: inline-block;
+  background-color: #960722;
+  width: 20%;
+  height: 100%;
+  margin-left: 20%;
+  border-radius: 15%;
+}
+
+#Suggestion2
+{
+  display: inline-block;
+  background-color: #960722;
+  width: 20%;
+  height: 100%;
+  margin-left: 20%;
+  border-radius: 15%;
+}
+
+#try
+{
+  display: inline-block;
+  margin-left: 30%;
+  width: 40%;
+}
+
+#suggest1
+{
+  height: 100%;
+  width:100%;
+  border-radius: 10%;
+}
+
+#suggest2
+{
+  height: 100%;
+  width:100%;
+  border-radius: 10%;
 }
 
