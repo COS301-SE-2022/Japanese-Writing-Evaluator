@@ -25,7 +25,7 @@ export class HomePage implements OnInit {
   }
 
   uploadImage(){
-    this.progressProp.setDisplay('',80);
+    this.progressProp.setDisplay('',0.8);
 
     //const storage = getStorage();
     console.log(this.upload.controls.image.value.split('\\').length-1);
