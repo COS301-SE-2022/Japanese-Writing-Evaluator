@@ -25,7 +25,6 @@ export class HomePage implements OnInit {
   }
 
   uploadImage(){
-  
     //const storage = getStorage();
     console.log(this.upload.controls.image.value.split('\\').length-1);
     const imageurl= this.upload.controls.image.value.split('\\');//
