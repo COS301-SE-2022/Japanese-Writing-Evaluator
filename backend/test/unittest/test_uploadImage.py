@@ -1,19 +1,15 @@
 import sys
 import unittest
 from flask import current_app
-
-sys.path.append('../../api')
-sys.path.append('../../database')
-
-from app import app, db
+from backend.api.app import app, db
 
 
 class UploadImageTest(unittest.TestCase):
     def setUp(self):
-        self.app = create_app()
+        self.app = app
         self.appctx = self.app.app_context()
         self.appctx.push()
-        db.create_all()
+        # db.create_all()
         self.client = self.app.test_client()
 
     def tearDown(self):
