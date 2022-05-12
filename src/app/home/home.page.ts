@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ref, uploadBytesResumable } from '@firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/storage';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
 import { storage, app } from 'Storage/firebaseConfig';
@@ -25,11 +25,11 @@ export class HomePage implements OnInit {
 
   uploadImage(){
     //const storage = getStorage();
-    console.log(this.upload.controls.image.value.split('\\').length-1);
     const imageurl= this.upload.controls.image.value.split('\\');//
-    const imageRef = ref(storage,`users/${imageurl[imageurl.length-1]}`);
-    const uploadTask = uploadBytesResumable(imageRef, this.image);
-    uploadTask.on('state_changed',(err) =>{
+    const id = localStorage.getItem('id');
+    const imageRef = ref(storage,`users/${id}/${imageurl[imageurl.length-1]}`);
+    const uploadingTask = uploadBytesResumable(imageRef, this.image);
+    uploadingTask.on('state_changed',(err) =>{
       console.log(err);
     });
   //  this.repository.uploadImage(this.upload.controls.image.value);
