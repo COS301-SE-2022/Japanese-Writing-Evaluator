@@ -96,4 +96,9 @@ class Database:
         self.curr.execute(upload_query, (id, image_path, image_char, score))
         self.conn.commit()
         return True
+
+    def deleteUser(self, email):
+        query = "DELETE FROM users WHERE email = %s;"
+        self.curr.execute(query, (email,))
+        self.conn.commit()
  
