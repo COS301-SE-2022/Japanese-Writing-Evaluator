@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AppServiceService } from '../services/app-service.service';
+import { SignUp } from './sign-up';
 
 @Component({
   selector: 'app-sign-up',
@@ -6,10 +9,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sign-up.page.scss'],
 })
 export class SignUpPage implements OnInit {
+  username = '';
+  email = '';
+  password = '';
+  user;
 
-  constructor() { }
+  constructor(private router: Router, private apiService: AppServiceService) { }
 
   ngOnInit() {
   }
 
+  signUp(data,form){
+    this.username = data.Username;
+    this.email = data.Email;
+    this.password = data.Password;
+
+    this.sendData();
+
+    form.reset();
+  }
+
+  sendData()
+  {
+    this.user = new SignUp(this.username, this.email, this.password);
+    this.addUser(this.user);
+  }
+
+  addUser(obj)
+  {
+    this.apiService.addUser(this.username, this.email, this.password)
+      .subscribe(data => {
+        if(data.status === 200){
+          this.router.navigate(['/login']);
+        }
+        else{
+          alert('Incorrect user information or user already exist');
+        }
+      });
+  }
+
 }
+

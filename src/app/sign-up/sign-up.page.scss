@@ -1,0 +1,32 @@
+.flexbox{
+  display: flex;
+  justify-content: center;
+}
+
+ion-button {
+  text-transform: none;
+}
+
+.no-scroll .scroll-content{
+  overflow: hidden;
+}
+
+form{
+  margin-top: 120px;
+}
+
+ion-item{
+  border-radius: 20px;
+  border-width: 3em;
+  margin-bottom: 10px;
+  --background: rgb(170, 162, 162);
+  --highlight-color-focused: none;
+  width: 250px;
+  height: 45px;
+}
+
+#logo{
+  width: 200px;
+  height: 200px;
+  z-index: -1;
+}
