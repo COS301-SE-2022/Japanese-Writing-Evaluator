@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'sign-up',
     loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
   },
+  {
+    path: 'prgress',
+    loadChildren: () => import('./prgress/prgress.module').then( m => m.PrgressPageModule)
+  },
 ];
 
 @NgModule({
