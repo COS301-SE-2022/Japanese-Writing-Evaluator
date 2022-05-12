@@ -5,6 +5,7 @@ import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/st
 // import { Character } from '../shared/character';
 import { storage, app } from 'Storage/firebaseConfig';
 import { AppServiceService } from '../services/app-service.service';
+import { ProgressPage } from '../progress/progress.page';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -13,7 +14,7 @@ import { AppServiceService } from '../services/app-service.service';
 export class HomePage implements OnInit {
   image: File = null;
   upload: FormGroup;
-  constructor(formBuilder: FormBuilder, private repository: AppServiceService) {
+  constructor(formBuilder: FormBuilder, private repository: AppServiceService, private progressProp: ProgressPage) {
     this.upload = formBuilder.group({ // building a responsive form with two inputs
       image: new FormControl('',[Validators.required]),
     });
@@ -32,6 +33,15 @@ export class HomePage implements OnInit {
     uploadingTask.on('state_changed',(err) =>{
       console.log(err);
     });
+    const progress =[
+      {char: 'i', percent: 0.8},
+      {char: 'e', percent: 0.26},
+      {char: 'a', percent: 0.54},
+    ];
+    progress.forEach(elem => {
+      this.progressProp.setDisplay(elem.char,elem.percent);
+    });
+
   //  this.repository.uploadImage(this.upload.controls.image.value);
   }
 
