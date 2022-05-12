@@ -1,5 +1,7 @@
-flask==1.1.2
-pyjwt==2.0.0
+flask
+pyjwt
 datetime
 uuid
 Flask-SQLAlchemy
+pyscopg2==2.9.3
+dotenv

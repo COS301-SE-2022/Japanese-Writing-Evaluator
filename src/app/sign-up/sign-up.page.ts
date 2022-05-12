@@ -42,9 +42,9 @@ export class SignUpPage implements OnInit {
         if(data.status === 200){
           this.router.navigate(['/login']);
         }
-        else{
-          alert('Incorrect user information or user already exist');
-        }
+        // else{
+        //   alert('Incorrect user information or user already exist');
+        // }
       });
   }
 
