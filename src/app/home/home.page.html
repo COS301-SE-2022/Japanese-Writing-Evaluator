@@ -21,16 +21,38 @@
     <h1>Suggestions</h1>
 
     <div id="SuggestionBlock">
-      <div id="Suggestion1">
-        <img alt="Suggestion" id="suggest1">
-        <ion-button  color="dark" id="try">Try</ion-button>
-      </div>
-      <div id="Suggestion2">
-        <img alt="Suggestion" id="suggest2">
-        <ion-button  color="dark" id="try">Try</ion-button>
-      </div>
+      <ion-row>
+        <div id="Suggestion1">
+          <img alt="Suggestion" id="suggest1" >
+          <ion-button  color="dark" id="try">Try</ion-button>
+        </div>
+        <div id="Suggestion2">
+          <img alt="Suggestion" id="suggest2">
+          <ion-button  color="dark" id="try">Try</ion-button>
+        </div>
+      </ion-row>
+      
     </div>
   </div>
+
+  <ion-popover trigger="try"  side="bottom">
+    <ng-template>
+      <ion-content>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Upload Image</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <form [formGroup]="upload" (ngSubmit)="uploadImage()">
+              <ion-input type="file" formControlName="image" (change)="getImage($event)" accept=".png,.jpeg,.jpg"></ion-input>
+              <ion-button type="submit" >Evaluate</ion-button>
+            </form>
+            <!-- <ion-input type="file"  name="image" autocomplete="off"></ion-input> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 
 
   <div id="Progress">
