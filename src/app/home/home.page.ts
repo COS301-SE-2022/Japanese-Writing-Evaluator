@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { getStorage, ref, uploadBytesResumable } from 'firebase/storage';
+import { ref, uploadBytesResumable } from '@firebase/storage';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
 import { storage, app } from 'Storage/firebaseConfig';
 import { AppServiceService } from '../services/app-service.service';
-import firebase from 'firebase/compat';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
