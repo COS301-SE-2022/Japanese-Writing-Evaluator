@@ -66,7 +66,7 @@ def resetPassword():
 
 """
 
-@app.route('/register', methods = ['POST'])
+@app.route('/register', methods = ['POST', 'GET'])
 def register():
     try:
         user = str(request.json['username'])
@@ -99,7 +99,7 @@ def register():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def uplaodImage():
-    succ = db.saveImage(int(request.json["id"]), str(request.json["image_path"]), str(request.json["image_char"]), int(request.json["score"]))
+    succ = db.saveImage(int(request.json["id"]), str(request.json["imagepath"]), str(request.json["imagechar"]), int(request.json["score"]))
     if succ:
         return jsonify({'response': "image upload successful."}), 200
     else:
@@ -125,12 +125,11 @@ def viewImages():
 
 #get the user details 
 #return json response being the user id and username
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     email = str(request.json["email"])
     password = str(request.json["password"])
     user = db.getUser(password, email)
-    #user holds username and user id to be stored locally
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
