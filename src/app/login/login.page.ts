@@ -27,8 +27,11 @@ export class LoginPage implements OnInit {
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
    this.appService.isUser(username,password )
     .subscribe(data =>{
-      console.log(data);
+      console.log(data.body);
       if(data.status === 200){
+        localStorage.setItem('user-token', data.body['user-token']);
+        // localStorage.setItem('username', data.body.data[1]);
+        // localStorage.setItem('id', data.body.data[0]);
         console.log('logged in');
         this.router.navigate(['/home']);
       }
