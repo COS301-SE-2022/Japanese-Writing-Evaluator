@@ -5,7 +5,7 @@
   </p>
 
     <div class="flexbox">
-        <form class="ion-text-center" #form="ngForm" (ngSubmit)="signUp(form)">
+        <form class="ion-text-center" #form="ngForm" (ngSubmit)="signUp(form.value,form)">
           <ion-item lines="none">
             <ion-input class="input" type="text" name="Username" placeholder="Username" ngModel required ></ion-input>
           </ion-item>

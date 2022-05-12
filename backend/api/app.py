@@ -4,15 +4,17 @@ from datetime import datetime, timedelta
 import jwt
 import hashlib
 import uuid
+from flask_cors import CORS;
 
 import sys
 sys.path.append('../database')
 
-from database import Database
+from backend.database.database import Database
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='459758192b5ba092efb54f9094237481'
 db = Database()
+CORS(app)
 
 def token_required(function):
     @wraps(function)
@@ -67,11 +69,10 @@ def resetPassword():
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
     try:
-        user = str(request.json['username'])
         Finduser = db.getUserByEmail(str(request.json['email']))
-        if Finduser == user:
+        if Finduser != None:
             res = "User already exists"
-            return jsonify({"response": res}), 200
+            return jsonify({"response": res}), 409
         else:
             password = str(request.json['password'])
             salt = uuid.uuid4().hex
@@ -97,7 +98,7 @@ def register():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def uplaodImage():
-    succ = db.saveImage(int(request.json["id"]), str(request.json["image_path"]), str(request.json["image_char"]), int(request.json["score"]))
+    succ = db.saveImage(int(request.json["id"]), str(request.json["imagepath"]), str(request.json["imagechar"]), int(request.json["score"]))
     if succ:
         return jsonify({'response': "image upload successful."}), 200
     else:
@@ -123,12 +124,11 @@ def viewImages():
 
 #get the user details 
 #return json response being the user id and username
-@app.route('/login', methods=['GET'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     email = str(request.json["email"])
     password = str(request.json["password"])
     user = db.getUser(password, email)
-    #user holds username and user id to be stored locally
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
