@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ref, uploadBytesResumable } from '@firebase/storage';
+import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/storage';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
 import { storage, app } from 'Storage/firebaseConfig';
