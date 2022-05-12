@@ -1,27 +1,13 @@
 <ion-content [fullscreen]="true">
-  <!-- <div id="Suggestions">
+<!--   <div id="Suggestions">
     <h1>Suggestions</h1>
     <ion-row>
-      <ion-item> -->
-        <!-- *ngFor="let character of characters"load all possible characters-->
-        <!-- <div id="outerlayer">
+      <ion-item><!-- *ngFor="let character of characters"load all possible characters
+        <div id="outerlayer">
           <ion-row>
             <ion-col>
-               <ion-img  alt="character image" src=""></ion-img> -->
-               <!--[src]=""character.path -->
-            <!-- </ion-col>
-            <ion-col>
-              <ion-button  color="dark">Try</ion-button>
+               <ion-img  alt="character image"></ion-img><!--[src]=""character.path 
             </ion-col>
-          </ion-row>
-        </div> -->
-
-        <!-- <div id="secondSuggestion">
-          <ion-row>
-            <ion-col>
-               <ion-img  alt="character image" src=""></ion-img> -->
-               <!--[src]=""character.path -->
-            <!-- </ion-col>
             <ion-col>
               <ion-button  color="dark">Try</ion-button>
             </ion-col>
@@ -30,7 +16,7 @@
       </ion-item>
     </ion-row>
   </div> -->
-
+  
   <div id="Suggestions">
     <h1>Suggestions</h1>
 
@@ -52,23 +38,42 @@
     <ion-item>
     </ion-item>
   </div>
-<!--floating button with the plus icon, Upload button-->
+  <!--floating button with the plus icon, Upload button-->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-input type="file" click="uploadImage($event) accept=.png,.jpg">
-      </ion-input>
+    <ion-fab-button id="trigger">
+      <!-- <ion-input type="file"></ion-input> -->
       <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+  <ion-popover trigger="trigger"  side="top">
+    <ng-template>
+      <ion-content>
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Upload Image</ion-card-title>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <form [formGroup]="upload" (ngSubmit)="uploadImage()">
+              <ion-input type="file" formControlName="image" (change)="getImage($event)" accept=".png,.jpeg,.jpg"></ion-input>
+              <ion-button type="submit" >Evaluate</ion-button>
+            </form>
+            <!-- <ion-input type="file"  name="image" autocomplete="off"></ion-input> -->
+          </ion-card-content>
+        </ion-card>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
 </ion-content>
+
 
 <!-- tabs for the navigation bar-->
 <ion-footer>
   <ion-tab-bar>
     <ion-tabs>
       <ion-row>
-        <ion-col size="4">
-          <a href="#Success"><!--direct to suggestions-->
+        <ion-col size="6">
+          <a ><!--direct to suggestions-->
             <ion-tab-button >
               <ion-icon name="language"></ion-icon>
               <ion-label>Characters</ion-label>
@@ -83,15 +88,6 @@
             </ion-tab-button>
           </a>
         </ion-col>
-        <ion-col size="4">
-          <a href="">
-            <ion-tab-button >
-              <ion-icon name="images-outline"></ion-icon>
-              <ion-label>Gallery</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-
       </ion-row>
     </ion-tabs>
   </ion-tab-bar>
