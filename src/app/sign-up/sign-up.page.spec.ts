@@ -4,6 +4,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 
 import { SignUpPage } from './sign-up.page';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+
 
 describe('SignUpPage', () => {
   let component: SignUpPage;
@@ -12,6 +15,7 @@ describe('SignUpPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SignUpPage ],
+      providers: [HttpClientTestingModule],
       imports: [IonicModule.forRoot(),RouterTestingModule, FormsModule],
     }).compileComponents();
 
