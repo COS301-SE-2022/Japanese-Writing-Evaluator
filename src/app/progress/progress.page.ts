@@ -1,4 +1,6 @@
-import { Component, ElementRef, OnInit, Pipe, ViewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 //import { AppServiceService } from '../services/app-service.service';
 
 
@@ -10,13 +12,15 @@ import { Component, ElementRef, OnInit, Pipe, ViewChild } from '@angular/core';
 
 
 export class ProgressPage implements OnInit {
+  data: SafeHtml;
+
   char = '';
   percent = 0;
 
   img = '';
 
   htmlToAdd = '';
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
   }
@@ -70,7 +74,7 @@ export class ProgressPage implements OnInit {
       '</ion-grid>'+
     '</ion-card-content>'+
   '</ion-card>';
-  alert(this.htmlToAdd);
-  }
 
+
+  }
 }
