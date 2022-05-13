@@ -1,21 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Pipe, ViewChild } from '@angular/core';
 //import { AppServiceService } from '../services/app-service.service';
+
 
 @Component({
   selector: 'app-progress',
   templateUrl: './progress.page.html',
   styleUrls: ['./progress.page.scss'],
 })
-export class ProgressPage implements OnInit {
 
+
+export class ProgressPage implements OnInit {
   char = '';
   percent = 0;
 
   img = '';
-  display = false;
 
   htmlToAdd = '';
-
   constructor() { }
 
   ngOnInit() {
@@ -23,7 +23,6 @@ export class ProgressPage implements OnInit {
 
   setDisplay(char: string, percent: number)
   {
-    alert('Called' + char + ''  + percent);
     this.char = char;
     this.percent = percent;
     this.setValue();
@@ -50,8 +49,7 @@ export class ProgressPage implements OnInit {
       // eslint-disable-next-line max-len
       this.img = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Japanese_Hiragana_kyokashotai_U.svg/1200px-Japanese_Hiragana_kyokashotai_U.svg.png';
     }
-  this.display = true;
-    this.htmlToAdd = '<ion-card [style.display]="'+ this.display+ '">'+
+    this.htmlToAdd += '<ion-card>'+
   '<ion-card-header>'+
       '<ion-card-title>Character: '+ this.char +'</ion-card-title>'+
     '</ion-card-header>'+
@@ -72,7 +70,7 @@ export class ProgressPage implements OnInit {
       '</ion-grid>'+
     '</ion-card-content>'+
   '</ion-card>';
-
+  alert(this.htmlToAdd);
   }
 
 }
