@@ -33,14 +33,6 @@ export class HomePage implements OnInit {
     uploadingTask.on('state_changed',(err) =>{
       console.log(err);
     });
-    const progress =[
-      {char: 'i', percent: 0.8},
-      {char: 'e', percent: 0.26},
-      {char: 'a', percent: 0.54},
-    ];
-    progress.forEach(elem => {
-      this.progressProp.setDisplay(elem.char,elem.percent);
-    });
 
   //  this.repository.uploadImage(this.upload.controls.image.value);
   }
@@ -51,6 +43,14 @@ export class HomePage implements OnInit {
     // });
 
     this.suggestCharacter();
+    const progress =[
+      {char: 'i', percent: 0.8},
+      {char: 'e', percent: 0.26},
+      {char: 'a', percent: 0.54},
+    ];
+    this.progressProp.setDisplay(progress[0].char,progress[0].percent);
+    // progress.forEach(elem => {
+    // });
     // this.repository.getProgress();
       // var images = suggestCharacter();
       // var suggestion1 = document.getElementById("Suggestion1");

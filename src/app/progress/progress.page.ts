@@ -30,6 +30,7 @@ export class ProgressPage implements OnInit {
 
   setValue()
   {
+    console.log(this.char);
     if(this.char === 'a')
     {
       // eslint-disable-next-line max-len
@@ -49,28 +50,28 @@ export class ProgressPage implements OnInit {
       // eslint-disable-next-line max-len
       this.img = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Japanese_Hiragana_kyokashotai_U.svg/1200px-Japanese_Hiragana_kyokashotai_U.svg.png';
     }
-    this.htmlToAdd += '<ion-card>'+
-  '<ion-card-header>'+
-      '<ion-card-title>Character: '+ this.char +'</ion-card-title>'+
-    '</ion-card-header>'+
-    '<ion-card-content>'+
-    '<ion-grid>'+
-      '<ion-row>'+
-        '<ion-col size="3">'+
-          '<ion-avatar>'+
-            '<img src='+this.img+'>'+
-          '</ion-avatar>'+
-          '</ion-col>'+
-          '<ion-col size="9">'+
-            '<div class="bar">'+
-              '<ion-progress-bar color="primary" value='+this.percent+'></ion-progress-bar>'+
-          '</div>'+
-          '</ion-col>'+
-        '</ion-row>'+
-      '</ion-grid>'+
-    '</ion-card-content>'+
-  '</ion-card>';
-  alert(this.htmlToAdd);
+  //   this.htmlToAdd += '<ion-card>'+
+  // '<ion-card-header>'+
+  //     '<ion-card-title>Character: '+ this.char +'</ion-card-title>'+
+  //   '</ion-card-header>'+
+  //   '<ion-card-content>'+
+  //   '<ion-grid>'+
+  //     '<ion-row>'+
+  //       '<ion-col size="3">'+
+  //         '<ion-avatar>'+
+  //           '<img src='+this.img+'>'+
+  //         '</ion-avatar>'+
+  //         '</ion-col>'+
+  //         '<ion-col size="9">'+
+  //           '<div class="bar">'+
+  //             '<ion-progress-bar color="primary" value='+this.percent+'></ion-progress-bar>'+
+  //         '</div>'+
+  //         '</ion-col>'+
+  //       '</ion-row>'+
+  //     '</ion-grid>'+
+  //   '</ion-card-content>'+
+  // '</ion-card>';
+  // alert(this.htmlToAdd);
   }
 
 }
