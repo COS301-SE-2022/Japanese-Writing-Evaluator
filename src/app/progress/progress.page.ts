@@ -1,29 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 //import { AppServiceService } from '../services/app-service.service';
+
 
 @Component({
   selector: 'app-progress',
   templateUrl: './progress.page.html',
   styleUrls: ['./progress.page.scss'],
 })
+
+
 export class ProgressPage implements OnInit {
+  data: SafeHtml;
 
   char = '';
   percent = 0;
 
-  img = '';
-  display = false;
+  img: string;
 
   htmlToAdd = '';
-
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.char = localStorage.getItem('char');
+    this.percent = +localStorage.getItem('percentage');
+    // eslint-disable-next-line max-len
+    this.setValue();
   }
 
   setDisplay(char: string, percent: number)
   {
-    alert('Called' + char + ''  + percent);
+    console.log(char);
     this.char = char;
     this.percent = percent;
     this.setValue();
@@ -31,6 +39,7 @@ export class ProgressPage implements OnInit {
 
   setValue()
   {
+    console.log(this.char === 'i');
     if(this.char === 'a')
     {
       // eslint-disable-next-line max-len
@@ -50,8 +59,7 @@ export class ProgressPage implements OnInit {
       // eslint-disable-next-line max-len
       this.img = 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Japanese_Hiragana_kyokashotai_U.svg/1200px-Japanese_Hiragana_kyokashotai_U.svg.png';
     }
-  this.display = true;
-    this.htmlToAdd = '<ion-card [style.display]="'+ this.display+ '">'+
+    this.htmlToAdd += '<ion-card>'+
   '<ion-card-header>'+
       '<ion-card-title>Character: '+ this.char +'</ion-card-title>'+
     '</ion-card-header>'+
@@ -73,6 +81,6 @@ export class ProgressPage implements OnInit {
     '</ion-card-content>'+
   '</ion-card>';
 
-  }
 
+  }
 }
