@@ -6,6 +6,7 @@ import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/st
 import { storage, app } from 'Storage/firebaseConfig';
 import { AppServiceService } from '../services/app-service.service';
 import { ProgressPage } from '../progress/progress.page';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -14,7 +15,7 @@ import { ProgressPage } from '../progress/progress.page';
 export class HomePage implements OnInit {
   image: File = null;
   upload: FormGroup;
-  constructor(formBuilder: FormBuilder, private repository: AppServiceService, private progressProp: ProgressPage) {
+  constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
     this.upload = formBuilder.group({ // building a responsive form with two inputs
       image: new FormControl('',[Validators.required]),
     });
@@ -37,18 +38,26 @@ export class HomePage implements OnInit {
   //  this.repository.uploadImage(this.upload.controls.image.value);
   }
 
+  setProgress(){
+    const progress =[
+      {char: 'i', percent: 0.8},
+      {char: 'e', percent: 0.26},
+      {char: 'a', percent: 0.54},
+    ];
+    if (!localStorage.getItem('char') && !localStorage.getItem('percentage')) {
+      localStorage.setItem('char',progress[0].char);
+      localStorage.setItem('percentage',progress[0].percent.toString());
+    }
+    //this.progressProp.setDisplay(progress[0].char,progress[0].percent);
+    this.router.navigate(['/progress']);
+  }
+
   ngOnInit(): void {
     // this.repository.getCharacters().subscribe(res => {
     //   this.characters = res;
     // });
 
     this.suggestCharacter();
-    const progress =[
-      {char: 'i', percent: 0.8},
-      {char: 'e', percent: 0.26},
-      {char: 'a', percent: 0.54},
-    ];
-    this.progressProp.setDisplay(progress[0].char,progress[0].percent);
     // progress.forEach(elem => {
     // });
     // this.repository.getProgress();

@@ -10,19 +10,24 @@ import { Component, ElementRef, OnInit, Pipe, ViewChild } from '@angular/core';
 
 
 export class ProgressPage implements OnInit {
-  char = '';
-  percent = 0;
+  char: string;
+  percent: number;
 
-  img = '';
+  img: string;
 
-  htmlToAdd = '';
+  htmlToAdd: string;
   constructor() { }
 
   ngOnInit() {
+    this.char = localStorage.getItem('char');
+    this.percent = +localStorage.getItem('percentage');
+    // eslint-disable-next-line max-len
+    this.setValue();
   }
 
   setDisplay(char: string, percent: number)
   {
+    console.log(char);
     this.char = char;
     this.percent = percent;
     this.setValue();
@@ -30,7 +35,7 @@ export class ProgressPage implements OnInit {
 
   setValue()
   {
-    console.log(this.char);
+    console.log(this.char === 'i');
     if(this.char === 'a')
     {
       // eslint-disable-next-line max-len
