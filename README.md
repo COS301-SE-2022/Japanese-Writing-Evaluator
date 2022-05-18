@@ -18,7 +18,7 @@
 The system should allow the user to log into the system using their own credentials and it should match the user to existing users in the database, if the user is not recognized it should allow them to register their profile. Once a user is logged in it should allow them to upload an image of a symbol/word/sentence that they have written and detect which symbol it is supposed to be, the writing style (Kanji, Katakana or Hiragana), compare strokes and give the user points of improvement on the symbol(s) with a score of how well their symbol(s) matches the actual one. The system should also allow users to log out or either remember their credentials and keep them logged in after they have stopped using the app.
 
 # Demo Videos
-https://drive.google.com/drive/folders/1mkzf-Eszvtofw4WgGvRxFJGLmo3HeLfL?usp=sharing
+[Demo 1](https://drive.google.com/file/d/1HvnR-lApMvKjlsnzwFKAhKhQfRLevnpX/view)
 
 
 # SRS Document
