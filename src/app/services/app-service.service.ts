@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
-import {HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../shared/user';
 import { SignUp } from '../sign-up/sign-up';
@@ -11,6 +11,7 @@ import { SignUp } from '../sign-up/sign-up';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
+
 
   constructor(private httpclient: HttpClient) { }//
 

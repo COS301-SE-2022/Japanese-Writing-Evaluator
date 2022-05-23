@@ -9,7 +9,7 @@ from flask_cors import CORS;
 import sys
 sys.path.append('../database')
 
-from backend.database.database import Database
+from database import Database
 
 app = Flask(__name__)
 app.config['SECRET_KEY']='459758192b5ba092efb54f9094237481'

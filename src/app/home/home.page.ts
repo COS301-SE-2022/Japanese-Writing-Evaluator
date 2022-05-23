@@ -5,6 +5,8 @@ import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/st
 // import { Character } from '../shared/character';
 import { storage, app } from 'Storage/firebaseConfig';
 import { AppServiceService } from '../services/app-service.service';
+import { ProgressPage } from '../progress/progress.page';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -13,7 +15,7 @@ import { AppServiceService } from '../services/app-service.service';
 export class HomePage implements OnInit {
   image: File = null;
   upload: FormGroup;
-  constructor(formBuilder: FormBuilder, private repository: AppServiceService) {
+  constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
     this.upload = formBuilder.group({ // building a responsive form with two inputs
       image: new FormControl('',[Validators.required]),
     });
@@ -25,14 +27,29 @@ export class HomePage implements OnInit {
 
   uploadImage(){
     //const storage = getStorage();
-    console.log(this.upload.controls.image.value.split('\\').length-1);
     const imageurl= this.upload.controls.image.value.split('\\');//
-    const imageRef = ref(storage,`users/${imageurl[imageurl.length-1]}`);
-    const uploadTask = uploadBytesResumable(imageRef, this.image);
-    uploadTask.on('state_changed',(err) =>{
+    const id = localStorage.getItem('id');
+    const imageRef = ref(storage,`users/${id}/${imageurl[imageurl.length-1]}`);
+    const uploadingTask = uploadBytesResumable(imageRef, this.image);
+    uploadingTask.on('state_changed',(err) =>{
       console.log(err);
     });
+
   //  this.repository.uploadImage(this.upload.controls.image.value);
+  }
+
+  setProgress(){
+    const progress =[
+      {char: 'i', percent: 0.8},
+      {char: 'e', percent: 0.26},
+      {char: 'a', percent: 0.54},
+    ];
+    if (!localStorage.getItem('char') && !localStorage.getItem('percentage')) {
+      localStorage.setItem('char',progress[0].char);
+      localStorage.setItem('percentage',progress[0].percent.toString());
+    }
+    //this.progressProp.setDisplay(progress[0].char,progress[0].percent);
+    this.router.navigate(['/progress']);
   }
 
   ngOnInit(): void {
@@ -41,6 +58,8 @@ export class HomePage implements OnInit {
     // });
 
     this.suggestCharacter();
+    // progress.forEach(elem => {
+    // });
     // this.repository.getProgress();
       // var images = suggestCharacter();
       // var suggestion1 = document.getElementById("Suggestion1");
