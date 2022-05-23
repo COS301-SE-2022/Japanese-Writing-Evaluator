@@ -38,12 +38,12 @@ class Authentication:
             else:
                 salt = uuid.uuid4().hex
                 passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-                db.addUser(username, password, email, False, passwordSalt, 0)
+                db.addUser(username, passwordSalt, email, False, salt, 0)
                 res = "Registration Successful"
                 return jsonify({'response': res}), 200
 
         except Exception as e:
-            return jsonify({'response': str(e)}), 400
+            return jsonify({'response': str(e)}), 401
 
     def login(db, email, password):
         return db.getUser(password, email)
