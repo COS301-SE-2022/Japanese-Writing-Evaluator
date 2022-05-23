@@ -2,18 +2,21 @@ from functools import wraps
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
 import jwt
-import hashlib
-import uuid
+import os
 from flask_cors import CORS;
 
 import sys
 sys.path.append('../database')
 
 from database import Database
+from authentication import Authentication
+from image import Image
 
 app = Flask(__name__)
-app.config['SECRET_KEY']='459758192b5ba092efb54f9094237481'
+app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
+auth = Authentication()
+img = Image()
 CORS(app)
 
 def token_required(function):
@@ -49,15 +52,9 @@ def lancher():
     return:
         json response
 """
-
 @app.route('/password/reset', methods = ['PUT'])
-def resetPassword():
-    editedRow = db.updatePassword(str(request.json["email"]), str(request.json["password"])
-)
-    if editedRow == 1:
-        return jsonify({'response': "password reset successful."}), 200
-    else:
-        return jsonify({'response': "password reset failed."}), 401
+def callResetPassword():
+    return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
 
 """
 
@@ -68,22 +65,7 @@ def resetPassword():
 
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
-    try:
-        Finduser = db.getUserByEmail(str(request.json['email']))
-        if Finduser != None:
-            res = "User already exists"
-            return jsonify({"response": res}), 409
-        else:
-            password = str(request.json['password'])
-            salt = uuid.uuid4().hex
-            passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-            db.addUser(str(request.json['username']), passwordSalt, str(request.json['email']), False, salt, 0)
-            res = "Registration Successful"
-            return jsonify({'response': res}), 200
-
-    except Exception as e:
-        return jsonify({'response': str(e)}), 400
-
+    return auth.register(db, str(request.json['email']))
 
 """
     resetPassword function:
@@ -98,11 +80,7 @@ def register():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def uplaodImage():
-    succ = db.saveImage(int(request.json["id"]), str(request.json["imagepath"]), str(request.json["imagechar"]), int(request.json["score"]))
-    if succ:
-        return jsonify({'response': "image upload successful."}), 200
-    else:
-        return jsonify({'response': "image upload failed."}), 401
+    return img.uplaodImage(db, int(request.json["id"]), str(request.json["imagepath"]), str(request.json["imagechar"]), int(request.json["score"]))
 
 """
     viewImages function:
@@ -112,23 +90,16 @@ def uplaodImage():
     return:
         json response
 """
-
 @app.route('/view', methods = ['GET'])
 @token_required
 def viewImages():
-    images = db.getImage(int(request.json["id"]))
-    if images:
-        return jsonify({'response': images}), 200
-    else:
-        return jsonify({'response': "view image failed."}), 401
+    return img.uplaodImage(db, int(request.json["id"]))
 
 #get the user details 
 #return json response being the user id and username
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    email = str(request.json["email"])
-    password = str(request.json["password"])
-    user = db.getUser(password, email)
+    user = auth.login(db,str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -139,5 +110,6 @@ def login():
             'experation': str(datetime.utcnow() + timedelta(seconds=120)),
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+
 if __name__ == '__main__':
     app.run(debug = True)
