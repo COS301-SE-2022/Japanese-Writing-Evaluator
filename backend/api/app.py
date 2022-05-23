@@ -82,7 +82,7 @@ def register():
             return jsonify({'response': res}), 200
 
     except Exception as e:
-        return jsonify({'response': str(e)}), 400
+        return jsonify({'response': str(e)}), 401
 
 
 """
