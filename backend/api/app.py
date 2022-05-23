@@ -77,7 +77,7 @@ def register():
             password = str(request.json['password'])
             salt = uuid.uuid4().hex
             passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-            db.addUser(str(request.json['username']), str(request.json['password']), str(request.json['email']), False, passwordSalt, 0)
+            db.addUser(str(request.json['username']), passwordSalt, str(request.json['email']), False, salt, 0)
             res = "Registration Successful"
             return jsonify({'response': res}), 200
 
