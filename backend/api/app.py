@@ -18,7 +18,7 @@ app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
 auth = Authentication()
 img = Image()
-feedback = Feedback()
+feedback = Feedback(db)
 CORS(app)
 
 def token_required(function):
@@ -116,8 +116,10 @@ def login():
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
 @app.route('/feedback', methods = ['GET','POST'])
-def feedback():
-    feedback.getfeedback(db,str(request.json["id"]))
+def userfeedback():
+    progress = feedback.getuserfeedback(db,str(request.json["id"]))
+    return progress
+
 
 
 if __name__ == '__main__':

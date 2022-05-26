@@ -133,12 +133,9 @@ class Database:
 
 
     def getfeedback(self, user_id):
-        query = "SELECT score FROM images WHERE user_id = %s;""""
-        Get feedback from the database
-        """
-        with self.db.cursor() as cursor:
-            cursor.execute(query , (user_id,))
-            scores = cursor.fetchall()
+        query = "SELECT score FROM images WHERE id = %s;"
+        self.curr.execute(query, (user_id,))
+        scores = self.curr.fetchall()
         
         if(scores == None):
             return None
