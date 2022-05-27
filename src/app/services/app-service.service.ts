@@ -36,7 +36,7 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(image: File, charName: string): Observable<Score>{// pass through the image as a parameter
+  uploadImage(image: File, charName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
     let img = new Object() as Image;
@@ -45,7 +45,7 @@ export class AppServiceService {
       uploadedImage: image,
       characterName: charName
     };
-    return this.httpclient.post<Image>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
+    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){
