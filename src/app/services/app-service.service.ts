@@ -4,6 +4,8 @@ import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/commo
 import { Observable } from 'rxjs';
 import { User } from '../shared/user';
 import { SignUp } from '../sign-up/sign-up';
+import { Image } from '../shared/image';
+import { Score } from '../shared/score';
 
 @Injectable({
   providedIn: 'root'
@@ -34,23 +36,25 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(userid: string, path: string, char: string, imgscore: string){// pass through the image as a parameter
+  uploadImage(image: File, charName: string): Observable<Score>{// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
-    const img = {
-      id: userid,
-      imagepath: path,
-      imagechar: char,
-      score: imgscore
+    let img = new Object() as Image;
+    img = {
+      userId: localStorage.getItem('id'),
+      uploadedImage: image,
+      characterName: charName
     };
-    const image =JSON.stringify(img);
-    return this.httpclient.post(this.baseURL + 'upload', image,{ headers: myheaders, observe: 'response'});
+    return this.httpclient.post<Image>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){
     const myheaders = new HttpHeaders().set('content-type', 'application/json').set('Access-Control-Allow-Origin', '*');
-    const user = {email: name, password:pass};
-    const body = JSON.stringify(user);
+    let user = new Object() as User;
+    user = {
+      username: name,
+      password:pass
+    };
     return this.httpclient.post(this.baseURL + '/login', user, {headers: myheaders, observe: 'response'});
   }
 
