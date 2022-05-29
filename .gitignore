@@ -31,6 +31,6 @@ npm-debug.log*
 /plugins
 /www
 
-./Storage
 #database config
 .env
+service.json
