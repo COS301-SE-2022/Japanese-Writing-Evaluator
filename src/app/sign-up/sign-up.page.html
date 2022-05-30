@@ -1,8 +1,19 @@
-<ion-content style="--background: url('../../assets/images/backgroundTop.jpeg');">
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="login"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 
+<ion-content>
   <p class="ion-text-center">
-    <img id="logo" src="../../assets/images/JWE-logos_wb.png"/>
+    <img id="logo" src="../../assets/images/JWE-logos_black.png"/>
   </p>
+
+  <ion-buttons slot="start">
+    <ion-back-button></ion-back-button>
+  </ion-buttons>
 
     <div class="flexbox">
         <form class="ion-text-center" #form="ngForm" (ngSubmit)="signUp(form.value,form)">
