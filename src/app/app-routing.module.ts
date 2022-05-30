@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'progress',
     loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule)
   },
+  {
+    path: 'upload',
+    loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
+  },
 ];
 
 @NgModule({
