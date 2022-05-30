@@ -19,4 +19,5 @@ import { ProgressPage } from '../progress/progress.page';
   declarations: [HomePage],
   providers: [ProgressPage]
 })
-export class HomePageModule {}
+export class HomePageModule {
+}

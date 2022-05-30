@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+
   image: File = null;
   upload: FormGroup;
   constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
