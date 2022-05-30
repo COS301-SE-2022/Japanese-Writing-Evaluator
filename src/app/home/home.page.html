@@ -22,7 +22,7 @@
       <ion-list>
 
         <ion-item color="transparent" lines="none">
-          <ion-select value="Hiragana" [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
+          <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
             <ion-select-option value="Hiragana">Hiragana</ion-select-option>
             <ion-select-option value="Kanji">Kanji</ion-select-option>
             <ion-select-option value="Katakana">Katakana</ion-select-option>

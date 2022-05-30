@@ -13,14 +13,15 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-
-  style: any;
   image: File = null;
   upload: FormGroup;
+  style: string;
+
   constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
     this.upload = formBuilder.group({ // building a responsive form with two inputs
       image: new FormControl('',[Validators.required]),
     });
+    this.style = 'Hiragana';
   }//private repository: AppServiceService
 
   getImage(event){
@@ -121,9 +122,9 @@ export class HomePage implements OnInit {
             console.log(suggested);
             console.log(suggested.length);
             const img1 = document.getElementById('suggest1');
-            img1.setAttribute('src', suggested[0]);
+            // img1.setAttribute('src', suggested[0]);
             const img2 = document.getElementById('suggest2');
-            img2.setAttribute('src', suggested[1]);
+            // img2.setAttribute('src', suggested[1]);
           }
         });
       });
@@ -134,9 +135,33 @@ export class HomePage implements OnInit {
   //   this.repository.uploadImage();
   // }
 
+
   writingStyle(style) {
     this.style = style;
     console.log(style);
+
+    if(style === 'Hiragana'){
+      this.navigateHome();}
+
+    if(style === 'Katakana'){
+      this.navigateKatakana();}
+
+    if(style === 'Kanji'){
+      this.navigateKanji();}
+
+
+  }
+
+  navigateKatakana(){
+    this.router.navigate(['/katakana']);
+  }
+
+  navigateHome(){
+    this.router.navigate(['/home']);
+  }
+
+  navigateKanji(){
+    this.router.navigate(['/kanji']);
   }
 
 }
