@@ -31,6 +31,14 @@ const routes: Routes = [
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
   },
+  {
+    path: 'katakana',
+    loadChildren: () => import('./katakana/katakana.module').then( m => m.KatakanaPageModule)
+  },
+  {
+    path: 'kanji',
+    loadChildren: () => import('./kanji/kanji.module').then( m => m.KanjiPageModule)
+  },
 ];
 
 @NgModule({

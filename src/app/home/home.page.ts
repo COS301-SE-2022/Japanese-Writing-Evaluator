@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
 })
 export class HomePage implements OnInit {
 
+  style: any;
   image: File = null;
   upload: FormGroup;
   constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
@@ -132,5 +133,10 @@ export class HomePage implements OnInit {
   //   //when uploadimage button is click
   //   this.repository.uploadImage();
   // }
+
+  writingStyle(style) {
+    this.style = style;
+    console.log(style);
+  }
 
 }
