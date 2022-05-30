@@ -116,6 +116,7 @@ def login():
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
 @app.route('/feedback', methods = ['GET','POST'])
+@token_required
 def userfeedback():
     progress = feedback.getuserfeedback(db,str(request.json["id"]))
     return progress
