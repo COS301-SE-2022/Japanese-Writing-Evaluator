@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
@@ -24,12 +25,20 @@ const routes: Routes = [
     loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
   },
   {
+    path: 'progress',
+    loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule)
+  },
+  {
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
   },
   {
-    path: 'progress',
-    loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule)
+    path: 'katakana',
+    loadChildren: () => import('./katakana/katakana.module').then( m => m.KatakanaPageModule)
+  },
+  {
+    path: 'kanji',
+    loadChildren: () => import('./kanji/kanji.module').then( m => m.KanjiPageModule)
   },
 ];
 
@@ -40,3 +49,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
