@@ -81,7 +81,7 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 # @token_required
 def callUploadImage():
-    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]))
+    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
 
 
 
