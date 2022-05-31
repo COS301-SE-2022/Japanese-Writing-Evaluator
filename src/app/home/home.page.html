@@ -1,5 +1,20 @@
+
 <ion-content [fullscreen]="true">
   
+ <div class="dropdown">
+    <p><b>Select writing style:</b></p>
+    <ion-list>
+
+      <ion-item color="transparent" lines="none">
+        <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
+          <ion-select-option value="Hiragana">Hiragana</ion-select-option>
+          <ion-select-option value="Kanji">Kanji</ion-select-option>
+          <ion-select-option value="Katakana">Katakana</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+
   <div id="Suggestions" *ngIf="ifGroup(groups[0])">
     <h1 >Vowels</h1>
     <div id="SuggestionBlock" *ngFor="let image of images">

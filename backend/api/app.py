@@ -15,8 +15,8 @@ from image import Image
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
-auth = Authentication()
-img = Image()
+auth = Authentication(db)
+img = Image(db)
 CORS(app)
 
 def token_required(function):
@@ -38,68 +38,80 @@ def token_required(function):
     return decorated 
 
 
-@app.route('/')
-def lancher():
-    return "At lancher"
 
 
 """
-    resetPassword function:
+    callResetPassword function:
         calls update password to change the password
     request body: 
-        email
-        password
+        email: the email of a registed user
+        password: their new password
     return:
-        json response
+        json response from resetPassword
 """
 @app.route('/password/reset', methods = ['PUT'])
 def callResetPassword():
     return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
 
-"""
 
-    Register
-    Takes in a post or get request and adds the user to the database
 
 """
-
+    call Register function:
+        calls the register function from authentication.py
+    request body: 
+        email: the email of a new user
+        password: their password
+        username: and their username
+    return:
+        json response from resetPassword
+"""
 @app.route('/register', methods = ['POST', 'GET'])
-def register():
-    return auth.register(db, str(request.json['email']))
+def callRegister():
+    return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
-    resetPassword function:
-        calls update password to change the password
+    callUploadImage function:
+        calls update password tfunction from image.py
     request body: 
         email
         password
     return:
         json response
 """
-
 @app.route('/upload', methods = ['POST'])
-@token_required
-def uplaodImage():
-    return img.uplaodImage(db, int(request.json["id"]), str(request.json["imagepath"]), str(request.json["imagechar"]), int(request.json["score"]))
+# @token_required
+def callUploadImage():
+    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
+
+
 
 """
-    viewImages function:
-        calls get images to send the url to front-end 
+    callViewImages function:
+        calls view image function from image.py
     request body: 
-        id: the user id
+        id: the user's id
     return:
         json response
 """
 @app.route('/view', methods = ['GET'])
 @token_required
-def viewImages():
-    return img.uplaodImage(db, int(request.json["id"]))
+def callViewImages():
+    return img.viewImages(int(request.json["id"]))
 
-#get the user details 
-#return json response being the user id and username
+
+
+"""
+    login function:
+        return the user if they exist
+    request body: 
+        email: the email of a registered user
+        password: their password
+    return:
+        json response
+"""
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = auth.login(db,str(request.json["email"]), str(request.json["password"]))
+    user = auth.login(str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 

@@ -8,26 +8,35 @@
   transform: translateY(-50%);
 }
 
-// #container strong {
-//   font-size: 20px;
-//   line-height: 26px;
-// }
 
-// #container p {
-//   font-size: 16px;
-//   line-height: 22px;
+.dropdown{
+  display: block;
+  margin: 50px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
 
-//   color: #8c8c8c;
+ion-list {
+  border: 0.55px solid #080808;
+  width: 200px;
+  height: 50px;
+}
 
-//   margin: 0;
-// }
+ion-select{
+  width: 180px;
+  height: 50px;
+}
+
+.divPosition {
+  margin-top: 200px;
+}
 
 a {
   text-decoration: none;
 }
 
 #outerlayer{
-  // background-color: #960722;
   border-radius: 20px;
   width: 200px;
   height: 100px;

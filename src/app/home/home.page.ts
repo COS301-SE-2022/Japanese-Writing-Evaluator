@@ -49,5 +49,36 @@ export class HomePage implements OnInit {
 
     return false;
   }
+  
+  // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi
+  writingStyle(style) {
+    this.style = style;
+
+    if(style === 'Hiragana'){
+      this.navigateHome();}
+
+    if(style === 'Katakana'){
+      this.navigateKatakana();}
+
+    if(style === 'Kanji'){
+      this.navigateKanji();}
+
+
+  }
+  
+  // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
+  navigateKatakana(){
+    this.router.navigate(['/katakana']);
+  }
+
+  // TODO: routes to home page, #73, Maryam Mohamad Al Mahdi
+  navigateHome(){
+    this.router.navigate(['/home']);
+  }
+
+  // TODO: routes to kanji page, #73, Maryam Mohamad Al Mahdi
+  navigateKanji(){
+    this.router.navigate(['/kanji']);
+  }
 
 }

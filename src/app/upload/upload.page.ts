@@ -18,6 +18,4 @@ export class UploadPage implements OnInit {
   showScore() {
   }
 
-
-
 }
