@@ -113,32 +113,53 @@ class Image:
     """
     def getCharacters():
         try:
-            g1 = "characters/Hiragana/Group_1/"
-            g2 = "characters/Hiragana/Group_2/"
+            hiraganaG1 = "characters/Hiragana/Group_1/"
+            hiraganaG2 = "characters/Hiragana/Group_2/"
             allDirectories = storage.list_files()
-            list_1 = list()
-            list_2 = list()
-            group_1 = list()
-            group_2 = list()
+            hiraganaList_1 = list()
+            hiraganaList_2 = list()
+            hiraganaGroup_1 = list()
+            hiraganaGroup_2 = list()
+            data = list()
+            hiraganaNames_1 = list()
+            hiraganaNames_2 = list()
+
+            image = []
+            data = {"Hiragana": {}, "Katakana": {}, "Kanji": {}}
+            groups = {"Group 1": {"characters": []},"Group 2": {"characters": []}, "Group 3": {"characters": []}, "Group 4": {"characters": []}, "Group 5": {"characters": []}, "Group 6": {"characters": []}, "Group 7": {"characters": []}, "Group 8": {"characters": []}, "Group 9": {"characters": []}, "Group 10": {"characters": []}}
 
             for files in allDirectories:
-                filter_1 = files.name.split(g1)
+                #////////////////////////////////
+                #HIRAGANA
+                #///////////////////////////////
+                filter_1 = files.name.split(hiraganaG1)
                 if(filter_1[0] == "" and filter_1[1] != ""):
-                    # print("Group 1: " + files.name)
-                    list_1.append(filter_1[1])
+                    hiraganaList_1.append(filter_1[1]) #file
+                    hiraganaNames_1.append(filter_1[1].split(".")[0]) #name
+                    image.append({
+                        "Name": filter_1[1].split(".")[0],
+                        "url": storage.child(hiraganaG1 + filter_1[1]).get_url(user['idToken']),
+                        "group": files.name.split("/")[1]
+                    })
+                    groups["Group 1"]["characters"].append(image[len(image) - 1])
+                    data["Hiragana"] = groups
                 
-                filter_2 = files.name.split(g2)
+                filter_2 = files.name.split(hiraganaG2)
                 if(filter_2[0] == "" and filter_2[1] != ""):
-                    # print("Group 2: " + files.name)
-                    list_2.append(filter_2[1])
+                    hiraganaList_2.append(filter_2[1])
+                    hiraganaNames_2.append(filter_2[1].split(".")[0])
+                    image.append({
+                        "Name": filter_2[1].split(".")[0],
+                        "url": storage.child(hiraganaG2 + filter_2[1]).get_url(user['idToken']),
+                        "group": files.name.split("/")[1]
+                    })
+                    groups["Group 2"]["characters"].append(image[len(image) - 1])
+                    data["Hiragana"] = groups
 
-            for files in list_1:
-                group_1.append(storage.child(g1 + files).get_url(user['idToken']))
+                # TODO: add functionality for Katakana
 
-            for files in list_2:
-                group_2.append(storage.child(g2 + files).get_url(user['idToken']))
+                # TODO: add functionality for Kanji
 
-            data = {"Group 1": group_1, "Group 2": group_2}
             response = json.dumps(data)
             return jsonify({'response': response}), 200
         
