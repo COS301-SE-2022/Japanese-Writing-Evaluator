@@ -39,4 +39,15 @@ export class HomePage implements OnInit {
     return false;
   }
 
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        console.log(localStorage.getItem('id'));
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
