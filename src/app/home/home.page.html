@@ -1,37 +1,30 @@
 <ion-content [fullscreen]="true">
-<!--   <div id="Suggestions">
-    <h1>Suggestions</h1>
-    <ion-row>
-      <ion-item><!-- *ngFor="let character of characters"load all possible characters
-        <div id="outerlayer">
-          <ion-row>
-            <ion-col>
-               <ion-img  alt="character image"></ion-img><!--[src]=""character.path 
-            </ion-col>
-            <ion-col>
-              <ion-button  color="dark">Try</ion-button>
-            </ion-col>
-          </ion-row>
-        </div>
-      </ion-item>
-    </ion-row>
-  </div> -->
   
-  <div id="Suggestions">
-    <h1>Suggestions</h1>
+  <div id="Suggestions" *ngIf="ifGroup(groups[0])">
+    <h1 >Vowels</h1>
+    <div id="SuggestionBlock" *ngFor="let image of images">
+      <ng-component *ngIf="image.group === groups[0]">
+        <ion-row >
+          <div >
+            <img alt="Suggestion" id="suggest" [src]="image.uploadedImage">
+            <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
+          </div>
+        </ion-row>
+      </ng-component>  
+    </div>
+  </div>
 
-    <div id="SuggestionBlock">
-      <ion-row>
-        <div id="Suggestion1">
-          <img alt="Suggestion" id="suggest1" >
-          <ion-button  color="dark" id="try">Try</ion-button>
-        </div>
-        <div id="Suggestion2">
-          <img alt="Suggestion" id="suggest2">
-          <ion-button  color="dark" id="try">Try</ion-button>
-        </div>
-      </ion-row>
-      
+  <div id="Suggestions" *ngIf="ifGroup(groups[1])">
+    <h1 >Group K</h1>
+    <div id="SuggestionBlock" *ngFor="let image of images">
+      <ng-component *ngIf="image.group === groups[1]">
+        <ion-row >
+          <div >
+            <img alt="Suggestion" id="suggest" [src]="image.uploadedImage">
+            <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
+          </div>
+        </ion-row>
+      </ng-component>  
     </div>
   </div>
 </ion-content>
@@ -51,7 +44,7 @@
           </a>
         </ion-col>
         <ion-col size="4">
-          <a href="#Progress">
+          <a href="home">
             <ion-tab-button >
               <ion-icon name="analytics"></ion-icon>
               <ion-label>Progress</ion-label>

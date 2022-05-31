@@ -13,8 +13,19 @@ import { Score } from '../shared/score';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
+  private image: Image;
 
   constructor(private httpclient: HttpClient) { }//
+
+  setTryImage(img: Image){
+    //this function takes in an image to be set to the class' image attr
+    this.image = img;
+  }
+
+  getTryImage(): Image{
+    //this function returns the class' image attr
+    return this.image;
+  }
 
   addUser(name: string, mail: string, pass: string): Observable<any>
   {
@@ -36,14 +47,15 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(image: File, charName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
+  uploadImage(image: File, charName: string, groupName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
     let img = new Object() as Image;
     img = {
       userId: localStorage.getItem('id'),
       uploadedImage: image,
-      characterName: charName
+      characterName: charName,
+      group: groupName
     };
     return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
   }
