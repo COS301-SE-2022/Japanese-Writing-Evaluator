@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, json
 from backend.api.app import app, db
+import logging as log
 
 """
     Testing registration with a POST AND GET request
@@ -28,6 +29,9 @@ def test_register():
     assert res.request.path == "/register"
     assert resData['response'] == "Registration Successful"
 
+    db.deleteUser("user@gmail.com")
+    db.deleteUser("user2@gmail.com")
+
 
 """
     Tetsing registering two users with the same email
@@ -55,6 +59,9 @@ def test_register_Same():
     assert res.status_code == 409
     assert res.request.path == "/register"
     assert resData['response'] == "User already exists"
+
+    db.deleteUser("testing@gmail.com")
+
 
 
     

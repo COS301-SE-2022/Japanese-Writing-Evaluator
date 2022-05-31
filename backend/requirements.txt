@@ -3,3 +3,5 @@ pyjwt==2.0.0
 datetime
 uuid
 Flask-SQLAlchemy
+tensorflow
+tensorflow-gpu
