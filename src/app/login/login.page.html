@@ -1,5 +1,8 @@
 <ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" >
   <!-- logo -->
+  <ion-toolbar id="guestBtn">
+      <ion-button slot="end" (click)="onLogin()">Login as guest</ion-button>
+  </ion-toolbar>
   <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
 
   <!-- login form -->
