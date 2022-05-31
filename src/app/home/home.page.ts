@@ -17,7 +17,6 @@ export class HomePage implements OnInit {
   images: Image[]; // listy of images from firebase
   groups: string[] =  ['vowels','k','t'];
   style: string;
-  
   constructor(private service: AppServiceService, private router: Router) {
     this.style = 'Hiragana';
   }
