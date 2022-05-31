@@ -5,14 +5,10 @@ import { Observable } from 'rxjs';
 import { User } from '../shared/user';
 import { SignUp } from '../sign-up/sign-up';
 import { Image } from '../shared/image';
-import { Image } from '../shared/image';
 import { Score } from '../shared/score';
 
 @Injectable({
   providedIn: 'root'
-  setTryImage(image: Image) {
-    throw new Error('Method not implemented.');
-  }
 })
 export class AppServiceService {
 

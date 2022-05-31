@@ -1,6 +1,6 @@
 
 <ion-content [fullscreen]="true">
-
+  
  <div class="dropdown">
     <p><b>Select writing style:</b></p>
     <ion-list>
@@ -25,9 +25,128 @@
             <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
           </div>
         </ion-row>
-      </ng-component>
+<<<<<<< HEAD
+      </div>
+    </div> -->
+
+    <div class="dropdown">
+      <p><b>Select writing style:</b></p>
+      <ion-list>
+
+        <ion-item color="transparent" lines="none">
+          <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
+            <ion-select-option value="Hiragana">Hiragana</ion-select-option>
+            <ion-select-option value="Kanji">Kanji</ion-select-option>
+            <ion-select-option value="Katakana">Katakana</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </div>
+
+  <div class="divPosition">
+    <div>
+      <h1>Vowels</h1>
+      <div class="block">
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+
+            <div class="contentOne">
+              <img src="https://o.quizlet.com/mtAYxw425P38LXkahTQUsA.jpg" alt="A Hiragana">
+              <p class="para"><b>A</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+
+            <div class="contentOne">
+              <img src="https://o.quizlet.com/sAZQn47MXraBEFdICqFgrw.jpg" alt="E Hiragana">
+              <p class="para"><b>E</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div>
+      <h1>K Group </h1>
+      <div class="block">
+          <div class="characterBlock">
+            <div class="characterBlockContent">
+
+              <div class="contentOne">
+                <img src="https://o.quizlet.com/X.Eq6zQJyVGiQedY5igJBw.jpg" alt="Ka Hiragana">
+                <p class="para"><b>Ka</b></p>
+              </div>
+              <div class="contentOne">
+                  <ion-button color="dark">Try</ion-button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="characterBlock">
+            <div class="characterBlockContent">
+
+              <div class="contentOne">
+                <img src="https://o.quizlet.com/BLGJpupth7tMkrk8oomvLw.jpg" alt="Ki Hiragana">
+                <p class="para"><b>Ki</b></p>
+              </div>
+              <div class="contentOne">
+                  <ion-button color="dark">Try</ion-button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <h1>T Group </h1>
+
+        <div class="block">
+          <div class="characterBlock">
+            <div class="characterBlockContent">
+
+              <div class="contentOne">
+                <img src="https://o.quizlet.com/ZI04NzT4eFBSARvTAyaoqw.jpg" alt="Ta Hiragana">
+                <p class="para"><b>Ta</b></p>
+              </div>
+              <div class="contentOne">
+                  <ion-button color="dark">Try</ion-button>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="characterBlock">
+            <div class="characterBlockContent">
+              <div class="contentOne">
+                <img src="https://o.quizlet.com/CAWMDvemyCzn2FGA9TnI2Q.jpg" alt="Tsu Hiragana">
+                <p class="para"><b>Tsu</b></p>
+              </div>
+              <div class="contentOne">
+                  <ion-button color="dark">Try</ion-button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+=======
+      </ng-component>  
     </div>
   </div>
+>>>>>>> 1b7c797cc5a542d7137e06ea6c61264cd0b9e01a
 
   <div id="Suggestions" *ngIf="ifGroup(groups[1])">
     <h1 >Group K</h1>
@@ -39,7 +158,7 @@
             <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
           </div>
         </ion-row>
-      </ng-component>
+      </ng-component>  
     </div>
   </div>
 </ion-content>
