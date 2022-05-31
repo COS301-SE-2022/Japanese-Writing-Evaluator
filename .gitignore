@@ -31,7 +31,6 @@ npm-debug.log*
 /plugins
 /www
 
-#backend ignores
+./Storage
+#database config
 .env
-service.json
-imageToSave.png
