@@ -15,6 +15,7 @@ export class AppServiceService {
   baseURL = 'http://localhost:5000/';
   private image: Image;
 
+
   constructor(private httpclient: HttpClient) { }//
 
   setTryImage(img: Image){
