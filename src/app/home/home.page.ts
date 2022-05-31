@@ -18,6 +18,7 @@ export class HomePage implements OnInit {
   groups: string[] =  ['vowels','k','t'];
   style: string;
   constructor(private service: AppServiceService, private router: Router) {
+    this.style = 'Hiragana';
   }
 
   ngOnInit(): void {
@@ -40,16 +41,6 @@ export class HomePage implements OnInit {
     return false;
   }
 
-  ifGuest(): boolean{
-    if (localStorage.getItem('id')) {
-      if (localStorage.getItem('id') === 'guest') {
-        console.log(localStorage.getItem('id'));
-        return true;
-      }
-    }
-
-    return false;
-  }
   // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi
   writingStyle(style) {
     this.style = style;
@@ -65,6 +56,7 @@ export class HomePage implements OnInit {
 
 
   }
+
   // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
   navigateKatakana(){
     this.router.navigate(['/katakana']);
