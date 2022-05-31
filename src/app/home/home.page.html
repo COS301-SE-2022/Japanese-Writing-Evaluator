@@ -46,7 +46,7 @@
 
 
 <!-- tabs for the navigation bar-->
-<ion-footer>
+<ion-footer *ngIf="!ifGuest()">
   <ion-tab-bar>
     <ion-tabs>
       <ion-row>
