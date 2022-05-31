@@ -49,7 +49,6 @@ export class HomePage implements OnInit {
 
     return false;
   }
-  
   // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi
   writingStyle(style) {
     this.style = style;
@@ -65,7 +64,6 @@ export class HomePage implements OnInit {
 
 
   }
-  
   // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
   navigateKatakana(){
     this.router.navigate(['/katakana']);
