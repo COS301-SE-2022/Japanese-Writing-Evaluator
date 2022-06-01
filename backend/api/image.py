@@ -5,44 +5,24 @@ import pyrebase
 import os
 import json
 
-dirname = os.path.dirname(__file__)
-dir = dirname.split("\\")
-dir.remove(dir[len(dir) - 1])
-dir.remove(dir[len(dir) - 1])
-direct = ""
-
-for folder in dir:
-    direct += folder + "/"
-
-config = {
-    "apiKey": os.getenv("fire_apiKey"),
-    "authDomain": os.getenv("fire_authDomain"),
-    "projectId": os.getenv("fire_projectId"),
-    "storageBucket": os.getenv("fire_storageBucket"),
-    "messagingSenderId": os.getenv("fire_messagingSenderId"),
-    "appId": os.getenv("fire_appId"),
-    "measurementId": os.getenv("fire_measurementId"),
-    "serviceAccount": os.path.abspath(direct + "bug-slayers-jwe-firebase-adminsdk-o4ico-e446da549b.json"),
-    "databaseURL": ""
-}
-firebase = pyrebase.initialize_app(config)
-storage = firebase.storage()
-auth = firebase.auth()
-user = auth.sign_in_with_email_and_password(os.getenv("fire_email", os.getenv("fire_password")))
-
 class Image:
     def __init__(self,db):
         self.db = db
         self.config = {
-            'apiKey': os.getenv('FB_AIPKEY'),
+            'apiKey': os.getenv('FB_APIKEY'),
             'authDomain': os.getenv('FB_authDomain'),
             'projectId': os.getenv('FB_projectId'),
             'storageBucket': os.getenv('FB_storageBucket'),
             'messagingSenderId': os.getenv('FB_messagingSenderId'),
             'appId': os.getenv('FB_appId'),
+            "measurementId": os.getenv("FB_measurementId"),
             'serviceAccount' : "service.json",
             'databaseURL': os.getenv('FB_DBURL')
         }
+        self.firebase = pyrebase.initialize_app(self.config)
+        self.storage = self.firebase.storage()
+        self.auth = self.firebase.auth()
+        self.user = self.auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
 
     """
         upload Image function:
@@ -92,10 +72,8 @@ class Image:
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.b64decode(image))
             
-        firebase = pyrebase.initialize_app(self.config)
-        storage = firebase.storage()
         try:
-            storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
+            self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
             score = 0 # call the AI
             image_path = "/users/"+str(id)+"/"+file
             self.db.saveImage(id, image_path, image_char, score)
@@ -111,9 +89,9 @@ class Image:
         return:
             returns a json object containing grouped image urls
     """
-    def getCharacters():
+    def getCharacters(self):
         try:
-            allDirectories = storage.list_files()
+            allDirectories = self.storage.list_files()
             hiraganaG1 = "characters/Hiragana/Group_1/"
             hiraganaG2 = "characters/Hiragana/Group_2/"
             katakanaG1 = "characters/Katakana/Group_1/"
@@ -144,7 +122,7 @@ class Image:
                     hiraganaNames_1.append(hiraganaFilter_1[1].split(".")[0]) #name
                     image.append({
                         "Name": hiraganaFilter_1[1].split(".")[0],
-                        "url": storage.child(hiraganaG1 + hiraganaFilter_1[1]).get_url(user['idToken']),
+                        "url": self.storage.child(hiraganaG1 + hiraganaFilter_1[1]).get_url(self.user['idToken']),
                         "group": files.name.split("/")[1]
                     })
                     hiraganaGroups["Group 1"]["characters"].append(image[len(image) - 1])
@@ -156,7 +134,7 @@ class Image:
                     hiraganaNames_2.append(hiraganaFilter_2[1].split(".")[0])
                     image.append({
                         "Name": hiraganaFilter_2[1].split(".")[0],
-                        "url": storage.child(hiraganaG2 + hiraganaFilter_2[1]).get_url(user['idToken']),
+                        "url": self.storage.child(hiraganaG2 + hiraganaFilter_2[1]).get_url(self.user['idToken']),
                         "group": files.name.split("/")[1]
                     })
                     hiraganaGroups["Group 2"]["characters"].append(image[len(image) - 1])
@@ -171,7 +149,7 @@ class Image:
                     katakanaNames_1.append(katakanaFilter_1[1].split(".")[0]) #name
                     image.append({
                         "Name": katakanaFilter_1[1].split(".")[0],
-                        "url": storage.child(katakanaG1 + katakanaFilter_1[1]).get_url(user['idToken']),
+                        "url": self.storage.child(katakanaG1 + katakanaFilter_1[1]).get_url(self.user['idToken']),
                         "group": files.name.split("/")[1]
                     })
                     katakanaGroups["Group 1"]["characters"].append(image[len(image) - 1])
@@ -183,7 +161,7 @@ class Image:
                     katakanaNames_2.append(katakanaFilter_2[1].split(".")[0])
                     image.append({
                         "Name": katakanaFilter_2[1].split(".")[0],
-                        "url": storage.child(katakanaG2 + katakanaFilter_2[1]).get_url(user['idToken']),
+                        "url": self.storage.child(katakanaG2 + katakanaFilter_2[1]).get_url(self.user['idToken']),
                         "group": files.name.split("/")[1]
                     })
                     katakanaGroups["Group 2"]["characters"].append(image[len(image) - 1])
