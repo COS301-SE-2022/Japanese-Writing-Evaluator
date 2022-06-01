@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/storage';
-// import { AppServiceService } from '../services/app-service.service';
-// import { Character } from '../shared/character';
+import { Image } from '../shared/image';
 import { AppServiceService } from '../services/app-service.service';
-import { ProgressPage } from '../progress/progress.page';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
@@ -12,39 +8,33 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  image: File = null;
-  upload: FormGroup;
+  images: Image[]; // listy of images from firebase
+  groups: string[] =  ['vowels','k','t'];
   style: string;
 
-  constructor(formBuilder: FormBuilder, private router: Router, private progressProp: ProgressPage) {
-    this.upload = formBuilder.group({ // building a responsive form with two inputs
-      image: new FormControl('',[Validators.required]),
-    });
+  constructor(private service: AppServiceService, private router: Router) {
     this.style = 'Hiragana';
   }//private repository: AppServiceService
 
-  getImage(event){
-    this.image = event.target.files[0];
+  //TODO: add navigation to upload page, #, Phumu
+  showUploadPage(image: Image){
+    //send image to the upload page and redirect to upload page
+    this.service.setTryImage(image);
+    this.router.navigate(['/upload']);
   }
 
-  uploadImage(){
-    //const storage = getStorage();
-  //  this.repository.uploadImage(this.upload.controls.image.value);
-  }
-
-  setProgress(){
-    const progress =[
-      {char: 'i', percent: 0.8},
-      {char: 'e', percent: 0.26},
-      {char: 'a', percent: 0.54},
-    ];
-    if (!localStorage.getItem('char') && !localStorage.getItem('percentage')) {
-      localStorage.setItem('char',progress[0].char);
-      localStorage.setItem('percentage',progress[0].percent.toString());
+  //TODO: check local storage to check if user is guest, #, Phumu
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        console.log(localStorage.getItem('id'));
+        return true;
+      }
     }
-    //this.progressProp.setDisplay(progress[0].char,progress[0].percent);
-    this.router.navigate(['/progress']);
+
+    return false;
   }
+
 
   ngOnInit(): void {
   }
