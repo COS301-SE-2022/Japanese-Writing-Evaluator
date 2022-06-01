@@ -3,7 +3,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ref, uploadBytesResumable, getDownloadURL, listAll } from '@firebase/storage';
 // import { AppServiceService } from '../services/app-service.service';
 // import { Character } from '../shared/character';
-import { storage, app } from 'Storage/firebaseConfig';
 import { AppServiceService } from '../services/app-service.service';
 import { ProgressPage } from '../progress/progress.page';
 import { Router } from '@angular/router';
