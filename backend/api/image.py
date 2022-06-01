@@ -1,3 +1,4 @@
+from flask import jsonify
 import base64
 from flask import jsonify
 from firebase_admin import credentials, initialize_app, storage
@@ -25,33 +26,32 @@ class Image:
         self.user = self.auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
 
     """
-        upload Image function:
-            uploads teh given image to firebase and sends it to the evaluator
-        parameters: 
-            id: the id of the user uploading
-            image_path: the path of the image on firebase
-            image_char: the charector of the image
-            score: the score the user recieved from the evalutor
+        resetPassword function:
+            calls update password to change the password
+        request body: 
+            email
+            password
         return:
             json response
     """
-    def uploadImage(self, id, image_char, image, file):
-        score = self.sendImage(id, image_char, image, file)
-        if score == None:
-            return jsonify({'response': "image upload failed."}), 401
+    def uplaodImage(db, id, image_path, image_char, score):
+        succ = db.saveImage(id, image_path, image_char, score)
+        if succ:
+            return jsonify({'response': "image upload successful."}), 200
         else:
-            return jsonify({'response': "image upload successful.", "score":score}), 200
+            return jsonify({'response': "image upload failed."}), 401
 
     """
         viewImages function:
-            get all the users image 
-        parameters: 
+            calls get images to send the url to front-end 
+        request body: 
             id: the user id
         return:
             json response
     """
-    def viewImages(self, id):
-        images = self.db.getImage(id)
+
+    def viewImages(db, id):
+        images = db.getImage(id)
         if images:
             return jsonify({'response': images}), 200
         else:

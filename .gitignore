@@ -36,3 +36,6 @@ npm-debug.log*
 service.json
 imageToSave.png
 /bug-slayers-jwe-firebase-adminsdk-o4ico-e446da549b.json
+./Storage
+#database config
+.env
