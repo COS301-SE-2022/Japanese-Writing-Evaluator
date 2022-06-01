@@ -113,50 +113,81 @@ class Image:
     """
     def getCharacters():
         try:
+            allDirectories = storage.list_files()
             hiraganaG1 = "characters/Hiragana/Group_1/"
             hiraganaG2 = "characters/Hiragana/Group_2/"
-            allDirectories = storage.list_files()
+            katakanaG1 = "characters/Katakana/Group_1/"
+            katakanaG2 = "characters/Katakana/Group_2/"
+
             hiraganaList_1 = list()
             hiraganaList_2 = list()
-            hiraganaGroup_1 = list()
-            hiraganaGroup_2 = list()
-            data = list()
+            katakanaList_1 = list()
+            katakanaList_2 = list()
+
             hiraganaNames_1 = list()
             hiraganaNames_2 = list()
+            katakanaNames_1 = list()
+            katakanaNames_2 = list()
 
             image = []
             data = {"Hiragana": {}, "Katakana": {}, "Kanji": {}}
-            groups = {"Group 1": {"characters": []},"Group 2": {"characters": []}, "Group 3": {"characters": []}, "Group 4": {"characters": []}, "Group 5": {"characters": []}, "Group 6": {"characters": []}, "Group 7": {"characters": []}, "Group 8": {"characters": []}, "Group 9": {"characters": []}, "Group 10": {"characters": []}}
+            hiraganaGroups = {"Group 1": {"characters": []},"Group 2": {"characters": []}, "Group 3": {"characters": []}, "Group 4": {"characters": []}, "Group 5": {"characters": []}, "Group 6": {"characters": []}, "Group 7": {"characters": []}, "Group 8": {"characters": []}, "Group 9": {"characters": []}, "Group 10": {"characters": []}}
+            katakanaGroups = {"Group 1": {"characters": []},"Group 2": {"characters": []}, "Group 3": {"characters": []}, "Group 4": {"characters": []}, "Group 5": {"characters": []}, "Group 6": {"characters": []}, "Group 7": {"characters": []}, "Group 8": {"characters": []}, "Group 9": {"characters": []}, "Group 10": {"characters": []}}
 
             for files in allDirectories:
                 #////////////////////////////////
                 #HIRAGANA
                 #///////////////////////////////
-                filter_1 = files.name.split(hiraganaG1)
-                if(filter_1[0] == "" and filter_1[1] != ""):
-                    hiraganaList_1.append(filter_1[1]) #file
-                    hiraganaNames_1.append(filter_1[1].split(".")[0]) #name
+                hiraganaFilter_1 = files.name.split(hiraganaG1)
+                if(hiraganaFilter_1[0] == "" and hiraganaFilter_1[1] != ""):
+                    hiraganaList_1.append(hiraganaFilter_1[1]) #file
+                    hiraganaNames_1.append(hiraganaFilter_1[1].split(".")[0]) #name
                     image.append({
-                        "Name": filter_1[1].split(".")[0],
-                        "url": storage.child(hiraganaG1 + filter_1[1]).get_url(user['idToken']),
+                        "Name": hiraganaFilter_1[1].split(".")[0],
+                        "url": storage.child(hiraganaG1 + hiraganaFilter_1[1]).get_url(user['idToken']),
                         "group": files.name.split("/")[1]
                     })
-                    groups["Group 1"]["characters"].append(image[len(image) - 1])
-                    data["Hiragana"] = groups
+                    hiraganaGroups["Group 1"]["characters"].append(image[len(image) - 1])
+                    data["Hiragana"] = hiraganaGroups
                 
-                filter_2 = files.name.split(hiraganaG2)
-                if(filter_2[0] == "" and filter_2[1] != ""):
-                    hiraganaList_2.append(filter_2[1])
-                    hiraganaNames_2.append(filter_2[1].split(".")[0])
+                hiraganaFilter_2 = files.name.split(hiraganaG2)
+                if(hiraganaFilter_2[0] == "" and hiraganaFilter_2[1] != ""):
+                    hiraganaList_2.append(hiraganaFilter_2[1])
+                    hiraganaNames_2.append(hiraganaFilter_2[1].split(".")[0])
                     image.append({
-                        "Name": filter_2[1].split(".")[0],
-                        "url": storage.child(hiraganaG2 + filter_2[1]).get_url(user['idToken']),
+                        "Name": hiraganaFilter_2[1].split(".")[0],
+                        "url": storage.child(hiraganaG2 + hiraganaFilter_2[1]).get_url(user['idToken']),
                         "group": files.name.split("/")[1]
                     })
-                    groups["Group 2"]["characters"].append(image[len(image) - 1])
-                    data["Hiragana"] = groups
+                    hiraganaGroups["Group 2"]["characters"].append(image[len(image) - 1])
+                    data["Hiragana"] = hiraganaGroups
 
-                # TODO: add functionality for Katakana
+                #////////////////////////////////
+                #Katakana
+                #///////////////////////////////
+                katakanaFilter_1 = files.name.split(katakanaG1)
+                if(katakanaFilter_1[0] == "" and katakanaFilter_1[1] != ""):
+                    katakanaList_1.append(katakanaFilter_1[1]) #file
+                    katakanaNames_1.append(katakanaFilter_1[1].split(".")[0]) #name
+                    image.append({
+                        "Name": katakanaFilter_1[1].split(".")[0],
+                        "url": storage.child(katakanaG1 + katakanaFilter_1[1]).get_url(user['idToken']),
+                        "group": files.name.split("/")[1]
+                    })
+                    katakanaGroups["Group 1"]["characters"].append(image[len(image) - 1])
+                    data["Katakana"] = katakanaGroups
+                
+                katakanaFilter_2 = files.name.split(katakanaG2)
+                if(katakanaFilter_2[0] == "" and katakanaFilter_2[1] != ""):
+                    katakanaList_2.append(katakanaFilter_2[1])
+                    katakanaNames_2.append(katakanaFilter_2[1].split(".")[0])
+                    image.append({
+                        "Name": katakanaFilter_2[1].split(".")[0],
+                        "url": storage.child(katakanaG2 + katakanaFilter_2[1]).get_url(user['idToken']),
+                        "group": files.name.split("/")[1]
+                    })
+                    katakanaGroups["Group 2"]["characters"].append(image[len(image) - 1])
+                    data["Katakana"] = katakanaGroups
 
                 # TODO: add functionality for Kanji
 
