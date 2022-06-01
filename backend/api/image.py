@@ -50,10 +50,21 @@ class Image:
             json response
     """
 
-    def viewImages(db, id):
+    def viewImages(self, db, id):
         images = db.getImage(id)
         if images:
-            return jsonify({'response': images}), 200
+            response = []
+            i = 0
+            for imgs in images:
+                response.append({
+                    i: {
+                        "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
+                        "character": imgs[2],
+                        "score": imgs[3]
+                    }
+                })
+                i = i + 1
+            return jsonify({'response': response}), 200
         else:
             return jsonify({'response': "view image failed."}), 401
 
