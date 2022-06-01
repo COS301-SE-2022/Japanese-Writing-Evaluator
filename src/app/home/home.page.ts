@@ -29,14 +29,6 @@ export class HomePage implements OnInit {
 
   uploadImage(){
     //const storage = getStorage();
-    const imageurl= this.upload.controls.image.value.split('\\');//
-    const id = localStorage.getItem('id');
-    const imageRef = ref(storage,`users/${id}/${imageurl[imageurl.length-1]}`);
-    const uploadingTask = uploadBytesResumable(imageRef, this.image);
-    uploadingTask.on('state_changed',(err) =>{
-      console.log(err);
-    });
-
   //  this.repository.uploadImage(this.upload.controls.image.value);
   }
 
