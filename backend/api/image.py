@@ -77,7 +77,7 @@ class Image:
     """
     def getCharacters():
         try:
-            user = auth.sign_in_with_email_and_password(email, password)
+            user = auth.sign_in_with_email_and_password(os.getenv("fire_email", os.getenv("fire_password")))
             allDirectories = storage.list_files()
             hiraganaG1 = "characters/Hiragana/Group_1/"
             hiraganaG2 = "characters/Hiragana/Group_2/"
