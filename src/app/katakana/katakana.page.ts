@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-katakana',
@@ -7,9 +8,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KatakanaPage implements OnInit {
 
-  constructor() { }
+  style: string;
+
+  constructor(private router: Router) {
+    this.style = 'Katakana';
+   }
 
   ngOnInit() {
+  }
+
+  setProgress(){
+    this.router.navigate(['/progress']);
+  }
+
+  writingStyle(style) {
+    this.style = style;
+
+    if(style === 'Hiragana'){
+      this.navigateHome();}
+
+    if(style === 'Katakana'){
+      this.navigateKatakana();}
+
+    if(style === 'Kanji'){
+      this.navigateKanji();}
+
+
+  }
+
+  // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
+  navigateKatakana(){
+    this.router.navigate(['/katakana']);
+  }
+
+  // TODO: routes to home page, #73, Maryam Mohamad Al Mahdi
+  navigateHome(){
+    this.router.navigate(['/home']);
+  }
+
+  // TODO: routes to kanji page, #73, Maryam Mohamad Al Mahdi
+  navigateKanji(){
+    this.router.navigate(['/kanji']);
   }
 
 }
