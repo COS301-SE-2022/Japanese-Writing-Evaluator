@@ -4,8 +4,6 @@ import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/commo
 import { Observable } from 'rxjs';
 import { User } from '../shared/user';
 import { SignUp } from '../sign-up/sign-up';
-import { Image } from '../shared/image';
-import { Score } from '../shared/score';
 
 @Injectable({
   providedIn: 'root'
@@ -13,20 +11,9 @@ import { Score } from '../shared/score';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
-  private image: Image;
 
 
   constructor(private httpclient: HttpClient) { }//
-
-  setTryImage(img: Image){
-    //this function takes in an image to be set to the class' image attr
-    this.image = img;
-  }
-
-  getTryImage(): Image{
-    //this function returns the class' image attr
-    return this.image;
-  }
 
   addUser(name: string, mail: string, pass: string): Observable<any>
   {
@@ -48,26 +35,23 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(image: File, charName: string, groupName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
+  uploadImage(userid: string, path: string, char: string, imgscore: string){// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
-    let img = new Object() as Image;
-    img = {
-      userId: localStorage.getItem('id'),
-      uploadedImage: image,
-      characterName: charName,
-      group: groupName
+    const img = {
+      id: userid,
+      imagepath: path,
+      imagechar: char,
+      score: imgscore
     };
-    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
+    const image =JSON.stringify(img);
+    return this.httpclient.post(this.baseURL + 'upload', image,{ headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){
     const myheaders = new HttpHeaders().set('content-type', 'application/json').set('Access-Control-Allow-Origin', '*');
-    let user = new Object() as User;
-    user = {
-      username: name,
-      password:pass
-    };
+    const user = {email: name, password:pass};
+    const body = JSON.stringify(user);
     return this.httpclient.post(this.baseURL + '/login', user, {headers: myheaders, observe: 'response'});
   }
 

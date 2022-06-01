@@ -45,8 +45,19 @@ describe('HomePage', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = timeout;
   });
 
-
+  it('check if localStorage is set',() => {
+      component.uploadImage();
+      expect(localStorage.getItem('id')).toEqual('84');
+  });
+  it('check if form input has no value',() =>{
+    const upload = component.upload;
+    const uploadValues = {
+      image: ''
+    };
+    expect(upload.value).toEqual(uploadValues);
+  });
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
 });
