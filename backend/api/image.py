@@ -75,8 +75,11 @@ class Image:
         return:
             returns a json object containing grouped image urls
     """
-    def getCharacters():
-        try:
+    def getCharacters(self):
+        try:   
+            firebase = pyrebase.initialize_app(self.config)
+            storage = firebase.storage()
+            auth = firebase.auth()
             user = auth.sign_in_with_email_and_password(os.getenv("fire_email", os.getenv("fire_password")))
             allDirectories = storage.list_files()
             hiraganaG1 = "characters/Hiragana/Group_1/"
