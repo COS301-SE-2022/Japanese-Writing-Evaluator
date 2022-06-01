@@ -1,11 +1,7 @@
-flask
+flask==1.1.2
 pyjwt==2.0.0
 datetime
 uuid
 Flask-SQLAlchemy
 tensorflow
 tensorflow-gpu
-google-cloud-storage
-firebase_admin
-firebase
-pyrebase4

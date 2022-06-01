@@ -1,9 +1,143 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>katakana</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="ion-padding" [fullscreen]="true">
+  <div class="dropdown">
+    <p><b>Select writing style:</b></p>
+    <ion-list>
 
-<ion-content>
+      <ion-item color="transparent" lines="none">
+        <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
+          <ion-select-option value="Hiragana">Hiragana</ion-select-option>
+          <ion-select-option value="Kanji">Kanji</ion-select-option>
+          <ion-select-option value="Katakana">Katakana</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div class="divPosition">
+  <div>
+    <h1>Vowels</h1>
+    <div class="block">
+      <div class="characterBlock">
+        <div class="characterBlockContent">
+
+          <div class="contentOne">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Japanese_Katakana_A.png" alt="A Hiragana">
+            <p class="para"><b>A</b></p>
+          </div>
+          <div class="contentOne">
+              <ion-button color="dark">Try</ion-button>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="characterBlock">
+        <div class="characterBlockContent">
+
+          <div class="contentOne">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Japanese_Katakana_E.png" alt="E Hiragana">
+            <p class="para"><b>E</b></p>
+          </div>
+          <div class="contentOne">
+              <ion-button color="dark">Try</ion-button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div>
+    <h1>K Group </h1>
+    <div class="block">
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+
+            <div class="contentOne">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Japanese_Katakana_KA.png" alt="Ka Hiragana">
+              <p class="para"><b>Ka</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+
+            <div class="contentOne">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/de/Japanese_Katakana_KI.png?20050430201525" alt="Ki Hiragana">
+              <p class="para"><b>Ki</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <h1>T Group </h1>
+
+      <div class="block">
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+
+            <div class="contentOne">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Japanese_Katakana_TA.png" alt="Ta Hiragana">
+              <p class="para"><b>Ta</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="characterBlock">
+          <div class="characterBlockContent">
+            <div class="contentOne">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/a/a3/Japanese_Katakana_TSU.png?20050501201329" alt="Tsu Hiragana">
+              <p class="para"><b>Tsu</b></p>
+            </div>
+            <div class="contentOne">
+                <ion-button color="dark">Try</ion-button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+       <!-- tabs for the navigation bar-->
+  <ion-footer>
+    <ion-tab-bar>
+      <ion-tabs>
+        <ion-row>
+          <ion-col size="6">
+            <a ><!--direct to suggestions-->
+              <ion-tab-button >
+                <ion-icon name="language"></ion-icon>
+                <ion-label>Characters</ion-label>
+              </ion-tab-button>
+            </a>
+          </ion-col>
+
+          <ion-col size="4">
+            <a (click)="setProgress()" >
+              <ion-tab-button >
+                <ion-icon name="analytics"></ion-icon>
+                <ion-label>Progress</ion-label>
+              </ion-tab-button>
+            </a>
+          </ion-col>
+        </ion-row>
+      </ion-tabs>
+    </ion-tab-bar>
+  </ion-footer>
 
 </ion-content>
