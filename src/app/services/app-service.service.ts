@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Image } from '../shared/image';
+import { Score } from '../shared/score';
 import { User } from '../shared/user';
-import { SignUp } from '../sign-up/sign-up';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,20 @@ import { SignUp } from '../sign-up/sign-up';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
+  private image: Image;
 
 
   constructor(private httpclient: HttpClient) { }//
+
+  setTryImage(img: Image){
+    //this function takes in an image to be set to the class' image attr
+    this.image = img;
+  }
+
+  getTryImage(): Image{
+    //this function returns the class' image attr
+    return this.image;
+  }
 
   addUser(name: string, mail: string, pass: string): Observable<any>
   {
@@ -35,23 +47,26 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(userid: string, path: string, char: string, imgscore: string){// pass through the image as a parameter
+  uploadImage(image: File, charName: string, groupName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
-    const img = {
-      id: userid,
-      imagepath: path,
-      imagechar: char,
-      score: imgscore
+    let img = new Object() as Image;
+    img = {
+      userId: localStorage.getItem('id'),
+      uploadedImage: image,
+      characterName: charName,
+      group: groupName
     };
-    const image =JSON.stringify(img);
-    return this.httpclient.post(this.baseURL + 'upload', image,{ headers: myheaders, observe: 'response'});
+    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){
     const myheaders = new HttpHeaders().set('content-type', 'application/json').set('Access-Control-Allow-Origin', '*');
-    const user = {email: name, password:pass};
-    const body = JSON.stringify(user);
+    let user = new Object() as User;
+    user = {
+      username: name,
+      password:pass
+    };
     return this.httpclient.post(this.baseURL + '/login', user, {headers: myheaders, observe: 'response'});
   }
 

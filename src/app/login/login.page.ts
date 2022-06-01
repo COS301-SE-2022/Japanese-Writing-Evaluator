@@ -26,19 +26,26 @@ export class LoginPage implements OnInit {
   onLogin(){
     const username = this.login.controls.username.value;
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
-   this.appService.isUser(username,password )
-    .subscribe(data =>{
-      console.log(data.body['data'][1].toString());
-      if(data.status === 200){
-        if (!localStorage.getItem('id')) {
-          localStorage.setItem('id',data.body['data'][1].toString());
+    if (username === '') {
+      if (!localStorage.getItem('id')) {
+        localStorage.setItem('id','guest');
+      }
+      this.router.navigate(['/home']);
+    } else if (!(username === '')) {
+      this.appService.isUser(username,password )
+      .subscribe(data =>{
+        console.log(data.body['data'][1].toString());
+        if(data.status === 200){
+          if (!localStorage.getItem('id')) {
+            localStorage.setItem('id',data.body['data'][1].toString());
+          }
+          this.router.navigate(['/home']);
         }
-        this.router.navigate(['/home']);
-      }
-      else{
-        alert('Incorrect user information or user does not exist');
-      }
-    });
+        else{
+          alert('Incorrect user information or user does not exist');
+        }
+      });
+    }
   }
 
 }
