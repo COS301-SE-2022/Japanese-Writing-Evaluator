@@ -115,6 +115,18 @@ def login():
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
+"""
+    home function:
+        calls getCharacters to send character url's to front-end for the homepage
+    request body:
+
+    return:
+        json response with image url's
+"""
+@app.route('/home', methods=['GET'])
+def home():
+    return img.getCharacters()
+
 @app.route('/feedback', methods = ['GET','POST'])
 @token_required
 def userfeedback():
