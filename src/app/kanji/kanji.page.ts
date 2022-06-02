@@ -16,6 +16,13 @@ export class KanjiPage implements OnInit {
   ngOnInit() {
   }
 
+  onLogout(){
+    // this function logs the user out of the system
+    localStorage.removeItem('id');
+    this.router.navigate(['/login']);
+
+  }
+
   setProgress(){
     this.router.navigate(['/progress']);
   }

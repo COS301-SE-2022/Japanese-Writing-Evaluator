@@ -39,6 +39,13 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
   }
 
+  onLogout(){
+    // this function logs the user out of the system
+    localStorage.removeItem('id');
+    this.router.navigate(['/login']);
+
+  }
+
   // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi
   writingStyle(style) {
     this.style = style;
