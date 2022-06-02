@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
 auth = Authentication()
-img = Image()
+img = Image(db)
 feedback = Feedback(db)
 CORS(app)
 
@@ -92,10 +92,10 @@ def uplaodImage():
     return:
         json response
 """
-@app.route('/view', methods = ['GET'])
+@app.route('/progress', methods = ['GET'])
 @token_required
 def viewImages():
-    return img.uplaodImage(db, int(request.json["id"]))
+    return img.viewImages(db, int(request.json["id"]))
 
 
 
