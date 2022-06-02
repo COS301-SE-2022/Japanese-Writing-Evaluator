@@ -37,6 +37,9 @@ export class HomePage implements OnInit {
 
 
   ngOnInit(): void {
+    this.service.getHomeImages().subscribe(data => {
+      console.log(data);
+    });
   }
 
   // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi

@@ -4,3 +4,9 @@ export interface Image {
     characterName: string;
     group: string;
 }
+
+export interface HomeImage {
+    characterName: string;
+    group: string;
+    url: string;
+}

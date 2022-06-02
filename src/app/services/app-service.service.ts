@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Image } from '../shared/image';
 import { Score } from '../shared/score';
 import { User } from '../shared/user';
+import { HomeImage } from '../shared/image';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
   private image: Image;
+  private homeImage: HomeImage;
 
 
   constructor(private httpclient: HttpClient) { }//
@@ -25,6 +27,12 @@ export class AppServiceService {
   getTryImage(): Image{
     //this function returns the class' image attr
     return this.image;
+  }
+
+  getHomeImages(): Observable<HomeImage[]>{
+    const headers = { 'content-type': 'application/json'};
+
+    return this.httpclient.get<HomeImage[]>(this.baseURL + "/home", {headers});
   }
 
   addUser(name: string, mail: string, pass: string): Observable<any>
