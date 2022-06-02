@@ -32,7 +32,7 @@ export class AppServiceService {
   getHomeImages(): Observable<HomeImage[]>{
     const headers = { 'content-type': 'application/json'};
 
-    return this.httpclient.get<HomeImage[]>(this.baseURL + "/home", {headers});
+    return this.httpclient.get<HomeImage[]>(this.baseURL + '/home', {headers});
   }
 
   addUser(name: string, mail: string, pass: string): Observable<any>
