@@ -20,7 +20,7 @@ import matplotlib.pylot as plt
     Type of self.CNN: 
       we are using a Sequential self.CNN
 """
-class CNN_Class():
+class CNN():
   def __init__(self, dataset):
     self.CNN = keras.self.CNNs.Sequential()
     (self.train_image, self.train_labels), (self.test_images, test_labels) = keras.datasets.cifar10.load_data()
