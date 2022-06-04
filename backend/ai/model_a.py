@@ -5,4 +5,11 @@ import matplotlib.pylot as plt
 
 class Model():
     def __init__(self):
-        self.model_a = CNN()
+        self.cnn = CNN()
+        self.modelA = self.cnn.create_CNN("")
+    
+    def generate_model(self):
+        # trian the  model
+        self.modelA = self.cnn.trian_model("model A")
+        
+        # save model and serve model
