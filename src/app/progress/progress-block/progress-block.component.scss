@@ -1,3 +1,4 @@
+
 ion-content{
   display: flex;
   justify-content: center;
@@ -48,7 +49,7 @@ ion-content{
 }
 
 .box .percent svg circle:nth-child(2){
-  stroke-dashoffset: calc(440 - (440 * 87) / 100);
+  // stroke-dashoffset: calc(440 - (440 * 87) / 100);
   stroke: #fff;
 }
 

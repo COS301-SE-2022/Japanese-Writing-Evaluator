@@ -3,7 +3,7 @@
     <div class="percent">
       <svg>
         <circle cx="70" cy="70" r="70"></circle>
-        <circle cx="70" cy="70" r="70"></circle>
+        <circle cx="70" cy="70" r="70" [ngStyle]="setStyleCalc()"></circle>
       </svg>
       <div class="outer">
         <div class="inner">
@@ -14,6 +14,6 @@
         </div>
       </div>
     </div>
-    <h2 class="text">Progress: 87%</h2>
+    <h2 class="text">Progress: {{percent}}%</h2>
   </div>
 </ion-content>
