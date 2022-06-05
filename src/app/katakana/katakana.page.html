@@ -1,5 +1,10 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-  <div class="dropdown">
+  
+    <ion-toolbar id="guestBtn">
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+  </ion-toolbar><br/>
+
+  <div class="dropdown"><!---->
     <p><b>Select writing style:</b></p>
     <ion-list>
 
@@ -13,7 +18,7 @@
     </ion-list>
   </div>
 
-  <div class="divPosition">
+  <div class="divPosition"><!---->
   <div>
     <h1>Vowels</h1>
     <div class="block">

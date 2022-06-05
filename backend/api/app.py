@@ -11,12 +11,14 @@ sys.path.append('../database')
 from database import Database
 from authentication import Authentication
 from image import Image
+from feedback import Feedback
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
 auth = Authentication()
-img = Image()
+img = Image(db)
+feedback = Feedback(db)
 CORS(app)
 
 def token_required(function):
@@ -90,10 +92,12 @@ def uplaodImage():
     return:
         json response
 """
-@app.route('/view', methods = ['GET'])
+@app.route('/progress', methods = ['GET'])
 @token_required
 def viewImages():
-    return img.uplaodImage(db, int(request.json["id"]))
+    return img.viewImages(db, int(request.json["id"]))
+
+
 
 #get the user details 
 #return json response being the user id and username
@@ -110,6 +114,26 @@ def login():
             'experation': str(datetime.utcnow() + timedelta(seconds=120)),
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+
+"""
+    home function:
+        calls getCharacters to send character url's to front-end for the homepage
+    request body:
+
+    return:
+        json response with image url's
+"""
+@app.route('/home', methods=['GET'])
+def home():
+    return img.getCharacters()
+
+@app.route('/feedback', methods = ['GET','POST'])
+@token_required
+def userfeedback():
+    progress = feedback.getuserfeedback(db,str(request.json["id"]))
+    return progress
+
+
 
 if __name__ == '__main__':
     app.run(debug = True)

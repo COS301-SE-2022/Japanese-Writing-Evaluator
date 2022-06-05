@@ -126,7 +126,19 @@ class Database:
             None
     """
     def getImage(self, id):
-        view_query = "SELECT image_path FROM images WHERE id=%s;"
+        view_query = "SELECT * FROM images WHERE id=%s;"
         self.curr.execute(view_query, ([id]))
         images_url = self.curr.fetchall()
         return images_url
+
+
+    def getfeedback(self, user_id):
+        query = "SELECT score FROM images WHERE id = %s;"
+        self.curr.execute(query, (user_id,))
+        scores = self.curr.fetchall()
+        
+        if(scores == None):
+            return None
+        
+        return scores
+
