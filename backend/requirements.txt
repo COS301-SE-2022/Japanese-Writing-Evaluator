@@ -5,4 +5,5 @@ uuid
 Flask-SQLAlchemy
 tensorflow
 tensorflow-gpu
--Uq grpcio==1.26.0
+manager
+pandas
