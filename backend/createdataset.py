@@ -51,6 +51,18 @@ def create_U_path(train_imgs):
         extention = ".jpeg"
         cv2.imwrite(os.path.join(pathU ,filename+number+extention),train_imgs[index_U])
 
+def create_U_images(train_labels): 
+    freq_u = 0 
+    u_index = [] 
+    for i in train_labels:
+        if train_labels[i] == 0:
+            freq_u=freq_u+1
+    
+    u_index =[] * freq_u 
+    for i in train_labels:
+        if train_labels[i] == 0:
+            u_index.append(i)
+
 def Main(): 
     # Paths
     input_path = os.path.join('.', 'input')
