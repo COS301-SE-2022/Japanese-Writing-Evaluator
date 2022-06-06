@@ -1,10 +1,9 @@
 <ion-content class="ion-padding" [fullscreen]="true">
-  
+
   <ion-toolbar id="guestBtn">
     <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
   </ion-toolbar><br/>
 
-  
   <div class="dropdown"> <!---->
     <p><b>Select writing style:</b></p>
     <ion-list>
@@ -18,110 +17,10 @@
     </ion-list>
   </div>
 
-  <div class="divPosition">
-    <div>
-      <h1>Vowels</h1>
-      <div class="block">
-        <div class="characterBlock">
-          <div class="characterBlockContent">
 
-            <div class="contentOne">
-              <img src="https://o.quizlet.com/mtAYxw425P38LXkahTQUsA.jpg" alt="A Hiragana">
-              <p class="para"><b>A</b></p>
-            </div>
-            <div class="contentOne">
-                <ion-button color="dark">Try</ion-button>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="characterBlock">
-          <div class="characterBlockContent">
-
-            <div class="contentOne">
-              <img src="https://o.quizlet.com/sAZQn47MXraBEFdICqFgrw.jpg" alt="E Hiragana">
-              <p class="para"><b>E</b></p>
-            </div>
-            <div class="contentOne">
-                <ion-button color="dark">Try</ion-button>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div>
-      <h1>K Group </h1>
-      <div class="block">
-          <div class="characterBlock">
-            <div class="characterBlockContent">
-
-              <div class="contentOne">
-                <img src="https://o.quizlet.com/X.Eq6zQJyVGiQedY5igJBw.jpg" alt="Ka Hiragana">
-                <p class="para"><b>Ka</b></p>
-              </div>
-              <div class="contentOne">
-                  <ion-button color="dark">Try</ion-button>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="characterBlock">
-            <div class="characterBlockContent">
-
-              <div class="contentOne">
-                <img src="https://o.quizlet.com/BLGJpupth7tMkrk8oomvLw.jpg" alt="Ki Hiragana">
-                <p class="para"><b>Ki</b></p>
-              </div>
-              <div class="contentOne">
-                  <ion-button color="dark">Try</ion-button>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-      <h1>T Group </h1>
-
-        <div class="block">
-          <div class="characterBlock">
-            <div class="characterBlockContent">
-
-              <div class="contentOne">
-                <img src="https://o.quizlet.com/ZI04NzT4eFBSARvTAyaoqw.jpg" alt="Ta Hiragana">
-                <p class="para"><b>Ta</b></p>
-              </div>
-              <div class="contentOne">
-                  <ion-button color="dark">Try</ion-button>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="characterBlock">
-            <div class="characterBlockContent">
-              <div class="contentOne">
-                <img src="https://o.quizlet.com/CAWMDvemyCzn2FGA9TnI2Q.jpg" alt="Tsu Hiragana">
-                <p class="para"><b>Tsu</b></p>
-              </div>
-              <div class="contentOne">
-                  <ion-button color="dark">Try</ion-button>
-              </div>
-
-            </div>
-          </div>
-        </div>
 
 
   </ion-content>
-
-
   <!-- tabs for the navigation bar-->
   <ion-footer *ngIf="!ifGuest()">
     <ion-tab-bar>
@@ -135,7 +34,7 @@
               </ion-tab-button>
             </a>
           </ion-col>
-  
+
           <ion-col size="4">
             <a [routerLink]="['/progress']">
               <ion-tab-button >
