@@ -32,6 +32,15 @@ def create_A_images(train_labels):
 def createAdatasetpath():
     pathA = os.getcwd() + '/datasetA'
 
+def  create_A_path(train_imgs): 
+    for n in range (0,2):
+        index_A = a_index[n]
+        filename = "image"
+        number = str(n)
+        extention = ".jpeg"
+        cv2.imwrite(os.path.join(pathA ,filename+number+extention),train_imgs[index_A])
+
+
 def Main(): 
     # Paths
     input_path = os.path.join('.', 'input')
