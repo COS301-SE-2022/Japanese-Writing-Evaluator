@@ -30,10 +30,8 @@ from keras.utils import np_utils
       we are using a Sequential self.CNN
 """
 class CNN():
-  def __init__(self, dataset, resized_folder):
-    self.imag_path = dataset
-    self.new_folder = resized_folder
-    self.CNN = keras.self.CNNs.Sequential()
+  def __init__(self):
+    self.CNN = keras.Sequential()
     self.train_image 
     self.test_images
     self.Y_train
@@ -51,17 +49,21 @@ class CNN():
     self.CNN.add(keras.layers.Dense(10))
     return self.CNN
   
-  def trian_model(self, name):
-    self.CNN.compile(optimizer=name,
+  def trian_model(self):
+    self.CNN.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
 
-    history = self.CNN.fit(self.self.train_images, self.train_labels, epochs=10, 
-                    validation_data=(self.self.test_images, self.test_labels))
-    test_loss, test_acc = self.CNN.evaluate(self.self.test_images,  self.test_labels, verbose=2)
+    history = self.CNN.fit(self.train_images, self.train_labels, epochs=10, 
+                    validation_data=(self.test_images, self.test_labels))
+    print(history)
+    test_loss, test_acc = self.CNN.evaluate(self.test_images,  self.test_labels, verbose=2)
+    print('Accuraccy: ' + test_acc)
+    print('Loss: ' + test_loss)
+    CNN.save()
     return self.CNN
   
-  def image_creating_dataset(self, img_path, resized_data_path):
+  def create_dataset(self, img_path, resized_data_path):
     list_img = os.listdir(img_path)
     num_img = len(list_img)
     print(list_img)
