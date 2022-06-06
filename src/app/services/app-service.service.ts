@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Image } from '../shared/image';
+import { CharacterImage, CharacterStyle, UploadedImage } from '../shared/image';
 import { Score } from '../shared/score';
 import { User } from '../shared/user';
-import { HomeImage } from '../shared/image';
 
 @Injectable({
   providedIn: 'root'
@@ -13,29 +12,27 @@ import { HomeImage } from '../shared/image';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
-  private image: Image;
-  private homeImage: HomeImage;
+  private characterImage: CharacterImage;
 
 
   constructor(private httpclient: HttpClient) { }//
 
-  setTryImage(img: Image){
+  setTryImage(img: CharacterImage){
     //this function takes in an image to be set to the class' image attr
-    this.image = img;
+    this.characterImage = img;
   }
 
-  getTryImage(): Image{
+  getTryImage(): CharacterImage{
     //this function returns the class' image attr
-    return this.image;
+    return this.characterImage;
   }
 
-  getHomeImages(): Observable<HomeImage[]>{
+  getHomeImages(): Observable<CharacterStyle[]>{
     const headers = { 'content-type': 'application/json'};
-
-    return this.httpclient.get<HomeImage[]>(this.baseURL + '/home', {headers});
+    return this.httpclient.get<CharacterStyle[]>(this.baseURL + '/home', {headers});
   }
 
-  addUser(name: string, mail: string, pass: string): Observable<any>
+  addUser(name: string, mail: string, pass: string)
   {
     const headers = { 'content-type': 'application/json'};
     const user = {
@@ -55,17 +52,10 @@ export class AppServiceService {
     // get users progress, feedback for each character practiced
   }
 
-  uploadImage(image: File, charName: string, groupName: string): Observable<HttpResponse<Score>>{// pass through the image as a parameter
+  uploadImage(uploadedImg: UploadedImage): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
     const myheaders = { 'content-type': 'application/json'};
-    let img = new Object() as Image;
-    img = {
-      userId: localStorage.getItem('id'),
-      uploadedImage: image,
-      characterName: charName,
-      group: groupName
-    };
-    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
+    return this.httpclient.post<Score>(this.baseURL + 'upload', uploadedImg, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){
