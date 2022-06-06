@@ -40,6 +40,8 @@ def  create_A_path(train_imgs):
         extention = ".jpeg"
         cv2.imwrite(os.path.join(pathA ,filename+number+extention),train_imgs[index_A])
 
+def createUdatasetpath(): 
+    pathU = os.getcwd() + '/datasetU'
 
 def Main(): 
     # Paths
