@@ -77,6 +77,8 @@ def Main():
     train_imgs = np.load(k49_train_imgs_path)['arr_0']
     train_labels = np.load(k49_train_labels_path)['arr_0']
 
+    createAdatasetpath()  
+    createUdatasetpath()
     
     cv2.imread(pathA)
     os.mkdir(pathA)
