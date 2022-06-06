@@ -43,6 +43,14 @@ def  create_A_path(train_imgs):
 def createUdatasetpath(): 
     pathU = os.getcwd() + '/datasetU'
 
+def create_U_path(train_imgs):
+    for n in range (0,2): 
+        index_U = u_index[n]
+        filename = "image"
+        number = str(n)
+        extention = ".jpeg"
+        cv2.imwrite(os.path.join(pathU ,filename+number+extention),train_imgs[index_U])
+
 def Main(): 
     # Paths
     input_path = os.path.join('.', 'input')
