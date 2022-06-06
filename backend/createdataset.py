@@ -8,7 +8,24 @@ from PIL import Image
 import cv2
 
 
+def create_A_images(train_labels): 
 
+    #get the freq of each letter 
+    #create an array that holds the index where the letter is
+    freq_a = 0
+    freq_u = 0 
+    a_index =[]
+    u_index = [] 
+    index = 0 
+    for i in train_labels:
+        if train_labels[i] == 0:
+            freq_a=freq_a+1
+    
+    a_index =[] * freq_a 
+    for i in train_labels:
+        if train_labels[i] == 0:
+            a_index.append(i)
+            
 def Main(): 
     # Paths
     input_path = os.path.join('.', 'input')
