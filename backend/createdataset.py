@@ -7,15 +7,14 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
 
-
+freq_a = 0
+a_index =[]
+freq_u = 0 
+u_index = []
 def create_A_images(train_labels): 
 
     #get the freq of each letter 
     #create an array that holds the index where the letter is
-    freq_a = 0
-    a_index =[]
- 
-    
     for i in train_labels:
         if train_labels[i] == 0:
             freq_a=freq_a+1
