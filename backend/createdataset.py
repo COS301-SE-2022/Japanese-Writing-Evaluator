@@ -6,7 +6,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from PIL import Image
 import cv2
-from torch import index_add
 
 freq_a = 0
 a_index =[]
@@ -17,7 +16,7 @@ index_U = 0
 pathA = ''
 pathU = ''
 
-def create_A_images(train_labels): 
+def freq_A_images(train_labels): 
 
     #get the freq of each letter 
     #create an array that holds the index where the letter is
@@ -29,10 +28,11 @@ def create_A_images(train_labels):
     for i in train_labels:
         if train_labels[i] == 0:
             a_index.append(i)
-def createAdatasetpath():
+
+def create_A_datasetpath():
     pathA = os.getcwd() + '/datasetA'
 
-def  create_A_path(train_imgs): 
+def  create_A_images(train_imgs): 
     for n in range (0,2):
         index_A = a_index[n]
         filename = "image"
@@ -40,10 +40,10 @@ def  create_A_path(train_imgs):
         extention = ".jpeg"
         cv2.imwrite(os.path.join(pathA ,filename+number+extention),train_imgs[index_A])
 
-def createUdatasetpath(): 
+def create_U_datasetpath(): 
     pathU = os.getcwd() + '/datasetU'
 
-def create_U_path(train_imgs):
+def create_U_images(train_imgs):
     for n in range (0,2): 
         index_U = u_index[n]
         filename = "image"
@@ -51,7 +51,7 @@ def create_U_path(train_imgs):
         extention = ".jpeg"
         cv2.imwrite(os.path.join(pathU ,filename+number+extention),train_imgs[index_U])
 
-def create_U_images(train_labels): 
+def freq_U_images(train_labels): 
     freq_u = 0 
     u_index = [] 
     for i in train_labels:
@@ -77,12 +77,19 @@ def Main():
     train_imgs = np.load(k49_train_imgs_path)['arr_0']
     train_labels = np.load(k49_train_labels_path)['arr_0']
 
-    createAdatasetpath()  
-    createUdatasetpath()
+    create_A_datasetpath()  
+    create_U_datasetpath()
     
+    freq_A_images(train_labels)
+    freq_U_images(train_labels)
+
     cv2.imread(pathA)
     os.mkdir(pathA)
     cv2.imread(pathU)
     os.mkdir(pathU)
+
+    create_A_images(train_imgs)
+    create_U_images(train_imgs)
+    
     #create_A_images()
 
