@@ -29,7 +29,8 @@ def create_A_images(train_labels):
     for i in train_labels:
         if train_labels[i] == 0:
             a_index.append(i)
-
+def createAdatasetpath():
+    pathA = os.getcwd() + '/datasetA'
 
 def Main(): 
     # Paths
