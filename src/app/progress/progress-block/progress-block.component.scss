@@ -3,20 +3,20 @@ ion-content{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 250px;
+  height: 220px;
   background: #03a9f4;
 }
 
 .box{
   position: relative;
-  width: 250px;
-  height: 250px;
+  width: 220px;
+  height: 220px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   background: #960722;
-  border-radius: 5px;
+  border-radius: 20%;
 }
 
 .box .percent{
@@ -78,6 +78,10 @@ ion-content{
 
 .box .percent .inner{
   position: absolute;
+}
+
+.box .percent .inner:nth-child(1){
+  margin-bottom: 20px;
 }
 
 .box .percent .inner:nth-child(2){

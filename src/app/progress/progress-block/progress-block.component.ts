@@ -8,13 +8,14 @@ import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angu
 })
 export class ProgressBlockComponent implements OnInit {
   @Input() percent: number;
-  @Input() letter: string;
+  @Input() letter: number;
 
-  char: string;
+  japaneseLetter: string;
+  translation: string;
   divStyle: string;
   styles: any;
 
-
+  alphabet: string[] = ['あ', 'い', 'う', 'え', 'お'];
 
   constructor() {
    }
@@ -23,17 +24,35 @@ export class ProgressBlockComponent implements OnInit {
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterContentInit(): void {
-    //Called after ngOnInit when the component's or directive's content has been initialized.
-    //Add 'implements AfterContentInit' to the class.
-    this.char = this.letter;
+    this.setAlphabet(this.letter);
   }
-
-  // document.getElementById('percentFill').style.strokeDashoffset = 'calc(440 - (440 *' + this.percent +') / 100)';
-
-  setStyleCalc()
-  {
+  // TODO: dynamically set the progress percentage, #69, Maryam Mohamad Al Mahdi
+  setStyleCalc(){
     this.styles = {'stroke-dashoffset': 'calc(440 - (440 *' + this.percent +') / 100)'};
     return this.styles;
+  }
+  // TODO: dynamically set the letter, #69, Maryam Mohamad Al Mahdi
+  setAlphabet(letter: number){
+    if(letter === 1){
+      this.japaneseLetter = this.alphabet[0];
+      this.translation = 'A';
+    }
+    if(letter === 2){
+      this.japaneseLetter = this.alphabet[1];
+      this.translation = 'I';
+    }
+    if(letter === 3){
+      this.japaneseLetter = this.alphabet[2];
+      this.translation = 'U';
+    }
+    if(letter === 4){
+      this.japaneseLetter = this.alphabet[3];
+      this.translation = 'E';
+    }
+    if(letter === 5){
+      this.japaneseLetter = this.alphabet[4];
+      this.translation = 'O';
+    }
   }
 
 }

@@ -1,4 +1,13 @@
-.space
-{
-  padding: 10px;
+ion-contdent{
+  font-family: "Times New Roman", Times, serif;
 }
+.container{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
+}
+
+.space{
+  padding: 5px;
+}
+

@@ -14,7 +14,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class ProgressPage implements OnInit {
   data: SafeHtml;
 
-  char = '';
+  char = 'A';
   percent = 0;
 
   img: string;
