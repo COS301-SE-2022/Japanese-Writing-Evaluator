@@ -33,21 +33,21 @@ class createTrainImages:
 
     def  create_A_images(train_imgs): 
         for n in range (0,2):
-            index_A = a_index[n]
+            index_A = Dataset.a_index[n]
             filename = "image"
             number = str(n)
             extention = ".jpeg"
-            cv2.imwrite(os.path.join(pathA ,filename+number+extention),train_imgs[index_A])
+            cv2.imwrite(os.path.join(Dataset.pathA ,filename+number+extention),train_imgs[index_A])
 
 
 
     def create_U_images(train_imgs):
         for n in range (0,2): 
-            index_U = u_index[n]
+            index_U = Dataset.u_index[n]
             filename = "image"
             number = str(n)
             extention = ".jpeg"
-            cv2.imwrite(os.path.join(pathU ,filename+number+extention),train_imgs[index_U])
+            cv2.imwrite(os.path.join(Dataset.pathU ,filename+number+extention),train_imgs[index_U])
 
     def freq_U_images(train_labels): 
         freq_u = 0 
