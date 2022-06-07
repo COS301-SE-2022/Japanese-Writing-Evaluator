@@ -12,6 +12,9 @@ export class HomePage implements OnInit {
   groups: string[] =  ['vowels','k','t'];
   style: string;
 
+  letter: string;
+  translate: string;
+
   constructor(private service: AppServiceService, private router: Router) {
     this.style = 'Hiragana';
   }//private repository: AppServiceService
@@ -40,6 +43,21 @@ export class HomePage implements OnInit {
     this.service.getHomeImages().subscribe(data => {
       console.log(data);
     });
+
+    this.letter = '';
+    this.translate = '';
+  }
+
+  getLetter(char: string)
+  {
+    this.letter = char;
+    return this.letter;
+  }
+
+  getTranslate(char: string)
+  {
+    this.translate = char;
+    return this.translate;
   }
 
   onLogout(){
