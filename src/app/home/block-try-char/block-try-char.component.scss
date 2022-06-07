@@ -1,0 +1,45 @@
+ion-content{
+  --ion-background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 210px;
+  padding: 5px;
+}
+
+.container{
+  position: relative;
+  width: 250px;
+  height: 200px;
+  border-radius: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: #960722;
+}
+
+.character{
+  width: 120px;
+  height: 180px;
+  background: #ffffff;
+  border-radius: 30%;
+  position: relative;
+  top: -10px;
+}
+
+.character h1{
+  font-size: 90px;
+  text-align: center;
+}
+
+.character p{
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+ion-button{
+  position: relative;
+  left: 10px;
+  top: 80px;
+}
