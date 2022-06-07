@@ -20,22 +20,22 @@
 
   <!-- SUGGESTIONS -->
   <div class="suggestions">
-    <h2>Vowels</h2>
+    <h2>{{headingOne}}</h2>
     <ion-grid>
       <ion-row>
           <ion-col>
-            <app-block-try-char [letter]='getLetter("あ")' [translate]='getTranslate("A")'></app-block-try-char>
+            <app-block-try-char [letter]='vowelOne' [translate]='translateOne'></app-block-try-char>
           </ion-col>
           <ion-col>
-            <app-block-try-char [letter]='getLetter("い")' [translate]='getTranslate("I")'></app-block-try-char>
+            <app-block-try-char [letter]='vowelTwo' [translate]='translateTwo'></app-block-try-char>
           </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <app-block-try-char [letter]='getLetter("う")' [translate]='getTranslate("U")'></app-block-try-char>
+          <app-block-try-char [letter]='vowelThree' [translate]='translateThree'></app-block-try-char>
         </ion-col>
         <ion-col>
-          <app-block-try-char [letter]='getLetter("え")' [translate]='getTranslate("E")'></app-block-try-char>
+          <app-block-try-char [letter]='vowelFour' [translate]='translateFour'></app-block-try-char>
         </ion-col>
     </ion-row>
   </ion-grid>
