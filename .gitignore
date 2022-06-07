@@ -37,5 +37,10 @@ service.json
 imageToSave.png
 /bug-slayers-jwe-firebase-adminsdk-o4ico-e446da549b.json
 ./Storage
+datasetA
+datasetA_test
+datasetU
+datasetU_test
+input
 #database config
 .env
