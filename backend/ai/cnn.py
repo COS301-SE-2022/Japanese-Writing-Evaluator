@@ -1,16 +1,7 @@
-# tensorflow imports
-from cProfile import label
-from ctypes import sizeof
-from random import shuffle
-from tkinter import Label
-from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
 import matplotlib.pylot as plt
 import numpy as np
-import os
-from sklearn.model_selection import train_test_split
-from keras.utils import np_utils
 
 class CNN():
   def __init__(self):
