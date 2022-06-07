@@ -8,12 +8,33 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  images: Image[]; // listy of images from firebase
+  images: Image[]; // list of images from firebase
   groups: string[] =  ['vowels','k','t'];
   style: string;
 
   letter: string;
   translate: string;
+
+   hiraganaAlphabet = [
+    {character: 'あ', translation:'A'},
+    {character: 'い', translation:'I'},
+    {character: 'う', translation:'U'},
+    {character: 'え', translation:'E'},
+  ];
+
+  katakanaAlphabet = [
+    {character: 'ア', translation:'A'},
+    {character: 'イ', translation:'I'},
+    {character: 'ウ', translation:'U'},
+    {character: 'エ', translation:'E'},
+  ];
+
+  kanjiAlphabet = [
+    {character: '黒', translation:'black'},
+    {character: '青', translation:'blue'},
+    {character: '緑', translation:'green'},
+    {character: '橙', translation:'orange'},
+  ];
 
   constructor(private service: AppServiceService, private router: Router) {
     this.style = 'Hiragana';
@@ -37,7 +58,6 @@ export class HomePage implements OnInit {
 
     return false;
   }
-
 
   ngOnInit(): void {
     this.service.getHomeImages().subscribe(data => {
@@ -85,17 +105,16 @@ export class HomePage implements OnInit {
 
   // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
   navigateKatakana(){
-    this.router.navigate(['/katakana']);
   }
 
   // TODO: routes to home page, #73, Maryam Mohamad Al Mahdi
   navigateHome(){
-    this.router.navigate(['/home']);
+
   }
 
   // TODO: routes to kanji page, #73, Maryam Mohamad Al Mahdi
   navigateKanji(){
-    this.router.navigate(['/kanji']);
+
   }
 
 }
