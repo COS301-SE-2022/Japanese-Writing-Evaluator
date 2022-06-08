@@ -41,6 +41,6 @@ datasetA
 datasetA_test
 datasetU
 datasetU_test
-input
+resized
 #database config
 .env
