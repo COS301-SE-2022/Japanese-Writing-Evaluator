@@ -13,12 +13,16 @@ from authentication import Authentication
 from image import Image
 from feedback import Feedback
 
+sys.path.append('../email')
+from send_email import Send_Email
+
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
 auth = Authentication()
 img = Image(db)
 feedback = Feedback(db)
+send = Send_Email()
 CORS(app)
 
 def token_required(function):
@@ -133,6 +137,9 @@ def userfeedback():
     progress = feedback.getuserfeedback(db,str(request.json["id"]))
     return progress
 
+@app.route('/sendEmail', methods = ['GET', 'POST'])
+def callEmail():
+    return send.send_email(str(request.json["email"]), str(request.json["score"]), str(request.json["username"]))
 
 
 if __name__ == '__main__':
