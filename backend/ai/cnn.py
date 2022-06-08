@@ -76,7 +76,7 @@ class CNN():
         None
     """
 
-  def getData(self, image_path, val):
+  def getData(self, image_path, labels_path, val):
     list_img = os.listdir(image_path)
     num_img = len(list_img)
     print(list_img)
@@ -89,6 +89,8 @@ class CNN():
       gray_img.save('resized' +'/' + file, "jpeg")
 
     resized_img_list = os.listdir('resized')
+    labels_img_list = os.listdir(labels_path)
+    
     num_resized = len(resized_img_list)
     print(resized_img_list)
     print('\nsize: ' + str(num_resized))
@@ -97,7 +99,8 @@ class CNN():
               for im2 in resized_img_list],'f')
     
     img_label = np.ones((num_img,), dtype = int)  
-    img_label[0:] = 0
+    img_label = np.array([np.array(Image.open(labels_path + '/' + im2))
+              for im2 in labels_img_list],'f')
     
     data,Labels = shuffle(img_matrix, img_label, random_state = 2)
     self.train_image = [data,Labels]
