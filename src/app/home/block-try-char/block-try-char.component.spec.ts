@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { RouterTestingModule } from '@angular/router/testing';
 
-import { KanjiPage } from './kanji.page';
+import { BlockTryCharComponent } from './block-try-char.component';
 
-describe('KanjiPage', () => {
-  let component: KanjiPage;
-  let fixture: ComponentFixture<KanjiPage>;
+describe('BlockTryCharComponent', () => {
+  let component: BlockTryCharComponent;
+  let fixture: ComponentFixture<BlockTryCharComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ KanjiPage ],
-      imports: [IonicModule.forRoot(), RouterTestingModule]
+      declarations: [ BlockTryCharComponent ],
+      imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(KanjiPage);
+    fixture = TestBed.createComponent(BlockTryCharComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
