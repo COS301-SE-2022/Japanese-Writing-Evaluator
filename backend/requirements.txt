@@ -7,4 +7,4 @@ tensorflow
 tensorflow-gpu
 manager
 pandas
-firebase-admin
+firebase_admin
