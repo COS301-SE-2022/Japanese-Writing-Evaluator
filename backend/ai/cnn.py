@@ -1,3 +1,4 @@
+from ctypes import resize
 import os
 import tensorflow as tf
 from tensorflow import keras
@@ -74,19 +75,20 @@ class CNN():
       Return:
         None
     """
-  def image_creating_dataset(self, img_path, resized_data_path):
-    list_img = os.listdir(img_path)
+
+  def getData(self, image_path, val):
+    list_img = os.listdir(image_path)
     num_img = len(list_img)
     print(list_img)
     print('\nsize: ' + str(num_img))
 
     for file in list_img:
-      i = Image.open(img_path + '/' +file)
-      img = i.resize((200,200))
+      i = Image.open(image_path + '/' +file)
+      img = i.resize((28,28))
       gray_img = img.convert('L')
-      gray_img.save(resized_data_path +'/' + file, "jpeg")
+      gray_img.save('resized' +'/' + file, "jpeg")
 
-    resized_img_list = os.listdir(resized_data_path)
+    resized_img_list = os.listdir('resized')
     num_resized = len(resized_img_list)
     print(resized_img_list)
     print('\nsize: ' + str(num_resized))
@@ -95,36 +97,20 @@ class CNN():
               for im2 in resized_img_list],'f')
     
     img_label = np.ones((num_img,), dtype = int)  
-    img_label[0:20] = 0# a
-    img_label[20:] = 1# ab
-
+    img_label[0:] = 0
+    
     data,Labels = shuffle(img_matrix, img_label, random_state = 2)
-    our_data = [data,Labels]
-
-    img=img_matrix[30].reshape(200,200)
-    plt.imshow(img)
-    plt.imshow(img,cmap='gray')
-    print (our_data[0].shape)
-    print (our_data[1].shape)
-
-    (x,y) = (our_data[0], our_data[1])
-    self.train_image, self.test_images, train_labels, test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
-    self.train_image = self.train_image.reshape(self.train_image.shape[0], 1, 200, 200)
-    self.test_images = self.test_images.reshape(self.test_images.shape[0], 1, 200, 200)
-
-    self.train_image =self.train_image.astype('float32')
-    self.test_images = self.test_images.astype('float32')
-
-    self.train_image /= 255
-    self.test_images /= 255
-
-    print('self.train_image shape:', self.train_image.shape)
-    print(self.train_image.shape[0], 'train samples')
-    print(self.test_images.shape[0], 'test samples')
-
-    self.Y_train = np_utils.to_categorical(train_labels, 2)
-    self.Y_test = np_utils.to_categorical(test_labels, 2)
-
-    i = 10
-    plt.imshow(self.train_image[i, 0], interpolation='nearest')
-    print("label : ", self.Y_train[i,:])
+    self.train_image = [data,Labels]
+    
+    if val == 0:
+      self.train_image = self.train_image.reshape(self.train_image.shape[0], 28, 28, 1) 
+      self.train_image =self.train_image.astype('float32')
+      self.train_image /= 255
+      self.train_labels = np_utils.to_categorical(self.train_labels, 2)
+      
+    elif val == 1:  
+      self.test_images = self.test_images.reshape(self.test_images.shape[0], 28, 28, 1)
+      self.test_images = self.test_images.astype('float32')
+      self.test_images /= 255
+      self.test_labels = np_utils.to_categorical(self.test_labels, 2)
+      
