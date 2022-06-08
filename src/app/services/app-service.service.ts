@@ -1,3 +1,5 @@
+/* eslint-disable quote-props */
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
 import {HttpClient, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
@@ -28,7 +30,7 @@ export class AppServiceService {
   }
 
   getHomeImages(): Observable<CharacterStyle[]>{
-    const headers = { 'content-type': 'application/json'};
+    const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
     return this.httpclient.get<CharacterStyle[]>(this.baseURL + '/home', {headers});
   }
 
@@ -54,8 +56,14 @@ export class AppServiceService {
 
   uploadImage(uploadedImg: UploadedImage): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
-    const myheaders = { 'content-type': 'application/json'};
+
+    const myheaders = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
     return this.httpclient.post<Score>(this.baseURL + 'upload', uploadedImg, { headers: myheaders, observe: 'response'});
+  }
+
+  guestUploadImage(img: UploadedImage): Observable<HttpResponse<Score>>{
+    const myheaders = { 'content-type': 'application/json' };
+    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){

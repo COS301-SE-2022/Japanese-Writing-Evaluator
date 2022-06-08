@@ -1,17 +1,17 @@
 
 #foregroundDiv{
   width: 210px;
-  height: 205px;
+  height: 210px;
   background-color: white;
   border-radius: 10%;
-  position: relative;
-  top: 7.5px;
-  left: 7.5px;
+  // position: relative;
+  // top: 5.5px;
+  // left: 5.5px;
   
 }
 
 #backgroundDiv{
-  width: 245px;
+  width: 240px;
   height: 240px;
   padding: 2%;
   background-color: #960722;
@@ -38,6 +38,12 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom: 10%;
-  margin-top: 15%;
+  margin-bottom: 5%;
+  margin-top: 10%;
+}
+
+.flexbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }

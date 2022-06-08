@@ -8,10 +8,12 @@
 <ion-content>
   <div class="horizontalflexbox">
     <div lines="none" id="backgroundDiv" >
-      <div lines="none" id="foregroundDiv">
-        <!-- <ion-img [src]="" alt="character image"></ion-img> 
-        characterImage.url 
-        <p>{{characterImage.characterName}}</p> -->
+      <div class="flexbox">
+        <div lines="none" id="foregroundDiv">
+          <ion-img [src]="" alt="character image" ></ion-img> 
+          <!--characterImage.url 
+          <p>{{characterImage.characterName}}</p> -->
+        </div>
       </div>
     </div>
   </div>
@@ -20,7 +22,7 @@
     <ion-item lines="none">
       <div>
         <ion-label color="black" style="font-family:'ZCOOL XiaoWei'; font-size: larger;">Choose an image:</ion-label>
-        <input type="file" accept="image/*" (change)="getUploadedImage($event)" class="input">
+        <input type="file" accept="image/*" (change)="getUploadedImage($event)" class="input" >
       </div>
     </ion-item>
   </div>

@@ -1,6 +1,6 @@
 export interface UploadedImage {
     userId: string;
-    uploadedImage: File;
+    uploadedImage: string;
     characterName: string;
     group: string;
 }

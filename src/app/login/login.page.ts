@@ -32,16 +32,19 @@ export class LoginPage implements OnInit {
       }
       this.router.navigate(['/home']);
     } else if (!(username === '')) {
-      if (!localStorage.getItem('id')) {
-        localStorage.setItem('id','85');
-      }
-      this.router.navigate(['/home']);
+      // if (!localStorage.getItem('id')) {
+      //   localStorage.setItem('id','85');
+      // }
+      // this.router.navigate(['/home']);
       this.appService.isUser(username,password )
       .subscribe(data =>{
-        console.log(data.body['data'][1].toString());
+        console.log(data.body['data']);
         if(data.status === 200){
           if (!localStorage.getItem('id')) {
             localStorage.setItem('id',data.body['data'][1].toString());
+          }
+          if (!localStorage.getItem('token')) {
+            localStorage.setItem('token',data.body['user-token'][1].toString());
           }
           this.router.navigate(['/home']);
         }
