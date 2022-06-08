@@ -67,7 +67,7 @@ def callResetPassword():
 
 @app.route('/register', methods = ['POST', 'GET'])
 def register():
-    return auth.register(db, str(request.json['email']))
+    return auth.register(db, str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     resetPassword function:
@@ -92,7 +92,7 @@ def uplaodImage():
     return:
         json response
 """
-@app.route('/progress', methods = ['GET'])
+@app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def viewImages():
     return img.viewImages(db, int(request.json["id"]))
