@@ -94,7 +94,8 @@ def callUploadImage():
     return:
         json response
 """
-@app.route('/view', methods = ['GET'])
+
+@app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
     return img.viewImages(int(request.json["id"]))
