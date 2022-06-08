@@ -5,6 +5,8 @@ uuid
 Flask-SQLAlchemy
 tensorflow
 tensorflow-gpu
+manager
+pandas
 Pyrebase
 firebase-admin
 sendgrid
