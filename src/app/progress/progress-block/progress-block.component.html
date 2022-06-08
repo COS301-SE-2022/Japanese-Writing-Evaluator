@@ -1,0 +1,19 @@
+<ion-content>
+  <div class="box">
+    <div class="percent">
+      <svg>
+        <circle cx="70" cy="70" r="70"></circle>
+        <circle cx="70" cy="70" r="70" [ngStyle]="setStyleCalc()"></circle>
+      </svg>
+      <div class="outer">
+        <div class="inner">
+          <h2>{{japaneseLetter}}</h2>
+        </div>
+        <div class="inner">
+          <span>{{translation}}</span>
+        </div>
+      </div>
+    </div>
+    <h2 class="text">Progress: {{percent}}%</h2>
+  </div>
+</ion-content>

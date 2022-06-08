@@ -6,3 +6,4 @@ uuid
 Flask-SQLAlchemy
 tensorflow
 tensorflow-gpu
+sendgrid

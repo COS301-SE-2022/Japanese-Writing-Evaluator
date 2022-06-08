@@ -11,7 +11,7 @@ describe('ProgressPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ProgressPage ],
-      imports: [IonicModule.forRoot(),RouterTestingModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProgressPage);
@@ -21,10 +21,5 @@ describe('ProgressPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  it('Check values are set by uploadingImage', () => {
-    const spySubscribable = spyOn(component, 'setValue');
-    component.setValue();
-    expect(spySubscribable).toHaveBeenCalled();
   });
 });
