@@ -26,20 +26,22 @@ class Image:
         self.user = self.auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
 
     """
-        resetPassword function:
-            calls update password to change the password
-        request body: 
-            email
-            password
+        upload Image function:
+            uploads teh given image to firebase and sends it to the evaluator
+        parameters: 
+            id: the id of the user uploading
+            image_path: the path of the image on firebase
+            image_char: the charector of the image
+            score: the score the user recieved from the evalutor
         return:
             json response
     """
-    def uplaodImage(db, id, image_path, image_char, score):
-        succ = db.saveImage(id, image_path, image_char, score)
-        if succ:
-            return jsonify({'response': "image upload successful."}), 200
-        else:
+    def uploadImage(self, id, image_char, image, file):
+        score = self.sendImage(id, image_char, image, file)
+        if score == None:
             return jsonify({'response': "image upload failed."}), 401
+        else:
+            return jsonify({'response': "image upload successful.", "score":score}), 200
 
     """
         viewImages function:
@@ -50,8 +52,8 @@ class Image:
             json response
     """
 
-    def viewImages(self, db, id):
-        images = db.getImage(id)
+    def viewImages(self, id):
+        images = self.db.getImage(id)
         if images:
             response = []
             i = 0
@@ -68,7 +70,7 @@ class Image:
         else:
             return jsonify({'response': "view image failed."}), 401
 
-    """
+        """
         send Image function:
             send the image the user upload to firebase 
         parameters: 
@@ -77,7 +79,7 @@ class Image:
             image_char: the character of the uploaded image
         return:
             json response
-    """
+        """
     def sendImage(self, id, image_char, image, file):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
@@ -92,14 +94,14 @@ class Image:
         except:
             return None
 
-    """
+        """
         getCharacters function:
             gets all the Hiragana charatcers from the firebase storage
         request body:
 
         return:
             returns a json object containing grouped image urls
-    """
+        """
     def getCharacters(self):
         try:
             allDirectories = self.storage.list_files()
@@ -185,3 +187,18 @@ class Image:
         
         except Exception as e:
             return jsonify({'response': str(e)}), 401
+        """
+    guest Upload Image function:
+        uploads teh given image to firebase and sends it to the evaluator
+    parameters: 
+        image_char: the charector of the image
+        image: the guest user image
+    return:
+        json response
+    """
+    def guestUploadImage(self, image_char, image):
+        score = 0 # call the ai
+        if score == None:
+            return jsonify({'response': "image upload failed."}), 401
+        else:
+            return jsonify({'response': "image upload successful.", "score":score}), 200

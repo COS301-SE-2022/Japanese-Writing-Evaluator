@@ -1,5 +1,5 @@
-flask==1.1.2
-pyjwt==2.0.0
+flask
+pyjwt
 datetime
 uuid
 Flask-SQLAlchemy
@@ -7,4 +7,6 @@ tensorflow
 tensorflow-gpu
 manager
 pandas
-firebase_admin
+Pyrebase
+firebase-admin
+sendgrid
