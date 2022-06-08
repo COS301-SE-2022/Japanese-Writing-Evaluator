@@ -74,7 +74,7 @@ def callRegister():
 
 """
     callUploadImage function:
-        calls update password tfunction from image.py
+        calls uploadImage function from image.py
     request body: 
         email
         password
@@ -82,7 +82,7 @@ def callRegister():
         json response
 """
 @app.route('/upload', methods = ['POST'])
-# @token_required
+@token_required
 def callUploadImage():
     return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
 
@@ -141,6 +141,19 @@ def home():
 def userfeedback():
     progress = feedback.getuserfeedback(db,str(request.json["id"]))
     return progress
+
+    """
+    callGuestUploadImage function:
+        calls guestUploadImage function from image.py
+    request body: 
+        email
+        password
+    return:
+        json response
+"""
+@app.route('/guest/upload', methods = ['POST'])
+def callGuestUploadImage():
+    return img.guestUploadImage(str(request.json["imagechar"]), str(request.json["image"]))
 
 
 if __name__ == '__main__':
