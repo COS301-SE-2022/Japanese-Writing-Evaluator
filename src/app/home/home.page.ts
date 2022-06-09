@@ -105,7 +105,7 @@ export class HomePage implements OnInit {
 
   }
 
-  // TODO: routes to different pages depending on the selected writing style by the user, #73, Maryam Mohamad Al Mahdi
+  // TODO: the page components are dynamically updated based on the writing style selected by the used , #73, Maryam Mohamad Al Mahdi
   writingStyle(style) {
     this.style = style;
 
@@ -121,7 +121,7 @@ export class HomePage implements OnInit {
 
   }
 
-  // TODO: routes to katakana page, #73, Maryam Mohamad Al Mahdi
+  // TODO: components are dynamically updated for katakana, #73, Maryam Mohamad Al Mahdi
   navigateKatakana(){
     this.headingOne = 'Vowels';
 
@@ -139,7 +139,7 @@ export class HomePage implements OnInit {
 
   }
 
-  // TODO: routes to home page, #73, Maryam Mohamad Al Mahdi
+  // TODO: components are dynamically updated for hiragana, #73, Maryam Mohamad Al Mahdi
   navigateHome(){
     this.headingOne = 'Vowels';
 
@@ -156,7 +156,7 @@ export class HomePage implements OnInit {
     this.translateFour = this.hiraganaAlphabet[3].translation;
   }
 
-  // TODO: routes to kanji page, #73, Maryam Mohamad Al Mahdi
+  // TODO: components are dynamically updated for kanji, #73, Maryam Mohamad Al Mahdi
   navigateKanji(){
     this.headingOne = 'Colours';
 

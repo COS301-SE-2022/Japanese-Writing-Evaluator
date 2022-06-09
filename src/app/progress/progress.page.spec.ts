@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
+import { ProgressBlockComponent } from './progress-block/progress-block.component';
 
 import { ProgressPage } from './progress.page';
 
@@ -10,7 +11,7 @@ describe('ProgressPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProgressPage ],
+      declarations: [ ProgressPage, ProgressBlockComponent ],
       imports: [IonicModule.forRoot(), RouterTestingModule],
     }).compileComponents();
 

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-block-try-char',
@@ -9,8 +10,14 @@ export class BlockTryCharComponent implements OnInit {
 
   @Input() letter: string;
   @Input() translate: string;
-  constructor() { }
+
+  constructor(private router: Router) { }
 
   ngOnInit() {}
+
+  // TODO: routes to upload page, #73, Maryam Mohamad Al Mahdi
+  navigateUpload(){
+    this.router.navigate(['/upload']);
+  }
 
 }
