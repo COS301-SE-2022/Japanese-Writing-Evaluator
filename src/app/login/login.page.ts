@@ -30,6 +30,9 @@ export class LoginPage implements OnInit {
       if (!localStorage.getItem('id')) {
         localStorage.setItem('id','guest');
       }
+      else{
+        localStorage.setItem('id','guest');
+      }
       this.router.navigate(['/home']);
     } else if (!(username === '')) {
       // if (!localStorage.getItem('id')) {
