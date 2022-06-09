@@ -28,14 +28,16 @@ The system should allow the user to log into the system using their own credenti
 
 # Demo Videos
 <ul>
-  <li>[Demo 1](https://drive.google.com/file/d/1HvnR-lApMvKjlsnzwFKAhKhQfRLevnpX/view)</li>
+  <li><a href = "https://drive.google.com/file/d/1HvnR-lApMvKjlsnzwFKAhKhQfRLevnpX/view">Demo 1</a></li>
 </ul>
 
 
 # SRS Document
 <ul>
-  <li>[SRS Document Demo 1](https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS "SRS Document - Demo 1")</li>
+  <li>[SRS Document Demo 1](")</li>
   <li>[SRS Document Latest](https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2 "SRS Document - Demo 2")</li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS">SRS Document Demo 1</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2">SRS Document Latest</a></li>
 </ul>
 
 # Team Members
