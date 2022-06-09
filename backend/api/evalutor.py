@@ -17,13 +17,18 @@ class Evaluator(object):
         return test_img
 
     def testImage(self):
+        print('\n In Model U and char: ' + self.char)
+        
         if(self.char == 'a'):
             model = tf.keras.models.load_model('../ai/modelA')
             self.prediction = float(model.predict([self.prepare()])[0][0])
             return self.prediction
-        elif(self.char == 'u'):
+        elif(self.char == 'U'):
+            print('\n In Model U')
             model = tf.keras.models.load_model('../ai/modelU')
+            print('\n After load')
             self.prediction = float(model.predict([self.prepare()])[0][0])
+            print('\n In Model U and score: ' + str(self.prediction))
             return self.prediction
 
 # if __name__ == '__main__':
