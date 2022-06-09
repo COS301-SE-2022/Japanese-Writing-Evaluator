@@ -16,7 +16,7 @@ from feedback import Feedback
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
-auth = Authentication()
+auth = Authentication(db)
 img = Image(db)
 feedback = Feedback(db)
 CORS(app)
