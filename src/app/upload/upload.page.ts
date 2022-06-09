@@ -51,10 +51,7 @@ export class UploadPage implements OnInit {
   evaluateImage() {
     // add if user is a guest
     if (this.uploadedImage != null && localStorage.getItem('id') !== '') {
-      let base64String = '';
-      this.convertImageToBase64(this.uploadedImage).subscribe(data => {
-        base64String = data;
-      });
+      const base64String = this.convertImageToBase64(this.uploadedImage);
 
       if (localStorage.getItem('id') !== 'guest') {
         let img = new Object() as UploadedImage;
@@ -62,7 +59,7 @@ export class UploadPage implements OnInit {
           id: localStorage.getItem('id'),
           image: base64String,
           imagechar: this.characterImage.characterName,
-          file: this.uploadImageName
+          file: this.characterImage.group,
         };
         this.service.uploadImage(img).subscribe( data =>{
           this.score = data.body.score;
@@ -84,19 +81,31 @@ export class UploadPage implements OnInit {
   }
 
   //TODO: get uploaded image from the file input, #71, Phumu
+  // getUploadedImage($event){
+  //   this.uploadedImage = $event.target.files[0];
+  //   this.uploadImageName = $event.target.files[0].name;
+  // }
+
+  // convertImageToBase64(file: File): Observable<string>{ // convert the image file to base64
+  //   const base64Result = new ReplaySubject<string>(1);
+  //   const fileReader = new FileReader();
+  //   fileReader.readAsBinaryString(file);
+  //   fileReader.onload = (e)=>{
+  //     base64Result.next(btoa(e.target.result.toString()));
+  //   };
+  //   return base64Result;
+  // }
   getUploadedImage($event){
     this.uploadedImage = $event.target.files[0];
-    this.uploadImageName = $event.target.files[0].name;
   }
 
-  convertImageToBase64(file: File): Observable<string>{ // convert the image file to base64
-    const base64Result = new ReplaySubject<string>(1);
+  convertImageToBase64(file: File): any{ //: Observable<string> convert the image file to base64
+    let base64Result;
     const fileReader = new FileReader();
-    fileReader.readAsBinaryString(file);
-    fileReader.onload = (e)=>{
-      base64Result.next(btoa(e.target.result.toString()));
+    fileReader.readAsDataURL(file);
+    fileReader.onload = ()=>{
+      base64Result = fileReader.result;
     };
     return base64Result;
   }
-
 }
