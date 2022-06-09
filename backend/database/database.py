@@ -51,7 +51,7 @@ class Database:
     """
 
     def getUserByID(self, id):
-        query = " SELECT * FROM users WHERE id = %s"
+        query = " SELECT * FROM users WHERE userid = %s"
         self.curr.execute(query, (id,))
         user = self.curr.fetchone()
         return user
@@ -131,6 +131,20 @@ class Database:
         images_url = self.curr.fetchall()
         return images_url
 
+    """
+        getImageUsers function:
+            returns all users with id's in images database
+        arguments:
+
+        return:
+            array of all entries in image database
+    """
+    def getImageUsers(self):
+        getUsers = "SELECT * FROM images";
+        self.curr.execute(getUsers)
+        users = self.curr.fetchall()
+        return users
+
 
     def getfeedback(self, user_id):
         query = "SELECT score FROM images WHERE id = %s;"
@@ -141,4 +155,3 @@ class Database:
             return None
         
         return scores
-
