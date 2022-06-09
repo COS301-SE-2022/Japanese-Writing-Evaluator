@@ -14,7 +14,11 @@ import { User } from '../shared/user';
 export class AppServiceService {
 
   baseURL = 'http://localhost:5000/';
-  private characterImage: CharacterImage;
+  private characterImage: CharacterImage = {
+    characterName: ' ',
+    group: ' ',
+    url: ' '
+  };
 
 
   constructor(private httpclient: HttpClient) { }//
