@@ -15,8 +15,14 @@ ion-content h2{
   display: block;
   margin: 50px;
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 50px;
+  left: 0px;
+}
+
+.text{
+  position: absolute;
+  top: 70px;
+  left: 50px;
 }
 
 .suggestions{
