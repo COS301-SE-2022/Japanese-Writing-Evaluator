@@ -168,7 +168,6 @@ def userfeedback():
 def email_users():
     users = db.getImageUsers()
 
-    unique = []
     keep = []
     for i in users:
         if(keep.count(i[0]) == 0):
@@ -203,7 +202,8 @@ def email_users():
 
     for i in store:
         thisUser = db.getUserByID(i[0])
-        send.send_email(thisUser[1], str(i[1]), thisUser[5])
+        if(thisUser != None):
+            send.send_email(thisUser[1], str(i[1]), thisUser[5])
 
     """
     callGuestUploadImage function:
