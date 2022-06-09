@@ -61,12 +61,7 @@ export class HomePage implements OnInit {
     this.translateFour = this.hiraganaAlphabet[3].translation;
   }//private repository: AppServiceService
 
-  //TODO: add navigation to upload page, #, Phumu
-  showUploadPage(image: CharacterImage){
-    //send image to the upload page and redirect to upload page
-    this.service.setTryImage(image);
-    this.router.navigate(['/upload']);
-  }
+
 
   //TODO: check local storage to check if user is guest, #, Phumu
   ifGuest(): boolean{
