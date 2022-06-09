@@ -1,3 +1,4 @@
+from backend.api.evalutor import Evaluator
 from flask import jsonify
 import base64
 from flask import jsonify
@@ -87,7 +88,8 @@ class Image:
             
         try:
             self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
-            score = 0 # call the AI
+            compare = Evaluator("../api/imageToSave.png", image_char)
+            score = compare.testImage() # call the AI
             image_path = "/users/"+str(id)+"/"+file
             self.db.saveImage(id, image_path, image_char, score)
             return score
@@ -197,7 +199,12 @@ class Image:
         json response
     """
     def guestUploadImage(self, image_char, image):
-        score = 0 # call the ai
+        image = image.partition(",")[2]
+        with open("imageToSave.png", "wb") as fh:
+            fh.write(base64.b64decode(image))
+            
+        compare = Evaluator("../api/imageToSave.png", image_char)
+        score = compare.testImage() # call the AI
         if score == None:
             return jsonify({'response': "image upload failed."}), 401
         else:
