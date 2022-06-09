@@ -1,4 +1,4 @@
-from backend.api.evalutor import Evaluator
+from evalutor import Evaluator
 from flask import jsonify
 import base64
 from flask import jsonify
@@ -203,9 +203,10 @@ class Image:
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.b64decode(image))
             
-        compare = Evaluator("../api/imageToSave.png", image_char)
-        score = compare.testImage() # call the AI
+        e = Evaluator('imageTosave.png', image_char)
+        score = e.testImage() # call the AI
+        print(score)
         if score == None:
-            return jsonify({'response': "image upload failed."}), 401
+            return jsonify({'response': "image evaluation Failed."}), 401
         else:
-            return jsonify({'response': "image upload successful.", "score":score}), 200
+            return jsonify({'response': "image evaluation successful.", "score":score}), 200
