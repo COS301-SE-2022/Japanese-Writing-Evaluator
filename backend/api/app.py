@@ -1,19 +1,27 @@
 from functools import wraps
+from pydoc import importfile
+import this
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
 import jwt
 import os
 from flask_cors import CORS;
+from schedule import every, repeat, run_pending
+import time
+import numpy as np
+
+from sqlalchemy import null
 
 import sys
-sys.path.append('../database')
+sys.path.insert(0, '../database')
+sys.path.insert(1, '../email_user')
 
 from database import Database
 from authentication import Authentication
 from image import Image
 from feedback import Feedback
+from send_email import Send_Email
 
-import email.send_email as send_email
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
@@ -21,6 +29,7 @@ db = Database()
 auth = Authentication()
 img = Image(db)
 feedback = Feedback(db)
+send = Send_Email()
 CORS(app)
 
 def token_required(function):
@@ -145,9 +154,57 @@ def userfeedback():
     progress = feedback.getuserfeedback(db,str(request.json["id"]))
     return progress
 
-@app.route('/sendEmail', methods = ['GET', 'POST'])
-def callEmail():
-    return send_email(str(request.json["email"]), str(request.json["score"]), str(request.json["username"]))
+
+    """
+        email function:
+            calls send_email function which send emails to all users
+        request body:
+
+        return:
+            
+    """
+
+@repeat(every().sunday)
+def email_users():
+    users = db.getImageUsers()
+
+    unique = []
+    keep = []
+    for i in users:
+        if(keep.count(i[0]) == 0):
+            keep.append(i[0])
+
+    store = [[0] * 2 for i in range(len(keep))]
+    stored = []
+    iCount = 0
+    jCount = 0
+    divBy = 0
+    average = 0
+    for i in users:
+        if(stored.count(i[0]) == 0):
+            stored.append(i[0])
+            store[jCount][0] = i[0]
+
+            for j in users:
+                if(j[0] == store[jCount][0]):
+                    average += j[3]
+                    divBy += 100
+                # store[jCount][1] = 22
+                    
+            score = (average/divBy) * 100
+            store[jCount][1] = "{:.2f}".format(score)
+            jCount += 1
+
+        
+        iCount += 1
+        divBy = 0
+        average = 0
+        score = 0
+
+    for i in store:
+        thisUser = db.getUserByID(i[0])
+        send.send_email(thisUser[1], str(i[1]), thisUser[5])
+
     """
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
@@ -160,7 +217,6 @@ def callEmail():
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
     return img.guestUploadImage(str(request.json["imagechar"]), str(request.json["image"]))
-
 
 if __name__ == '__main__':
     app.run(debug = True)
