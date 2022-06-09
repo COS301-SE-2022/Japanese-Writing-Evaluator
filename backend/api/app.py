@@ -26,7 +26,7 @@ from send_email import Send_Email
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
-auth = Authentication()
+auth = Authentication(db)
 img = Image(db)
 feedback = Feedback(db)
 send = Send_Email()
