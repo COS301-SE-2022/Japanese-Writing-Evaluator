@@ -12,8 +12,8 @@ class Model():
     
     def generate_model(self):
         self.modelA = self.modelObj.create_CNN()
-        self.modelObj.getData('datasetA')
-        self.modelA = self.modelObj.trian_model('modelA')
+        self.modelObj.getData('datasetU')
+        self.modelA = self.modelObj.trian_model('modelU')
         return self.modelA
          
 if __name__ == '__main__':
@@ -27,4 +27,4 @@ if __name__ == '__main__':
     # test_img = np.array([np.array(gray_img).flatten()],'f')
     # test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
     # # "C:\Users\Siphesihle\Desktop\school_work\hiregana\herigana_a.jpg"
-    # print(model.predict(test_img)[0][0])
+    # model.predict(test_img)
