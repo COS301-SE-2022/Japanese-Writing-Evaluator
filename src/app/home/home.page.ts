@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Image } from '../shared/image';
+import { CharacterImage, CharacterStyle } from '../shared/image';
 import { AppServiceService } from '../services/app-service.service';
 import { Router } from '@angular/router';
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  images: Image[]; // list of images from firebase
+  images: CharacterStyle[]; // listy of images from firebase
   groups: string[] =  ['vowels','k','t'];
   style: string;
   headingOne: string;
@@ -61,12 +61,7 @@ export class HomePage implements OnInit {
     this.translateFour = this.hiraganaAlphabet[3].translation;
   }//private repository: AppServiceService
 
-  //TODO: add navigation to upload page, #, Phumu
-  showUploadPage(image: Image){
-    //send image to the upload page and redirect to upload page
-    this.service.setTryImage(image);
-    this.router.navigate(['/upload']);
-  }
+
 
   //TODO: check local storage to check if user is guest, #, Phumu
   ifGuest(): boolean{
@@ -83,6 +78,7 @@ export class HomePage implements OnInit {
   ngOnInit(): void {
     this.service.getHomeImages().subscribe(data => {
       console.log(data);
+      this.images = data;
     });
   }
 
