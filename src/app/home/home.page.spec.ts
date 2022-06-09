@@ -40,8 +40,17 @@ describe('HomePage', () => {
     spyOn(localStorage, 'setItem')
       .and.callFake(testLocalStorage .setItem);
 
-    localStorage.setItem('id','84');
+    localStorage.setItem('id','guest');
   }));
+
+  it('check guest id is set to guest',() =>{
+    if (!localStorage.getItem('token')) {
+      expect(localStorage.getItem('id')).toEqual('guest');
+    }
+    else{
+      expect(localStorage.getItem('id')).not.toEqual('guest');
+    }
+  });
 
   afterEach(() => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = timeout;
