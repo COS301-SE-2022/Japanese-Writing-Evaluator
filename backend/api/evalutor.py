@@ -6,9 +6,10 @@ class Evaluator(object):
     def __init__(self, file, input_char):
         self.file = file
         self.char = input_char
+        self.predition = -1
         
-    def prepare(file):
-        i = Image.open(file )
+    def prepare(self):
+        i = Image.open(self.file)
         img = i.resize((28,28))
         gray_img = img.convert('L')
         test_img = np.array([np.array(gray_img).flatten()],'f')
@@ -18,8 +19,13 @@ class Evaluator(object):
     def testImage(self):
         if(self.char == 'a'):
             model = tf.keras.models.load_model('../ai/modelA')
-            prediction = model.predict([self.prepare(self.file)])
+            self.prediction = float(model.predict([self.prepare()])[0][0])
+            return self.prediction
         elif(self.char == 'u'):
             model = tf.keras.models.load_model('../ai/modelU')
-            prediction = model.predict([self.prepare(self.file)])
-        return prediction
+            self.prediction = float(model.predict([self.prepare()])[0][0])
+            return self.prediction
+
+# if __name__ == '__main__':
+#     e = Evaluator('imageTosave.png', 'a')
+#     print(e.testImage())
