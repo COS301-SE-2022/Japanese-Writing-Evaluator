@@ -1,8 +1,13 @@
 export interface UploadedImage {
-    userId: string;
-    uploadedImage: string;
-    characterName: string;
-    group: string;
+    id: string;
+    image: string;
+    imagechar: string;
+    file: string;
+}
+
+export interface GuestUploadedImage {
+    image: string;
+    imagechar: string;
 }
 
 export interface CharacterImage {
@@ -11,10 +16,3 @@ export interface CharacterImage {
     url: string;
 }
 
-export interface CharacterGroup {
-    characters: CharacterImage[];
-}
-
-export interface CharacterStyle {
-    groups: CharacterGroup[];
-}
