@@ -32,10 +32,10 @@ export class LoginPage implements OnInit {
       }
       this.router.navigate(['/home']);
     } else if (!(username === '')) {
-      if (!localStorage.getItem('id')) {
-        localStorage.setItem('id','85');
-      }
-      this.router.navigate(['/home']);
+      // if (!localStorage.getItem('id')) {
+      //   localStorage.setItem('id','85');
+      // }
+      // this.router.navigate(['/home']);
       this.appService.isUser(username,password )
       .subscribe(data =>{
         console.log(data.body['user-token'].toString());

@@ -1,12 +1,20 @@
-export interface Image {
+export interface UploadedImage {
     userId: string;
-    uploadedImage: File;
+    uploadedImage: string;
     characterName: string;
     group: string;
 }
 
-export interface HomeImage {
+export interface CharacterImage {
     characterName: string;
     group: string;
     url: string;
+}
+
+export interface CharacterGroup {
+    characters: CharacterImage[];
+}
+
+export interface CharacterStyle {
+    groups: CharacterGroup[];
 }
