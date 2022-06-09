@@ -45,7 +45,7 @@ export class AppServiceService {
     };
     const body=JSON.stringify(user);
     console.log(body);
-    return this.httpclient.post(this.baseURL + '/register', body,{ headers });
+    return this.httpclient.post(this.baseURL + 'register', body,{ headers });
   }
   // getCharacters(): Observable<Character[]>{
   //   return this.httpclient.get<Character[]>(''); /// calling api to get the character images stored in firebase
@@ -69,13 +69,13 @@ export class AppServiceService {
   }
 
   isUser(name: string, pass: string){
-    const myheaders = new HttpHeaders().set('content-type', 'application/json').set('Access-Control-Allow-Origin', '*');
+    const myheaders = new HttpHeaders().set('content-type', 'application/json');
     let user = new Object() as User;
     user = {
-      username: name,
+      email: name,
       password:pass
     };
-    return this.httpclient.post(this.baseURL + '/login', user, {headers: myheaders, observe: 'response'});
+    return this.httpclient.post(this.baseURL + 'login', user, {headers: myheaders, observe: 'response'});
   }
 
 }
