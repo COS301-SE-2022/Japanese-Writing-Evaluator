@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AppServiceService } from '../services/app-service.service';
-import { CharacterImage, UploadedImage } from '../shared/image';
+import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/image';
 
 @Component({
   selector: 'app-upload',
@@ -13,6 +13,7 @@ export class UploadPage implements OnInit {
 
   characterImage: CharacterImage;
   uploadedImage: File;
+  uploadImageName: string;
   private score: number;
 
   //TODO:add form parameters to constructor, #71, Phumu
@@ -50,25 +51,30 @@ export class UploadPage implements OnInit {
   evaluateImage() {
     // add if user is a guest
     if (this.uploadedImage != null && localStorage.getItem('id') !== '') {
-      let img = new Object() as UploadedImage;
       let base64String = '';
       this.convertImageToBase64(this.uploadedImage).subscribe(data => {
         base64String = data;
       });
-      img = {
-        userId: localStorage.getItem('id'),
-        uploadedImage: base64String,
-        characterName: this.characterImage.characterName,
-        group: this.characterImage.group,
-      };
 
       if (localStorage.getItem('id') !== 'guest') {
+        let img = new Object() as UploadedImage;
+        img = {
+          id: localStorage.getItem('id'),
+          image: base64String,
+          imagechar: this.characterImage.characterName,
+          file: this.uploadImageName
+        };
         this.service.uploadImage(img).subscribe( data =>{
           this.score = data.body.score;
         });
         this.showScore(this.score); // get the score
       }
       else{
+        let img = new Object() as GuestUploadedImage;
+        img = {
+          image: base64String,
+          imagechar: this.characterImage.characterName,
+        };
         this.service.guestUploadImage(img).subscribe( data => {
           this.score = data.body.score;
         });
@@ -80,6 +86,7 @@ export class UploadPage implements OnInit {
   //TODO: get uploaded image from the file input, #71, Phumu
   getUploadedImage($event){
     this.uploadedImage = $event.target.files[0];
+    this.uploadImageName = $event.target.files[0].name;
   }
 
   convertImageToBase64(file: File): Observable<string>{ // convert the image file to base64

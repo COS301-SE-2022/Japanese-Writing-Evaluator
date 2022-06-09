@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { CharacterImage, CharacterStyle } from '../shared/image';
 import { AppServiceService } from '../services/app-service.service';
 import { Router } from '@angular/router';
 @Component({
@@ -8,7 +7,7 @@ import { Router } from '@angular/router';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  images: CharacterStyle[]; // listy of images from firebase
+  //images: CharacterStyle[]; // listy of images from firebase
   groups: string[] =  ['vowels','k','t'];
   style: string;
   headingOne: string;
@@ -96,6 +95,9 @@ export class HomePage implements OnInit {
   onLogout(){
     // this function logs the user out of the system
     localStorage.removeItem('id');
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+    }
     this.router.navigate(['/login']);
 
   }
