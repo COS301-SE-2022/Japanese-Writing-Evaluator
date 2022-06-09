@@ -22,6 +22,12 @@ describe('LoginPage', () => {
     fixture.detectChanges();
   }));
 
+  it('check guest user login details',() =>{
+    const loginform = component.login;
+    const username = '';
+    expect(loginform.controls.username.value).toEqual(username);
+  });
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

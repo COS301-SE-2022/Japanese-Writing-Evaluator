@@ -89,12 +89,12 @@ export class UploadPage implements OnInit {
     this.uploadImageName = $event.target.files[0].name;
   }
 
-  convertImageToBase64(file: File): Observable<string>{ // convert the image file to base64
-    const base64Result = new ReplaySubject<string>(1);
+  convertImageToBase64(file: File): any{ //: Observable<string> convert the image file to base64
+    let base64Result;
     const fileReader = new FileReader();
-    fileReader.readAsBinaryString(file);
-    fileReader.onload = (e)=>{
-      base64Result.next(btoa(e.target.result.toString()));
+    fileReader.readAsDataURL(file);
+    fileReader.onload = ()=>{
+      base64Result = fileReader.result;
     };
     return base64Result;
   }
