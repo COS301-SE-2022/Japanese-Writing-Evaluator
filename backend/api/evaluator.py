@@ -17,12 +17,12 @@ class Evaluator():
         return test_img
 
     def testImage(self):
-        if(self.char == 'a'):
-            model = tf.keras.models.load_model('../ai/modelA')
+        if(self.char == 'A'):
+            model = tf.keras.models.load_model('backend/ai/modelA.h5')
             self.prediction = float(model.predict([self.prepare()])[0][0])
             return self.prediction
-        elif(self.char == 'u'):
-            model = tf.keras.models.load_model('../ai/modelU')
+        elif(self.char == 'U'):
+            model = tf.keras.models.load_model('backend/ai/modelU.h5')
             self.prediction = float(model.predict([self.prepare()])[0][0])
             return self.prediction
 
