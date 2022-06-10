@@ -1,9 +1,3 @@
-# import unittest
-import sys
-# sys.path.insert(0, '../../database')
-# sys.path.append('../../api')
-sys.path.append('../../api/evaluator')
-
 from backend.api.image import Image
 from backend.database.database import Database
 

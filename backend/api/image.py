@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../api')
+sys.path.append('backend/api/')
 
 from evaluator import Evaluator
 from flask import jsonify
@@ -21,7 +21,7 @@ class Image:
             'messagingSenderId': os.getenv('FB_messagingSenderId'),
             'appId': os.getenv('FB_appId'),
             "measurementId": os.getenv("FB_measurementId"),
-            'serviceAccount' : "service.json",
+            'serviceAccount' : "backend/api/service.json",
             'databaseURL': os.getenv('FB_DBURL')
         }
         self.firebase = pyrebase.initialize_app(self.config)
