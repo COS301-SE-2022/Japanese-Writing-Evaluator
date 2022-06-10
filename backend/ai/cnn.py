@@ -48,8 +48,7 @@ class CNN():
     self.CNN.add(keras.layers.BatchNormalization())
 
     self.CNN.add(keras.layers.Flatten())
-    self.CNN.add(keras.layers.Dense(512, activation='relu'))
-    self.CNN.add(keras.layers.Dense(256, activation='relu'))
+    self.CNN.add(keras.layers.Dense(16, activation='relu'))
     self.CNN.add(keras.layers.Dense(10, activation = 'softmax'))
     return self.CNN
   
@@ -77,7 +76,7 @@ class CNN():
     # pyplot.plot(test_acc, test_loss)
     # pyplot.title('accuraccy vs losses')
     # pyplot.show()
-    self.CNN.save(modelName + '/')
+    self.CNN.save(modelName + '.h5')
     return self.CNN
   
     """
