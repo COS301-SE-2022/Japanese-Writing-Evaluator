@@ -26,6 +26,7 @@ The system should allow the user to log into the system using their own credenti
   
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/tree/develop/src/app/home">Dropdown Use Case</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/blob/develop/src/app/home/home.page.spec.ts">Home Page Unit Test</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/blob/develop/cypress/integration/api-intergration/guestUser.spec.js">Intergration Test</a></li>
   
 </ul>
 
