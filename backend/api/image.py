@@ -1,4 +1,7 @@
-from evalutor import Evaluator
+import sys
+sys.path.append('../../api')
+
+from evaluator import Evaluator
 from flask import jsonify
 import base64
 from flask import jsonify
