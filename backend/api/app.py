@@ -1,6 +1,9 @@
 from functools import wraps
+from operator import contains
 from pydoc import importfile
 import this
+from urllib import response
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
 import jwt
@@ -9,8 +12,7 @@ from flask_cors import CORS;
 from schedule import every, repeat, run_pending
 import time
 import numpy as np
-
-from sqlalchemy import null
+import requests
 
 import sys
 sys.path.insert(0, '../database')
@@ -22,6 +24,7 @@ from image import Image
 from feedback import Feedback
 from send_email import Send_Email
 
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
@@ -200,10 +203,23 @@ def email_users():
         average = 0
         score = 0
 
+    contain = []
     for i in store:
         thisUser = db.getUserByID(i[0])
         if(thisUser != None):
-            send.send_email(thisUser[1], str(i[1]), thisUser[5])
+            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+
+            valid = response.json()['status']
+
+            if(valid == "valid"):
+                contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
+            else:
+                contain.append("Failed")
+    
+    if(contain.count("Failed") > 0):
+        return jsonify({'response': "Failed"}), 401
+    else:
+        return jsonify({'response': "Emails successfully sent"}), 200
 
     """
     callGuestUploadImage function:
