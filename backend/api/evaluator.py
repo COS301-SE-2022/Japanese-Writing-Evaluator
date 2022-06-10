@@ -2,7 +2,7 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 
-class Evaluator(object):
+class Evaluator():
     def __init__(self, file, input_char):
         self.file = file
         self.char = input_char
