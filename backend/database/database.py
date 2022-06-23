@@ -71,10 +71,10 @@ class Database:
         try:
             self.curr.execute(update_query, (password, email))
             self.conn.commit()
+            return self.curr.rowcount    
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
-        finally:
-            return self.curr.rowcount    
+            return 0
 
 #function used to add a user to the database
     def addUser(self, username, password, email, admin, passwordSalt, avgScore):
