@@ -10,6 +10,7 @@ describe('ProgressPage', () => {
   let fixture: ComponentFixture<ProgressPage>;
 
   beforeEach(waitForAsync(() => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 999999;
     TestBed.configureTestingModule({
       declarations: [ ProgressPage, ProgressBlockComponent ],
       imports: [IonicModule.forRoot(), RouterTestingModule],
