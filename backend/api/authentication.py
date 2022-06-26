@@ -3,8 +3,9 @@ import uuid
 from flask import jsonify
 
 class Authentication:
-    def __init__(self):
-        return
+    def __init__(self, db):
+        self.db = db
+
     """
         resetPassword function:
             calls update password to change the password
@@ -15,8 +16,8 @@ class Authentication:
             json response
     """
 
-    def resetPassword(db, email, password):
-        editedRow = db.updatePassword(email, password)
+    def resetPassword(self,email, password):
+        editedRow = self.db.updatePassword(email, password)
         if editedRow == 1:
             return jsonify({'response': "password reset successful."}), 200
         else:
@@ -29,22 +30,22 @@ class Authentication:
 
     """
 
-    def register(db, email, password, username):
+    def register(self, email, password, username):
         try:
-            Finduser = db.getUserByEmail(email)
+            Finduser = self.db.getUserByEmail(email)
             if Finduser != None:
                 res = "User already exists"
                 return jsonify({"response": res}), 409
             else:
                 salt = uuid.uuid4().hex
                 passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-                db.addUser(username, passwordSalt, email, False, salt, 0)
+                self.db.addUser(username, passwordSalt, email, False, salt, 0)
                 res = "Registration Successful"
                 return jsonify({'response': res}), 200
 
         except Exception as e:
             return jsonify({'response': str(e)}), 401
 
-    def login(db, email, password):
-        return db.getUser(password, email)
+    def login(self, email, password):
+        return self.db.getUser(password, email)
 

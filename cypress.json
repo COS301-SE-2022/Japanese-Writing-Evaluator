@@ -4,5 +4,4 @@
   "pluginsFile": "cypress/plugins/index.js",
   "fixturesFolder": "cypress/fixtures",
   "baseUrl": "http://localhost:8100"
-
 }

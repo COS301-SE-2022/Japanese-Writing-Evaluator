@@ -4,13 +4,13 @@
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
-    "start": "ng serve",
+    "start": "ionic serve",
     "api": "cd backend/api && python app.py",
     "build": "ng build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "e2e": "cypress open",
-    "serve": "ionic serve"
+    "backend-test": "python -m pytest"
   },
   "private": true,
   "dependencies": {
