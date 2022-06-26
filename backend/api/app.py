@@ -158,15 +158,14 @@ def userfeedback():
     return progress
 
 
-    """
-        email function:
-            calls send_email function which send emails to all users
-        request body:
+"""
+    email function:
+        calls send_email function which send emails to all users
+    request body:
 
-        return:
-            
-    """
-
+    return:
+        
+"""
 @repeat(every().sunday)
 def email_users():
     users = db.getImageUsers()
@@ -221,7 +220,7 @@ def email_users():
     else:
         return jsonify({'response': "Emails successfully sent"}), 200
 
-    """
+"""
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
     request body: 
