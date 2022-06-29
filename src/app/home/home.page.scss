@@ -1,6 +1,9 @@
+ion-content h2{
+  font-family: 'ZCOOL XiaoWei';
+}
+
 #container {
   text-align: center;
-
   position: absolute;
   left: 0;
   right: 0;
@@ -8,13 +11,23 @@
   transform: translateY(-50%);
 }
 
-
-.dropdown{
+.dropdown {
   display: block;
   margin: 50px;
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 50px;
+  left: 0px;
+}
+
+.text{
+  position: absolute;
+  top: 70px;
+  left: 50px;
+}
+
+.suggestions{
+  position: relative;
+  top: 60px;
 }
 
 ion-list {
@@ -23,88 +36,20 @@ ion-list {
   height: 50px;
 }
 
-ion-select{
+ion-select {
   width: 180px;
   height: 50px;
 }
 
 .divPosition {
-  margin-top: 200px;
+  margin-top: 200px; //change back to 200px
 }
 
 a {
   text-decoration: none;
 }
 
-#outerlayer{
-  border-radius: 20px;
-  width: 200px;
-  height: 100px;
-}
-
-
-ion-popover{
+ion-popover {
   --offset-y: -150px;
   --offset-x: -90px;
 }
-
-#Suggestions
-{
-  width: 100%;
-  height: 30%;
-}
-
-#SuggestionBlock
-{
-  width: 100%;
-  height: 80%;
-  background-color: white;
-}
-
-#Suggestion1
-{
-  display: inline-block;
-  background-color: #960722;
-  width: 30%;
-  height: 100%;
-  margin-left: 20%;
-  border-radius: 15%;
-}
-
-#Suggestion2
-{
-  display: inline-block;
-  background-color: #960722;
-  width: 30%;
-  height: 100%;
-  margin-left: 10%;
-  border-radius: 15%;
-}
-
-#try
-{
-  display: inline-block;
-  margin-left: 30%;
-  width: 40%;
-}
-
-#suggest1
-{
-  height: 80%;
-  width:90%;
-  border-radius: 10%;
-  margin-top: 5%;
-  margin-left: 5%;
-  background-color: white;
-}
-
-#suggest2
-{
-  height: 80%;
-  width:90%;
-  border-radius: 10%;
-  margin-top: 5%;
-  margin-left: 5%;
-  background-color: white;
-}
-

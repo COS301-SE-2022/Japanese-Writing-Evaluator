@@ -51,7 +51,7 @@ class Database:
     """
 
     def getUserByID(self, id):
-        query = " SELECT * FROM users WHERE id = %s"
+        query = " SELECT * FROM users WHERE userid = %s"
         self.curr.execute(query, (id,))
         user = self.curr.fetchone()
         return user
@@ -71,10 +71,10 @@ class Database:
         try:
             self.curr.execute(update_query, (password, email))
             self.conn.commit()
+            return self.curr.rowcount    
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
-        finally:
-            return self.curr.rowcount    
+            return 0
 
 #function used to add a user to the database
     def addUser(self, username, password, email, admin, passwordSalt, avgScore):
@@ -126,7 +126,32 @@ class Database:
             None
     """
     def getImage(self, id):
-        view_query = "SELECT image_path FROM images WHERE id=%s;"
+        view_query = "SELECT * FROM images WHERE id=%s;"
         self.curr.execute(view_query, ([id]))
         images_url = self.curr.fetchall()
         return images_url
+
+    """
+        getImageUsers function:
+            returns all users with id's in images database
+        arguments:
+
+        return:
+            array of all entries in image database
+    """
+    def getImageUsers(self):
+        getUsers = "SELECT * FROM images";
+        self.curr.execute(getUsers)
+        users = self.curr.fetchall()
+        return users
+
+
+    def getfeedback(self, user_id):
+        query = "SELECT score FROM images WHERE id = %s;"
+        self.curr.execute(query, (user_id,))
+        scores = self.curr.fetchall()
+        
+        if(scores == None):
+            return None
+        
+        return scores

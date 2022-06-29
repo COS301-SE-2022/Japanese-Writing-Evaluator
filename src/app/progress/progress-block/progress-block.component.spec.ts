@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { KanjiPage } from './kanji.page';
+import { ProgressBlockComponent } from './progress-block.component';
 
-describe('KanjiPage', () => {
-  let component: KanjiPage;
-  let fixture: ComponentFixture<KanjiPage>;
+describe('ProgressBlockComponent', () => {
+  let component: ProgressBlockComponent;
+  let fixture: ComponentFixture<ProgressBlockComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ KanjiPage ],
+      declarations: [ ProgressBlockComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(KanjiPage);
+    fixture = TestBed.createComponent(ProgressBlockComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

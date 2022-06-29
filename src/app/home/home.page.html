@@ -1,52 +1,51 @@
+<link href='https://fonts.googleapis.com/css?family=ZCOOL XiaoWei' rel='stylesheet'>
 
-<ion-content [fullscreen]="true">
-  
- <div class="dropdown">
-    <p><b>Select writing style:</b></p>
+<ion-content class="ion-padding">
+  <ion-toolbar id="guestBtn">
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+  </ion-toolbar><br/>
+
+  <div class="text"><b>Select writing style:</b></div>
+  <div class="dropdown"> <!---->
     <ion-list>
-
       <ion-item color="transparent" lines="none">
-        <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover">
-          <ion-select-option value="Hiragana">Hiragana</ion-select-option>
-          <ion-select-option value="Kanji">Kanji</ion-select-option>
+        <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover" class="dropMenu">
+          <ion-select-option value="Hiragana" id="firstOption">Hiragana</ion-select-option>
           <ion-select-option value="Katakana">Katakana</ion-select-option>
+          <ion-select-option value="Kanji">Kanji</ion-select-option>
         </ion-select>
       </ion-item>
     </ion-list>
   </div>
 
-  <div id="Suggestions" *ngIf="ifGroup(groups[0])">
-    <h1 >Vowels</h1>
-    <div id="SuggestionBlock" *ngFor="let image of images">
-      <ng-component *ngIf="image.group === groups[0]">
-        <ion-row >
-          <div >
-            <img alt="Suggestion" id="suggest" [src]="image.uploadedImage">
-            <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
-          </div>
-        </ion-row>
-      </ng-component>  
-    </div>
+  <!-- SUGGESTIONS -->
+  <div class="suggestions">
+    <h2>{{headingOne}}</h2>
+    <ion-grid>
+      <ion-row>
+          <ion-col>
+            <app-block-try-char [letter]='vowelOne' [translate]='translateOne' [group]='style'></app-block-try-char>
+          </ion-col>
+          <ion-col>
+            <app-block-try-char [letter]='vowelTwo' [translate]='translateTwo' [group]='style'></app-block-try-char>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <app-block-try-char [letter]='vowelThree' [translate]='translateThree' [group]='style'></app-block-try-char>
+        </ion-col>
+        <ion-col>
+          <app-block-try-char [letter]='vowelFour' [translate]='translateFour' [group]='style'></app-block-try-char>
+        </ion-col>
+    </ion-row>
+  </ion-grid>
   </div>
 
-  <div id="Suggestions" *ngIf="ifGroup(groups[1])">
-    <h1 >Group K</h1>
-    <div id="SuggestionBlock" *ngFor="let image of images">
-      <ng-component *ngIf="image.group === groups[1]">
-        <ion-row >
-          <div >
-            <img alt="Suggestion" id="suggest" [src]="image.uploadedImage">
-            <ion-button  color="dark" id="try" (click)="showUploadPage(image)">Try</ion-button>
-          </div>
-        </ion-row>
-      </ng-component>  
-    </div>
-  </div>
+
 </ion-content>
 
-
-<!-- tabs for the navigation bar-->
-<ion-footer>
+  <!-- tabs for the navigation bar-->
+<ion-footer *ngIf="!ifGuest()">
   <ion-tab-bar>
     <ion-tabs>
       <ion-row>
@@ -60,7 +59,7 @@
         </ion-col>
 
         <ion-col size="4">
-          <a href="home">
+          <a [routerLink]="['/progress']">
             <ion-tab-button >
               <ion-icon name="analytics"></ion-icon>
               <ion-label>Progress</ion-label>
@@ -71,3 +70,4 @@
     </ion-tabs>
   </ion-tab-bar>
 </ion-footer>
+

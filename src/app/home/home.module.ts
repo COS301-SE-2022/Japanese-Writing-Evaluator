@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { ProgressPage } from '../progress/progress.page';
+import { BlockTryCharComponent } from './block-try-char/block-try-char.component';
 
 
 @NgModule({
@@ -16,7 +17,7 @@ import { ProgressPage } from '../progress/progress.page';
     HomePageRoutingModule,
     ReactiveFormsModule
   ],
-  declarations: [HomePage],
+  declarations: [HomePage, BlockTryCharComponent],
   providers: [ProgressPage]
 })
 export class HomePageModule {
