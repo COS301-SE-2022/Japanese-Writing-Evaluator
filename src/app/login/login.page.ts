@@ -27,12 +27,7 @@ export class LoginPage implements OnInit {
     const username = this.login.controls.username.value;
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
     if (username === '') {
-      if (!localStorage.getItem('id')) {
-        localStorage.setItem('id','guest');
-      }
-      else{
-        localStorage.setItem('id','guest');
-      }
+      localStorage.setItem('id','guest');
       this.router.navigate(['/home']);
     } else if (!(username === '')) {
       // if (!localStorage.getItem('id')) {

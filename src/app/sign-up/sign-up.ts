@@ -6,9 +6,9 @@ export class SignUp
 
   constructor(username: string, email: string, password: string)
   {
-    username = username;
-    email = email;
-    password = password;
+    SignUp.username = username;
+    SignUp.email = email;
+    SignUp.password = password;
   }
 
 }
