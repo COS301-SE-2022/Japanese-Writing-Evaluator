@@ -5,7 +5,7 @@ from flask import jsonify
 class Authentication:
     def __init__(self, db):
         self.db = db
-        return
+
     """
         resetPassword function:
             calls update password to change the password
@@ -16,7 +16,7 @@ class Authentication:
             json response
     """
 
-    def resetPassword(self, email, password):
+    def resetPassword(self,email, password):
         editedRow = self.db.updatePassword(email, password)
         if editedRow == 1:
             return jsonify({'response': "password reset successful."}), 200
@@ -24,15 +24,12 @@ class Authentication:
             return jsonify({'response': "password reset failed."}), 401
 
     """
-        Register function:
-            adds a new user to the system if they do not already exist
-        request body: 
-            email: the email of a new user
-            password: their password
-            username: and their username
-        return:
-            json response
+
+        Register
+        Takes in a post or get request and adds the user to the database
+
     """
+
     def register(self, email, password, username):
         try:
             Finduser = self.db.getUserByEmail(email)
