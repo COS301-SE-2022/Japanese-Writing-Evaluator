@@ -53,3 +53,5 @@ history = CNN.fit(train_imgs, train_labels, epochs=45,
                     validation_data=(test_imgs, test_labels))
 print(history)
 CNN.summary()
+
+CNN.save("characterRec.h5")
