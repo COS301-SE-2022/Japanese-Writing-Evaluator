@@ -1,20 +1,18 @@
+// ion-content h1,
+// h4 {
+//   font-family: "ZCOOL XiaoWei";
+// }
 
+// ion-content h4{
+//   font-family: 'ZCOOL XiaoWei';
+// }
 
-ion-content h1{
-  font-family: 'ZCOOL XiaoWei';
-}
-
-ion-content h4{
-  font-family: 'ZCOOL XiaoWei';
-}
-
-
-.container{
+.container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 20px;
 }
 
-.space{
+.space {
   padding: 5px;
 }
