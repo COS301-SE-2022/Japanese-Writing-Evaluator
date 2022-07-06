@@ -8,6 +8,13 @@
  height: 70px;
 }
 
+.textOne{
+  position: fixed;
+  left: 47.5%;
+  top: 65%;
+  font-family: 'ZCOOL XiaoWei';
+}
+
 //infinity circles
 .infinity-loader .bg div, .infinity-loader > .fg > div > div{
   width: 70px;
@@ -19,8 +26,8 @@
 }
 
 // right circle
-.infinity-loader .bg .right-bg{
-   transform: translateX(100%);
+.infinity-loader .right-bg{
+   transform: translate(100%, 0);
    left: -10px;
 }
 
@@ -70,5 +77,8 @@
 }
 //defining spin
 @keyframes spin {
-  50%,100%{transform: rotate(495deg);}
+  50%,
+  100%{
+    transform: rotate(495deg);
+  }
 }
