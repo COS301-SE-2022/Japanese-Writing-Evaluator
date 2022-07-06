@@ -9,7 +9,7 @@
 }
 
 //infinity circles
-.infinity-loader .bg div{
+.infinity-loader .bg div, .infinity-loader > .fg > div > div{
   width: 70px;
   height: 70px;
   border: 10px solid #aaa; //outer background is gray
@@ -22,4 +22,53 @@
 .infinity-loader .bg .right-bg{
    transform: translateX(100%);
    left: -10px;
+}
+
+
+//inner infinity circles
+.infinity-loader > .fg > div > div{
+  border-color: #960722 #960722 transparent transparent;
+  transform: rotate(135deg);
+  animation: spin 1s linear infinite;
+  position: static;
+}
+
+.infinity-loader > .fg > div{
+  clip: rect(0, 70px,35px,0);
+  position: absolute; /*Needed for clip*/
+
+}
+
+.infinity-loader > .fg > .bottom-right-rect{
+  left: -10px;
+  transform: translateX(100%) scale(1, -1);
+}
+
+.infinity-loader > .fg > .bottom-right-rect > div{
+  animation-delay: .25s;
+}
+
+.infinity-loader > .fg > .top-right-rect{
+  left: -10px;
+  transform: translateX(100%) scale(-1, 1);
+}
+
+.infinity-loader > .fg > .top-right-rect > div{
+  animation-delay: .5s;
+}
+
+.infinity-loader > .fg > .bottom-left-rect{
+  transform: scale(-1);
+}
+
+.infinity-loader > .fg > .bottom-left-rect > div{
+  animation-delay: .75s;
+}
+
+.infinity-loader > .fg{
+  filter: drop-shadow(0 0 6px #960722); //glow effect
+}
+//defining spin
+@keyframes spin {
+  50%,100%{transform: rotate(495deg);}
 }
