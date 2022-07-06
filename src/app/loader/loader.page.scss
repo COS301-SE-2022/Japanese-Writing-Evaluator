@@ -1,0 +1,8 @@
+//infinity circles
+.infinity-loader .bg div{
+  width: 70px;
+  height: 70px;
+  border: 10px solid #aaa; //outer background is gray
+  box-sizing: border-box;
+  border-radius: 50%;
+}
