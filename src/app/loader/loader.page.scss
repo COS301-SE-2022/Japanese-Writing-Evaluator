@@ -1,3 +1,13 @@
+//infinity sign
+.infinity-loader{
+ position: fixed;
+ left: 50%;
+ top: 50%;
+ transform: translate(-50%, 50%);
+ width: 130px;
+ height: 70px;
+}
+
 //infinity circles
 .infinity-loader .bg div{
   width: 70px;
@@ -5,4 +15,11 @@
   border: 10px solid #aaa; //outer background is gray
   box-sizing: border-box;
   border-radius: 50%;
+  position: absolute;
+}
+
+// right circle
+.infinity-loader .bg .right-bg{
+   transform: translateX(100%);
+   left: -10px;
 }
