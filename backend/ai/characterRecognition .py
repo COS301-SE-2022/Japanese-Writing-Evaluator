@@ -1,3 +1,4 @@
+from multiprocessing.spawn import prepare
 import os
 import tensorflow as tf
 from tensorflow import keras
@@ -21,19 +22,19 @@ from sklearn.model_selection import train_test_split
         Activation Function:
             reLU (more reliable and accelarates the convergence)
 """
-CNN = keras.Sequential()
-CNN.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 1)))
-CNN.add(keras.layers.MaxPooling2D((2, 2)))
+rr_model = keras.Sequential()
+rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 1)))
+rr_model.add(keras.layers.MaxPooling2D((2, 2)))
 
-CNN.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-CNN.add(keras.layers.MaxPooling2D((2, 2)))
+rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
+rr_model.add(keras.layers.MaxPooling2D((2, 2)))
 
-CNN.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-CNN.add(keras.layers.MaxPooling2D((2, 2)))
+rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
+rr_model.add(keras.layers.MaxPooling2D((2, 2)))
 
-CNN.add(keras.layers.Flatten())
-CNN.add(keras.layers.Dense(64, activation='relu'))
-CNN.add(keras.layers.Dense(10)) # the number of labels will replace the ten 
+rr_model.add(keras.layers.Flatten())
+rr_model.add(keras.layers.Dense(64, activation='relu'))
+rr_model.add(keras.layers.Dense(10)) # the number of labels will replace the ten 
   
 data_list = os.listdir('data_path')
 data = np.array([np.array(Image.open('data_path'+ '/' + img)).flatten()
@@ -46,12 +47,17 @@ shuffled_data , shuffled_labels = shuffle(data, data_labels, random_state = 2)
 
 #split the data into training and testing data
 train_imgs, test_imgs, train_labels, test_labels = train_test_split(shuffled_data, shuffled_labels, test_size = 0.20, random_state = 2)
-CNN.compile(optimizer='adam',
+rr_model.compile(optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
-history = CNN.fit(train_imgs, train_labels, epochs=45, 
+history = rr_model.fit(train_imgs, train_labels, epochs=45, 
                     validation_data=(test_imgs, test_labels))
 print(history)
-CNN.summary()
+rr_model.summary()
 
-CNN.save("characterRec.h5")
+rr_model.save("characterRec.h5")
+
+
+# prediction
+# pre = rr_model.predict(prepare('test_img'))
+# character = int(pre[0][0])
