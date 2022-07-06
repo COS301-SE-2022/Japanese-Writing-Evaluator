@@ -10,13 +10,18 @@ class Evaluator(object):
         
     def prepare(self):
         i = Image.open(self.file)
-        img = i.resize((28,28))
+        img = i.resize((32,32))
         gray_img = img.convert('L')
         test_img = np.array([np.array(gray_img).flatten()],'f')
-        test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
+        test_img = test_img.reshape(test_img.shape[0], 32, 32, 1)
         return test_img
 
+    def testCharacter(self):
+        model = tf.keras.models.load_model('backend/ai/characterRec.h5')
+        self.char  = float(model.predict([self.prepare()])[0][0])
+
     def testImage(self):
+        self.testCharacter()
         if(self.char == 'A'):
             model = tf.keras.models.load_model('backend/ai/modelA.h5')
             self.prediction = float(model.predict([self.prepare()])[0][0])
