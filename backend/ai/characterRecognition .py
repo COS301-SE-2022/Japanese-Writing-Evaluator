@@ -56,8 +56,3 @@ print(history)
 rr_model.summary()
 
 rr_model.save("characterRec.h5")
-
-
-# prediction
-# pre = rr_model.predict(prepare('test_img'))
-# character = int(pre[0][0])
