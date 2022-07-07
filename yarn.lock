@@ -206,6 +206,13 @@
     "@angular-eslint/bundled-angular-compiler" "13.0.1"
     "@typescript-eslint/experimental-utils" "5.3.0"
 
+"@angular/animations@^14.0.4":
+  version "14.0.4"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-14.0.4.tgz#cd483faa04f0c379c77b047a2e35b1823c7f435f"
+  integrity sha512-+Qe+wLA0DOHlOdFRQSEJoenhFm5zcKwkDItqAFT5NVYOT04yxXq8NFRIHSbqn468qR70EkX514lKi6pr6nxGYQ==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular/cli@^13.3.5":
   version "13.3.5"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-13.3.5.tgz#908ff97f59836d1dbd79d6cae85337ddc5f9ff37"

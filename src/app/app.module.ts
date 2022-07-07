@@ -7,7 +7,9 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { LoadingInterceptor } from './Interceptor/loader.interceptor';
+import { UploadPage } from './upload/upload.page';
 
 
 
@@ -21,7 +23,11 @@ import { HttpClientModule } from '@angular/common/http';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
+    UploadPage
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
