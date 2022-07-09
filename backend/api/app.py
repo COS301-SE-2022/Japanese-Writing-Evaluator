@@ -23,6 +23,7 @@ from authentication import Authentication
 from image import Image
 from feedback import Feedback
 from send_email import Send_Email
+import event_bus
 
 load_dotenv()
 
@@ -70,7 +71,8 @@ def lancher():
 """
 @app.route('/password/reset', methods = ['PUT'])
 def callResetPassword():
-    return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
+    # return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
+    return event_bus.event_resetPassword(str(request.json["email"]), str(request.json["password"]))
 
 """
     call Register function:
@@ -84,7 +86,8 @@ def callResetPassword():
 """
 @app.route('/register', methods = ['POST', 'GET'])
 def callRegister():
-    return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    # return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
@@ -98,7 +101,8 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
+    # return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
+    return event_bus.event_uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
 
 """
     callViewImages function:
