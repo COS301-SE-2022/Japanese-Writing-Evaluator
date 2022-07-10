@@ -41,10 +41,6 @@ class Image:
     #Image service
     def uploadImage(self, id, image_char, image, file):
         return self.sendImage(id, image_char, image, file)
-        # if score == None:
-        #     return jsonify({'response': "image upload failed."}), 401
-        # else:
-        #     return jsonify({'response': "image upload successful.", "score":score}), 200
 
     """
         viewImages function:
@@ -94,20 +90,6 @@ class Image:
             store = jsonify(res)
             print(store.status_code)
             return json(store)
-            # score = event_bus.event_sendToEvaluator(image_char)
-            # if(score == None):
-            #     return jsonify({'response': "image evaluation failed."}), 401
-            # else:
-            #     storeToDB = event_bus.event_saveToDB(id, file, image_char, score)
-            #     if(storeToDB == true):
-            #         return score
-            #     else:
-            #         return jsonify({'response': "Database storage failed"}), 401
-
-            # compare = Evaluator("../api/imageToSave.png", image_char)
-            # score = compare.testImage() # call the AI
-            # image_path = "/users/"+str(id)+"/"+file
-            # self.db.saveImage(id, image_path, image_char, score)
         except:
             return None
 
