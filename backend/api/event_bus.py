@@ -9,10 +9,13 @@ sys.path.insert(1, '../email_user')
 
 from database import Database
 from image import Image
+import evalutor
+from imageDB import imageDB
 
 db = Database()
 auth = Authentication(db)
-img = Image(db)
+img = Image
+imagedb = imageDB(db)
 event_bus = []
 
 def executeBus(event_number):
@@ -31,7 +34,7 @@ def event_register(email, password, username):
     return executeBus(event_number)
 
 def event_uploadImage(id, imagechar, image, file):
-    event_bus.append(partial(img.uploadImage, id, imagechar, image, file))
+    event_bus.append(partial(img.uploadImage, img, id, imagechar, image, file))
     event_number = len(event_bus) - 1
     statusCode = jsonify(executeBus(event_number))
     return event_sendImage(id, imagechar, image, file, statusCode)
@@ -52,12 +55,12 @@ def event_sendImage(id, image_char, image, file, storageExitCode):
         return jsonify({"response": "Storage to firebase failed"}), storageExitCode
 
 def event_sendToEvaluator(image_char):
-    event_bus.append(partial(img.sendToEvaluator, image_char))
+    event_bus.append(partial(evalutor.sendToEvaluator, image_char))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 
 def event_saveToDB(id, file, image_char, score):
-    event_bus.append(partial(img.saveToDB, id, file, image_char, score))
+    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 

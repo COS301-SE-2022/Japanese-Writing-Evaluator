@@ -9,8 +9,7 @@ import os
 import json
 
 class Image:
-    def __init__(self,db):
-        self.db = db
+    def __init__(self):
         self.config = {
             'apiKey': os.getenv('FB_APIKEY'),
             'authDomain': os.getenv('FB_authDomain'),
@@ -40,7 +39,7 @@ class Image:
     """
     #Image service
     def uploadImage(self, id, image_char, image, file):
-        return self.sendImage(id, image_char, image, file)
+        return self.sendImage(self, id, image_char, image, file)
 
     """
         viewImages function:
@@ -50,7 +49,6 @@ class Image:
         return:
             json response
     """
-    #Image service
     def viewImages(self, id):
         images = self.db.getImage(id)
         if images:
@@ -79,7 +77,6 @@ class Image:
         return:
             json response
     """
-    #Image Service
     def sendImage(self, id, image_char, image, file):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
@@ -93,18 +90,6 @@ class Image:
         except:
             return None
 
-    #AI Evaluation service
-    def sendToEvaluator(self, image_char):
-        compare = Evaluator("../api/imageToSave.png", image_char)
-        score = compare.testImage() # call the AI
-        return score
-
-    #Image information service
-    def saveToDB(self, id, file, image_char, score):
-        image_path = "/users/"+str(id)+"/"+file
-        return self.db.saveImage(id, image_path, image_char, score)
-
-
     """
         getCharacters function:
             gets all the Hiragana charatcers from the firebase storage
@@ -113,7 +98,6 @@ class Image:
         return:
             returns a json object containing grouped image urls
     """
-    #Image service
     def getCharacters(self):
         try:
             allDirectories = self.storage.list_files()
@@ -199,26 +183,3 @@ class Image:
         
         except Exception as e:
             return jsonify({'response': str(e)}), 401
-    """
-        guest Upload Image function:
-            uploads teh given image to firebase and sends it to the evaluator
-        parameters: 
-            image_char: the charector of the image
-            image: the guest user image
-        return:
-            json response
-    """
-
-    #AI Evaluation sevice
-    def guestUploadImage(self, image_char, image):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-            
-        e = Evaluator('imageTosave.png', image_char)
-        score = e.testImage() # call the AI
-        print(score)
-        if score == None:
-            return jsonify({'response': "image evaluation Failed."}), 401
-        else:
-            return jsonify({'response': "image evaluation successful.", "score":score}), 200

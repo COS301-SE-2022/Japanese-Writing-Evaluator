@@ -31,7 +31,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 db = Database()
 auth = Authentication(db)
-img = Image(db)
+img = Image
 feedback = Feedback(db)
 send = Send_Email()
 CORS(app)
