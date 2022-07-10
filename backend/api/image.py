@@ -39,8 +39,17 @@ class Image:
     """
     #Image service
     def uploadImage(self, id, image_char, image, file):
-        return self.sendImage(self, id, image_char, image, file)
-
+        image = image.partition(",")[2]
+        with open("imageToSave.png", "wb") as fh:
+            fh.write(base64.b64decode(image))
+            
+        try:
+            res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
+            store = jsonify(res)
+            print(store.status_code)
+            return json(store)
+        except:
+            return None
     """
         viewImages function:
             calls get images to send the url to front-end 
@@ -66,29 +75,6 @@ class Image:
             return jsonify({'response': response}), 200
         else:
             return jsonify({'response': "view image failed."}), 401
-
-    """
-        send Image function:
-            send the image the user upload to firebase 
-        parameters: 
-            image: the user uploaded image from front-end
-            id: the unique id of the user
-            image_char: the character of the uploaded image
-        return:
-            json response
-    """
-    def sendImage(self, id, image_char, image, file):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-            
-        try:
-            res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
-            store = jsonify(res)
-            print(store.status_code)
-            return json(store)
-        except:
-            return None
 
     """
         getCharacters function:
