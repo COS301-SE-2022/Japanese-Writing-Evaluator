@@ -58,3 +58,89 @@ h1, h4{
   transform: rotate(135deg);
   -webkit-transform: rotate(135deg);
 }
+
+.infinity-loader{
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, 50%);
+  width: 130px;
+  height: 70px;
+ }
+ 
+ .textOne{
+   position: fixed;
+   left: 47.5%;
+   top: 65%;
+   font-family: 'ZCOOL XiaoWei';
+ }
+ 
+ //infinity circles
+ .infinity-loader .bg div, .infinity-loader > .fg > div > div{
+   width: 70px;
+   height: 70px;
+   border: 10px solid #aaa; //outer background is gray
+   box-sizing: border-box;
+   border-radius: 50%;
+   position: absolute;
+ }
+ 
+ // right circle
+ .infinity-loader .right-bg{
+    transform: translate(100%, 0);
+    left: -10px;
+ }
+ 
+ 
+ //inner infinity circles
+ .infinity-loader > .fg > div > div{
+   border-color: #960722 #960722 transparent transparent;
+   transform: rotate(135deg);
+   animation: spin 1s linear infinite;
+   position: static;
+ }
+ 
+ .infinity-loader > .fg > div{
+   clip: rect(0, 70px,35px,0);
+   position: absolute; /*Needed for clip*/
+ 
+ }
+ 
+ .infinity-loader > .fg > .bottom-right-rect{
+   left: -10px;
+   transform: translateX(100%) scale(1, -1);
+ }
+ 
+ .infinity-loader > .fg > .bottom-right-rect > div{
+   animation-delay: .25s;
+ }
+ 
+ .infinity-loader > .fg > .top-right-rect{
+   left: -10px;
+   transform: translateX(100%) scale(-1, 1);
+ }
+ 
+ .infinity-loader > .fg > .top-right-rect > div{
+   animation-delay: .5s;
+ }
+ 
+ .infinity-loader > .fg > .bottom-left-rect{
+   transform: scale(-1);
+ }
+ 
+ .infinity-loader > .fg > .bottom-left-rect > div{
+   animation-delay: .75s;
+ }
+ 
+ .infinity-loader > .fg{
+   filter: drop-shadow(0 0 6px #960722); //glow effect
+ }
+ //defining spin
+ @keyframes spin {
+   50%,
+   100%{
+     transform: rotate(495deg);
+   }
+ }
+
+

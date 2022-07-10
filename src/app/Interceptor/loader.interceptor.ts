@@ -68,12 +68,38 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('upload')){
+            const msg: string = '<link href="https://fonts.googleapis.com/css?family=ZCOOL XiaoWei" rel="stylesheet">'+
+            '<ion-content>'+
+              '<div class="infinity-loader">'+
+                '<div class="bg">'+
+                 '   <div class="left-bg"></div>'+
+                  '  <div class="right-bg"></div>'+
+                '</div>'+
+                '<div class="fg"> <!--foreground circles-->'+
+                  '<div class="top-left-rect">'+
+                    '<div></div>'+
+                  '</div>'+
+                  '<div class="bottom-right-rect">'+
+                    '<div></div>'+
+                  '</div>'+
+                  '<div class="top-right-rect">'+
+                    '<div></div>'+
+                  '</div>'+
+                  '<div class="bottom-left-rect">'+
+                    '<div></div>'+
+                  '</div>'+
+                '</div>'+
+              '</div>'+
+              '<p class="textOne"><b>LOADING...</b></p>'+
+            '</ion-content>';
             this.loadingController.getTop().then( isloading => {
                 if (!isloading) {
                     //let animeBuilder: AnimationBuilder = new AnimationBuilder();
                     this.loadingController.create({
-                        spinner: 'dots',
+                        spinner: null,
+                        message: msg,
                         animated: true,
+                        cssClass: 'loader'
                         // enterAnimation: this.animeBuilder.build ,
                         // leaveAnimation: animeBuilder
                     }).then(loader => loader.present());
