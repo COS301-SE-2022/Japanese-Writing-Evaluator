@@ -114,9 +114,8 @@ def callUploadImage():
 """
 
 @app.route('/progress', methods = ['GET', 'POST'])
-# @token_required
+@token_required
 def callViewImages():
-    # return img.viewImages(int(request.json["id"]))
     return event_bus.event_progress(int(request.json["id"]))
 
 
@@ -132,7 +131,6 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # user = auth.login(str(request.json["email"]), str(request.json["password"]))
     user = event_bus.event_login(str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
@@ -155,7 +153,6 @@ def login():
 """
 @app.route('/home', methods=['GET'])
 def home():
-    # return img.getCharacters()
     return event_bus.event_getCharacters()
 
 @app.route('/feedback', methods = ['GET','POST'])
@@ -238,7 +235,6 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    # return img.guestUploadImage(str(request.json["imagechar"]), str(request.json["image"]))
     return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]))
 
 if __name__ == '__main__':
