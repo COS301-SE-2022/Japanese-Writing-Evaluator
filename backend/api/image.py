@@ -1,3 +1,4 @@
+from sqlalchemy import true
 from evalutor import Evaluator
 from flask import jsonify
 import base64
@@ -37,12 +38,13 @@ class Image:
         return:
             json response
     """
+    #Image service
     def uploadImage(self, id, image_char, image, file):
-        score = self.sendImage(id, image_char, image, file)
-        if score == None:
-            return jsonify({'response': "image upload failed."}), 401
-        else:
-            return jsonify({'response': "image upload successful.", "score":score}), 200
+        return self.sendImage(id, image_char, image, file)
+        # if score == None:
+        #     return jsonify({'response': "image upload failed."}), 401
+        # else:
+        #     return jsonify({'response': "image upload successful.", "score":score}), 200
 
     """
         viewImages function:
@@ -52,7 +54,7 @@ class Image:
         return:
             json response
     """
-
+    #Image service
     def viewImages(self, id):
         images = self.db.getImage(id)
         if images:
@@ -81,20 +83,45 @@ class Image:
         return:
             json response
     """
+    #Image Service
     def sendImage(self, id, image_char, image, file):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.b64decode(image))
             
         try:
-            self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
-            compare = Evaluator("../api/imageToSave.png", image_char)
-            score = compare.testImage() # call the AI
-            image_path = "/users/"+str(id)+"/"+file
-            self.db.saveImage(id, image_path, image_char, score)
-            return score
+            res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
+            store = jsonify(res)
+            print(store.status_code)
+            return json(store)
+            # score = event_bus.event_sendToEvaluator(image_char)
+            # if(score == None):
+            #     return jsonify({'response': "image evaluation failed."}), 401
+            # else:
+            #     storeToDB = event_bus.event_saveToDB(id, file, image_char, score)
+            #     if(storeToDB == true):
+            #         return score
+            #     else:
+            #         return jsonify({'response': "Database storage failed"}), 401
+
+            # compare = Evaluator("../api/imageToSave.png", image_char)
+            # score = compare.testImage() # call the AI
+            # image_path = "/users/"+str(id)+"/"+file
+            # self.db.saveImage(id, image_path, image_char, score)
         except:
             return None
+
+    #AI Evaluation service
+    def sendToEvaluator(self, image_char):
+        compare = Evaluator("../api/imageToSave.png", image_char)
+        score = compare.testImage() # call the AI
+        return score
+
+    #Image information service
+    def saveToDB(self, id, file, image_char, score):
+        image_path = "/users/"+str(id)+"/"+file
+        return self.db.saveImage(id, image_path, image_char, score)
+
 
     """
         getCharacters function:
@@ -104,6 +131,7 @@ class Image:
         return:
             returns a json object containing grouped image urls
     """
+    #Image service
     def getCharacters(self):
         try:
             allDirectories = self.storage.list_files()
@@ -198,6 +226,8 @@ class Image:
         return:
             json response
     """
+
+    #AI Evaluation sevice
     def guestUploadImage(self, image_char, image):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
