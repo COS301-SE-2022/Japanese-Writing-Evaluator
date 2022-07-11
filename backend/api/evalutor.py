@@ -53,7 +53,7 @@ def guestUploadImage(image_char, image):
     if score == None:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful.", "score":score}), 200
+        return jsonify({'response': "image evaluation successful, score: {}".format(score)}), 200
 
 def sendToEvaluator(image_char):
     compare = Evaluator("../api/imageToSave.png", image_char)

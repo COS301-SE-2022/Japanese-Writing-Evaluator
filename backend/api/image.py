@@ -37,7 +37,6 @@ class Image:
         return:
             json response
     """
-    #Image service
     def uploadImage(self, id, image_char, image, file):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
@@ -50,6 +49,7 @@ class Image:
             return json(store)
         except:
             return None
+
     """
         viewImages function:
             calls get images to send the url to front-end 
@@ -58,8 +58,7 @@ class Image:
         return:
             json response
     """
-    def viewImages(self, id):
-        images = self.db.getImage(id)
+    def viewImages(self, images):
         if images:
             response = []
             i = 0

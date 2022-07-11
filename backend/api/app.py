@@ -71,7 +71,6 @@ def lancher():
 """
 @app.route('/password/reset', methods = ['PUT'])
 def callResetPassword():
-    # return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
     return event_bus.event_resetPassword(str(request.json["email"]), str(request.json["password"]))
 
 """
@@ -86,7 +85,6 @@ def callResetPassword():
 """
 @app.route('/register', methods = ['POST', 'GET'])
 def callRegister():
-    # return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
     return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
@@ -101,7 +99,6 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    # return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
     return event_bus.event_uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
 
 """
@@ -116,8 +113,7 @@ def callUploadImage():
 @app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
-    return event_bus.event_progress(int(request.json["id"]))
-
+    return event_bus.event_viewImages(int(request.json["id"]))
 
 
 """
