@@ -23,7 +23,7 @@
     <h2>{{headingOne}}</h2>
     <ion-grid>
       <ion-row>
-        <ion-col *ngFor="let item of hiraganaAlphabet">
+        <ion-col *ngFor="let item of currentAlphabet">
             <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
         </ion-col>
       </ion-row>
