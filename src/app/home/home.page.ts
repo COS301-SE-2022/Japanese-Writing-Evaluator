@@ -96,10 +96,16 @@ export class HomePage implements OnInit {
   ];
 
   kanjiAlphabet = [
-    {character: '黒', translation:'black'},
-    {character: '青', translation:'blue'},
-    {character: '緑', translation:'green'},
-    {character: '橙', translation:'orange'},
+    {character: '一', translation:'one'},
+    {character: '二', translation:'two'},
+    {character: '三', translation:'three'},
+    {character: '四', translation:'four'},
+    {character: '五', translation:'five'},
+    {character: '六', translation:'six'},
+    {character: '七', translation:'seven'},
+    {character: '八', translation:'eight'},
+    {character: '九', translation:'nine'},
+    {character: '十', translation:'ten'},
   ];
 
   constructor(private service: AppServiceService, private router: Router) {
@@ -184,7 +190,7 @@ export class HomePage implements OnInit {
 
   // TODO: components are dynamically updated for kanji, #73, Maryam Mohamad Al Mahdi
   navigateKanji(){
-    this.headingOne = 'Colours';
+    this.headingOne = 'Numbers';
 
     this.currentAlphabet = this.kanjiAlphabet;
   }
