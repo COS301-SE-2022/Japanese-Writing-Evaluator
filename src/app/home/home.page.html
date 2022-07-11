@@ -24,8 +24,6 @@
     <ion-grid>
       <ion-row>
         <ion-col *ngFor="let item of hiraganaAlphabet">
-            <!-- <ion-card-header>{{ item.character }}</ion-card-header>
-            <ion-card-content>{{ item.translation }}</ion-card-content> -->
             <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
         </ion-col>
       </ion-row>
