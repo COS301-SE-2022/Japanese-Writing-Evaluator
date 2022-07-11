@@ -1,22 +1,16 @@
 
-ion-content{
+ion-card{
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 220px;
-  background: #03a9f4;
-}
-
-.box{
   position: relative;
   width: 220px;
   height: 220px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   background: #960722;
   border-radius: 10%;
+
 }
 
 .box .percent{
