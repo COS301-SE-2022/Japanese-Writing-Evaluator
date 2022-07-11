@@ -23,22 +23,13 @@
     <h2>{{headingOne}}</h2>
     <ion-grid>
       <ion-row>
-          <ion-col>
-            <app-block-try-char [letter]='vowelOne' [translate]='translateOne' [group]='style'></app-block-try-char>
-          </ion-col>
-          <ion-col>
-            <app-block-try-char [letter]='vowelTwo' [translate]='translateTwo' [group]='style'></app-block-try-char>
-          </ion-col>
+        <ion-col *ngFor="let item of hiraganaAlphabet">
+            <!-- <ion-card-header>{{ item.character }}</ion-card-header>
+            <ion-card-content>{{ item.translation }}</ion-card-content> -->
+            <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
+        </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <app-block-try-char [letter]='vowelThree' [translate]='translateThree' [group]='style'></app-block-try-char>
-        </ion-col>
-        <ion-col>
-          <app-block-try-char [letter]='vowelFour' [translate]='translateFour' [group]='style'></app-block-try-char>
-        </ion-col>
-    </ion-row>
-  </ion-grid>
+    </ion-grid>
   </div>
 
 
