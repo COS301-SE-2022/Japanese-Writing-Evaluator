@@ -6,23 +6,9 @@ import pandas as pd
 from PIL import Image
 import cv2
 class createImages:
-    freq_a = 0
-    freq_a_test = 0
-    a_index =[]
-    a_index_test =[]
-    freq_u = 0 
-    freq_u_test = 0 
-    u_index = []
-    index_A = 0
-    index_U = 0 
-    """
-        Function create_All_test_images:
-        Creates images for the dataset
-        Description:
-        Runs through the train images array and turns np array into a image
-    returns:
-      a folder named dataset_(letter)_test with the images
-    """
+    
+    
+  
     
 
     def  create_All_test_images(self,test_imgs,character_array): 
@@ -36,33 +22,26 @@ class createImages:
             else:
                 os.mkdir(path)
 
-        freq = 0 
-        character = []
-        index = n 
-        for i in test_labels: 
-            if test_labels[i] == index:
-                freq = freq + 1
+            freq = 0
+            character = []
+            index = n 
+            for i in test_labels: 
+                if test_labels[i] == index:
+                    freq = freq + 1
     
-        character = [] * freq 
-        for i in test_labels: 
-            if test_labels[i] == index:
-                character.append(i)
+            character = [] * freq 
+            for i in test_labels: 
+                if test_labels[i] == index:
+                    character.append(i)
     
-        for j in range(0,freq): 
-            index = character[j]
-            filename = "image"
-            number = str(j)
-            extention = ".jpeg"
-            cv2.imwrite(os.path.join(path ,filename+number+extention),test_imgs[index])
-    """
-        Function create_All_train_images:
-        Creates images for the dataset
-        Description:
-        Runs through the train images array and turns np array into a image
-    returns:
-      a folder named dataset_(letter)_train with the images
-    """
-    def create_All_train_images(self,test_imgs,character_array): 
+            for j in range(0,freq):
+                index = character[j]
+                filename = "image"
+                number = str(j)
+                extention = ".jpeg"
+                cv2.imwrite(os.path.join(path,filename+number+extention),test_imgs[index])
+
+    def create_All_train_images(self,train_imgs,character_array): 
         length = len(character_array)
         for n in range (0,length):
             folder_name = '/dataset_' + character_array[n] + '_train'
@@ -73,24 +52,25 @@ class createImages:
             else:
                 os.mkdir(path)
 
-        freq = 0 
-        character = []
-        index = n 
-        for i in train_labels: 
-            if train_labels[i] == index:
-                freq = freq + 1
+            freq = 0
+            character = []
+            index = n 
+            for i in train_labels: 
+                if train_labels[i] == index:
+                    freq = freq + 1
     
-        character = [] * freq 
-        for i in train_labels: 
-            if train_labels[i] == index:
-                character.append(i)
+            character = [] * freq 
+            for i in train_labels: 
+                if train_labels[i] == index:
+                    character.append(i)
     
-        for j in range(0,freq): 
-            index = character[j]
-            filename = "image"
-            number = str(j)
-            extention = ".jpeg"
-            cv2.imwrite(os.path.join(path ,filename+number+extention),train_imgs[index])
+            for j in range(0,freq):
+                index = character[j]
+                filename = "image"
+                number = str(j)
+                extention = ".jpeg"
+                cv2.imwrite(os.path.join(path,filename+number+extention),train_imgs[index])
+
         
 if __name__ == '__main__':
     # Paths
@@ -115,5 +95,5 @@ if __name__ == '__main__':
      #create A training images 
 
     Dataset.create_All_test_images(test_imgs,character_array)
-    Dataset.create_All_train_images(train_imgs,character_array)
+    #Dataset.create_All_train_images(train_imgs,character_array)
 
