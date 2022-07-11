@@ -75,6 +75,16 @@ def event_saveToDB(id, file, image_char, score):
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 
+def event_getImageUsers():
+    event_bus.append(partial(imagedb.getImageUsers))
+    event_number = len(event_bus) - 1
+    return executeBus(event_number)
+
+def event_getUser(id):
+    event_bus.append(partial(imagedb.getUser, id))
+    event_number = len(event_bus) - 1
+    return executeBus(event_number)
+
 def event_login(email, password):
     event_bus.append(partial(auth.login, email, password))
     event_number = len(event_bus) -  1

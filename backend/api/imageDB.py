@@ -11,3 +11,9 @@ class imageDB:
 
     def getImages(self, id):
         return self.db.getImage(id)
+
+    def getImageUsers(self):
+        return self.db.getImageUsers()
+
+    def getUser(self, id):
+        return self.db.getUserByID(id)

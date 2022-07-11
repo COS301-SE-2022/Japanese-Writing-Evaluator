@@ -150,8 +150,7 @@ def home():
 """
 @repeat(every().sunday)
 def email_users():
-    users = db.getImageUsers()
-
+    users = event_bus.event_getImageUsers()
     keep = []
     for i in users:
         if(keep.count(i[0]) == 0):
@@ -172,7 +171,6 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                # store[jCount][1] = 22
                     
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
@@ -186,7 +184,7 @@ def email_users():
 
     contain = []
     for i in store:
-        thisUser = db.getUserByID(i[0])
+        thisUser = event_bus.event_getUser(i[0])
         if(thisUser != None):
             response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
 
