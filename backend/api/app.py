@@ -15,13 +15,7 @@ import numpy as np
 import requests
 
 import sys
-sys.path.insert(0, '../database')
-sys.path.insert(1, '../email_user')
-
-from database import Database
-from authentication import Authentication
-from image import Image
-from feedback import Feedback
+sys.path.insert(0, '../email_user')
 from send_email import Send_Email
 import event_bus
 
@@ -29,10 +23,6 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
-db = Database()
-auth = Authentication(db)
-img = Image
-feedback = Feedback(db)
 send = Send_Email()
 CORS(app)
 
@@ -115,7 +105,6 @@ def callUploadImage():
 def callViewImages():
     return event_bus.event_viewImages(int(request.json["id"]))
 
-
 """
     login function:
         return the user if they exist
@@ -150,13 +139,6 @@ def login():
 @app.route('/home', methods=['GET'])
 def home():
     return event_bus.event_getCharacters()
-
-@app.route('/feedback', methods = ['GET','POST'])
-@token_required
-def userfeedback():
-    progress = feedback.getuserfeedback(db,str(request.json["id"]))
-    return progress
-
 
 """
     email function:
