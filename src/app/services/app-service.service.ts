@@ -56,6 +56,12 @@ export class AppServiceService {
 
   getProgress(){
     // get users progress, feedback for each character practiced
+    const myheaders = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
+    return this.httpclient.post(
+      this.baseURL + 'progress',
+      {'id': localStorage.getItem('id')},
+      { headers: myheaders, observe: 'response'}
+    );
   }
 
   uploadImage(uploadedImg: UploadedImage): Observable<HttpResponse<Score>>{// pass through the image as a parameter
