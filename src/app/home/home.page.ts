@@ -130,22 +130,8 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.service.getHomeImages().subscribe(data => {
-    //   console.log(data);
-    // });
+ 
   }
-
-  // getLetter(char: string)
-  // {
-  //   this.letter = char;
-  //   return this.letter;
-  // }
-
-  // getTranslate(char: string)
-  // {
-  //   this.translate = char;
-  //   return this.translate;
-  // }
 
   onLogout(){
     // this function logs the user out of the system
