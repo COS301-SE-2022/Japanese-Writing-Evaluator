@@ -47,7 +47,7 @@ def event_sendImage(id, image_char, image, file, storageExitCode):
         else:
             storeToDB = event_saveToDB(id, file, image_char, score)
             if(storeToDB == True):
-                return jsonify({'response': "image upload successful, score: {}".format(score)}), 200
+                return jsonify({'response': "image upload successful", 'score': score}), 200
             else:
                 return jsonify({'response': "Database storage failed"}), 401
     else:
