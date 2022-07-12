@@ -117,16 +117,13 @@ export class ProgressPage implements OnInit {
     this.map.set('nine','nine');
     this.map.set('ten','ten');
   }
-  
-  setDisplay(char: string, percent: number)
-  {
-     // TODO: set the character and percentage; #73; Maryam Mohamad Al Mahdi
+  // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
+  setDisplay(char: string, percent: number){
     this.char = char;
     this.percent = percent;
   }
-  
+  // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
   setHome(){
-    // TODO: navigates to home page; #73; Maryam Mohamad Al Mahdi
     this.router.navigate(['/home']);
   }
 
