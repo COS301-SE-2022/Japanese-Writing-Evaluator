@@ -1,9 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ComponentFixture, fakeAsync, TestBed,  tick,  waitForAsync } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
-import { By } from '@angular/platform-browser';
 import { ProgressPage } from '../progress/progress.page';
 import { BlockTryCharComponent } from './block-try-char/block-try-char.component';
 import { HomePage } from './home.page';
