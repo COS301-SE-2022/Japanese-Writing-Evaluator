@@ -23,7 +23,7 @@ from sklearn.model_selection import train_test_split
 """
 
 def createModel():  
-    dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
+    dataset = ['a','fu', 'ha', 'he', 'hi', 'i', 'ke','ki','ma', 'mo', 'n', 'na','ni', 'no', 'o', 'sa', 'se', 'su', 'te', 'to', 'we', 'ya']
     train_sizes = np.ones((len(dataset),), dtype = int)
     test_sizes = np.ones((len(dataset),), dtype = int)
     v = 0
