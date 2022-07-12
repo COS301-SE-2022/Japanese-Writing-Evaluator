@@ -130,7 +130,6 @@ export class HomePage implements OnInit {
   }
 
   ngOnInit(): void {
- 
   }
 
   onLogout(){
