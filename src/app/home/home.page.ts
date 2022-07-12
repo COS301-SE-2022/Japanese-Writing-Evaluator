@@ -129,8 +129,7 @@ export class HomePage implements OnInit {
     return false;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onLogout(){
     // this function logs the user out of the system

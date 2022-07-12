@@ -137,15 +137,23 @@ export class ProgressBlockComponent implements OnInit {
       this.selectedAlphabet = this.kanjiAlphabet;
     }
 
-    this.selectedAlphabet.forEach(element => {
+    // this.selectedAlphabet.forEach(element => {
 
-      if(element.translation === letter)
-      {
-        this.japaneseLetter= element.character;
-        this.translation = element.translation;
-      }
+    //   if(element.translation === letter)
+    //   {
+    //     this.japaneseLetter= element.character;
+    //     this.translation = element.translation;
+    //   }
 
-    });
+    // });
+
+   for (const iterator of this.selectedAlphabet) {
+    if(iterator.translation === letter)
+    {
+      this.japaneseLetter= iterator.character;
+      this.translation = iterator.translation;
+    }
+   }
 
   }
 
