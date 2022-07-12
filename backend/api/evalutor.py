@@ -9,6 +9,8 @@ class Evaluator(object):
         self.file = file
         self.char = input_char
         self.predition = -1
+        self.dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
+        
         
     def prepare(self):
         i = Image.open(self.file)
@@ -19,8 +21,18 @@ class Evaluator(object):
         return test_img
 
     def testCharacter(self):
-        model = tf.keras.models.load_model('backend/ai/characterRec.h5')
-        self.char  = float(model.predict([self.prepare()])[0][0])
+        model = tf.keras.models.load_model('../ai/characterRec.h5')
+        pre = model.predict([self.prepare()]).flatten()
+        print('prediction:\n', pre)
+        # # Apply a sigmoid since our model returns logits
+        pre = tf.nn.sigmoid(pre)
+        print('\prediction:\n', pre)
+
+        pre = tf.where(pre < 0.5, 0, 1)
+        print('\nprediction:\n', pre)
+
+        print('\nprediction:\n', pre.numpy())
+        print('\nprediction:\n', self.dataset[pre.numpy()[0]])
 
     def testImage(self):
         self.testCharacter()
@@ -34,6 +46,6 @@ class Evaluator(object):
             return self.prediction
 
 
-# if __name__ == '__main__':
-#     e = Evaluator('imageTosave.png', 'a')
-#     print(e.testImage())
+if __name__ == '__main__':
+    e = Evaluator('predict_data/kanaBA0.jpg', 'a')
+    e.testCharacter()
