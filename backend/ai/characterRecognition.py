@@ -27,7 +27,7 @@ class CharacterRecognition():
                 i = Image.open('data/dataset_' + n + '_train/' +file)
                 img = i.resize((32,32))
                 gray_img = img.convert('L')
-                gray_img.save('train_data' +'/' + file, ".jpeg")
+                gray_img.save('train_data' +'/' + file, "jpeg")
                 train_labels.append(val)
         var = -1        
         for n in self.dataset:
@@ -36,7 +36,7 @@ class CharacterRecognition():
                 i = Image.open('data/dataset_' + n + '_test/' + file)
                 img = i.resize((32,32))
                 gray_img = img.convert('L')
-                gray_img.save('test_data' +'/' + file, ".jpeg")
+                gray_img.save('test_data' +'/' + file, "jpeg")
                 test_labels.append(var)
                 
         """
