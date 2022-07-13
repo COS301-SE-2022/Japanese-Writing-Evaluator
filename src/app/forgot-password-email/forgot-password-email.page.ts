@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'app-forgot-password-email',
   templateUrl: './forgot-password-email.page.html',
@@ -7,9 +6,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordEmailPage implements OnInit {
 
-  constructor() { }
+  constructor(){}
 
   ngOnInit() {
+  }
+
+  onSubmitEmail(){
   }
 
 }
