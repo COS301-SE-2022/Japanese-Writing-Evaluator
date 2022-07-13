@@ -1,4 +1,4 @@
-import { Character } from './../../shared/character';
+import { Character } from '../../shared/interfaces/character';
 import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
 
 @Component({

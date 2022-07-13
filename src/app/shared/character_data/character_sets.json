@@ -1,0 +1,33 @@
+{
+    "hiragana" : [
+        {"character": "あ", "translation":"A"},
+        {"character": "い", "translation":"I"},
+        {"character": "う", "translation":"U"},
+        {"character": "え", "translation":"E"},
+        {"character": "お", "translation":"O"},
+        {"character": "か", "translation":"Ka"},
+        {"character": "ぴ", "translation":"Pi"},
+        {"character": "ぷ", "translation":"Pu"},
+        {"character": "ぺ", "translation":"Pe"},
+        {"character": "ぽ", "translation":"Po"}
+    ],
+    "katakana" : [
+        {"character": "ア", "translation":"A"},
+        {"character": "イ", "translation":"I"},
+        {"character": "ウ", "translation":"U"},
+        {"character": "エ", "translation":"E"}
+    ],
+    "kanji" : [
+        {"character": "一", "translation":"one"},
+        {"character": "二", "translation":"two"},
+        {"character": "三", "translation":"three"},
+        {"character": "四", "translation":"four"},
+        {"character": "五", "translation":"five"},
+        {"character": "六", "translation":"six"},
+        {"character": "七", "translation":"seven"},
+        {"character": "八", "translation":"eight"},
+        {"character": "九", "translation":"nine"},
+        {"character": "十", "translation":"ten"}
+    ]
+
+}
