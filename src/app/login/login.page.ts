@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -25,17 +26,31 @@ export class LoginPage implements OnInit {
   onLogin(){
     const username = this.login.controls.username.value;
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
-   this.appService.isUser(username,password )
-    .subscribe(data =>{
-      console.log(data);
-      if(data.status === 200){
-        console.log('logged in');
-        this.router.navigate(['/home']);
-      }
-      else{
-        alert('Incorrect user information or user does not exist');
-      }
-    });
+    if (username === '') {
+      localStorage.setItem('id','guest');
+      this.router.navigate(['/home']);
+    } else if (!(username === '')) {
+      // if (!localStorage.getItem('id')) {
+      //   localStorage.setItem('id','85');
+      // }
+      // this.router.navigate(['/home']);
+      this.appService.isUser(username,password )
+      .subscribe(data =>{
+        console.log(data.body['user-token'].toString());
+        if(data.status === 200){
+          if (!localStorage.getItem('id')) {
+            localStorage.setItem('id',data.body['data'][1].toString());
+          }
+          if (!localStorage.getItem('token')) {
+            localStorage.setItem('token',data.body['user-token'].toString());
+          }
+          this.router.navigate(['/home']);
+        }
+        else{
+          alert('Incorrect user information or user does not exist');
+        }
+      });
+    }
   }
 
 }

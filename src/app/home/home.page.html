@@ -1,96 +1,73 @@
-<ion-content [fullscreen]="true">
-  <!-- <div id="Suggestions">
-    <h1>Suggestions</h1>
-    <ion-row>
-      <ion-item> -->
-        <!-- *ngFor="let character of characters"load all possible characters-->
-        <!-- <div id="outerlayer">
-          <ion-row>
-            <ion-col>
-               <ion-img  alt="character image" src=""></ion-img> -->
-               <!--[src]=""character.path -->
-            <!-- </ion-col>
-            <ion-col>
-              <ion-button  color="dark">Try</ion-button>
-            </ion-col>
-          </ion-row>
-        </div> -->
+<link href='https://fonts.googleapis.com/css?family=ZCOOL XiaoWei' rel='stylesheet'>
 
-        <!-- <div id="secondSuggestion">
-          <ion-row>
-            <ion-col>
-               <ion-img  alt="character image" src=""></ion-img> -->
-               <!--[src]=""character.path -->
-            <!-- </ion-col>
-            <ion-col>
-              <ion-button  color="dark">Try</ion-button>
-            </ion-col>
-          </ion-row>
-        </div>
+<ion-content class="ion-padding">
+  <ion-toolbar id="guestBtn">
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+  </ion-toolbar><br/>
+
+  <div class="text"><strong>Select writing style:</strong></div>
+  <div class="dropdown"> <!---->
+    <ion-list>
+      <ion-item color="transparent" lines="none">
+        <ion-select value={{style}} [(ngModel)]="style" (ionChange)="writingStyle(style);" interface="popover" class="dropMenu">
+          <ion-select-option value="Hiragana" id="firstOption">Hiragana</ion-select-option>
+          <ion-select-option value="Katakana">Katakana</ion-select-option>
+          <ion-select-option value="Kanji">Kanji</ion-select-option>
+        </ion-select>
       </ion-item>
+    </ion-list>
+  </div>
+
+  <!-- SUGGESTIONS -->
+  <div class="suggestions">
+    <h2>{{headingOne}}</h2>
+    <ion-grid>
+      <ion-row>
+          <ion-col>
+            <app-block-try-char [letter]='vowelOne' [translate]='translateOne' [group]='style'></app-block-try-char>
+          </ion-col>
+          <ion-col>
+            <app-block-try-char [letter]='vowelTwo' [translate]='translateTwo' [group]='style'></app-block-try-char>
+          </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <app-block-try-char [letter]='vowelThree' [translate]='translateThree' [group]='style'></app-block-try-char>
+        </ion-col>
+        <ion-col>
+          <app-block-try-char [letter]='vowelFour' [translate]='translateFour' [group]='style'></app-block-try-char>
+        </ion-col>
     </ion-row>
-  </div> -->
-
-  <div id="Suggestions">
-    <h1>Suggestions</h1>
-
-    <div id="SuggestionBlock">
-      <div id="Suggestion1">
-        <img alt="Suggestion" id="suggest1">
-        <ion-button  color="dark" id="try">Try</ion-button>
-      </div>
-      <div id="Suggestion2">
-        <img alt="Suggestion" id="suggest2">
-        <ion-button  color="dark" id="try">Try</ion-button>
-      </div>
-    </div>
+  </ion-grid>
   </div>
 
 
-  <div id="Progress">
-    <h1>Progress</h1>
-    <ion-item>
-    </ion-item>
-  </div>
-<!--floating button with the plus icon, Upload button-->
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button>
-      <ion-icon name="add-outline"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
 </ion-content>
 
-<!-- tabs for the navigation bar-->
-<ion-footer>
+  <!-- tabs for the navigation bar-->
+<ion-footer *ngIf="!ifGuest()">
   <ion-tab-bar>
     <ion-tabs>
       <ion-row>
-        <ion-col size="4">
-          <a href="#Success"><!--direct to suggestions-->
+        <ion-col size="6">
+          <a ><!--direct to suggestions-->
             <ion-tab-button >
               <ion-icon name="language"></ion-icon>
               <ion-label>Characters</ion-label>
             </ion-tab-button>
           </a>
         </ion-col>
+
         <ion-col size="4">
-          <a href="#Progress">
+          <a [routerLink]="['/progress']">
             <ion-tab-button >
               <ion-icon name="analytics"></ion-icon>
               <ion-label>Progress</ion-label>
             </ion-tab-button>
           </a>
         </ion-col>
-        <ion-col size="4">
-          <a href="">
-            <ion-tab-button >
-              <ion-icon name="images-outline"></ion-icon>
-              <ion-label>Gallery</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-
       </ion-row>
     </ion-tabs>
   </ion-tab-bar>
 </ion-footer>
+

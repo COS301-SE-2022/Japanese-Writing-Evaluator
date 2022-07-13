@@ -1,0 +1,33 @@
+<ion-toolbar>
+  <p class="padding">
+    <ion-button color="light" href="home">
+      <p class="position"><i class="backButton"></i></p>
+    </ion-button>
+  </p>
+</ion-toolbar>
+<ion-content>
+  <div class="horizontalflexbox">
+    <div lines="none" id="backgroundDiv" >
+      <div class="flexbox">
+        <div lines="none" class="character">
+          <h1>{{characterImage.url}}</h1>
+          <!--characterImage.url -->
+          <p>{{characterImage.characterName}}</p> 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="horizontalflexbox">
+    <ion-item lines="none">
+      <div>
+        <ion-label color="black" style="font-family:'ZCOOL XiaoWei'; font-size: larger;">Choose an image:</ion-label>
+        <input type="file" accept="image/*" (change)="getUploadedImage($event)" class="input" >
+      </div>
+    </ion-item>
+  </div>
+
+  <div class="horizontalflexbox">
+    <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
+  </div>
+</ion-content>

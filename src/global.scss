@@ -32,6 +32,29 @@ body{
     font-family:'ZCOOL XiaoWei';
 }
 
-h1{
+h1, h4{
     font-family:'ZCOOL XiaoWei';
+}
+
+
+.padding
+{
+  padding: 5px;
+}
+
+.position
+{
+  margin-top: 18px;
+  margin-left: 5px;
+}
+
+.backButton
+{
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
 }

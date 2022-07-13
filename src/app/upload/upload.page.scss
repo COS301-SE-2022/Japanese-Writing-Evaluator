@@ -1,0 +1,67 @@
+
+#foregroundDiv{
+  width: 210px;
+  height: 210px;
+  background-color: white;
+  border-radius: 10%;
+  // position: relative;
+  // top: 5.5px;
+  // left: 5.5px;
+  
+}
+
+#backgroundDiv{
+  width: 240px;
+  height: 240px;
+  background-color: #960722;
+  border-radius: 10%;
+  box-shadow: 3px 3px 6px -1px rgba(0,0,0,0.68);
+}
+
+.input{
+  height: 40px;
+  outline: auto;
+}
+
+::-webkit-file-upload-button{
+  background-color: black;
+  color: white;
+  font-family:'ZCOOL XiaoWei';
+  border-color: black;
+  height: 40px;
+}
+
+
+
+.horizontalflexbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 5%;
+  margin-top: 10%;
+}
+
+.flexbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.character{
+  width: 210px;
+  height: 210px;
+  background: #ffffff;
+  border-radius: 10%;
+  position: relative;
+  margin: 5%;
+}
+
+.character h1{
+  font-size: 130px;
+  text-align: center;
+}
+
+.character p{
+  padding-bottom: 150px;
+  text-align: center;
+}

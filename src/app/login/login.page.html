@@ -1,12 +1,17 @@
 <ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" >
+  <!--Guest Login button-->
+  <ion-toolbar id="guestBtn">
+    <ion-button slot="end" (click)="onLogin()">guest</ion-button>
+  </ion-toolbar>
+
   <!-- logo -->
   <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
 
   <!-- login form -->
   <div class="flexbox">
     <form [formGroup]="login" (ngSubmit)="onLogin()"><!---->
-      <ion-input class="ion-input form-control" type="text" formControlName="username" placeholder="    Username"></ion-input><br/>
-      <ion-input class="ion-input form-control" type="password" formControlName="password" placeholder="    Password"></ion-input><br/>
+      <ion-input class="ion-input form-control" formControlName="username" type="text" placeholder="    Username"></ion-input><br/>
+      <ion-input class="ion-input form-control" formControlName="password" type="password" placeholder="    Password"></ion-input><br/>
       <p class="ion-text-center">
         <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
       </p>
@@ -23,3 +28,4 @@
 
 </div>
 </ion-content>
+
