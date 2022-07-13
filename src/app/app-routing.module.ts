@@ -30,7 +30,11 @@ const routes: Routes = [
   {
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
+  },  {
+    path: 'forgot-password-email',
+    loadChildren: () => import('./forgot-password-email/forgot-password-email.module').then( m => m.ForgotPasswordEmailPageModule)
   },
+
 
 ];
 
