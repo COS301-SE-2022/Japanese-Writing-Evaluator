@@ -13,7 +13,7 @@ export class HomePage implements OnInit {
   style: string;
   headingOne: string;
 
-  currentAlphabet: { character: string; translation: string}[];
+  currentAlphabet: any;
 
 
   constructor(private service: AppServiceService, private router: Router) {

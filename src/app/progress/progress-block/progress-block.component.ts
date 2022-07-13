@@ -1,3 +1,4 @@
+import { element } from 'protractor';
 import { Character } from '../../shared/interfaces/character';
 import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
 
@@ -15,7 +16,6 @@ export class ProgressBlockComponent implements OnInit {
   translation: string;
   divStyle: string;
   styles: any;
-  selectedAlphabet: {character: string; translation: string}[];
 
   hiraganaAlphabet = [
     {character: 'あ', translation:'A'},
@@ -127,33 +127,21 @@ export class ProgressBlockComponent implements OnInit {
   }
   // TODO: dynamically set the letter, #69, Maryam Mohamad Al Mahdi
   setAlphabet(letter: string, alphabetType: string){
+
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    let element = this.hiraganaAlphabet.find((obj) => obj.translation === letter);
+
     if(alphabetType === 'hiragana'){
-      this.selectedAlphabet = this.hiraganaAlphabet;
+      //no change
     }
     if(alphabetType === 'katakana'){
-      this.selectedAlphabet = this.katakanaAlphabet;
+      element = this.katakanaAlphabet.find((obj) => obj.translation === letter);
     }
     if(alphabetType === 'kanji'){
-      this.selectedAlphabet = this.kanjiAlphabet;
+      element = this.kanjiAlphabet.find((obj) => obj.translation === letter);
     }
-
-    // this.selectedAlphabet.forEach(element => {
-
-    //   if(element.translation === letter)
-    //   {
-    //     this.japaneseLetter= element.character;
-    //     this.translation = element.translation;
-    //   }
-
-    // });
-
-   for (const iterator of this.selectedAlphabet) {
-    if(iterator.translation === letter)
-    {
-      this.japaneseLetter= iterator.character;
-      this.translation = iterator.translation;
-    }
-   }
+      this.japaneseLetter= element.character;
+      this.translation = element.translation;
 
   }
 
