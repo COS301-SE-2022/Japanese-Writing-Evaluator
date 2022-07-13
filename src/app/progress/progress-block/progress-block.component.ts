@@ -15,6 +15,7 @@ export class ProgressBlockComponent implements OnInit {
   translation: string;
   divStyle: string;
   styles: any;
+  selectedAlphabet: {character: string; translation: string}[];
 
   hiraganaAlphabet = [
     {character: 'あ', translation:'A'},
@@ -127,42 +128,33 @@ export class ProgressBlockComponent implements OnInit {
   // TODO: dynamically set the letter, #69, Maryam Mohamad Al Mahdi
   setAlphabet(letter: string, alphabetType: string){
     if(alphabetType === 'hiragana'){
-
-    this.hiraganaAlphabet.forEach(element => {
-
-      if(element.translation === letter)
-      {
-        this.japaneseLetter= element.character;
-        this.translation = element.translation;
-      }
-
-    });
-
+      this.selectedAlphabet = this.hiraganaAlphabet;
     }
     if(alphabetType === 'katakana'){
-
-      this.katakanaAlphabet.forEach(element => {
-
-        if(element.translation === letter)
-        {
-          this.japaneseLetter= element.character;
-          this.translation = element.translation;
-        }
-
-      });
-
+      this.selectedAlphabet = this.katakanaAlphabet;
     }
     if(alphabetType === 'kanji'){
-      this.kanjiAlphabet.forEach(element => {
-
-        if(element.translation === letter)
-        {
-          this.japaneseLetter= element.character;
-          this.translation = element.translation;
-        }
-
-      });
+      this.selectedAlphabet = this.kanjiAlphabet;
     }
+
+    // this.selectedAlphabet.forEach(element => {
+
+    //   if(element.translation === letter)
+    //   {
+    //     this.japaneseLetter= element.character;
+    //     this.translation = element.translation;
+    //   }
+
+    // });
+
+   for (const iterator of this.selectedAlphabet) {
+    if(iterator.translation === letter)
+    {
+      this.japaneseLetter= iterator.character;
+      this.translation = iterator.translation;
+    }
+   }
+
   }
 
 }
