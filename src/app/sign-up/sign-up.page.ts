@@ -39,7 +39,7 @@ export class SignUpPage implements OnInit {
   {
     this.apiService.addUser(this.username, this.email, this.password)
       .subscribe(data => {
-        if(data.status === 200){
+        if(data.status_code === 200){
           this.router.navigate(['/login']);
         }
         // else{
