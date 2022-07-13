@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ForgotPasswordPasswordPage implements OnInit {
 
-  constructor() { }
+  constructor(){}
 
   ngOnInit() {
+  }
+
+  onSubmitPassword(){
   }
 
 }
