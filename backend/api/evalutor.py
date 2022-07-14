@@ -21,17 +21,17 @@ class Evaluator(object):
         return test_img
 
     def testCharacter(self):
-        model = tf.keras.models.load_model('../ai/characterRec.h5')
+        model = tf.keras.models.load_model('../ai/models/characterRec.h5')
         pre = model.predict([self.prepare()]).flatten()
-        print('prediction:\n', pre)
-        # # Apply a sigmoid since our model returns logits
+        # print('prediction:\n', pre)
+        # # # Apply a sigmoid since our model returns logits
         pre = tf.nn.sigmoid(pre)
-        print('\prediction:\n', pre)
+        # print('\prediction:\n', pre)
 
         pre = tf.where(pre < 0.5, 0, 1)
-        print('\nprediction:\n', pre)
+        # print('\nprediction:\n', pre)
 
-        print('\nprediction:\n', pre.numpy())
+        # print('\nprediction:\n', pre.numpy())
         print('\nprediction:\n', self.dataset[pre.numpy()[0]])
 
     def testImage(self):
@@ -47,5 +47,5 @@ class Evaluator(object):
 
 
 if __name__ == '__main__':
-    e = Evaluator('predict_data/kanaBA0.jpg', 'a')
+    e = Evaluator('predict_data/kanaA9.jpg', 'a')
     e.testCharacter()
