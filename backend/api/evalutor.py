@@ -17,16 +17,21 @@ class Evaluator(object):
         img = i.resize((32,32))
         gray_img = img.convert('L')
         test_img = np.array([np.array(gray_img).flatten()],'f')
-        test_img = test_img.reshape(test_img.shape[0], 32, 32, 1)
+        test_img = test_img.resize(28,28)
         return test_img
 
     def testCharacter(self):
+        model = tf.keras.models.load_model('../ai/characterRec.h5')
+        pre = model.predict([self.prepare()]).flatten()
+        pre = tf.nn.sigmoid(pre)
+
+        pre = tf.where(pre < 0.5, 0, 1)
+        print('\nprediction:\n', self.dataset[pre.numpy()[0]])
+        
+    def mockTestCharacter(self):
         model = tf.keras.models.load_model('../ai/models/characterRec.h5')
         pre = model.predict([self.prepare()]).flatten()
-        # print('prediction:\n', pre)
-        # # # Apply a sigmoid since our model returns logits
         pre = tf.nn.sigmoid(pre)
-        # print('\prediction:\n', pre)
 
         pre = tf.where(pre < 0.5, 0, 1)
         # print('\nprediction:\n', pre)
