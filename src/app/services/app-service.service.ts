@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
 import {HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/image';
-import { Score } from '../shared/score';
-import { User } from '../shared/user';
+import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
+import { Score } from '../shared/interfaces/score';
+import { User } from '../shared/interfaces/user';
 
 @Injectable({
   providedIn: 'root'
