@@ -8,10 +8,36 @@ from random import shuffle
 from PIL import Image
 from sklearn.utils import shuffle
 from sklearn.model_selection import train_test_split
+import pandas as pd
+from keras.losses import categorical_crossentropy
+from keras.metrics import categorical_accuracy
 
 class CharacterRecognition():
     def __init__(self):
         self.dataset = ['a','fu', 'ha', 'he', 'hi', 'i', 'ke','ki','ma', 'mo', 'n', 'na','ni', 'no', 'o', 'sa', 'se', 'su', 'te', 'to', 'we', 'ya']
+        self.k49_classmap = pd.read_csv('data/input/k49_classmap.csv')
+        self.k49_classmap.head()
+    
+    def one_hot_encoding(self,y):
+        y_res = np.zeros((len(y), 49))
+        for i in range(len(y)):
+            y_res[i][y[i]] = 1
+        return y_res    
+    
+    def getData(self):
+
+        self.train_imgs = np.load('data/input/k49-train-imgs.npz')['arr_0']
+        self.train_labels = np.load('data/input/k49-train-labels.npz')['arr_0']
+        self.test_imgs = np.load('data/input/k49-test-imgs.npz')['arr_0']
+        self.test_labels = np.load('data/input/k49-test-labels.npz')['arr_0']
+        
+        self.train_imgs = np.expand_dims(self.train_imgs, axis=-1)
+        self.test_imgs = np.expand_dims(self.test_imgs, axis=-1)
+        
+        self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(self.train_imgs, self.train_labels, test_size=0.10)
+        self.y_train = self.one_hot_encoding(self.y_train)
+        self.y_val = self.one_hot_encoding(self.y_val)
+        
         
     def createDatasets(self):
         """
@@ -76,7 +102,7 @@ class CharacterRecognition():
     def createModel(self):  
             
         self.rr_model = keras.Sequential()
-        self.rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 1)))
+        self.rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
         self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
 
         self.rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
@@ -87,19 +113,23 @@ class CharacterRecognition():
 
         self.rr_model.add(keras.layers.Flatten())
         self.rr_model.add(keras.layers.Dense(64, activation='relu'))
-        self.r_model.add(keras.layers.Dense(len(self.dataset))) # the number of labels will replace the ten    
+        self.rr_model.add(keras.layers.Dense(49, activation = "softmax")) # the number of labels will replace the ten    
         
 
 
     def trainModel(self):
         self.rr_model.compile(optimizer='adam',
-                    loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-                    metrics=['accuracy'])
-        history = self.rr_model.fit(self.train_imgs, self.train_labels, epochs=45, 
-                            validation_data=(self.test_imgs, self.test_labels))
-        print(history)
+                    loss=categorical_crossentropy,
+                    metrics=[categorical_accuracy])
+        # history = self.rr_model.fit(self.train_imgs, self.train_labels, epochs=45, 
+        #                     validation_data=(self.test_imgs, self.test_labels))
+        
+        history = self.rr_model.fit(self.x_train, self.y_train, epochs=25, validation_data=(self.x_val, self.y_val))
+        # print(history.history)
         self.rr_model.summary()
-        test_loss, test_acc = self.rr_model.evaluate(self.test_imgs, self.test_labels, verbose=2)
+        
+        test_loss, test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
+        
         print('Accuraccy: ' + str(test_acc))
         print('Loss: ' + str(test_loss))
         self.rr_model.save("characterRec.h5")
@@ -107,6 +137,7 @@ class CharacterRecognition():
     
 if __name__ == '__main__':
     obj = CharacterRecognition()
-    obj.createDatasets()
+    obj.getData()
+    # obj.createDatasets()
     obj.createModel()
     obj.trainModel()
