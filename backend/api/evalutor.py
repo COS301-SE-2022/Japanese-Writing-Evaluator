@@ -14,10 +14,10 @@ class Evaluator(object):
         
     def prepare(self):
         i = Image.open(self.file)
-        img = i.resize((32,32))
+        img = i.resize((28,28))
         gray_img = img.convert('L')
         test_img = np.array([np.array(gray_img).flatten()],'f')
-        test_img = test_img.resize(28,28)
+        test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
         return test_img
 
     def testCharacter(self):
@@ -26,6 +26,7 @@ class Evaluator(object):
         pre = tf.nn.sigmoid(pre)
 
         pre = tf.where(pre < 0.5, 0, 1)
+
         print('\nprediction:\n', self.dataset[pre.numpy()[0]])
         
     def mockTestCharacter(self):
