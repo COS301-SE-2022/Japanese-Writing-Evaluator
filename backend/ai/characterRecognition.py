@@ -19,35 +19,38 @@ class CharacterRecognition():
             Train_data and Test_data
         """
         train_labels = []
-        train_data = []
-        
         test_labels =[]
-        test_data =[]
         val = -1
         for n in self.dataset:
             val +=1
             for file in os.listdir('data/dataset_' + n + '_train'):
-                train_data.append(np.array(Image.open('data/dataset_' + n + '_train' + file)).flatten())
-                train_labels.append(val)
+                i = Image.open('data/dataset_' + n + '_train/' +file)
+                img = i.resize((32,32))
+                gray_img = img.convert('L')
+                gray_img.save('train_data' +'/' + file, "jpeg")
+                if(len(train_labels) != len(os.listdir('train_data'))):
+                    train_labels.append(val)
         var = -1        
         for n in self.dataset:
             var += 1
             for file in os.listdir('data/dataset_' + n + '_test'):
-                train_data.append(np.array(Image.open('data/dataset_' + n + '_test/' + file)).flatten())
-                test_labels.append(var)
+                i = Image.open('data/dataset_' + n + '_test/' + file)
+                img = i.resize((32,32))
+                gray_img = img.convert('L')
+                gray_img.save('test_data' +'/' + file, "jpeg")
+                if(len(test_data) != len(os.listdir('test_data'))):
+                    test_labels.append(var)
                 
         """
         Creating two arrays train_data and train labels
         """
-        # train_data = np.array([np.array(Image.open('train_data'+ '/' + img)).flatten()
-        #             for img in os.listdir('train_data')],'f') 
+        train_data = np.array([np.array(Image.open('train_data'+ '/' + img)).flatten()
+                    for img in os.listdir('train_data')],'f') 
         print('train  data size:')
         print(len(train_data))
         
-        print('test  data size:')
-        print(len(test_data))
-        # test_data = np.array([np.array(Image.open('test_data'+ '/' + img)).flatten()
-        #             for img in os.listdir('test_data')],'f')
+        test_data = np.array([np.array(Image.open('test_data'+ '/' + img)).flatten()
+                    for img in os.listdir('test_data')],'f')
         
         self.train_imgs , self.train_labels = shuffle(train_data, train_labels, random_state = 2)
         self.test_imgs , self.test_labels = shuffle(test_data, test_labels, random_state = 2)
