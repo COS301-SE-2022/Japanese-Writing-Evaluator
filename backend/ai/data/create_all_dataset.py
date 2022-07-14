@@ -6,7 +6,7 @@ import pandas as pd
 from PIL import Image
 import cv2
 class createImages:
-    
+    freq = 0
     
   
     
@@ -14,63 +14,64 @@ class createImages:
     def  create_All_test_images(self,test_imgs,character_array): 
         length = len(character_array)
         for n in range (0,length):
-            folder_name = '/dataset_' + character_array[n] + '_test'
-            path = os.getcwd() + folder_name
-            cv2.imread(path)
-            if os.path.exists(path):
-                pass
-            else:
-                os.mkdir(path)
-
-            freq = 0
+            freq = 0 
             character = []
-            index = n 
-            for i in test_labels: 
+            index = n
+            for i in test_labels:
                 if test_labels[i] == index:
                     freq = freq + 1
     
             character = [] * freq 
-            for i in test_labels: 
-                if test_labels[i] == index:
-                    character.append(i)
+            for index_2 in test_labels:
+                if test_labels[index_2] == index:
+                    character.append(index_2)
     
             for j in range(0,freq):
+                if freq == 0:
+                    pass
+                else:
+                    folder_name = '/dataset_' + character_array[n]
+                    path = os.getcwd() + folder_name
+                    cv2.imread(path)
+                    if os.path.exists(path):
+                        pass
+                    else:
+                        os.mkdir(path)
                 index = character[j]
                 filename = "image"
                 number = str(j)
                 extention = ".jpeg"
-                cv2.imwrite(os.path.join(path,filename+number+extention),test_imgs[index])
+                cv2.imwrite(os.path.join(path ,filename+number+extention),test_imgs[index])
 
-    def create_All_train_images(self,train_imgs,character_array): 
+    def create_All_train_images(self,test_imgs,character_array): 
         length = len(character_array)
         for n in range (0,length):
-            folder_name = '/dataset_' + character_array[n] + '_train'
-            path = os.getcwd() + folder_name
-            cv2.imread(path)
-            if os.path.exists(path):
-                pass
-            else:
-                os.mkdir(path)
-
-            freq = 0
+            freq = 0 
             character = []
-            index = n 
-            for i in train_labels: 
+            index = n
+            for i in train_labels:
                 if train_labels[i] == index:
                     freq = freq + 1
-    
-            character = [] * freq 
-            for i in train_labels: 
+            character = [] * freq
+            for i in train_labels:
                 if train_labels[i] == index:
                     character.append(i)
-    
             for j in range(0,freq):
+                if freq == 0:
+                    pass
+                else:
+                    folder_name = '/dataset_' + character_array[n]
+                    path = os.getcwd() + folder_name
+                    cv2.imread(path)
+                    if os.path.exists(path):
+                        pass
+                    else:
+                        os.mkdir(path)
                 index = character[j]
                 filename = "image"
                 number = str(j)
                 extention = ".jpeg"
-                cv2.imwrite(os.path.join(path,filename+number+extention),train_imgs[index])
-
+                cv2.imwrite(os.path.join(path ,filename+number+extention),train_imgs[index])
         
 if __name__ == '__main__':
     # Paths
@@ -92,10 +93,7 @@ if __name__ == '__main__':
     character_array = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
     #create a dataset object
     Dataset = createImages()
-    
-    Dataset.create_All_train_images(train_imgs, character_array)
      #create A training images 
 
     Dataset.create_All_test_images(test_imgs,character_array)
-    #Dataset.create_All_train_images(train_imgs,character_array)
-
+    Dataset.create_All_train_images(train_imgs,character_array)
