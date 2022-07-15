@@ -4,6 +4,7 @@ import psycopg2
 from dotenv import load_dotenv
 import hashlib
 import uuid
+from datetime import date
 
 load_dotenv()
 class Database:
@@ -15,7 +16,9 @@ class Database:
     def __init__(self):
         try:
             self.conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
+            self.conn2 = psycopg2.connect(host = os.getenv('Image_host'), database = os.getenv('Image_db'), user = os.getenv('Image_user'), password = os.getenv('Image_pass'))
             self.curr = self.conn.cursor()
+            self.curr2 = self.conn2.cursor()
         except Exception as e:
             print("Could not connect to database", e)
             return None
@@ -107,9 +110,9 @@ class Database:
             None
     """
     def saveImage(self, id, image_path, image_char, score):
-        upload_query = "INSERT INTO images(id, image_path, character, score) VALUES(%s, %s, %s, %s);"
-        self.curr.execute(upload_query, (id, image_path, image_char, score))
-        self.conn.commit()
+        upload_query = "INSERT INTO image(id, image_path, character, score, upload_date) VALUES(%s, %s, %s, %s, %s);"
+        self.curr2.execute(upload_query, (id, image_path, image_char, score, date.today()))
+        self.conn2.commit()
         return True
 
     def deleteUser(self, email):
@@ -126,9 +129,9 @@ class Database:
             None
     """
     def getImage(self, id):
-        view_query = "SELECT * FROM images WHERE id=%s;"
-        self.curr.execute(view_query, ([id]))
-        images_url = self.curr.fetchall()
+        view_query = "SELECT * FROM image WHERE id=%s;"
+        self.curr2.execute(view_query, ([id]))
+        images_url = self.curr2.fetchall()
         return images_url
 
     """
@@ -140,16 +143,16 @@ class Database:
             array of all entries in image database
     """
     def getImageUsers(self):
-        getUsers = "SELECT * FROM images";
-        self.curr.execute(getUsers)
-        users = self.curr.fetchall()
+        getUsers = "SELECT * FROM image";
+        self.curr2.execute(getUsers)
+        users = self.curr2.fetchall()
         return users
 
 
     def getfeedback(self, user_id):
-        query = "SELECT score FROM images WHERE id = %s;"
-        self.curr.execute(query, (user_id,))
-        scores = self.curr.fetchall()
+        query = "SELECT score FROM image WHERE id = %s;"
+        self.curr2.execute(query, (user_id,))
+        scores = self.curr2.fetchall()
         
         if(scores == None):
             return None
