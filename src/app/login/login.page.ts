@@ -12,6 +12,10 @@ import { AppServiceService } from '../services/app-service.service';
 })
 export class LoginPage implements OnInit {
   login: FormGroup; // form name used to link with html form
+  isUsername = false; // is there a username provided
+  //usernameInputColor = 'border-color: dark;';
+  isPassword = false; // is there a username provided
+  //passwordInputColor = 'border-color: dark;';
 
   constructor(formBuilder: FormBuilder, private router: Router, private appService: AppServiceService) {//
     this.login = formBuilder.group({ // building a responsive form with two inputs
@@ -26,10 +30,25 @@ export class LoginPage implements OnInit {
   onLogin(){
     const username = this.login.controls.username.value;
     const password = this.login.controls.password.value;//'zamakweyama04@gmail.com', 'P@55word'
+
     if (username === '') {
-      localStorage.setItem('id','guest');
-      this.router.navigate(['/home']);
-    } else if (!(username === '')) {
+     // this.usernameInputColor = 'border-color: darkred;';
+      this.isUsername =  true;
+    }
+    else{
+      //this.usernameInputColor = 'border-color: dark;';
+      this.isUsername = false; // is there a username provided
+    }
+
+    if(password === ''){
+      this.isPassword = true;
+     // this.passwordInputColor = 'border-color: darkred;';
+    }else{
+      this.isPassword = false; // is there a username provided
+      //this.passwordInputColor = 'border-color: dark;';
+    }
+
+    if (!(username === '') && !(password === '')) {
       // if (!localStorage.getItem('id')) {
       //   localStorage.setItem('id','85');
       // }
@@ -51,6 +70,11 @@ export class LoginPage implements OnInit {
         }
       });
     }
+  }
+
+  onGuestLogin(){
+      localStorage.setItem('id','guest');
+      this.router.navigate(['/home']);
   }
 
 }
