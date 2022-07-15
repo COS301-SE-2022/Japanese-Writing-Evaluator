@@ -2,25 +2,28 @@
 <ion-content class="ion-padding" [fullscreen]="true">
   <h1>Progress</h1>
 
-  <h4>Vowels</h4>
-
   <div class="container">
-    <div class="space">
-      <app-progress-block [letter]=3 [percent]=30></app-progress-block>
-    </div>
-    <div class="space">
-      <app-progress-block [letter]=1 [percent]=50></app-progress-block>
-    </div>
-  </div>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <app-progress-block [alphabetType]="hiragana"  [letter]='getLetter("A")' [percent]=30></app-progress-block>
+        </ion-col>
 
-  <div class="container">
-    <div class="space">
-      <app-progress-block [letter]=2 [percent]=60></app-progress-block>
-    </div>
-    <div class="space">
-    </div>
-  </div>
+        <ion-col>
+          <app-progress-block [alphabetType]="hiragana" [letter]='getLetter("I")' [percent]=50></app-progress-block>
+        </ion-col>
 
+        <ion-col>
+          <app-progress-block [alphabetType]="katakana" [letter]='getLetter("E")' [percent]=60></app-progress-block>
+        </ion-col>
+
+        <ion-col>
+          <app-progress-block [alphabetType]="kanji" [letter]='getLetter("one")' [percent]=80></app-progress-block>
+        </ion-col>
+        
+      </ion-row>
+    </ion-grid>
+  </div>
 </ion-content>
 
 <ion-footer>

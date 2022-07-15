@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ionic serve",
     "api": "cd backend/api && python app.py",
+    "api_ut": "python -m pytest backend/test/unittest/",
     "build": "ng build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
@@ -31,6 +32,7 @@
     "@firebase/app": "^0.7.24",
     "@firebase/storage": "^0.9.6",
     "@ionic/angular": "^6.0.0",
+    "dotenv": "^16.0.1",
     "angularfire2": "^5.4.2",
     "cypress": "^10.0.3",
     "e2e": "0.0.8",

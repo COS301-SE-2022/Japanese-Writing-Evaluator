@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Observable, ReplaySubject } from 'rxjs';
 import { AppServiceService } from '../services/app-service.service';
-import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/image';
+import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 
 @Component({
   selector: 'app-upload',
