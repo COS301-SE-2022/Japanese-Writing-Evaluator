@@ -53,9 +53,13 @@ def guestUploadImage(image_char, image):
     if score == None:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful, score: {}".format(score)}), 200
+        return jsonify({'response': "image evaluation successful", 'score': score}), 200
 
-def sendToEvaluator(image_char):
+def sendToEvaluator(image, image_char):
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+
     compare = Evaluator("../api/imageToSave.png", image_char)
     score = compare.testImage() # call the AI
     return score
