@@ -23,11 +23,21 @@ class Evaluator(object):
     def testCharacter(self):
         model = tf.keras.models.load_model('../ai/characterRec.h5')
         pre = model.predict([self.prepare()]).flatten()
-        pre = tf.nn.sigmoid(pre)
 
-        pre = tf.where(pre < 0.5, 0, 1)
+        temp = 0
+        val = 0
+        final = 0
+        for n in pre:
+            if(n >temp):
+                temp = n
+                final = val
+            val+=1
 
-        print('\nprediction:\n', self.dataset[pre.numpy()[0]])
+        print('\nprediction:\n', pre)
+        try:
+            print('\nprediction:\n', self.dataset[final])
+        except:
+            print("Invaild input")
         
     def mockTestCharacter(self):
         model = tf.keras.models.load_model('../ai/models/characterRec.h5')
@@ -53,5 +63,7 @@ class Evaluator(object):
 
 
 if __name__ == '__main__':
-    e = Evaluator('predict_data/kanaA9.jpg', 'a')
+    e = Evaluator('predict_data/false.png', '*')
+    # e = Evaluator('predict_data/a.jpg', '*')
+    # e = Evaluator('predict_data/ya.jpeg', '*')
     e.testCharacter()
