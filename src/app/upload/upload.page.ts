@@ -105,7 +105,7 @@ export class UploadPage implements OnInit {
           id: localStorage.getItem('id'),
           image: base64String,
           imagechar: this.characterImage.characterName,
-          file: this.uploadImageName
+          file: this.characterImage.group,
         };
         this.service.uploadImage(img).subscribe( data =>{
           this.score = data.body.score;

@@ -13,7 +13,7 @@ class Model():
     def generate_model(self):
         self.modelA = self.modelObj.create_CNN()
         self.modelObj.getData('datasetA')
-        self.modelA = self.modelObj.trian_model('modelA')
+        self.modelA = self.modelObj.trian_model('modelA.h5')
         return self.modelA
          
 if __name__ == '__main__':

@@ -26,6 +26,7 @@ class Evaluator(object):
         elif(self.char == 'U'):
             model = tf.keras.models.load_model('backend/ai/modelU.h5')
             self.prediction = float(model.predict([self.prepare()])[0][0])
+            print('\n In Model U and score: ' + str(self.prediction))
             return self.prediction
 
 
