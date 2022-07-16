@@ -1,24 +1,29 @@
 from functools import wraps
+from operator import contains
+from pydoc import importfile
+import this
+from urllib import response
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
 import jwt
 import os
 from flask_cors import CORS;
+from schedule import every, repeat, run_pending
+import time
+import numpy as np
+import requests
 
 import sys
-sys.path.append('../database')
+sys.path.insert(0, '../email_user')
+from send_email import Send_Email
+import event_bus
 
-from database import Database
-from authentication import Authentication
-from image import Image
-from feedback import Feedback
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
-db = Database()
-auth = Authentication(db)
-img = Image(db)
-feedback = Feedback(db)
+send = Send_Email()
 CORS(app)
 
 def token_required(function):
@@ -56,7 +61,7 @@ def lancher():
 """
 @app.route('/password/reset', methods = ['PUT'])
 def callResetPassword():
-    return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
+    return event_bus.event_resetPassword(str(request.json["email"]), str(request.json["password"]))
 
 """
     call Register function:
@@ -70,7 +75,7 @@ def callResetPassword():
 """
 @app.route('/register', methods = ['POST', 'GET'])
 def callRegister():
-    return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
@@ -84,7 +89,7 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
+    return event_bus.event_sendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
 
 """
     callViewImages function:
@@ -98,9 +103,7 @@ def callUploadImage():
 @app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
-    return img.viewImages(int(request.json["id"]))
-
-
+    return event_bus.event_viewImages(int(request.json["id"]))
 
 """
     login function:
@@ -113,7 +116,7 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = auth.login(str(request.json["email"]), str(request.json["password"]))
+    user = event_bus.event_login(str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -135,15 +138,69 @@ def login():
 """
 @app.route('/home', methods=['GET'])
 def home():
-    return img.getCharacters()
+    return event_bus.event_getCharacters()
 
-@app.route('/feedback', methods = ['GET','POST'])
-@token_required
-def userfeedback():
-    progress = feedback.getuserfeedback(db,str(request.json["id"]))
-    return progress
+"""
+    email function:
+        calls send_email function which send emails to all users
+    request body:
 
-    """
+    return:
+        
+"""
+@repeat(every().sunday)
+def email_users():
+    users = event_bus.event_getImageUsers()
+    keep = []
+    for i in users:
+        if(keep.count(i[0]) == 0):
+            keep.append(i[0])
+
+    store = [[0] * 2 for i in range(len(keep))]
+    stored = []
+    iCount = 0
+    jCount = 0
+    divBy = 0
+    average = 0
+    for i in users:
+        if(stored.count(i[0]) == 0):
+            stored.append(i[0])
+            store[jCount][0] = i[0]
+
+            for j in users:
+                if(j[0] == store[jCount][0]):
+                    average += j[3]
+                    divBy += 100
+                    
+            score = (average/divBy) * 100
+            store[jCount][1] = "{:.2f}".format(score)
+            jCount += 1
+
+        
+        iCount += 1
+        divBy = 0
+        average = 0
+        score = 0
+
+    contain = []
+    for i in store:
+        thisUser = event_bus.event_getUser(i[0])
+        if(thisUser != None):
+            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+
+            valid = response.json()['status']
+
+            if(valid == "valid"):
+                contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
+            else:
+                contain.append("Failed")
+    
+    if(contain.count("Failed") > 0):
+        return jsonify({'response': "Failed"}), 401
+    else:
+        return jsonify({'response': "Emails successfully sent"}), 200
+
+"""
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
     request body: 
@@ -154,8 +211,7 @@ def userfeedback():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return img.guestUploadImage(str(request.json["imagechar"]), str(request.json["image"]))
-
+    return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]))
 
 if __name__ == '__main__':
     app.run(debug = True)

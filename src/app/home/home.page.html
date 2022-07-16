@@ -5,7 +5,7 @@
     <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
   </ion-toolbar><br/>
 
-  <div class="text"><b>Select writing style:</b></div>
+  <div class="text"><strong>Select writing style:</strong></div>
   <div class="dropdown"> <!---->
     <ion-list>
       <ion-item color="transparent" lines="none">
@@ -23,22 +23,11 @@
     <h2>{{headingOne}}</h2>
     <ion-grid>
       <ion-row>
-          <ion-col>
-            <app-block-try-char [letter]='vowelOne' [translate]='translateOne' [group]='style'></app-block-try-char>
-          </ion-col>
-          <ion-col>
-            <app-block-try-char [letter]='vowelTwo' [translate]='translateTwo' [group]='style'></app-block-try-char>
-          </ion-col>
+        <ion-col *ngFor="let item of currentAlphabet">
+            <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
+        </ion-col>
       </ion-row>
-      <ion-row>
-        <ion-col>
-          <app-block-try-char [letter]='vowelThree' [translate]='translateThree' [group]='style'></app-block-try-char>
-        </ion-col>
-        <ion-col>
-          <app-block-try-char [letter]='vowelFour' [translate]='translateFour' [group]='style'></app-block-try-char>
-        </ion-col>
-    </ion-row>
-  </ion-grid>
+    </ion-grid>
   </div>
 
 

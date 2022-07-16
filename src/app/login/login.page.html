@@ -1,7 +1,7 @@
 <ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" >
   <!--Guest Login button-->
   <ion-toolbar id="guestBtn">
-    <ion-button slot="end" (click)="onLogin()">guest</ion-button>
+    
   </ion-toolbar>
 
   <!-- logo -->
@@ -10,8 +10,10 @@
   <!-- login form -->
   <div class="flexbox">
     <form [formGroup]="login" (ngSubmit)="onLogin()"><!---->
-      <ion-input class="ion-input form-control" formControlName="username" type="text" placeholder="    Username"></ion-input><br/>
-      <ion-input class="ion-input form-control" formControlName="password" type="password" placeholder="    Password"></ion-input><br/>
+      <ion-input class="ion-input form-control" formControlName="username" type="text" placeholder="    Username"></ion-input>
+      <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/><br>
+      <ion-input class="ion-input form-control" formControlName="password" type="password" placeholder="    Password"></ion-input>
+      <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/><br/>
       <p class="ion-text-center">
         <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
       </p>
@@ -19,13 +21,14 @@
 
   </div>
   <div class="horizontalflexbox">
+    <ion-button slot="end" shape="round" color="dark" (click)="onGuestLogin()">guest</ion-button>
+  </div>
+  <div class="horizontalflexbox">
       <a [routerLink]="['/forgot-password']" style="color:rgb(50, 116, 239);">Forgot Password?</a>
-
   </div>
 
   <div class="horizontalflexbox">
     <p style="color: rgb(50, 116, 239);">Don't have an account?<a [routerLink]="['/sign-up']">SignUp</a></p>
-
-</div>
+  </div>
 </ion-content>
 

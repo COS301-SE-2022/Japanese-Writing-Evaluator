@@ -19,11 +19,15 @@ The system should allow the user to log into the system using their own credenti
 
 # Reference links
 <ul>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2#architectural-system-design">Architecture</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Architectural-Requirements">Architecture</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2#use-case-diagram">Use Cases</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Coding-Standards">Coding Standards</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2#user-characteristics">User Characteristics</a></li>
+  
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/tree/develop/src/app/home">Dropdown Use Case</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/blob/develop/src/app/home/home.page.spec.ts">Home Page Unit Test</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/blob/develop/cypress/integration/api-intergration/guestUser.spec.js">Intergration Test</a></li>
+  
 </ul>
 
 # Demo Videos

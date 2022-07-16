@@ -48,19 +48,18 @@ class CNN():
     self.CNN.add(keras.layers.BatchNormalization())
 
     self.CNN.add(keras.layers.Flatten())
-    self.CNN.add(keras.layers.Dense(512, activation='relu'))
-    self.CNN.add(keras.layers.Dense(256, activation='relu'))
+    self.CNN.add(keras.layers.Dense(16, activation='relu'))
     self.CNN.add(keras.layers.Dense(10, activation = 'softmax'))
     return self.CNN
   
-    """
+  """
     Function trian_model:
       trains our model and output the accuraccy and Loss, to help understand and better the model
     Parameters:
       None
     Return:
       our trainned model
-    """
+  """
   
   def trian_model(self, modelName):
     self.CNN.compile(optimizer='adam',
@@ -77,19 +76,18 @@ class CNN():
     # pyplot.plot(test_acc, test_loss)
     # pyplot.title('accuraccy vs losses')
     # pyplot.show()
-    self.CNN.save(modelName + '/')
+    self.CNN.save(modelName + '.h5')
     return self.CNN
   
-    """
+  """
     Working Progress it is suppose to train any data
       Function setData:
-        set the trainning  and testing data
+         set the trainning  and testing data
       Parameters:
         None
       Return:
         None
-    """
-
+  """
   def getData(self, image_path):
     list_img = os.listdir(image_path)
     num_img = len(list_img)

@@ -1,7 +1,4 @@
-import sys
-sys.path.append('../database')
-
-from database import Database
+from sqlalchemy import true
 from evalutor import Evaluator
 from flask import jsonify
 import base64
@@ -12,8 +9,7 @@ import os
 import json
 
 class Image:
-    def __init__(self,db):
-        self.db = db
+    def __init__(self):
         self.config = {
             'apiKey': os.getenv('FB_APIKEY'),
             'authDomain': os.getenv('FB_authDomain'),
@@ -42,14 +38,13 @@ class Image:
             json response
     """
     def uploadImage(self, id, image_char, image, file):
-        print(image)
-        if(image == None):
-            return jsonify({'response': "image upload successful. No image."}), 409
-        score = self.sendImage(id, image_char, image, file)
-        if score == None:
-            return jsonify({'response': "image upload failed."}), 401
-        else:
-            return jsonify({'response': "image upload successful.", "score":score}), 200
+        try:
+            res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
+            store = jsonify(res)
+            print(store.status_code)
+            return json(store)
+        except:
+            return None
 
     """
         viewImages function:
@@ -59,9 +54,7 @@ class Image:
         return:
             json response
     """
-
-    def viewImages(self, id):
-        images = self.db.getImage(id)
+    def viewImages(self, images):
         if images:
             response = []
             i = 0
@@ -78,41 +71,14 @@ class Image:
         else:
             return jsonify({'response': "view image failed."}), 401
 
-        """
-        send Image function:
-            send the image the user upload to firebase 
-        parameters: 
-            image: the user uploaded image from front-end
-            id: the unique id of the user
-            image_char: the character of the uploaded image
-        return:
-            json response
-        """
-    def sendImage(self, id, image_char, image, file):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-        print(image)
-        print("send image")
-        try:
-            self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
-            compare = Evaluator("../api/imageToSave.png", image_char)
-            score = compare.testImage() # call the AI
-            image_path = "/users/"+str(id)+"/"+file
-            # self.db.saveImage(id, image_path, image_char, score)
-            print("\nScore: " + str(score))
-            return score
-        except:
-            return None
-
-        """
+    """
         getCharacters function:
             gets all the Hiragana charatcers from the firebase storage
         request body:
 
         return:
             returns a json object containing grouped image urls
-        """
+    """
     def getCharacters(self):
         try:
             allDirectories = self.storage.list_files()
@@ -198,29 +164,3 @@ class Image:
         
         except Exception as e:
             return jsonify({'response': str(e)}), 401
-        """
-    guest Upload Image function:
-        uploads teh given image to firebase and sends it to the evaluator
-    parameters: 
-        image_char: the charector of the image
-        image: the guest user image
-    return:
-        json response
-    """
-    def guestUploadImage(self, image_char, image):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-            
-        e = Evaluator('imageTosave.png', image_char)
-        score = e.testImage() # call the AI
-        print(score)
-        if score == None:
-            return jsonify({'response': "image evaluation Failed."}), 401
-        else:
-            return jsonify({'response': "image evaluation successful.", "score":score}), 200
-        
-# if __name__ == '__main__':
-#     db = Database()
-#     img = Image(db)
-#     img.sendImage(82, 'a', 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAIBAQEBAQIBAQECAgICAgQDAgICAgUEBAMEBgUGBgYFBgYGBwkIBgcJBwYGCAsICQoKCgoKBggLDAsKDAkKCgr/wAALCAAcABwBAREA/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/9oACAEBAAA/APw//ZV8KfAjx1+0d4L8GftO+O9R8L/D/VPEFva+LPEWkxI9xp1m7bWmUOrL8uQSSrYXJwcYP7O/8Eav+CFfhv8AZp/bPu/jp8cv2oP2Y/jN8HbL4fa8/ia00TxjHq7pprQALeS2skOxYwNpaQsQgzznaa/In/god4U/ZW8Eftr/ABG8M/sR+NG8QfCq38RSHwZqbGQhrV0VzEjSAO6RyM8Su3LrGrEnOT4xX0v+wB/wTW8b/toHWfir498f6d8L/gv4MTzfH3xd8UR4sNOGCVtbZCym9vJMYS3jJYllzjK7vvD/AIIz/ED/AIJvfszftBftDy/st6b45+Lqad+y34q1JfEXjfSRplvPHaqr3WnCxgkbzbedFhb7RNJC67WjEeWDV8d/A7wL+xD/AMFBtOuvgX4W+Fdr8FPjlqNwF+Gsmj+Irqbwn4kmER26VdDVLmeeyvJ5AEhuBP5BeRUdE4ZvlPx/4A8b/Crxtqvw2+JXhO/0LX9DvpLPWNH1S1aG4s7iNirxyIwBVgR0NfsX+xJ8FNY/4LQf8EC/C3/BN79lnT9B0/4n/CH412+o+Kv7Sv1s4RpN5/aLLq0vylrgATtCVTL5gHGCoP2N/wAE6P2Rv+CYv7Efxs+If/BEb4ZeLtT8e/Grxv8ACbV5/iZ8Qp5FtLaMS2aW40ZEil3gCO6kuPJBYpgM7l1Xy/50Pg58Afi78Z/2hdC/Zy+E/hu51HxnrPiWPSNKsLQlXN2Zdmd38CqQWZzgKqljgA19lf8ABzp4b8EeEv8Agrt4x8P+E/EJ1S+tfCnhyHxVePMJHk1SPSreOVpGAAMjIkTOQB8zNwOlfIf7NP7Xv7Tv7HHi2+8d/st/HHxF4F1fUtPNjqF/4d1BoHuLcur+W+OGG5VIz0I4rnPC/wAYviv4J+Kdt8cPCHxG1rTfGNnqp1O28UWepSR38d4WLm4E4O/zCxJLZySTnrX6xf8ABGKO2/ZL/wCCPH7T3/BXH4Y2UNz8cNLvZPDGg+JddT7Suk204tmmnt0+UrcM9wWMjM2TEgxt3q/5D+JvE3iPxp4jv/GHjDXrzVNW1S8ku9S1PULlpp7qeRi8kskjks7sxJLEkkkk1//Z', 'a.png')

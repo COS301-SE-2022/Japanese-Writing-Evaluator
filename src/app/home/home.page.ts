@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from '../services/app-service.service';
 import { Router } from '@angular/router';
+import character_sets from '../shared/character_data/character_sets.json';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -12,53 +13,16 @@ export class HomePage implements OnInit {
   style: string;
   headingOne: string;
 
-  vowelOne: string;
-  vowelTwo: string;
-  vowelThree: string;
-  vowelFour: string;
+  currentAlphabet: any;
 
-  translateOne: string;
-  translateTwo: string;
-  translateThree: string;
-  translateFour: string;
-
-   hiraganaAlphabet = [
-    {character: 'あ', translation:'A'},
-    {character: 'い', translation:'I'},
-    {character: 'う', translation:'U'},
-    {character: 'え', translation:'E'},
-  ];
-
-  katakanaAlphabet = [
-    {character: 'ア', translation:'A'},
-    {character: 'イ', translation:'I'},
-    {character: 'ウ', translation:'U'},
-    {character: 'エ', translation:'E'},
-  ];
-
-  kanjiAlphabet = [
-    {character: '黒', translation:'black'},
-    {character: '青', translation:'blue'},
-    {character: '緑', translation:'green'},
-    {character: '橙', translation:'orange'},
-  ];
 
   constructor(private service: AppServiceService, private router: Router) {
     this.style = 'Hiragana';
     this.headingOne = 'Vowels';
 
-    this.vowelOne = this.hiraganaAlphabet[0].character;
-    this.translateOne = this.hiraganaAlphabet[0].translation;
-
-    this.vowelTwo = this.hiraganaAlphabet[1].character;
-    this.translateTwo = this.hiraganaAlphabet[1].translation;
-
-    this.vowelThree = this.hiraganaAlphabet[2].character;
-    this.translateThree = this.hiraganaAlphabet[2].translation;
-
-    this.vowelFour = this.hiraganaAlphabet[3].character;
-    this.translateFour = this.hiraganaAlphabet[3].translation;
-  }//private repository: AppServiceService
+    this.currentAlphabet = character_sets.hiragana;//this.hiraganaAlphabet;
+    console.log();
+  }//private repository: AppServiceService  ;
 
 
 
@@ -66,7 +30,7 @@ export class HomePage implements OnInit {
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        console.log(localStorage.getItem('id'));
+        //console.log(localStorage.getItem('id'));
         return true;
       }
     }
@@ -74,23 +38,7 @@ export class HomePage implements OnInit {
     return false;
   }
 
-  ngOnInit(): void {
-    // this.service.getHomeImages().subscribe(data => {
-    //   console.log(data);
-    // });
-  }
-
-  // getLetter(char: string)
-  // {
-  //   this.letter = char;
-  //   return this.letter;
-  // }
-
-  // getTranslate(char: string)
-  // {
-  //   this.translate = char;
-  //   return this.translate;
-  // }
+  ngOnInit(): void {}
 
   onLogout(){
     // this function logs the user out of the system
@@ -122,17 +70,7 @@ export class HomePage implements OnInit {
   navigateKatakana(){
     this.headingOne = 'Vowels';
 
-    this.vowelOne = this.katakanaAlphabet[0].character;
-    this.translateOne = this.katakanaAlphabet[0].translation;
-
-    this.vowelTwo = this.katakanaAlphabet[1].character;
-    this.translateTwo = this.katakanaAlphabet[1].translation;
-
-    this.vowelThree = this.katakanaAlphabet[2].character;
-    this.translateThree = this.katakanaAlphabet[2].translation;
-
-    this.vowelFour = this.katakanaAlphabet[3].character;
-    this.translateFour = this.katakanaAlphabet[3].translation;
+    this.currentAlphabet = character_sets.katakana;
 
   }
 
@@ -140,34 +78,14 @@ export class HomePage implements OnInit {
   navigateHome(){
     this.headingOne = 'Vowels';
 
-    this.vowelOne = this.hiraganaAlphabet[0].character;
-    this.translateOne = this.hiraganaAlphabet[0].translation;
-
-    this.vowelTwo = this.hiraganaAlphabet[1].character;
-    this.translateTwo = this.hiraganaAlphabet[1].translation;
-
-    this.vowelThree = this.hiraganaAlphabet[2].character;
-    this.translateThree = this.hiraganaAlphabet[2].translation;
-
-    this.vowelFour = this.hiraganaAlphabet[3].character;
-    this.translateFour = this.hiraganaAlphabet[3].translation;
+    this.currentAlphabet = character_sets.hiragana;
   }
 
   // TODO: components are dynamically updated for kanji, #73, Maryam Mohamad Al Mahdi
   navigateKanji(){
-    this.headingOne = 'Colours';
+    this.headingOne = 'Numbers';
 
-    this.vowelOne = this.kanjiAlphabet[0].character;
-    this.translateOne = this.kanjiAlphabet[0].translation;
-
-    this.vowelTwo = this.kanjiAlphabet[1].character;
-    this.translateTwo = this.kanjiAlphabet[1].translation;
-
-    this.vowelThree = this.kanjiAlphabet[2].character;
-    this.translateThree = this.kanjiAlphabet[2].translation;
-
-    this.vowelFour = this.kanjiAlphabet[3].character;
-    this.translateFour = this.kanjiAlphabet[3].translation;
+    this.currentAlphabet = character_sets.kanji;
   }
 
 }
