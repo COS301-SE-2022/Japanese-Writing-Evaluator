@@ -11,12 +11,15 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from keras.losses import categorical_crossentropy
 from keras.metrics import categorical_accuracy
+import datetime
+import json
 
 class CharacterRecognition():
-    def __init__(self):
-        self.dataset = ['a','fu', 'ha', 'he', 'hi', 'i', 'ke','ki','ma', 'mo', 'n', 'na','ni', 'no', 'o', 'sa', 'se', 'su', 'te', 'to', 'we', 'ya']
+    def __init__(self, name):
+        self.characters = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
         self.k49_classmap = pd.read_csv('data/input/k49_classmap.csv')
         self.k49_classmap.head()
+        self.version = name
     
     def one_hot_encoding(self,y):
         y_res = np.zeros((len(y), 49))
@@ -44,48 +47,46 @@ class CharacterRecognition():
             Move the image into two folders
             Train_data and Test_data
         """
-        train_labels = []
-        test_labels =[]
-        val = -1
-        for n in self.dataset:
-            val +=1
-            for file in os.listdir('data/dataset_' + n + '_train'):
-                i = Image.open('data/dataset_' + n + '_train/' +file)
-                img = i.resize((32,32))
-                gray_img = img.convert('L')
-                gray_img.save('train_data' +'/' + file, "jpeg")
-                if(len(train_labels) != len(os.listdir('train_data'))):
-                    train_labels.append(val)
-        var = -1        
-        for n in self.dataset:
-            var += 1
-            for file in os.listdir('data/dataset_' + n + '_test'):
-                i = Image.open('data/dataset_' + n + '_test/' + file)
-                img = i.resize((32,32))
-                gray_img = img.convert('L')
-                gray_img.save('test_data' +'/' + file, "jpeg")
-                if(len(test_data) != len(os.listdir('test_data'))):
-                    test_labels.append(var)
-                
-        """
-        Creating two arrays train_data and train labels
-        """
-        train_data = np.array([np.array(Image.open('train_data'+ '/' + img)).flatten()
-                    for img in os.listdir('train_data')],'f') 
-        print('train  data size:')
-        print(len(train_data))
-        
-        test_data = np.array([np.array(Image.open('test_data'+ '/' + img)).flatten()
-                    for img in os.listdir('test_data')],'f')
-        
-        self.train_imgs , self.train_labels = shuffle(train_data, train_labels, random_state = 2)
-        self.test_imgs , self.test_labels = shuffle(test_data, test_labels, random_state = 2)
-        
-        self.train_imgs /= 255
-        self.test_imgs /= 255
-        
-        self.train_imgs = self.train_imgs.reshape(self.train_imgs.shape[0], 32, 32, 1)
-        self.test_imgs = self.test_imgs.reshape(self.test_imgs.shape[0], 32, 32, 1)
+        # list_img = os.listdir(image_path)
+        # num_img = len(list_img)
+        # print(list_img)
+        # print('\nsize: ' + str(num_img))
+
+        for file in list_img:
+            i = Image.open(image_path + '/' +file)
+            img = i.resize((28,28))
+            gray_img = img.convert('L')
+            gray_img.save('resized' +'/' + file, "jpeg")
+
+            resized_img_list = os.listdir('resized')
+
+        num_resized = len(resized_img_list)
+        print(resized_img_list)
+        print('\nsize: ' + str(num_resized))
+
+        img_matrix = np.array([np.array(Image.open('resized'+ '/' + im2)).flatten()
+                    for im2 in resized_img_list],'f')
+
+        img_label = np.ones((num_resized,), dtype = int)  
+        img_label[0:] = 0
+
+        data, labels = shuffle(img_matrix, img_label, random_state = 2)
+        our_data = [img_matrix,img_label]
+
+        (x,y) = (our_data[0], our_data[1])
+        self.train_image, self.test_images, self.train_labels, self.test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
+
+        self.train_image /= 255
+        self.test_images /= 255
+
+        self.train_image = self.train_image.reshape(self.train_image.shape[0], 28, 28, 1)
+        self.test_images = self.test_images.reshape(self.test_images.shape[0], 28, 28, 1)
+
+        self.train_image =self.train_image.astype('float32')
+        self.test_images = self.test_images.astype('float32')
+
+        print('\nself.train_images.shape: {}, of {}'.format(self.train_image.shape, self.train_image.dtype))
+        print('self.test_images.shape: {}, of {}'.format(self.test_images.shape, self.test_images.dtype))
     
     """
         Creates our convolutional Neural Network 
@@ -128,15 +129,24 @@ class CharacterRecognition():
         # print(history.history)
         self.rr_model.summary()
         
-        test_loss, test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
+        self.test_loss, self.test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
         
-        print('Accuraccy: ' + str(test_acc))
-        print('Loss: ' + str(test_loss))
+        print('Accuraccy: ' + str(self.test_acc))
+        print('Loss: ' + str(self.test_loss))
         self.rr_model.save("characterRec.h5")
-        
+    
+    def storeData(self):
+        date = datetime.now()
+        with open("models_data.json", "r+") as file:
+            data= json.load(file)
+        record = {"version" : self.version, "date" : date, 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
+        data["data"].append(record)
+        with open("models_data.json", "w") as w_file:
+            json.dump(data, w_file, indent = 4)
     
 if __name__ == '__main__':
-    obj = CharacterRecognition()
+    version = input('model version: ')
+    obj = CharacterRecognition(version)
     obj.getData()
     # obj.createDatasets()
     obj.createModel()
