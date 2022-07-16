@@ -4,9 +4,9 @@ import { Injectable } from '@angular/core';
 // import { Character } from '../shared/character';
 import {HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/image';
-import { Score } from '../shared/score';
-import { User } from '../shared/user';
+import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
+import { Score } from '../shared/interfaces/score';
+import { User } from '../shared/interfaces/user';
 
 @Injectable({
   providedIn: 'root'
@@ -56,18 +56,24 @@ export class AppServiceService {
 
   getProgress(){
     // get users progress, feedback for each character practiced
+    const myheaders = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
+    return this.httpclient.post(
+      this.baseURL + 'progress',
+      {'id': localStorage.getItem('id')},
+      { headers: myheaders, observe: 'response'}
+    );
   }
 
   uploadImage(uploadedImg: UploadedImage): Observable<HttpResponse<Score>>{// pass through the image as a parameter
     // send image to backend to be evaluated
 
-    const myheaders = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
     return this.httpclient.post<Score>(this.baseURL + 'upload', uploadedImg, { headers: myheaders, observe: 'response'});
   }
 
   guestUploadImage(img: GuestUploadedImage): Observable<HttpResponse<Score>>{
     const myheaders = { 'content-type': 'application/json' };
-    return this.httpclient.post<Score>(this.baseURL + 'upload', img, { headers: myheaders, observe: 'response'});
+    return this.httpclient.post<Score>(this.baseURL + 'guest/upload', img, { headers: myheaders, observe: 'response'});
   }
 
   isUser(name: string, pass: string){

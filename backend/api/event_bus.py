@@ -36,22 +36,22 @@ def event_register(email, password, username):
 def event_uploadImage(id, imagechar, image, file):
     event_bus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
     event_number = len(event_bus) - 1
-    statusCode = jsonify(executeBus(event_number))
-    return event_sendImage(id, imagechar, image, file, statusCode)
+    return jsonify(executeBus(event_number))
 
-def event_sendImage(id, image_char, image, file, storageExitCode):
-    if(storageExitCode.status_code == 200):
-        score = event_sendToEvaluator(image_char)
-        if(score == None):
-            return jsonify({'response': "image evaluation failed."}), 401
-        else:
+def event_sendImage(id, image_char, image, file):
+    score = event_sendToEvaluator(image, image_char)
+    if(score == None):
+        return jsonify({'response': "image evaluation failed."}), 401
+    else:
+        exitcode = event_uploadImage(id, image_char, image, file)
+        if(exitcode.status_code == 200):
             storeToDB = event_saveToDB(id, file, image_char, score)
             if(storeToDB == True):
                 return jsonify({'response': "image upload successful", 'score': score}), 200
             else:
                 return jsonify({'response': "Database storage failed"}), 401
-    else:
-        return jsonify({"response": "Storage to firebase failed"}), storageExitCode
+        else:
+            return jsonify({'response': "Storage to cloud service failed"}), 401
 
 def event_viewImages(id):
     event_bus.append(partial(imagedb.getImages, id))
@@ -65,8 +65,8 @@ def event_viewImages(id):
     else:
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
-def event_sendToEvaluator(image_char):
-    event_bus.append(partial(evalutor.sendToEvaluator, image_char))
+def event_sendToEvaluator(image, image_char):
+    event_bus.append(partial(evalutor.sendToEvaluator, image, image_char))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 

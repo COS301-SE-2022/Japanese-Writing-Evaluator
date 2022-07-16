@@ -1,7 +1,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { AppServiceService } from './app-service.service';
-import { UploadedImage } from '../shared/image';
+import { UploadedImage } from '../shared/interfaces/image';
 
 describe('AppServiceService', () => {
   let service: AppServiceService;

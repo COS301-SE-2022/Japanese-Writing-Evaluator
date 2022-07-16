@@ -31,6 +31,7 @@ const routes: Routes = [
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
   },
+
 ];
 
 @NgModule({
