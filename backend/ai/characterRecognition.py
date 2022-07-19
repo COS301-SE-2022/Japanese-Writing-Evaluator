@@ -1,6 +1,4 @@
-from multiprocessing.spawn import prepare
 import os
-import tensorflow as tf
 from tensorflow import keras
 from matplotlib import pyplot
 import numpy as np
@@ -11,7 +9,7 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from keras.losses import categorical_crossentropy
 from keras.metrics import categorical_accuracy
-import datetime
+from datetime import datetime
 import json
 
 class CharacterRecognition():
@@ -47,18 +45,24 @@ class CharacterRecognition():
             Move the image into two folders
             Train_data and Test_data
         """
-        # list_img = os.listdir(image_path)
-        # num_img = len(list_img)
-        # print(list_img)
-        # print('\nsize: ' + str(num_img))
-
-        for file in list_img:
-            i = Image.open(image_path + '/' +file)
-            img = i.resize((28,28))
-            gray_img = img.convert('L')
-            gray_img.save('resized' +'/' + file, "jpeg")
-
-            resized_img_list = os.listdir('resized')
+        print(len(os.listdir('data')))
+        my_dir = os.listdir('data')
+        resized_img_list = 0
+        lengths = []
+        for file in my_dir:
+            if(file != 'input' and file != 'create_all_dataset.py'):
+                lengths.append(len(os.listdir('data'+'/'+file)))
+                for img in os.listdir('data'+'/'+file):
+                    i = Image.open('data'+'/'+file+'/'+ img)
+                    image = i.resize((28,28))
+                    gray_img = image.convert('L')
+                    gray_img.save('resized' +'/' + img, "jpeg")
+                    resized_img_list = os.listdir('resized')
+                print(lengths[len(lengths)-1])
+        print('\nLengths: ')
+        print(lengths)
+        print('\nImages: ')
+        print(resized_img_list)    
 
         num_resized = len(resized_img_list)
         print(resized_img_list)
@@ -67,11 +71,16 @@ class CharacterRecognition():
         img_matrix = np.array([np.array(Image.open('resized'+ '/' + im2)).flatten()
                     for im2 in resized_img_list],'f')
 
-        img_label = np.ones((num_resized,), dtype = int)  
-        img_label[0:] = 0
+        img_label = np.ones((len(img_matrix),), dtype = int)  
+        val = 0
+        bound = 0
+        for size in lengths:
+            img_label[bound:bound + size] = val
+            val+=0
+            bound += size
 
         data, labels = shuffle(img_matrix, img_label, random_state = 2)
-        our_data = [img_matrix,img_label]
+        our_data = [data,labels]
 
         (x,y) = (our_data[0], our_data[1])
         self.train_image, self.test_images, self.train_labels, self.test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
@@ -122,10 +131,11 @@ class CharacterRecognition():
         self.rr_model.compile(optimizer='adam',
                     loss=categorical_crossentropy,
                     metrics=[categorical_accuracy])
-        # history = self.rr_model.fit(self.train_imgs, self.train_labels, epochs=45, 
-        #                     validation_data=(self.test_imgs, self.test_labels))
         
-        history = self.rr_model.fit(self.x_train, self.y_train, epochs=25, validation_data=(self.x_val, self.y_val))
+        history = self.rr_model.fit(self.train_image, self.train_labels, epochs=45, 
+                            validation_data=(self.test_images, self.test_labels))
+        
+        # history = self.rr_model.fit(self.x_train, self.y_train, epochs=25, validation_data=(self.x_val, self.y_val))
         # print(history.history)
         self.rr_model.summary()
         
@@ -139,7 +149,7 @@ class CharacterRecognition():
         date = datetime.now()
         with open("models_data.json", "r+") as file:
             data= json.load(file)
-        record = {"version" : self.version, "date" : date, 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
+        record = {"version" : self.version, "date" : str(date), 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
         data["data"].append(record)
         with open("models_data.json", "w") as w_file:
             json.dump(data, w_file, indent = 4)
@@ -147,7 +157,8 @@ class CharacterRecognition():
 if __name__ == '__main__':
     version = input('model version: ')
     obj = CharacterRecognition(version)
-    obj.getData()
-    # obj.createDatasets()
+    # obj.getData()
+    obj.createDatasets()
     obj.createModel()
     obj.trainModel()
+    obj.storeData()
