@@ -13,7 +13,7 @@ class Evaluator(object):
         
         
     def prepare(self):
-        i = Image.open(self.file)
+        i = Image.open('imageToSave.png')
         img = i.resize((28,28))
         gray_img = img.convert('L')
         test_img = np.array([np.array(gray_img).flatten()],'f')
@@ -21,7 +21,7 @@ class Evaluator(object):
         return test_img
 
     def testCharacter(self):
-        model = tf.keras.models.load_model('../ai/characterRec.h5')
+        model = tf.keras.models.load_model('../ai/models/beta_model.h5')
         pre = model.predict([self.prepare()]).flatten()
 
         temp = 0
@@ -36,8 +36,12 @@ class Evaluator(object):
         print('\nprediction:\n', pre)
         try:
             print('\nprediction:\n', self.dataset[final])
+            print('accuracy: ' + str(temp * 100) + '%')
+            p = temp * 100
+            return p
         except:
             print("Invaild input")
+            return None
         
     def mockTestCharacter(self):
         model = tf.keras.models.load_model('../ai/models/characterRec.h5')
@@ -64,7 +68,7 @@ class Evaluator(object):
 
 
 if __name__ == '__main__':
-    e = Evaluator('predict_data/false.png', '*')
+    # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
-    # e = Evaluator('predict_data/ya.jpeg', '*')
+    e = Evaluator('predict_data/ya.jpeg', '*')
     e.testCharacter()
