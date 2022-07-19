@@ -9,7 +9,7 @@ sys.path.insert(1, '../email_user')
 
 from database import Database
 from image import Image
-import evalutor
+from evalutor import Evaluator
 from imageDB import imageDB
 
 db = Database()
@@ -39,7 +39,8 @@ def event_uploadImage(id, imagechar, image, file):
     return jsonify(executeBus(event_number))
 
 def event_sendImage(id, image_char, image, file):
-    score = event_sendToEvaluator(image, image_char)
+    e = Evaluator("../api/imageToSave.png", image_char)
+    score = e.testCharacter() # call AI
     if(score == None):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
@@ -66,7 +67,8 @@ def event_viewImages(id):
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
 def event_sendToEvaluator(image, image_char):
-    event_bus.append(partial(evalutor.sendToEvaluator, image, image_char))
+    obj = Evaluator(image, image_char)
+    event_bus.append(partial(obj.testCharacter, image, image_char))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 
