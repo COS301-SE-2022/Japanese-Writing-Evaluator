@@ -102,6 +102,8 @@ def event_getuserFeedback():
     return
 
 def event_guestUplaodImage(imagechar, image):
-    event_bus.append(partial(evalutor.guestUploadImage, imagechar, image))
+    e = Evaluator("../api/imageToSave.png", imagechar)
+    score = e.testCharacter() # call AI
+    # event_bus.append(partial(evalutor.guestUploadImage, imagechar, image))
     event_number = len(event_bus)  - 1
     return executeBus(event_number)
