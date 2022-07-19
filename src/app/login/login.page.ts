@@ -49,13 +49,9 @@ export class LoginPage implements OnInit {
     }
 
     if (!(username === '') && !(password === '')) {
-      // if (!localStorage.getItem('id')) {
-      //   localStorage.setItem('id','85');
-      // }
-      // this.router.navigate(['/home']);
+
       this.appService.isUser(username,password )
       .subscribe(data =>{
-        //console.log(data.body['user-token'].toString());
         if(data.status === 200){
           if (!localStorage.getItem('id')) {
             localStorage.setItem('id',data.body['data'][1].toString());

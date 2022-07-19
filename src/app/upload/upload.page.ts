@@ -29,8 +29,6 @@ export class UploadPage implements OnInit {
     //if score is negative 1 == error
     let scoreMessage: string;
     let alert;
-    //console.log(score);
-    //console.log(this.characterImage.url);
     if (score === -1) {
       scoreMessage = 'Try again'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
@@ -48,7 +46,6 @@ export class UploadPage implements OnInit {
       });
     }
     else{
-      //console.log(score);
       scoreMessage = 'Your accuracy score is '+ score.toString();
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
@@ -108,7 +105,6 @@ export class UploadPage implements OnInit {
           file: this.characterImage.group,
         };
         this.service.uploadImage(img).subscribe( data =>{
-          //console.log(data.body);
           this.score = data.body.score;
           this.showScore(Math.round(this.score));
         });
