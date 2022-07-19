@@ -32,15 +32,13 @@ class Evaluator(object):
                 temp = n
                 final = val
             val+=1
-
-        print('\nprediction:\n', pre)
         try:
             print('\nprediction:\n', self.dataset[final])
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
             return p
-        except:
-            print("Invaild input")
+        except Exception as e:
+            print(e)
             return None
         
     def mockTestCharacter(self):
@@ -49,9 +47,6 @@ class Evaluator(object):
         pre = tf.nn.sigmoid(pre)
 
         pre = tf.where(pre < 0.5, 0, 1)
-        # print('\nprediction:\n', pre)
-
-        # print('\nprediction:\n', pre.numpy())
         print('\nprediction:\n', self.dataset[pre.numpy()[0]])
 
     def testImage(self):
