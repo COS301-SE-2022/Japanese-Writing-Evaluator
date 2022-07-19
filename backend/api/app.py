@@ -44,12 +44,6 @@ def token_required(function):
   
     return decorated 
 
-
-@app.route('/')
-def lancher():
-    return "At lancher"
-
-
 """
     callResetPassword function:
         calls update password to change the password
