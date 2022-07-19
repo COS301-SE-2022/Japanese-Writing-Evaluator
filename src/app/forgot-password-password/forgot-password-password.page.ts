@@ -46,6 +46,8 @@ export class ForgotPasswordPasswordPage implements OnInit {
   onSubmitPassword(){
     if(this.password === this.confirmedPassword)
     {
+      this.password = '';
+      this.confirmedPassword = '';
       this.router.navigate(['/home']);
     }
     else
