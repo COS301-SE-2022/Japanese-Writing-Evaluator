@@ -83,16 +83,16 @@ class CharacterRecognition():
         our_data = [data,labels]
 
         (x,y) = (our_data[0], our_data[1])
-        self.train_image, self.test_images, self.train_labels, self.test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
+        train_img, test_img, self.train_labels, self.test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
 
-        self.train_image /= 255
-        self.test_images /= 255
+        train_img /= 255
+        test_img /= 255
 
-        self.train_image = self.train_image.reshape(self.train_image.shape[0], 28, 28, 1)
-        self.test_images = self.test_images.reshape(self.test_images.shape[0], 28, 28, 1)
+        train_image = train_img.reshape(test_img.shape[0], 28, 28, 1)
+        test_images = test_img.reshape(test_img.shape[0], 28, 28, 1)
 
-        self.train_image =self.train_image.astype('float32')
-        self.test_images = self.test_images.astype('float32')
+        self.train_image =train_image.astype('float32')
+        self.test_images = test_images.astype('float32')
 
         print('\nself.train_images.shape: {}, of {}'.format(self.train_image.shape, self.train_image.dtype))
         print('self.test_images.shape: {}, of {}'.format(self.test_images.shape, self.test_images.dtype))
