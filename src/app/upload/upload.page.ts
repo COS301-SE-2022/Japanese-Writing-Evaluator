@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { Observable, ReplaySubject } from 'rxjs';
 import { AppServiceService } from '../services/app-service.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 
@@ -30,14 +29,12 @@ export class UploadPage implements OnInit {
     //if score is negative 1 == error
     let scoreMessage: string;
     let alert;
-    console.log(score);
-    //console.log(this.characterImage.url);
     if (score === -1) {
       scoreMessage = 'Try again'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Something went wrong...',
-        message: `<ion-img src="../../assets/images/errorgif.webp" alt="Error Image" width="60" height="60" ></ion-img>${scoreMessage}`,
+        message: `<ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>${scoreMessage}`,
         buttons: [
           {
             text: 'Ok',
@@ -109,8 +106,9 @@ export class UploadPage implements OnInit {
         };
         this.service.uploadImage(img).subscribe( data =>{
           this.score = data.body.score;
+          this.showScore(Math.round(this.score));
         });
-        this.showScore(this.score); // get the score
+         // get the score
       }
       else{
         let img = new Object() as GuestUploadedImage;
@@ -120,10 +118,8 @@ export class UploadPage implements OnInit {
         };
         this.service.guestUploadImage(img).subscribe( data => {
           this.score = data.body.score;
-        });
-        if(this.score != null){
           this.showScore(this.score);
-        }
+        });
 
       }
     }

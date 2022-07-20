@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import {  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { catchError, delay, map, retryWhen } from 'rxjs/operators';
@@ -131,16 +131,25 @@ export class LoadingInterceptor implements HttpInterceptor{
                 return err.pipe(
                     delay(2000),
                     map(error => {
+                        console.log(retryRequestCount);
                         if(retryRequestCount === 2){
                             throw error;
                         }
                         else{
                             retryRequestCount++;
+                            console.log(retryRequestCount);
                         }
                         return error;
                     })
                 );
-            })
+            }),
+            map((event: HttpEvent<any>) => {
+                if (event instanceof HttpResponse) {
+                    // TODO: Check if the response is 200 ok
+                    this.loadingController.dismiss();
+                }
+                return event;
+              })
         );
     }
 
