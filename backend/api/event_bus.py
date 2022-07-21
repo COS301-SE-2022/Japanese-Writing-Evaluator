@@ -6,7 +6,7 @@ from authentication import Authentication
 import sys
 sys.path.insert(0, '../database')
 sys.path.insert(1, '../email_user')
-
+import base64
 from database import Database
 from image import Image
 from evalutor import Evaluator
@@ -101,9 +101,24 @@ def event_getuserFeedback():
     #TODO
     return
 
+"""
+guest Upload Image function:
+    uploads teh given image to firebase and sends it to the evaluator
+parameters: 
+    image_char: the charector of the image
+    image: the guest user image
+return:
+    json response
+"""
 def event_guestUplaodImage(imagechar, image):
-    e = Evaluator("../api/imageToSave.png", imagechar)
-    score = e.testCharacter() # call AI
-    # event_bus.append(partial(evalutor.guestUploadImage, imagechar, image))
-    event_number = len(event_bus)  - 1
-    return executeBus(event_number)
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+        
+    e = Evaluator('imageTosave.png', imagechar)
+    score = e.testCharacter() # call the AI
+    print(score)
+    if score == None:
+        return jsonify({'response': "image evaluation Failed."}), 401
+    else:
+        return jsonify({'response': "image evaluation successful", 'score': score}), 200

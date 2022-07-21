@@ -63,11 +63,12 @@ class Image:
             i = 0
             for imgs in images:
                 response.append({
-                    i: {
-                        "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
-                        "character": imgs[2],
-                        "score": imgs[3]
-                    }
+            
+                    "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
+                    "character": imgs[2],
+                    "score": imgs[3],
+                    "upload_date": imgs[5]
+                    
                 })
                 i = i + 1
             return jsonify({'response': response}), 200
