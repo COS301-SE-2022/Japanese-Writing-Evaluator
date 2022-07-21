@@ -6,7 +6,7 @@ from authentication import Authentication
 import sys
 sys.path.insert(0, '../database')
 sys.path.insert(1, '../email_user')
-
+import base64
 from database import Database
 from image import Image
 import evalutor
@@ -41,7 +41,8 @@ def event_uploadImage(id, imagechar, image, file):
 
 def event_sendImage(id, image_char, image, file, storageExitCode):
     if(storageExitCode.status_code == 200):
-        score = event_sendToEvaluator(image_char)
+        compare = evalutor.Evaluator("../api/imageToSave.png", image_char)
+        score = compare.testImage() # call the AI
         if(score == None):
             return jsonify({'response': "image evaluation failed."}), 401
         else:
@@ -99,7 +100,24 @@ def event_getuserFeedback():
     #TODO
     return
 
+"""
+guest Upload Image function:
+    uploads teh given image to firebase and sends it to the evaluator
+parameters: 
+    image_char: the charector of the image
+    image: the guest user image
+return:
+    json response
+"""
 def event_guestUplaodImage(imagechar, image):
-    event_bus.append(partial(evalutor.guestUploadImage, imagechar, image))
-    event_number = len(event_bus)  - 1
-    return executeBus(event_number)
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+        
+    e = evalutor.Evaluator('imageTosave.png', imagechar)
+    score = e.testImage() # call the AI
+    print(score)
+    if score == None:
+        return jsonify({'response': "image evaluation Failed."}), 401
+    else:
+        return jsonify({'response': "image evaluation successful", 'score': score}), 200
