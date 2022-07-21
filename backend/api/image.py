@@ -41,7 +41,6 @@ class Image:
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.b64decode(image))
-            
         try:
             res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
             store = jsonify(res)
