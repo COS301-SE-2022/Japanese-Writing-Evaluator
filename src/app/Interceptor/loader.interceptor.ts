@@ -24,6 +24,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         if(req.url.endsWith('upload')){
             return this.uploadIntercept(req,next);
         }
+
+        if(req.url.endsWith('progress')){
+            return this.progressIntercept(req,next);
+        }
     }
 
     loginIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -150,6 +154,31 @@ export class LoadingInterceptor implements HttpInterceptor{
                 }
                 return event;
               })
+        );
+    }
+
+    progressIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        return next.handle(req).pipe(
+            catchError(err => {
+                console.log('register error' + err);
+                //show that there is an error in the upload page
+                return EMPTY;
+            }),
+            retryWhen(err => {
+                let retryRequestCount = 1;// remove later
+                return err.pipe(
+                    delay(2000),
+                    map(error => {
+                        if(retryRequestCount === 2){
+                            throw error;
+                        }
+                        else{
+                            retryRequestCount++;
+                        }
+                        return error;
+                    })
+                );
+            })
         );
     }
 
