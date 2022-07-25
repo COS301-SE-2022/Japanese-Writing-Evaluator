@@ -44,3 +44,9 @@ datasetU_test
 resized
 #database config
 .env
+# backend
+datasetA
+datasetA_test
+datasetU
+datasetU_test
+resized

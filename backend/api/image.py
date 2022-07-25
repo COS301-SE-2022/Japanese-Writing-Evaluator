@@ -1,3 +1,4 @@
+from sqlalchemy import true
 from evalutor import Evaluator
 from flask import jsonify
 import base64
@@ -8,8 +9,7 @@ import os
 import json
 
 class Image:
-    def __init__(self,db):
-        self.db = db
+    def __init__(self):
         self.config = {
             'apiKey': os.getenv('FB_APIKEY'),
             'authDomain': os.getenv('FB_authDomain'),
@@ -38,11 +38,16 @@ class Image:
             json response
     """
     def uploadImage(self, id, image_char, image, file):
-        score = self.sendImage(id, image_char, image, file)
-        if score == None:
-            return jsonify({'response': "image upload failed."}), 401
-        else:
-            return jsonify({'response': "image upload successful.", "score":score}), 200
+        image = image.partition(",")[2]
+        with open("imageToSave.png", "wb") as fh:
+            fh.write(base64.b64decode(image))
+        try:
+            res = self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
+            store = jsonify(res)
+            print(store.status_code)
+            return json(store)
+        except:
+            return None
 
     """
         viewImages function:
@@ -52,49 +57,23 @@ class Image:
         return:
             json response
     """
-
-    def viewImages(self, id):
-        images = self.db.getImage(id)
+    def viewImages(self, images):
         if images:
             response = []
             i = 0
             for imgs in images:
                 response.append({
-                    i: {
-                        "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
-                        "character": imgs[2],
-                        "score": imgs[3]
-                    }
+            
+                    "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
+                    "character": imgs[2],
+                    "score": imgs[3],
+                    "upload_date": imgs[5]
+                    
                 })
                 i = i + 1
             return jsonify({'response': response}), 200
         else:
             return jsonify({'response': "view image failed."}), 401
-
-    """
-        send Image function:
-            send the image the user upload to firebase 
-        parameters: 
-            image: the user uploaded image from front-end
-            id: the unique id of the user
-            image_char: the character of the uploaded image
-        return:
-            json response
-    """
-    def sendImage(self, id, image_char, image, file):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-            
-        try:
-            self.storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
-            compare = Evaluator("../api/imageToSave.png", image_char)
-            score = compare.testImage() # call the AI
-            image_path = "/users/"+str(id)+"/"+file
-            self.db.saveImage(id, image_path, image_char, score)
-            return score
-        except:
-            return None
 
     """
         getCharacters function:
@@ -189,24 +168,3 @@ class Image:
         
         except Exception as e:
             return jsonify({'response': str(e)}), 401
-    """
-        guest Upload Image function:
-            uploads teh given image to firebase and sends it to the evaluator
-        parameters: 
-            image_char: the charector of the image
-            image: the guest user image
-        return:
-            json response
-    """
-    def guestUploadImage(self, image_char, image):
-        image = image.partition(",")[2]
-        with open("imageToSave.png", "wb") as fh:
-            fh.write(base64.b64decode(image))
-            
-        e = Evaluator('imageTosave.png', image_char)
-        score = e.testImage() # call the AI
-        print(score)
-        if score == None:
-            return jsonify({'response': "image evaluation Failed."}), 401
-        else:
-            return jsonify({'response': "image evaluation successful.", "score":score}), 200

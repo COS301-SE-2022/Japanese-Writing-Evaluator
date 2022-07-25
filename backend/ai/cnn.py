@@ -1,4 +1,6 @@
 from ctypes import resize
+from datetime import datetime
+import json
 import os
 import tensorflow as tf
 from tensorflow import keras
@@ -13,12 +15,9 @@ from sklearn.model_selection import train_test_split
 import random
 
 class CNN():
-  def __init__(self):
+  def __init__(self, name):
     self.CNN = keras.Sequential()
-    # self.train_image = []
-    # self.train_labels
-    # self.test_images
-    # self.test_labels
+    self.version = name
   
   """
     Function create_CNN:
@@ -69,9 +68,9 @@ class CNN():
     history = self.CNN.fit(self.train_image, self.train_labels, epochs=45, 
                     validation_data=(self.test_images, self.test_labels))
     print(history)
-    test_loss, test_acc = self.CNN.evaluate(self.test_images,  self.test_labels, verbose=2)
-    print('Accuraccy: ' + str(test_acc))
-    print('Loss: ' + str(test_loss))
+    self.test_loss, self.test_acc = self.CNN.evaluate(self.test_images,  self.test_labels, verbose=2)
+    print('Accuraccy: ' + str(self.test_acc))
+    print('Loss: ' + str(self.test_loss))
     # e = [i for i in range(1, 45+1)]
     # pyplot.plot(test_acc, test_loss)
     # pyplot.title('accuraccy vs losses')
@@ -129,4 +128,12 @@ class CNN():
 
     print('\nself.train_images.shape: {}, of {}'.format(self.train_image.shape, self.train_image.dtype))
     print('self.test_images.shape: {}, of {}'.format(self.test_images.shape, self.test_images.dtype))
-      
+  
+  def storeData(self):
+        date = datetime.now()
+        with open("models_data.json", "r+") as file:
+            data= json.load(file)
+        record = {"version" : self.version, "date" : str(date), 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
+        data["data"].append(record)
+        with open("models_data.json", "w") as w_file:
+            json.dump(data, w_file, indent = 4)
