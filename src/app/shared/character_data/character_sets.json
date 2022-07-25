@@ -1,4 +1,106 @@
 {
+    "hiraganaVowels":[
+      {"character": "あ", "translation":"A"},
+        {"character": "い", "translation":"I"},
+        {"character": "う", "translation":"U"},
+        {"character": "え", "translation":"E"},
+        {"character": "お", "translation":"O"}
+    ],
+    "hiraganaGroupK":[
+      {"character": "か", "translation":"Ka"},
+        {"character": "き", "translation":"Ki"},
+        {"character": "く", "translate":"Ku"},
+        {"character": "け", "translate":"Ke"},
+        {"character": "こ", "translate":"Ko"}
+    ],
+    "hiraganaGroupS":[
+      {"character": "さ", "translate":"Sa"},
+      {"character": "し", "translate":"Si"},
+      {"character": "す", "translate":"Su"},
+      {"character": "せ", "translate":"Se"},
+      {"character": "そ", "translate":"So"}
+    ],
+    "hiraganaGroupT":[
+      {"character": "た", "translate":"Ta"},
+        {"character": "ち", "translate":"Ti"},
+        {"character": "つ", "translate":"Tu"},
+        {"character": "て", "translate":"Te"},
+        {"character": "と", "translate":"To"}
+    ],
+    "hiraganaGroupN":[
+      {"character": "な", "translate":"Na"},
+      {"character": "に", "translate":"Ni"},
+      {"character": "ぬ", "translate":"Nu"},
+      {"character": "ね", "translate":"Ne"},
+      {"character": "の", "translate":"No"}
+    ],
+    "hiraganaGroupH":[
+      {"character": "は", "translate":"Ha"},
+        {"character": "ひ", "translate":"Hi"},
+        {"character": "ふ", "translate":"Hu"},
+        {"character": "へ", "translate":"He"},
+        {"character": "ほ", "translate":"Ho"}
+    ],
+    "hiraganaGroupM":[
+      {"character": "ま", "translate":"Ma"},
+        {"character": "み", "translate":"Mi"},
+        {"character": "む", "translate":"Mu"},
+        {"character": "め", "translate":"Me"},
+        {"character": "も", "translate":"Mo"}
+    ],
+    "hiraganaGroupY":[
+      {"character": "や", "translate":"Ya"},
+        {"character": "ゆ", "translate":"Yu"},
+        {"character": "よ", "translate":"Yo"}
+    ],
+    "hiraganaGroupR":[
+      {"character": "ら", "translate":"Ra"},
+      {"character": "り", "translate":"Ri"},
+      {"character": "る", "translate":"Ru"},
+      {"character": "れ", "translate":"Re"},
+      {"character": "ろ", "translate":"Ro"}
+    ],
+    "hiraganaGroupW":[
+      {"character": "わ", "translate":"Wa"},
+      {"character": "ゐ", "translate":"Wi"},
+      {"character": "ゑ", "translate":"We"},
+      {"character": "を", "translate":"Wo"}
+    ],
+    "hiraganaGroupG":[
+      {"character": "が", "translate":"Ga"},
+      {"character": "ぎ", "translate":"Gi"},
+      {"character": "ぐ", "translate":"Gu"},
+      {"character": "げ", "translate":"Ge"},
+      {"character": "ご", "translate":"Go"}
+    ],
+    "hiraganaGroupZ":[
+      {"character": "ざ", "translate":"Za"},
+      {"character": "じ", "translation":"Zi"},
+      {"character": "ず", "translation":"Zu"},
+      {"character": "ぜ", "translation":"Ze"},
+      {"character": "ぞ", "translation":"Zo"}
+    ],
+    "hiraganaGroupD":[
+      {"character": "だ", "translation":"Da"},
+      {"character": "ぢ", "translation":"Di"},
+      {"character": "づ", "translation":"Du"},
+      {"character": "で", "translation":"De"},
+      {"character": "ど", "translation":"Do"}
+    ],
+    "hiraganaGroupB":[
+      {"character": "ば", "translation":"Ba"},
+      {"character": "び", "translation":"Bi"},
+      {"character": "ぶ", "translation":"Bu"},
+      {"character": "べ", "translation":"Be"},
+      {"character": "ぼ", "translation":"Bo"}
+    ],
+    "hiraganaGroupP":[
+      {"character": "ぱ", "translation":"Pa"},
+      {"character": "ぴ", "translation":"Pi"},
+      {"character": "ぷ", "translation":"Pu"},
+      {"character": "ぺ", "translation":"Pe"},
+      {"character": "ぽ", "translation":"Po"}
+    ],
     "hiragana" : [
         {"character": "あ", "translation":"A"},
         {"character": "い", "translation":"I"},
