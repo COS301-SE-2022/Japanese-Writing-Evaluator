@@ -109,9 +109,9 @@ class Database:
         return:
             None
     """
-    def saveImage(self, id, image_path, image_char, score):
-        upload_query = "INSERT INTO image(id, image_path, character, score, upload_date) VALUES(%s, %s, %s, %s, %s);"
-        self.curr2.execute(upload_query, (id, image_path, image_char, score, date.today()))
+    def saveImage(self, id, image_path, image_char, score, writing_style):
+        upload_query = "INSERT INTO image(id, image_path, character, writing_style, score, upload_date) VALUES(%s, %s, %s, %s, %s, %s);"
+        self.curr2.execute(upload_query, (id, image_path, image_char, writing_style, score, date.today()))
         self.conn2.commit()
         return True
 
