@@ -1,13 +1,10 @@
 ion-card{
   display: flex;
   position: relative;
-  width: 250px;
-  height: 200px;
-  border-radius: 20%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: #960722;
+
 }
 
 .character{
@@ -17,6 +14,7 @@ ion-card{
   border-radius: 30%;
   position: relative;
   top: -10px;
+  border: 3px solid #960722;
 }
 
 .character h1{
@@ -27,10 +25,4 @@ ion-card{
 .character p{
   padding-bottom: 20px;
   text-align: center;
-}
-
-ion-button{
-  position: relative;
-  left: 10px;
-  top: 80px;
 }
