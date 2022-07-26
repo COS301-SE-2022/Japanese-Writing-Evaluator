@@ -6,7 +6,17 @@
 
   <!-- SUGGESTIONS -->
   <div class="suggestions">
-    <app-options></app-options>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let item of alphabetCategory">
+          <app-options [letter]='item.character' [category]='item.category'></app-options>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+
+
   </div>
 </ion-content>
 

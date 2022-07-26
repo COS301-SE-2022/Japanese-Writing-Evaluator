@@ -8,13 +8,27 @@ import character_sets from '../shared/character_data/character_sets.json';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
-  currentAlphabet: any;
 
-
+  alphabetCategory = [
+    {character: 'あ', category: 'Hiragana - Vowels'},
+    {character: 'か', category: 'Hiragana - Group K'},
+    {character: 'さ', category: 'Hiragana - Group S'},
+    {character: 'た', category: 'Hiragana - Group T'},
+    {character: 'な', category: 'Hiragana - Group N'},
+    {character: 'は', category: 'Hiragana - Group H'},
+    {character: 'ま', category: 'Hiragana - Group M'},
+    {character: 'や', category: 'Hiragana - Group Y'},
+    {character: 'ら', category: 'Hiragana - Group R'},
+    {character: 'わ', category: 'Hiragana - Group W'},
+    {character: 'が', category: 'Hiragana - Group G'},
+    {character: 'ざ', category: 'Hiragana - Group Z'},
+    {character: 'だ', category: 'Hiragana - Group D'},
+    {character: 'ば', category: 'Hiragana - Group B'},
+    {character: 'ぱ', category: 'Hiragana - Group P'},
+    {character: 'ア', category: 'Katakana'},
+    {character: '一', category: 'Kanji'}
+  ];
   constructor(private service: AppServiceService, private router: Router) {
-
-    this.currentAlphabet = character_sets.hiragana;//this.hiraganaAlphabet;
-    console.log();
   }//private repository: AppServiceService  ;
 
 
