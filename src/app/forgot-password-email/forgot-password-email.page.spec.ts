@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { ForgotPasswordEmailPage } from './forgot-password-email.page';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ForgotPasswordEmailPage', () => {
   let component: ForgotPasswordEmailPage;
@@ -11,7 +12,7 @@ describe('ForgotPasswordEmailPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ForgotPasswordEmailPage ],
-      imports: [IonicModule.forRoot(), FormsModule]
+      imports: [IonicModule.forRoot(), FormsModule, ReactiveFormsModule, HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ForgotPasswordEmailPage);
