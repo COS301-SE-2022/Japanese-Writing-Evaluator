@@ -38,7 +38,7 @@ def event_uploadImage(id, imagechar, image, file):
     event_number = len(event_bus) - 1
     return jsonify(executeBus(event_number))
 
-def event_sendImage(id, image_char, image, file):
+def event_sendImage(id, image_char, image, file, writing_style):
     e = Evaluator("../api/imageToSave.png", image_char)
     score = e.testCharacter() # call AI
     if(score == None):
@@ -46,7 +46,7 @@ def event_sendImage(id, image_char, image, file):
     else:
         exitcode = event_uploadImage(id, image_char, image, file)
         if(exitcode.status_code == 200):
-            storeToDB = event_saveToDB(id, file, image_char, score)
+            storeToDB = event_saveToDB(id, file, image_char, score, writing_style)
             if(storeToDB == True):
                 return jsonify({'response': "image upload successful", 'score': score}), 200
             else:
@@ -72,8 +72,8 @@ def event_sendToEvaluator(image, image_char):
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 
-def event_saveToDB(id, file, image_char, score):
-    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score))
+def event_saveToDB(id, file, image_char, score, writing_style):
+    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
 
