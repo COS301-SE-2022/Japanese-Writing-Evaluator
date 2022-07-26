@@ -1,1 +1,36 @@
+ion-card{
+  display: flex;
+  position: relative;
+  border: 5px solid #960722;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  transition: all .2s ease-in-out;
+  border-radius: 5%;
+}
 
+ion-card:hover {
+  transform: scale(1.1);
+  box-shadow: 15px 15px 15px -10px rgba(0, 0, 0, 0.4);
+}
+
+.option{
+  margin-top: 10px;
+  width: 150px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.descript{
+  width: 150px;
+  height: 180px;
+  text-align: center;
+}
+
+.letter{
+  font-size: 90px;
+}
