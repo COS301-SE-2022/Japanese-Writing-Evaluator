@@ -88,4 +88,5 @@ export class HomePage implements OnInit {
     this.currentAlphabet = character_sets.kanji;
   }
 
+
 }
