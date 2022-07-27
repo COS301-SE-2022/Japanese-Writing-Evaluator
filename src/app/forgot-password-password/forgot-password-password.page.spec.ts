@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { ForgotPasswordPasswordPage } from './forgot-password-password.page';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ForgotPasswordPasswordPage', () => {
   let component: ForgotPasswordPasswordPage;
@@ -12,7 +13,7 @@ describe('ForgotPasswordPasswordPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ForgotPasswordPasswordPage ],
-      imports: [IonicModule.forRoot(),FormsModule, RouterTestingModule]
+      imports: [IonicModule.forRoot(),FormsModule, RouterTestingModule, ReactiveFormsModule, HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ForgotPasswordPasswordPage);
