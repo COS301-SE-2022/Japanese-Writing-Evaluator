@@ -19,9 +19,8 @@ class Evaluator(object):
         test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
         return test_img
 
-    def testCharacter(self):
-        model = tf.keras.models.load_model('../ai/models/beta_model.h5')
-        pre = model.predict([self.prepare()]).flatten()
+    def testHiregana(self):
+        pre = self.hiregana_model.predict([self.prepare()]).flatten()
 
         temp = 0
         val = 0
@@ -32,7 +31,32 @@ class Evaluator(object):
                 final = val
             val+=1
         try:
-            print('\nprediction:\n', self.dataset[final])
+            predicted_char = self.dataset[final]
+            print('\nprediction:\n', predicted_char)
+            if(predicted_char != self.char):
+                print('Incorrect prediction!')
+            print('accuracy: ' + str(temp * 100) + '%')
+            p = temp * 100
+            return p
+        except Exception as e:
+            print(e)
+            return None
+        
+    def testKanji(self):
+        pre = self.kanji_model.predict([self.prepare()]).flatten()
+        temp = 0
+        val = 0
+        final = 0
+        for n in pre:
+            if(n >temp):
+                temp = n
+                final = val
+            val+=1
+        try:
+            predicted_char = self.dataset[final]
+            print('\nprediction:\n', predicted_char)
+            if(predicted_char != self.char):
+                print('Incorrect prediction!')
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
             return p
@@ -46,9 +70,14 @@ class Evaluator(object):
 
         pre = tf.where(pre < 0.5, 0, 1)
         print('\nprediction:\n', self.dataset[pre.numpy()[0]])
+        
+    def loadModels(self):
+        self.hiregana_model = tf.keras.models.load_model('../ai/models/hiregana_model.h5')
+        self.kanji_model = tf.keras.models.load_model('../ai/models/kanji_model.h5')
+        
 
 if __name__ == '__main__':
     # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
     e = Evaluator('predict_data/ya.jpeg', '*')
-    e.testCharacter()
+    e.testKanji()
