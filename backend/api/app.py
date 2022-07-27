@@ -53,9 +53,13 @@ def token_required(function):
     return:
         json response from resetPassword
 """
-@app.route('/password/reset', methods = ['PUT'])
+@app.route('/forgot-password-email', methods = ['GET'])
 def callResetPassword():
-    return event_bus.event_resetPassword(str(request.json["email"]), str(request.json["password"]))
+    return event_bus.event_resetPassword(str(request.json["email"]))
+
+@app.route('/forgot-password-password', methods = ['PUT'])
+def resetPassword():
+    return event_bus.event_changePassword(str(request.json["token"]), str(request.json["password"]))
 
 """
     call Register function:
