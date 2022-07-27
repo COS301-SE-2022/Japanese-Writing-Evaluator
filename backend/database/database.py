@@ -69,10 +69,14 @@ class Database:
             number of rows modified for bound checking
     """
 
-    def updatePassword(self, email, password):
-        update_query = "UPDATE users SET password = %s WHERE email = %s"
+    def updatePassword(self, token, password):
+        update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
         try:
-            self.curr.execute(update_query, (password, email))
+            print(token)
+            self.curr.execute(update_query, (password, token))
+            self.conn.commit()
+            setTokenNull = "UPDATE users SET forgot_password_token = NULL WHERE forgot_password_token = %s"
+            self.curr.execute(setTokenNull, (token,))
             self.conn.commit()
             return self.curr.rowcount    
         except (Exception, psycopg2.DatabaseError) as error:
@@ -158,3 +162,14 @@ class Database:
             return None
         
         return scores
+
+    def addToken(self, email, token):
+        try:
+            query = "UPDATE users SET forgot_password_token = %s WHERE email = %s;"
+            self.curr.execute(query, (token, email))
+            self.conn.commit()
+            return True
+        except:
+            return False
+
+        
