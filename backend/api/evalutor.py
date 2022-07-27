@@ -20,6 +20,7 @@ class Evaluator(object):
         return test_img
     
     def testCharacter(self):
+        self.loadModels()
         if(self.style == 'kanji'):
             self.testKanji()
         else:

@@ -48,7 +48,5 @@ class Authentication:
             return jsonify({'response': str(e)}), 401
 
     def login(self, email, password):
-        e = Evaluator('','')
-        e.loadModels() 
         return self.db.getUser(password, email)
 
