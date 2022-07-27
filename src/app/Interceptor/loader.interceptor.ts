@@ -14,11 +14,11 @@ export class LoadingInterceptor implements HttpInterceptor{
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if(req.url.endsWith('login')){
-            return this.loginIntercept(req,next);
+            return this.generalIntercept(req,next);
         }
 
         if(req.url.endsWith('register')){
-            return this.registerIntercept(req,next);
+            return this.generalIntercept(req,next);
         }
 
         if(req.url.endsWith('upload')){
@@ -26,61 +26,12 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('progress')){
-            return this.progressIntercept(req,next);
+            return this.generalIntercept(req,next);
         }
-    }
 
-    loginIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-        //intercepts an http request
-        return next.handle(req).pipe(
-            catchError(err => {
-                console.log('login error' + err);
-                //show that there is an error in the upload page
-                return EMPTY;
-            }),
-            retryWhen(err => {
-                let retryRequestCount = 1;// remove later
-                return err.pipe(
-                    delay(2000),
-                    map(error => {
-                        if(retryRequestCount === 2){
-                            throw error;
-                        }
-                        else{
-                            retryRequestCount++;
-                        }
-                        return error;
-                    })
-                );
-            })
-        );
-    }
-
-    registerIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-        return next.handle(req).pipe(
-            catchError(err => {
-                console.log('register error' + err);
-                //show that there is an error in the upload page
-                return EMPTY;
-            }),
-            retryWhen(err => {
-                let retryRequestCount = 1;// remove later
-                return err.pipe(
-                    delay(2000),
-                    map(error => {
-                        if(retryRequestCount === 2){
-                            throw error;
-                        }
-                        else{
-                            retryRequestCount++;
-                        }
-                        return error;
-                    })
-                );
-            })
-        );
+        if(req.url.endsWith('forgot-password-email')){
+            return this.generalIntercept(req,next);
+        }
     }
 
     uploadIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -157,10 +108,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         );
     }
 
-    progressIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+    generalIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         return next.handle(req).pipe(
             catchError(err => {
-                console.log('register error' + err);
+                console.log('error' + err);
                 //show that there is an error in the upload page
                 return EMPTY;
             }),
