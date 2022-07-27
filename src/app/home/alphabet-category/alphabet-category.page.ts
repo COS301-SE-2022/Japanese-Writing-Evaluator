@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-alphabet-category',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlphabetCategoryPage implements OnInit {
 
-  constructor() { }
+  category: string;
+  constructor(private route: ActivatedRoute ) { }
 
   ngOnInit() {
+    this.category = this.route.snapshot.queryParamMap.get('category');
+    console.log('category:' + this.category);
   }
 
 }
