@@ -18,7 +18,13 @@ class Evaluator(object):
         test_img = np.array([np.array(gray_img).flatten()],'f')
         test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
         return test_img
-
+    
+    def testCharacter(self):
+        if(self.style == 'kanji'):
+            self.testKanji()
+        else:
+            self.testHiregana()
+            
     def testHiregana(self):
         pre = self.hiregana_model.predict([self.prepare()]).flatten()
 
