@@ -5,11 +5,11 @@ from flask import jsonify
 import base64
 
 class Evaluator(object):
-    def __init__(self, file, input_char):
+    def __init__(self, style, input_char):
         self.char = input_char
         self.predition = -1
         self.dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
-        
+        self.style = style
         
     def prepare(self):
         i = Image.open('imageToSave.png')
