@@ -1,5 +1,6 @@
 import hashlib
 import uuid
+from evalutor import Evaluator
 from flask import jsonify
 
 class Authentication:
