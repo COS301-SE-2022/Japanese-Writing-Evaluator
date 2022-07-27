@@ -1,6 +1,10 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ForgotPasswordPassword } from '../shared/interfaces/forgotpassword';
+import { AppServiceService } from '../services/app-service.service';
+
 
 @Component({
   selector: 'app-forgot-password-password',
@@ -10,15 +14,20 @@ import { ToastController } from '@ionic/angular';
 export class ForgotPasswordPasswordPage implements OnInit {
   password: string;
   confirmedPassword: string;
+  forgotpassword: FormGroup;
 
-  constructor(private router: Router, public toastController: ToastController){
-    this.password = '';
-    this.confirmedPassword = '';
+  constructor(private router: Router, public toastController: ToastController,private formbuilder: FormBuilder,
+    private service: AppServiceService){
+
+    this.forgotpassword = this.formbuilder.group({
+      newPassword: new  FormControl('',[Validators.required]),
+      confirmedPassword: new FormControl('')
+    });
   }
 
   async presentToast() {
     const toast = await this.toastController.create({
-        message: 'Your settings have been saved.',
+        message: 'Password changed.',
         duration: 2000
     });
     toast.present();
@@ -27,7 +36,7 @@ export class ForgotPasswordPasswordPage implements OnInit {
   async presentToastWithOptions() {
     const toast = await this.toastController.create({
       message: 'Passwords do not match, please try again',
-      position: 'top',
+      position: 'bottom',
       buttons: [
         {
           text: 'OK',
@@ -44,16 +53,27 @@ export class ForgotPasswordPasswordPage implements OnInit {
   }
 
   onSubmitPassword(){
+    this.password = this.forgotpassword.controls.newPassword.value;
+    this.confirmedPassword = this.forgotpassword.controls.confirmedPassword.value;
     if(this.password === this.confirmedPassword)
     {
-      this.password = '';
-      this.confirmedPassword = '';
-      this.router.navigate(['/home']);
+      let pass = new Object() as ForgotPasswordPassword;
+      pass = {
+        password: this.password,
+      };
+
+      this.service.forgotPasswordPassword(pass).subscribe(response => {
+        if (response.status === 200) { //
+          this.presentToast();
+          this.router.navigate(['/login']);
+        }
+        else{
+          //
+        }
+      });
     }
     else
     {
-      this.password = '';
-      this.confirmedPassword = '';
       this.presentToastWithOptions();
     }
   }
