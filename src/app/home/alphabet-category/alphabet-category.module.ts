@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { AlphabetCategoryPageRoutingModule } from './alphabet-category-routing.module';
 
 import { AlphabetCategoryPage } from './alphabet-category.page';
+import { BlockTryCharComponent } from '.././block-try-char/block-try-char.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { AlphabetCategoryPage } from './alphabet-category.page';
     IonicModule,
     AlphabetCategoryPageRoutingModule
   ],
-  declarations: [AlphabetCategoryPage]
+  declarations: [AlphabetCategoryPage, BlockTryCharComponent]
 })
 export class AlphabetCategoryPageModule {}

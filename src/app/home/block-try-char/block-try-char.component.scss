@@ -4,16 +4,22 @@ ion-card{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  transition: all .2s ease-in-out;
+}
+
+ion-card:hover {
+  transform: scale(1.1);
+  box-shadow: 15px 15px 15px -10px rgba(0, 0, 0, 0.4);
 }
 
 .character{
-  width: 120px;
-  height: 180px;
+  width: 200px;
+  height: 200px;
   background: #ffffff;
-  border-radius: 30%;
+  border-radius: 5%;
   position: relative;
   top: -10px;
-  border: 3px solid #960722;
+  border: 5px solid #960722;
 }
 
 .character h1{
