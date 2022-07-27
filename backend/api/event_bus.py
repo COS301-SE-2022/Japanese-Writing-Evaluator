@@ -1,4 +1,5 @@
 from functools import partial
+from urllib import response
 
 from flask import jsonify
 from authentication import Authentication
@@ -6,7 +7,9 @@ from authentication import Authentication
 import sys
 sys.path.insert(0, '../database')
 sys.path.insert(1, '../email_user')
+from send_email import Send_Email
 import base64
+import json
 from database import Database
 from image import Image
 from evalutor import Evaluator
@@ -23,10 +26,34 @@ def executeBus(event_number):
     del event_bus[event_number]
     return res
 
-def event_resetPassword(email, password):
-    event_bus.append(partial(auth.resetPassword, email, password))
+def event_resetPassword(email):
+    event_bus.append(partial(auth.findUser, email))
+    event_number = len(event_bus) - 1
+    response = executeBus(event_number)
+    if(response[1] == 200): #returns a tuple, element at 1 is the status code
+        email_res = event_forgotPasswordEmail(email)
+        tokenStore = event_storeToken(email, email_res["token"])
+        if(tokenStore[1] != 200):
+            return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
+        return email_res
+    else:
+        return response
+    
+def event_storeToken(email, token):
+    event_bus.append(partial(auth.addToken, email, token))
     event_number = len(event_bus) - 1
     return executeBus(event_number)
+
+def event_forgotPasswordEmail(email):
+    event_bus.append(partial(Send_Email.forgotPasswordEmail, email))
+    event_number = len(event_bus) - 1
+    return executeBus(event_number)
+
+def event_changePassword(token, password):
+    event_bus.append(partial(auth.resetPassword, token, password))
+    event_number = len(event_bus) - 1
+    return executeBus(event_number)
+        
 
 def event_register(email, password, username):
     event_bus.append(partial(auth.register, email, password, username))
