@@ -60,12 +60,11 @@ class Authentication:
             return jsonify({'response': str(e)}), 401
 
     def login(self, email, password):
-        salt = uuid.uuid4().hex
-        new_password = hashlib.sha512((password + salt).encode()).hexdigest()
-        print ("/n")
+        salt = self.db.fetchSalt(email)
+        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         print (new_password)
-        value = self.db.getUser(new_password,email)
-        if value == True:
+        if self.db.getUser(new_password, email):
+            print("=================================")
             return jsonify({'response': "Login Successful"}), 200
         else:
             return jsonify({'response': "Login Failed"}), 401

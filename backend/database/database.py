@@ -100,7 +100,7 @@ class Database:
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
         print(user)
-        return True
+        return user
         
     def getAllUsers(self):
         q = "SELECT * FROM users;"
