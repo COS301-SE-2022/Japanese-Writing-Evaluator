@@ -20,7 +20,7 @@ The system should allow the user to log into the system using their own credenti
 # Reference links
 <ul>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/projects/3">Scrum Board</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2#user-manual">User Manual</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3#user-manual">User Manual</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Coding-Standards">Coding Standard</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Technical-Installation-Manual">Technical Installation Manual</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3">SRS Demo 3</a></li>
