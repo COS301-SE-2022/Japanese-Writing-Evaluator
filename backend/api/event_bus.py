@@ -12,7 +12,7 @@ import base64
 import json
 from database import Database
 from image import Image
-from evalutor import Evaluator
+from evaluator import Evaluator
 from imageDB import imageDB
 
 db = Database()
@@ -66,8 +66,9 @@ def event_uploadImage(id, imagechar, image, file):
     return jsonify(executeBus(event_number))
 
 def event_sendImage(id, image_char, image, file, writing_style):
-    e = Evaluator("../api/imageToSave.png", image_char)
+    e = Evaluator(writing_style, image_char)
     score = e.testCharacter() # call AI
+    print(score)
     if(score == None):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
@@ -137,12 +138,12 @@ parameters:
 return:
     json response
 """
-def event_guestUplaodImage(imagechar, image):
+def event_guestUplaodImage(imagechar, image, style):
     image = image.partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
         
-    e = Evaluator('imageTosave.png', imagechar)
+    e = Evaluator(style, imagechar)
     score = e.testCharacter() # call the AI
     print(score)
     if score == None:

@@ -209,7 +209,7 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]))
+    return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
 
 if __name__ == '__main__':
     app.run(debug = True)

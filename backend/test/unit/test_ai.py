@@ -1,27 +1,35 @@
 import sys
+from PIL import Image
 
 # sys.path.append('backend/api/')
 sys.path.append('api')
 sys.path.append('ai')
-from backend.api.evalutor import Evaluator
+from backend.api.evaluator import Evaluator
 
-def test_modelA_Evaluate_Characte():
-    evaluteA = Evaluator('backend/test/unit/a.jpg', 'A')
-    result = evaluteA.testImage()
+def test_model_Hiragana_Evaluate_Characte():
+    i = Image.open('backend/test/unit/a.jpg')
+    i.save('../../api/imageToSave.png')
+    e = Evaluator('hiragana', '')
+    result = e.testCharacter()
     assert result != None
     
-def test_modelU_Evaluate_Character():
-    evaluteU = Evaluator('backend/test/unit/u.png', 'U')
-    result = evaluteU.testImage()
+def test_model_Kanji_Evaluate_Character():
+    i = Image.open('backend/test/unit/kanji.jpg')
+    i.save('../../api/imageToSave.png')
+    e = Evaluator('kanji', '')
+    result = e.testCharacter()
     assert result != None
         
-def test_modelA_Evaluate_Image():
-    evaluteA = Evaluator('backend/test/unit/error.png', 'A')
-    result = evaluteA.testImage()
-    assert result == None
+def test_model_Hiragana_Evaluate_False_Image():
+    i = Image.open('backend/test/unit/error.png')
+    i.save('../../api/imageToSave.png')
+    e = Evaluator('hiragana', '')
+    result = e.testCharacter()
+    assert result != None
     
-def test_modelU_Evaluate_Image():
-    evaluteU = Evaluator('backend/test/unit/error.png', 'U')
-    result = evaluteU.testImage()
-    print(result)
-    assert result == None
+def test_model_Kanji_Evaluate_False_Image():
+    i = Image.open('backend/test/unit/error.png')
+    i.save('../../api/imageToSave.png')
+    e = Evaluator('kanji', '')
+    result = e.testCharacter()
+    assert result != None

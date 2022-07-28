@@ -22,9 +22,9 @@ class Evaluator(object):
     def testCharacter(self):
         self.loadModels()
         if(self.style == 'kanji'):
-            self.testKanji()
+            return self.testKanji()
         else:
-            self.testHiregana()
+            return self.testHiregana()
             
     def testHiregana(self):
         pre = self.hiregana_model.predict([self.prepare()]).flatten()
@@ -40,8 +40,6 @@ class Evaluator(object):
         try:
             predicted_char = self.dataset[final]
             print('\nprediction:\n', predicted_char)
-            if(predicted_char != self.char):
-                print('Incorrect prediction!')
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
             return p
@@ -62,12 +60,11 @@ class Evaluator(object):
         try:
             predicted_char = self.dataset[final]
             print('\nprediction:\n', predicted_char)
-            if(predicted_char != self.char):
-                print('Incorrect prediction!')
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
             return p
         except Exception as e:
+            print("Fail!!")
             print(e)
             return None
         
