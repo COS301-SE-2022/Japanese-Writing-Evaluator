@@ -95,9 +95,9 @@ export class UploadPage implements OnInit {
       let base64String = '';
       base64String = this.base64Result;
 
-      console.log('in');
+      //console.log('in');
       if (localStorage.getItem('id') !== 'guest') {
-        console.log('in');
+        //console.log('in');
         let img = new Object() as UploadedImage;
         img = {
           id: localStorage.getItem('id'),
@@ -106,7 +106,6 @@ export class UploadPage implements OnInit {
           file: this.uploadImageName, // uploaded file name
           style: this.characterImage.group, // the writing style that the letter is from
         };
-        console.log(img);
         this.service.uploadImage(img).subscribe( data =>{
           this.score = data.body.score;
           this.showScore(Math.round(this.score));
