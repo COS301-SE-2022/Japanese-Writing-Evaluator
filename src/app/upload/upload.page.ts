@@ -118,6 +118,7 @@ export class UploadPage implements OnInit {
         img = {
           image: base64String,
           imagechar: this.characterImage.characterName,
+          style: this.characterImage.group
         };
         this.service.guestUploadImage(img).subscribe( data => {
           this.score = data.body.score;

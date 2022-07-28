@@ -9,6 +9,7 @@ export interface UploadedImage {
 export interface GuestUploadedImage {
     image: string;
     imagechar: string;
+    style: string;
 }
 
 export interface CharacterImage {
