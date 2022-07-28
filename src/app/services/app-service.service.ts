@@ -49,7 +49,6 @@ export class AppServiceService {
       password:pass
     };
     const body=JSON.stringify(user);
-    console.log(body);
     return this.httpclient.post(this.baseURL + 'register', body,{ headers });
   }
   // getCharacters(): Observable<Character[]>{
