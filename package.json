@@ -5,6 +5,7 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "start": "ionic serve",
+    "start prod": "ionic serve --prod",
     "api": "cd backend/api && python app.py",
     "api_ut": "python -m pytest backend/test/unittest/",
     "build": "ng build",
