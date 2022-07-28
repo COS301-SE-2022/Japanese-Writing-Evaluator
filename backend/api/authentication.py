@@ -19,7 +19,10 @@ class Authentication:
     """
 
     def resetPassword(self, token, password):
-        editedRow = self.db.updatePassword(token, password)
+        salt = self.db.fetchSaltByToken(token)
+        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        
+        editedRow = self.db.updatePassword(token, new_password)
         if editedRow == 1:
             return jsonify({'response': "password reset successful."}), 200
         else:
@@ -62,11 +65,7 @@ class Authentication:
     def login(self, email, password):
         salt = self.db.fetchSalt(email)
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
-        print (new_password)
-        if self.db.getUser(new_password, email):
-            print("=================================")
-            return jsonify({'response': "Login Successful"}), 200
-        else:
-            return jsonify({'response': "Login Failed"}), 401
+        user = self.db.getUser(new_password, email)
+        return user
        
 

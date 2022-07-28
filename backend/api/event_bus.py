@@ -117,7 +117,12 @@ def event_getUser(id):
 def event_login(email, password):
     event_bus.append(partial(auth.login, email, password))
     event_number = len(event_bus) -  1
-    return executeBus(event_number)
+    status = executeBus(event_number)
+    print(status)
+    if(status != None):
+        return status
+    else:
+        return None
 
 def event_getCharacters():
     event_bus.append(partial(img.getCharacters))
