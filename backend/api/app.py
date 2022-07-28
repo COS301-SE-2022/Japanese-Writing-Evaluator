@@ -26,6 +26,7 @@ app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 send = Send_Email()
 CORS(app)
 
+
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
