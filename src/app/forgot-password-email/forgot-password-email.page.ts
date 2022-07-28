@@ -34,18 +34,18 @@ export class ForgotPasswordEmailPage implements OnInit {
         }
         else{
           //check what the problem is
-          switch(data.status){
-            case 500:
-              //internal server error
-              break;
-            case 404:
-              //not found
-              break;
-            case 401:
-              //invalid email(unauthorised)
-              break;
-            default:
-          }
+          // switch(data.status){
+          //   case 500:
+          //     //internal server error
+          //     break;
+          //   case 404:
+          //     //not found
+          //     break;
+          //   case 401:
+          //     //invalid email(unauthorised)
+          //     break;
+          //   default:
+          // }
           this.showToast(false);
         }
       }); // sends the email to backend so that the email can be sent
