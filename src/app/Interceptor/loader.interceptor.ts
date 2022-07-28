@@ -32,6 +32,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         if(req.url.endsWith('forgot-password-email')){
             return this.generalIntercept(req,next);
         }
+
+        if(req.url.endsWith('forgot-password-password')){
+            return this.generalIntercept(req,next);
+        }
     }
 
     uploadIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
