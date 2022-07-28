@@ -16,13 +16,24 @@ class Authentication:
             json response
     """
 
-    def resetPassword(self,email, password):
-        editedRow = self.db.updatePassword(email, password)
+    def resetPassword(self, token, password):
+        editedRow = self.db.updatePassword(token, password)
         if editedRow == 1:
             return jsonify({'response': "password reset successful."}), 200
         else:
             return jsonify({'response': "password reset failed."}), 401
 
+    def findUser(self, email):
+        if(self.db.getUserByEmail(email)):
+            return jsonify({'response': "user found"}), 200
+        else:
+            return jsonify({'response': "user does not exist"}), 401
+
+    def addToken(self, email, token):
+        if(self.db.addToken(email, token)):
+            return jsonify({'response': "Token successfully added"}), 200
+        else:
+            return jsonify({'response': "Token unsuccessfully added"}), 401
     """
 
         Register

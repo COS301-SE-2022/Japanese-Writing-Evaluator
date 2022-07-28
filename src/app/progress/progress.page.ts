@@ -2,6 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { AppServiceService } from '../services/app-service.service';
 //import { AppServiceService } from '../services/app-service.service';
 
 
@@ -28,12 +29,16 @@ export class ProgressPage implements OnInit {
 
   map = new Map();
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
     this.char = localStorage.getItem('char');
     this.percent = +localStorage.getItem('percentage');
-    // eslint-disable-next-line max-len
+    // console.log(this.service.getProgress().subscribe())
+    this.service.getProgress().subscribe(data => {
+      console.log(data.body.response);
+    });
+
     this.map.set('A', 'A');
     this.map.set('I','I');
     this.map.set('U','U');

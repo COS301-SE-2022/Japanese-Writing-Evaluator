@@ -15,23 +15,14 @@ import numpy as np
 import requests
 
 import sys
-sys.path.insert(0, '../database')
-sys.path.insert(1, '../email_user')
-
-from database import Database
-from authentication import Authentication
-from image import Image
-from feedback import Feedback
+sys.path.insert(0, '../email_user')
 from send_email import Send_Email
+import event_bus
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
-db = Database()
-auth = Authentication(db)
-img = Image(db)
-feedback = Feedback(db)
 send = Send_Email()
 CORS(app)
 
@@ -53,12 +44,6 @@ def token_required(function):
   
     return decorated 
 
-
-@app.route('/')
-def lancher():
-    return "At lancher"
-
-
 """
     callResetPassword function:
         calls update password to change the password
@@ -68,9 +53,13 @@ def lancher():
     return:
         json response from resetPassword
 """
-@app.route('/password/reset', methods = ['PUT'])
+@app.route('/forgot-password-email', methods = ['GET'])
 def callResetPassword():
-    return auth.resetPassword(str(request.json["email"]), str(request.json["password"]))
+    return event_bus.event_resetPassword(str(request.json["email"]))
+
+@app.route('/forgot-password-password', methods = ['PUT'])
+def resetPassword():
+    return event_bus.event_changePassword(str(request.json["token"]), str(request.json["password"]))
 
 """
     call Register function:
@@ -84,7 +73,7 @@ def callResetPassword():
 """
 @app.route('/register', methods = ['POST', 'GET'])
 def callRegister():
-    return auth.register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
@@ -98,7 +87,7 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    return img.uploadImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]))
+    return event_bus.event_sendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
 
 """
     callViewImages function:
@@ -112,9 +101,7 @@ def callUploadImage():
 @app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
-    return img.viewImages(int(request.json["id"]))
-
-
+    return event_bus.event_viewImages(int(request.json["id"]))
 
 """
     login function:
@@ -127,7 +114,7 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = auth.login(str(request.json["email"]), str(request.json["password"]))
+    user = event_bus.event_login(str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -149,14 +136,7 @@ def login():
 """
 @app.route('/home', methods=['GET'])
 def home():
-    return img.getCharacters()
-
-@app.route('/feedback', methods = ['GET','POST'])
-@token_required
-def userfeedback():
-    progress = feedback.getuserfeedback(db,str(request.json["id"]))
-    return progress
-
+    return event_bus.event_getCharacters()
 
 """
     email function:
@@ -168,8 +148,7 @@ def userfeedback():
 """
 @repeat(every().sunday)
 def email_users():
-    users = db.getImageUsers()
-
+    users = event_bus.event_getImageUsers()
     keep = []
     for i in users:
         if(keep.count(i[0]) == 0):
@@ -190,7 +169,6 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                # store[jCount][1] = 22
                     
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
@@ -204,7 +182,7 @@ def email_users():
 
     contain = []
     for i in store:
-        thisUser = db.getUserByID(i[0])
+        thisUser = event_bus.event_getUser(i[0])
         if(thisUser != None):
             response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
 
@@ -231,7 +209,7 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return img.guestUploadImage(str(request.json["imagechar"]), str(request.json["image"]))
+    return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]))
 
 if __name__ == '__main__':
     app.run(debug = True)

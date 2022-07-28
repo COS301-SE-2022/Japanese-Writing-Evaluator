@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
@@ -13,7 +14,8 @@ describe('ProgressPage', () => {
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 999999;
     TestBed.configureTestingModule({
       declarations: [ ProgressPage, ProgressBlockComponent ],
-      imports: [IonicModule.forRoot(), RouterTestingModule],
+      imports: [IonicModule.forRoot(), RouterTestingModule,
+        HttpClientTestingModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ProgressPage);

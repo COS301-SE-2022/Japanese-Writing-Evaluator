@@ -37,7 +37,7 @@ export class HomePage implements OnInit {
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        console.log(localStorage.getItem('id'));
+        //console.log(localStorage.getItem('id'));
         return true;
       }
     }
@@ -69,5 +69,6 @@ export class HomePage implements OnInit {
   // TODO: components are dynamically updated for kanji, #73, Maryam Mohamad Al Mahdi
   navigateKanji(){
   }
+
 
 }
