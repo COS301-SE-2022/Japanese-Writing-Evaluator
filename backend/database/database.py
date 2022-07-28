@@ -99,8 +99,7 @@ class Database:
         q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
-        print(user)
-        return user
+        return True
         
     def getAllUsers(self):
         q = "SELECT * FROM users;"
