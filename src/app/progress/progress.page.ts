@@ -135,4 +135,14 @@ export class ProgressPage implements OnInit {
   getLetter(letter: string){
     return this.map.get(letter);
   }
+
+  onLogout(){
+    // this function logs the user out of the system
+    localStorage.removeItem('id');
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+    }
+    this.router.navigate(['/login']);
+
+  }
 }
