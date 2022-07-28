@@ -21,7 +21,7 @@ export class AlphabetCategoryPage implements OnInit {
 
     this.currentJSON = '';
 
-    this.category = this.route.snapshot.queryParamMap.get('category');
+    this.category = this.route.snapshot.queryParamMap.get('category');//'Hiragana - Vowel';
     this.heading = this.category;
 
     const splitted = this.category.split(' ');
