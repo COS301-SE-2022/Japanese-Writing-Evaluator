@@ -5,10 +5,10 @@
   "homepage": "https://ionicframework.com/",
   "scripts": {
     "start": "ionic serve",
-    "start prod": "ionic serve --prod",
+    "start production": "ionic serve --prod",
     "api": "cd backend/api && python app.py",
     "api_ut": "python -m pytest backend/test/unittest/",
-    "build": "ng build",
+    "build": "ionic build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
     "e2e": "cypress open",

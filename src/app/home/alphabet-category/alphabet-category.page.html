@@ -1,0 +1,20 @@
+<ion-content>
+  <div class="head" >
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+
+    <p>
+      <strong>{{heading}}</strong><br>
+      Select which character we you would like to upload below.
+    </p>
+</div>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col *ngFor="let item of jsonAlphabet">
+          <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 import { ProgressPage } from '../progress/progress.page';
 import { BlockTryCharComponent } from './block-try-char/block-try-char.component';
+import { OptionsComponent } from './options/options.component';
 import { HomePage } from './home.page';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -17,7 +17,7 @@ describe('HomePage', () => {
     timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
     jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
     TestBed.configureTestingModule({
-      declarations: [ HomePage, BlockTryCharComponent],
+      declarations: [ HomePage, BlockTryCharComponent, OptionsComponent],
       imports: [IonicModule.forRoot(),RouterTestingModule,
         ReactiveFormsModule,
         FormsModule,

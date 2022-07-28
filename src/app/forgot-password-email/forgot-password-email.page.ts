@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { ToastController } from '@ionic/angular';
 import { AppServiceService } from '../services/app-service.service';
 import { ForgotPasswordEmail } from '../shared/interfaces/forgotpassword';
+
 @Component({
   selector: 'app-forgot-password-email',
   templateUrl: './forgot-password-email.page.html',
@@ -85,7 +86,6 @@ export class ForgotPasswordEmailPage implements OnInit {
     else{
       toastFail.present();
     }
-
 
   }
 

@@ -3,6 +3,7 @@ export interface UploadedImage {
     image: string;
     imagechar: string;
     file: string;
+    style: string;
 }
 
 export interface GuestUploadedImage {
