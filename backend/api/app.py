@@ -53,7 +53,7 @@ def token_required(function):
     return:
         json response from resetPassword
 """
-@app.route('/forgot-password-email', methods = ['GET'])
+@app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
     return event_bus.event_resetPassword(str(request.json["email"]))
 

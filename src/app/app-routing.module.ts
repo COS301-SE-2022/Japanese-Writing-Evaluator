@@ -16,10 +16,6 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
   {
-    path: 'forgot-password',
-    loadChildren: () => import('./forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
-  },
-  {
     path: 'sign-up',
     loadChildren: () => import('./sign-up/sign-up.module').then( m => m.SignUpPageModule)
   },
@@ -31,6 +27,15 @@ const routes: Routes = [
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule)
   },
+  {
+    path: 'forgot-password-email',
+    loadChildren: () => import('./forgot-password-email/forgot-password-email.module').then( m => m.ForgotPasswordEmailPageModule)
+  },
+  {
+    path: 'forgot-password-password',
+    loadChildren: () => import('./forgot-password-password/forgot-password-password.module').then( m => m.ForgotPasswordPasswordPageModule)
+  },
+
 
 ];
 

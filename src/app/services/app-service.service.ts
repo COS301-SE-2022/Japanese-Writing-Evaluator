@@ -8,6 +8,7 @@ import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/int
 import { Score } from '../shared/interfaces/score';
 import { Id, User } from '../shared/interfaces/user';
 import { Progress } from '../shared/interfaces/progress';
+import { ForgotPasswordEmail, ForgotPasswordPassword } from '../shared/interfaces/forgotpassword';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,6 @@ export class AppServiceService {
       password:pass
     };
     const body=JSON.stringify(user);
-    console.log(body);
     return this.httpclient.post(this.baseURL + 'register', body,{ headers });
   }
   // getCharacters(): Observable<Character[]>{
@@ -85,6 +85,16 @@ export class AppServiceService {
       password:pass
     };
     return this.httpclient.post(this.baseURL + 'login', user, {headers: myheaders, observe: 'response'});
+  }
+
+  forgotPasswordEmail(email: ForgotPasswordEmail){
+    const myheaders = { 'content-type': 'application/json' };
+    return this.httpclient.post(this.baseURL+'forgot-password-email', email, {headers: myheaders, observe: 'response'});
+  }
+
+  forgotPasswordPassword(pass: ForgotPasswordPassword){
+    const myheaders = { 'content-type': 'application/json' };
+    return this.httpclient.post(this.baseURL+'forgot-password-password', pass, {headers: myheaders, observe: 'response'});
   }
 
 }
