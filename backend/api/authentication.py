@@ -1,3 +1,4 @@
+from getpass import getuser
 import hashlib
 import uuid
 from evaluator import Evaluator
@@ -18,7 +19,10 @@ class Authentication:
     """
 
     def resetPassword(self, token, password):
-        editedRow = self.db.updatePassword(token, password)
+        salt = self.db.fetchSaltByToken(token)
+        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        
+        editedRow = self.db.updatePassword(token, new_password)
         if editedRow == 1:
             return jsonify({'response': "password reset successful."}), 200
         else:
@@ -59,5 +63,9 @@ class Authentication:
             return jsonify({'response': str(e)}), 401
 
     def login(self, email, password):
-        return self.db.getUser(password, email)
+        salt = self.db.fetchSalt(email)
+        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        user = self.db.getUser(new_password, email)
+        return user
+       
 
