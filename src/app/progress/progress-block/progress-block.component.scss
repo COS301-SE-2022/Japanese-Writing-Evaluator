@@ -1,4 +1,3 @@
-
 ion-card{
   display: flex;
   justify-content: center;
@@ -7,9 +6,11 @@ ion-card{
   width: 220px;
   height: 220px;
   flex-direction: column;
-  background: #960722;
-  border-radius: 10%;
-
+  background: #ffffff;
+  //border: 5px solid #960722;
+  border: 5px solid #960722;
+  border-radius: 5%;
+  text-align: center;
 }
 
 .box .percent{
@@ -19,9 +20,11 @@ ion-card{
 }
 
 .box .percent svg{
+  margin-top: 10px;
   position: relative;
   width: 150px;
   height: 150px;
+  fill: #ffffff;
 }
 
 .box .percent svg circle{
@@ -37,13 +40,12 @@ ion-card{
 
 .box .percent svg circle:nth-child(1){
   stroke-dashoffset: 0;
-  stroke: black;
-
+  stroke: rgb(197, 195, 195);
 }
 
 .box .percent svg circle:nth-child(2){
   // stroke-dashoffset: calc(440 - (440 * 87) / 100);
-  stroke: #fff;
+  stroke: #960722;
 }
 
 .box .percent .outer{
@@ -55,7 +57,6 @@ ion-card{
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
 }
 
 .box .percent .outer h2{
@@ -82,7 +83,6 @@ ion-card{
 }
 .box .text{
   padding: 10px 0 0;
-  color: #fff;
   font-weight: 700;
   letter-spacing: 1px;
   font-size: small;

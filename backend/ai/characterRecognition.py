@@ -1,6 +1,7 @@
 import os
 from tensorflow import keras
-from matplotlib import pyplot
+import matplotlib.pyplot as plt
+import tensorflow as tf
 import numpy as np
 from random import shuffle
 from PIL import Image
@@ -14,11 +15,9 @@ import json
 
 class CharacterRecognition():
     def __init__(self, name):
-        self.characters = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
-        self.k49_classmap = pd.read_csv('data/input/k49_classmap.csv')
-        self.k49_classmap.head()
         self.version = name
-    
+        self.e = 50
+        
     def one_hot_encoding(self,y):
         y_res = np.zeros((len(y), 49))
         for i in range(len(y)):
@@ -39,63 +38,53 @@ class CharacterRecognition():
         self.y_train = self.one_hot_encoding(self.y_train)
         self.y_val = self.one_hot_encoding(self.y_val)
         
-        
-    def createDatasets(self):
-        """
-            Move the image into two folders
-            Train_data and Test_data
-        """
-        print(len(os.listdir('data')))
-        my_dir = os.listdir('data')
-        resized_img_list = 0
+    def creatingImages(self):
+        print('\nCreating Imges Array....')
+        my_dir = os.listdir('data/kanji')
+        resized_img_list = os.listdir('resized')
         lengths = []
         for file in my_dir:
-            if(file != 'input' and file != 'create_all_dataset.py'):
-                lengths.append(len(os.listdir('data'+'/'+file)))
-                for img in os.listdir('data'+'/'+file):
-                    i = Image.open('data'+'/'+file+'/'+ img)
-                    image = i.resize((28,28))
-                    gray_img = image.convert('L')
-                    gray_img.save('resized' +'/' + img, "jpeg")
-                    resized_img_list = os.listdir('resized')
-                print(lengths[len(lengths)-1])
-        print('\nLengths: ')
-        print(lengths)
-        print('\nImages: ')
-        print(resized_img_list)    
+            lengths.append(len(os.listdir('data/kanji'+'/'+file)))
+            for img in os.listdir('data/kanji'+'/'+file):
+                i = Image.open('data/kanji'+'/'+file+'/'+ img)
+                image = i.resize((28,28))
+                gray_img = image.convert('L')
+                gray_img.save('resized_kanji' +'/' + img, "jpeg")
+                resized_img_list = os.listdir('resized_kanji')
+            print(file)
+            print(lengths[len(lengths)-1])
 
-        num_resized = len(resized_img_list)
-        print(resized_img_list)
-        print('\nsize: ' + str(num_resized))
-
-        img_matrix = np.array([np.array(Image.open('resized'+ '/' + im2)).flatten()
+        self.img_matrix = np.array([np.array(Image.open('resized_kanji'+ '/' + im2)).flatten()
                     for im2 in resized_img_list],'f')
-
-        img_label = np.ones((len(img_matrix),), dtype = int)  
-        val = 0
+    def createLabels(self):
+        self.labels = np.ones((len(self.img_matrix),), dtype = int)
+        kanji = os.listdir('data/kanji')
         bound = 0
-        for size in lengths:
-            img_label[bound:bound + size] = val
-            val+=0
+        val = 0
+        for files in kanji:
+            size = len(os.listdir('data/kanji/' + files))
+            self.labels[bound:bound + size] = val
+            val+= 1
             bound += size
-
-        data, labels = shuffle(img_matrix, img_label, random_state = 2)
-        our_data = [data,labels]
+       
+    def createDatasets(self):
+        data, labels = shuffle(self.img_matrix, self.labels, random_state = 2)
+        our_data = [self.img_matrix, self.labels,]
 
         (x,y) = (our_data[0], our_data[1])
-        train_img, test_img, self.train_labels, self.test_labels = train_test_split(x, y, test_size = 0.34, random_state = 4)
+        train_img, test_img, self.y_train, self.y_val = train_test_split(x, y, test_size = 0.10, random_state = 2)
 
         train_img /= 255
         test_img /= 255
 
-        train_image = train_img.reshape(test_img.shape[0], 28, 28, 1)
         test_images = test_img.reshape(test_img.shape[0], 28, 28, 1)
+        train_image = train_img.reshape(train_img.shape[0], 28, 28, 1)
 
-        self.train_image =train_image.astype('float32')
-        self.test_images = test_images.astype('float32')
+        self.x_train =train_image.astype('float32')
+        self.x_val = test_images.astype('float32')
 
-        print('\nself.train_images.shape: {}, of {}'.format(self.train_image.shape, self.train_image.dtype))
-        print('self.test_images.shape: {}, of {}'.format(self.test_images.shape, self.test_images.dtype))
+        print('\nself.train_images.shape: {}, of {}'.format(self.x_train.shape, self.x_train.dtype))
+        print('self.test_images.shape: {}, of {}'.format(self.x_val.shape, self.x_val.dtype))
     
     """
         Creates our convolutional Neural Network 
@@ -110,7 +99,7 @@ class CharacterRecognition():
                 reLU (more reliable and accelarates the convergence)
     """  
     def createModel(self):  
-            
+        print('\nCreating the model......')   
         self.rr_model = keras.Sequential()
         self.rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
         self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
@@ -128,24 +117,21 @@ class CharacterRecognition():
 
 
     def trainModel(self):
+        print('\nTraining the model......')
         self.rr_model.compile(optimizer='adam',
-                    loss=categorical_crossentropy,
-                    metrics=[categorical_accuracy])
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
         
-        history = self.rr_model.fit(self.train_image, self.train_labels, epochs=45, 
-                            validation_data=(self.test_images, self.test_labels))
-        
-        # history = self.rr_model.fit(self.x_train, self.y_train, epochs=25, validation_data=(self.x_val, self.y_val))
-        # print(history.history)
+        self.rr_model.fit(self.x_train, self.y_train, epochs=self.e, validation_data=(self.x_val, self.y_val))
         self.rr_model.summary()
-        
         self.test_loss, self.test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
         
         print('Accuraccy: ' + str(self.test_acc))
         print('Loss: ' + str(self.test_loss))
-        self.rr_model.save("characterRec.h5")
+        self.rr_model.save("kanji_model.h5")
     
     def storeData(self):
+        print('\nStoring the data......')
         date = datetime.now()
         with open("models_data.json", "r+") as file:
             data= json.load(file)
@@ -157,7 +143,8 @@ class CharacterRecognition():
 if __name__ == '__main__':
     version = input('model version: ')
     obj = CharacterRecognition(version)
-    # obj.getData()
+    obj.creatingImages()
+    obj.createLabels()
     obj.createDatasets()
     obj.createModel()
     obj.trainModel()

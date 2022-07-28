@@ -7,16 +7,18 @@ import numpy as np
 
 class Model():
     def __init__(self):
-        self.modelObj = CNN()
+        self.modelObj = CNN('modelU')
         self.modelA = None
     
     def generate_model(self):
         self.modelA = self.modelObj.create_CNN()
         self.modelObj.getData('datasetU')
         self.modelA = self.modelObj.trian_model('modelU.h5')
+        self.modelObj.storeData()
         return self.modelA
          
 if __name__ == '__main__':
+    # print(datetime.now())
     myModel = Model()
     model = myModel.generate_model()
     model.summary()

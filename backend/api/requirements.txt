@@ -5,3 +5,4 @@ uuid
 Flask-SQLAlchemy
 pyscopg2==2.9.3
 dotenv
+sendgrid

@@ -7,13 +7,14 @@ import numpy as np
 
 class Model():
     def __init__(self):
-        self.modelObj = CNN()
+        self.modelObj = CNN('modelA')
         self.modelA = None
     
     def generate_model(self):
         self.modelA = self.modelObj.create_CNN()
         self.modelObj.getData('datasetA')
         self.modelA = self.modelObj.trian_model('modelA.h5')
+        self.modelObj.storeData()
         return self.modelA
          
 if __name__ == '__main__':

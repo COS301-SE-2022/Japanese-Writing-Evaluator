@@ -1,6 +1,15 @@
-<link href='https://fonts.googleapis.com/css?family=ZCOOL XiaoWei' rel='stylesheet'>
-<ion-content class="ion-padding" [fullscreen]="true">
-  <h1>Progress</h1>
+<ion-content [fullscreen]="true">
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+
+    <h1></h1>
+    <p>
+      <strong>Progress</strong><br>
+      <em>"You don't have to be extreme, just consistent"</em><br>
+      Track your progress below.
+    </p>
+</div>
 
   <div class="container">
     <ion-grid>
@@ -20,7 +29,7 @@
         <ion-col>
           <app-progress-block [alphabetType]="kanji" [letter]='getLetter("one")' [percent]=80></app-progress-block>
         </ion-col>
-        
+
       </ion-row>
     </ion-grid>
   </div>

@@ -1,10 +1,14 @@
 ion-card{
   display: flex;
   position: relative;
+  border: 5px solid #960722;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  width: 200px;
+  height: 200px;
   transition: all .2s ease-in-out;
+  border-radius: 5%;
 }
 
 ion-card:hover {
@@ -12,22 +16,21 @@ ion-card:hover {
   box-shadow: 15px 15px 15px -10px rgba(0, 0, 0, 0.4);
 }
 
-.character{
-  width: 200px;
-  height: 200px;
-  background: #ffffff;
-  border-radius: 5%;
-  position: relative;
-  top: -10px;
-  border: 5px solid #960722;
+.option{
+  margin-top: 10px;
+  width: 150px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.character h1{
+.descript{
+  width: 150px;
+  height: 180px;
+  text-align: center;
+}
+
+.letter{
   font-size: 90px;
-  text-align: center;
-}
-
-.character p{
-  padding-bottom: 20px;
-  text-align: center;
 }
