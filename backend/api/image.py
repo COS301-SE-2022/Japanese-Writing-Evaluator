@@ -1,5 +1,5 @@
 from sqlalchemy import true
-from evalutor import Evaluator
+from evaluator import Evaluator
 from flask import jsonify
 import base64
 from flask import jsonify
