@@ -1,18 +1,4 @@
-<ion-card>
-  <ion-grid>
-    <ion-row>
-        <ion-col>
-          <div class="character">
-            <h1>{{letter}}</h1>
-            <p>{{translate}}</p>
-          </div>
-        </ion-col>
-
-        <ion-col>
-          <div>
-            <ion-button color="dark" (click)="showUploadPage()">try</ion-button>
-          </div>
-        </ion-col>
-    </ion-row>
-  </ion-grid>
-</ion-card>
+<ion-card class="character" (click)="showUploadPage()">
+    <h1>{{letter}}</h1>
+    <p>{{translate}}</p>
+  </ion-card>

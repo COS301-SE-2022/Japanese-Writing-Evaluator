@@ -1,5 +1,5 @@
-ion-content h2{
-  font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma';
+ion-content{
+  font-family: sans-serif, Helvetica, Arial, Verdana, Tahoma;
 }
 
 ion-button{
@@ -27,6 +27,7 @@ ion-img{
   justify-content: center;
   text-align: center;
   color: white;
+  margin-bottom: 30px;
 }
 .head strong{
   font-size: 200%;
@@ -34,8 +35,4 @@ ion-img{
 
 .head span{
   font-size: 100%;
-}
-
-.suggestions{
-  margin: 20px;
 }

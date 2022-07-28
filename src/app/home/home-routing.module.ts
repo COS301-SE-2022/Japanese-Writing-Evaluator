@@ -6,7 +6,11 @@ const routes: Routes = [
   {
     path: '',
     component: HomePage,
+  },  {
+    path: 'alphabet-category',
+    loadChildren: () => import('./alphabet-category/alphabet-category.module').then( m => m.AlphabetCategoryPageModule)
   }
+
 ];
 
 @NgModule({
