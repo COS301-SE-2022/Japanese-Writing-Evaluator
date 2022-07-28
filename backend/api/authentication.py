@@ -1,3 +1,4 @@
+from getpass import getuser
 import hashlib
 import uuid
 from evalutor import Evaluator
@@ -59,5 +60,12 @@ class Authentication:
             return jsonify({'response': str(e)}), 401
 
     def login(self, email, password):
-        return self.db.getUser(password, email)
+        salt = self.db.fetchSalt(email)
+        new_password = password + salt
+        value = getuser(new_password,email)
+        if value == True:
+            return jsonify({'response': "Login Successful"}), 200
+        else:
+            return jsonify({'response': "Login Failed"}), 401
+       
 
