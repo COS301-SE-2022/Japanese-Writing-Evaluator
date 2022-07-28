@@ -68,6 +68,11 @@ class Database:
         return:
             number of rows modified for bound checking
     """
+    def fetchSalt(self, email):
+        query = "SELECT password_salt FROM users WHERE email = %s;"
+        self.curr.execute(query, (email,))
+        salt = self.curr.fetchone()
+        return salt
 
     def updatePassword(self, token, password):
         update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
