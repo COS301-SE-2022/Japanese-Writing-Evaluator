@@ -148,8 +148,8 @@ export class ProgressBlockComponent implements OnInit {
     }
     else
     {
-      this.japaneseLetter= 'ぺ';
-      this.translation = 'Pe';
+      this.japaneseLetter= 'あ';
+      this.translation = 'A';
     }
 
   }
