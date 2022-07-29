@@ -67,8 +67,8 @@ def event_uploadImage(id, imagechar, image, file):
 
 def event_sendImage(id, image_char, image, file, writing_style):
     e = Evaluator(writing_style, image_char)
-    score = e.testCharacter() # call AI
-    print(score)
+    feedback = e.testCharacter() # call AI
+    score = feedback[1]
     if(score == 0):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
@@ -76,7 +76,8 @@ def event_sendImage(id, image_char, image, file, writing_style):
         if(exitcode.status_code == 200):
             storeToDB = event_saveToDB(id, file, image_char, score, writing_style)
             if(storeToDB == True):
-                return jsonify({'response': "image upload successful", 'score': score}), 200
+                strokes = feedback[0]
+                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
             else:
                 return jsonify({'response': "Database storage failed"}), 401
         else:
@@ -149,9 +150,10 @@ def event_guestUplaodImage(imagechar, image, style):
         fh.write(base64.b64decode(image))
         
     e = Evaluator(style, imagechar)
-    score = e.testCharacter() # call the AI
-    print(score)
+    feedback = e.testCharacter() # call AI
+    score = feedback[1]
     if score == 0:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful", 'data': jsonify(score)}), 200
+        strokes = feedback[0]
+        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
