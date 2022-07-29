@@ -17,47 +17,47 @@ describe('AppServiceService', () => {
     mockhttpRequest = TestBed.inject(HttpTestingController);
   });
 
-  it('check for invalid image', inject(
-    [HttpTestingController, AppServiceService],
-    () => {
-      let mockScore = new HttpResponse<Score>();
-      const mockHeader = new HttpHeaders();
-      mockHeader.set('content-type', 'application/json');
-      mockScore = {
-        body: {
-          data:{
-            stroke1: 0,
-            stroke2: 0,
-            stroke3: 0,
-            score: null,
-          }
-        },
-        type: 2,
-        headers: mockHeader,
-        status: 200,
-        statusText: 'OK',
-        url: 'https/localhost:5000/upload',
-        ok: true,
-        clone: null,
-      };
-      let mockimage = new Object() as UploadedImage;
-      mockimage = {
-        id: '82',
-        image: '',
-        imagechar: 'U',
-        file: 'u.png',
-        style: 'hiragana',
-      };
-      service.uploadImage(mockimage).subscribe(data => {
-        expect(data.body.data.score).toBeUndefined();
-      });
+  // it('check for invalid image', inject(
+  //   [HttpTestingController, AppServiceService],
+  //   () => {
+  //     let mockScore = new HttpResponse<Score>();
+  //     const mockHeader = new HttpHeaders();
+  //     mockHeader.set('content-type', 'application/json');
+  //     mockScore = {
+  //       body: {
+  //         data:{
+  //           stroke1: 0,
+  //           stroke2: 0,
+  //           stroke3: 0,
+  //           score: null,
+  //         }
+  //       },
+  //       type: 2,
+  //       headers: mockHeader,
+  //       status: 200,
+  //       statusText: 'OK',
+  //       url: 'https/localhost:5000/upload',
+  //       ok: true,
+  //       clone: null,
+  //     };
+  //     let mockimage = new Object() as UploadedImage;
+  //     mockimage = {
+  //       id: '82',
+  //       image: '',
+  //       imagechar: 'U',
+  //       file: 'u.png',
+  //       style: 'hiragana',
+  //     };
+  //     service.uploadImage(mockimage).subscribe(data => {
+  //       expect(data.body.data.score).toBeUndefined();
+  //     });
 
-      const mockuploadrequest = mockhttpRequest.expectOne(service.baseURL+'upload');
-      expect(mockuploadrequest.request.method).toEqual('POST');
-      expect(mockuploadrequest.request.body).toEqual(mockimage);
-      mockuploadrequest.flush(mockScore);
-    })
-    );
+  //     const mockuploadrequest = mockhttpRequest.expectOne(service.baseURL+'upload');
+  //     expect(mockuploadrequest.request.method).toEqual('POST');
+  //     expect(mockuploadrequest.request.body).toEqual(mockimage);
+  //     mockuploadrequest.flush(mockScore);
+  //   })
+  //   );
 
   //   it('check for valid image', inject(
   //     [HttpTestingController, AppServiceService],
