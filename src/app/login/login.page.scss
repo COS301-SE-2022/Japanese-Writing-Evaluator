@@ -1,9 +1,9 @@
-ion-input{
-    background: #f4f5f8;
+// ion-input{
+//     background: #f4f5f8;
     
-    width: 250px;
-    height: 45px;
-}
+//     width: 250px;
+//     height: 45px;
+// }
 
 #logo{
     height: 250px;
@@ -22,4 +22,15 @@ ion-input{
 
 .ion-button{
     width: 125px;
+    height: 40px;
 }
+
+ion-item{
+    border-radius: 20px;
+    border-width: 3em;
+    margin-bottom: 1px;
+    --background: rgb(170, 162, 162);
+    --highlight-color-focused: none;
+    width: 250px;
+    height: 45px;
+  }
