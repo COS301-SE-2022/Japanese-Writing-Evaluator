@@ -1,5 +1,5 @@
+import { Character } from './../../shared/interfaces/character';
 import { element } from 'protractor';
-import { Character } from '../../shared/interfaces/character';
 import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
 
 @Component({
@@ -140,8 +140,17 @@ export class ProgressBlockComponent implements OnInit {
     if(alphabetType === 'kanji'){
       element = this.kanjiAlphabet.find((obj) => obj.translation === letter);
     }
+
+    if(element !== undefined)
+    {
       this.japaneseLetter= element.character;
       this.translation = element.translation;
+    }
+    else
+    {
+      this.japaneseLetter= 'ぺ';
+      this.translation = 'Pe';
+    }
 
   }
 
