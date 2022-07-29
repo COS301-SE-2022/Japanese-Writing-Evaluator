@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { AppServiceService } from '../services/app-service.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
+import { Score } from '../shared/interfaces/score';
 
 @Component({
   selector: 'app-upload',
@@ -13,7 +14,7 @@ export class UploadPage implements OnInit {
   characterImage: CharacterImage;
   uploadedImage: File;
   uploadImageName: string;
-  private score: number;
+  private score: Score;
   private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
@@ -25,11 +26,11 @@ export class UploadPage implements OnInit {
   }
 // ${this.characterImage.url}
   //TODO: show popover when evaluate is clicked, #71, Phumu
-  async showScore(score: number) {
+  async showScore(score: Score) {
     //if score is negative 1 == error
     let scoreMessage: string;
     let alert;
-    if (score === -1) {
+    if (score.data.score === -1) {
       scoreMessage = 'Try again'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
@@ -45,15 +46,41 @@ export class UploadPage implements OnInit {
         ]
       });
     }
-    else{
-      scoreMessage = 'Your accuracy score is '+ score.toString();
+    else if (score.data.score === 0) {
+      scoreMessage = 'Try upload another image'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
-        header: 'Score',
-        message: `<h1>${this.characterImage.url}</h1>${scoreMessage}`,
+        header: 'Image is invalid...',
+        message: `<ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>${scoreMessage}`,
         buttons: [
           {
-            text: 'Ok',
+            text: 'Retry',
+            handler: () => {
+              console.log('Confirm Okay');
+            }
+          }
+        ]
+      });
+    }
+    else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
+      scoreMessage = 'Your overall score is '+ score.toString();
+      alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Character Accuracy',
+        message: `<h1>${this.characterImage.url}</h1>${scoreMessage}<div>
+          <ion-item>
+            <ion-img src="../../assets/images/a-strokes/a_stroke1.png" alt="Stroke 1"></ion-img> <p>Stroke 1: ${score.data.stroke1}</p> 
+          </ion-item>
+          <ion-item>
+            <ion-img src="../../assets/images/a-strokes/a_stroke2.png" alt="Stroke 2"></ion-img> <p>Stroke 1: ${score.data.stroke2}</p> 
+          </ion-item>
+          <ion-item>
+            <ion-img src="../../assets/images/a-strokes/a_stroke3.png" alt="Stroke 3"></ion-img> <p>Stroke 1: ${score.data.stroke3}</p> 
+          </ion-item>
+        </div>`,
+        buttons: [
+          {
+            text: 'Close',
             handler: () => {
               console.log('Confirm Okay');
             }
@@ -107,8 +134,8 @@ export class UploadPage implements OnInit {
           style: this.characterImage.group, // the writing style that the letter is from
         };
         this.service.uploadImage(img).subscribe( data =>{
-          this.score = data.body.score;
-          this.showScore(Math.round(this.score));
+          this.score = data.body;
+          this.showScore(this.score);
         });
          // get the score
       }
@@ -120,7 +147,7 @@ export class UploadPage implements OnInit {
           style: this.characterImage.group
         };
         this.service.guestUploadImage(img).subscribe( data => {
-          this.score = data.body.score;
+          this.score = data.body;
           this.showScore(this.score);
         });
 
