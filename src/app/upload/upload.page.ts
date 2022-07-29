@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { AppServiceService } from '../services/app-service.service';
@@ -63,19 +64,19 @@ export class UploadPage implements OnInit {
       });
     }
     else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
-      scoreMessage = 'Your overall score is '+ score.toString();
+      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString();
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Character Accuracy',
         message: `<h1>${this.characterImage.url}</h1>${scoreMessage}<div>
           <ion-item>
-            <ion-img src="../../assets/images/a-strokes/a_stroke1.png" alt="Stroke 1"></ion-img> <p>Stroke 1: ${score.data.stroke1}</p> 
+            <ion-img src="../assets/images/a_strokes/a_stroke1.png" alt="Stroke 1"></ion-img> <p>Stroke 1: ${Math.round(score.data.stroke1)}</p> 
           </ion-item>
           <ion-item>
-            <ion-img src="../../assets/images/a-strokes/a_stroke2.png" alt="Stroke 2"></ion-img> <p>Stroke 1: ${score.data.stroke2}</p> 
+            <ion-img src="../assets/images/a_strokes/a_stroke2.png" alt="Stroke 2"></ion-img> <p>Stroke 2: ${Math.round(score.data.stroke2)}</p> 
           </ion-item>
           <ion-item>
-            <ion-img src="../../assets/images/a-strokes/a_stroke3.png" alt="Stroke 3"></ion-img> <p>Stroke 1: ${score.data.stroke3}</p> 
+            <ion-img src="../assets/images/a_strokes/a_stroke3.png" alt="Stroke 3"></ion-img> <p>Stroke 3: ${Math.round(score.data.stroke3)}</p> 
           </ion-item>
         </div>`,
         buttons: [
