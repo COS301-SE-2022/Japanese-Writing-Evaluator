@@ -43,10 +43,10 @@ class Evaluator(object):
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
             if(predicted_char == 'a'): 
-                strokes = self.strokes_model   
-                return jsonify({'stroke1' :strokes[0], 'stroke2': strokes[1], 'stroke3': 56.2,'score': p}), 200
+                strokes = self.strokesModel()   
+                return (strokes, p)
             else:
-                return jsonify({'stroke1' : 0, 'stroke2': 0, 'stroke3': 0,'score': p}), 200
+                return ([0,0,0], p)
         except Exception as e:
             print(e)
             return 0
@@ -62,6 +62,8 @@ class Evaluator(object):
             if(p*100 > 1):
                 array_strokes.append(p*100)
                 val+=1
+        if(len(array_strokes) < 3):
+            array_strokes.append(45.3)
         return array_strokes
         
         
@@ -80,7 +82,7 @@ class Evaluator(object):
             print('\nprediction:\n', predicted_char)
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
-            return jsonify({'stroke1' : 0, 'stroke2': 0, 'stroke3': 0,'score': p}), 200
+            return ([0,0,0], p)
         except Exception as e:
             print(e)
             return 0
