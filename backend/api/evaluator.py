@@ -46,6 +46,19 @@ class Evaluator(object):
         except Exception as e:
             print(e)
             return None
+    def strokesmodel(self):
+        arr = ['stroke1', 'stroke2', 'strok3']
+        self.loadModels()
+        pre_stroke = self.strokes_model.predict([self.prepare()])
+        pre_stroke = np.asarray(pre_stroke).flatten()
+        pre = tf.nn.softmax(pre_stroke)
+        print(pre)
+        temp = 0
+        for n in pre:
+            if(n*100 < 100 and n*100 > 1):
+                print(n*100)
+        # print(temp * 100)
+        print(self.strokes_model.layers)
         
     def testKanji(self):
         pre = self.kanji_model.predict([self.prepare()]).flatten()
@@ -64,7 +77,6 @@ class Evaluator(object):
             p = temp * 100
             return p
         except Exception as e:
-            print("Fail!!")
             print(e)
             return None
         
@@ -78,10 +90,11 @@ class Evaluator(object):
     def loadModels(self):
         self.hiregana_model = tf.keras.models.load_model('../ai/models/hiregana_model.h5')
         self.kanji_model = tf.keras.models.load_model('../ai/models/kanji_model.h5')
+        self.strokes_model = tf.keras.models.load_model('../ai/stroke_model.h5')
         
 
 if __name__ == '__main__':
     # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
     e = Evaluator('predict_data/ya.jpeg', '*')
-    e.testKanji()
+    e.strokesmodel()
