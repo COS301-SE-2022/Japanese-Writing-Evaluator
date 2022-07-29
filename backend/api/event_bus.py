@@ -69,7 +69,7 @@ def event_sendImage(id, image_char, image, file, writing_style):
     e = Evaluator(writing_style, image_char)
     score = e.testCharacter() # call AI
     print(score)
-    if(score == None):
+    if(score == 0):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
         exitcode = event_uploadImage(id, image_char, image, file)
@@ -131,7 +131,7 @@ def event_getuserFeedback():
 
 """
 guest Upload Image function:
-    uploads teh given image to firebase and sends it to the evaluator
+    uploads the given image to firebase and sends it to the evaluator
 parameters: 
     image_char: the charector of the image
     image: the guest user image
@@ -146,7 +146,7 @@ def event_guestUplaodImage(imagechar, image, style):
     e = Evaluator(style, imagechar)
     score = e.testCharacter() # call the AI
     print(score)
-    if score == None:
+    if score == 0:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful", 'score': score}), 200
+        return jsonify({'response': "image evaluation successful", 'data': score}), 200
