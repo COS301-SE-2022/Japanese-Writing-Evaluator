@@ -154,4 +154,4 @@ def event_guestUplaodImage(imagechar, image, style):
     if score == 0:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful", 'data': score}), 200
+        return jsonify({'response': "image evaluation successful", 'data': jsonify(score)}), 200
