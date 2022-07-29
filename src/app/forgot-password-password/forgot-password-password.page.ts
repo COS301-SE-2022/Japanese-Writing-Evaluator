@@ -21,7 +21,8 @@ export class ForgotPasswordPasswordPage implements OnInit {
 
     this.forgotpassword = this.formbuilder.group({
       newPassword: new  FormControl('',[Validators.required]),
-      confirmedPassword: new FormControl('')
+      confirmedPassword: new FormControl(''),
+      token: new FormControl('')
     });
   }
 
@@ -55,17 +56,19 @@ export class ForgotPasswordPasswordPage implements OnInit {
   onSubmitPassword(){
     this.password = this.forgotpassword.controls.newPassword.value;
     this.confirmedPassword = this.forgotpassword.controls.confirmedPassword.value;
+    const userToken = this.forgotpassword.controls.token.value;
     if(this.password === this.confirmedPassword)
     {
       let pass = new Object() as ForgotPasswordPassword;
       pass = {
         password: this.password,
+        token: userToken
       };
 
       this.service.forgotPasswordPassword(pass).subscribe(response => {
         if (response.status === 200) { //
           this.presentToast();
-          this.router.navigate(['/login']);
+          //this.router.navigate(['/login']);
         }
         else{
           //

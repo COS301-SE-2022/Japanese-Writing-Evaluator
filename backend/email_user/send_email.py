@@ -16,7 +16,7 @@ class Send_Email:
             from_email = Email(os.environ.get('SENDGRID_EMAIL'))
             to_email = To(email)
             subject = "Forgot Password"
-            site = "http://localhost:8100/forgot-password-email"
+            site = "http://localhost:8100/forgot-password-password"
             rand = token_urlsafe(8)
             content = Content("text/html", '<div align="center" style="color: rgb(210, 4, 45); background-size: 100% 100%; background-repeat: no-repeat; background-image: url(\'https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2Femail_Background.png?alt=media&token=f72405e1-5607-47b6-957c-81cda3c94af5\');"><div><td style="font-size:6px; line-height:10px; padding:0px 0px 0px 0px;" valign="top" align="center"><img class="max-width" border="0" style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:12% !important; width:12%; height:auto !important;" width="84" alt="" data-proportionally-constrained="true" data-responsive="true" src="https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2FJWE-logos_black.png?alt=media&token=4f64c15a-a0b6-4fbb-8dda-be74e7a45739"></td></div> <p>Token is: {}<p> <br><a href="{}""><button> Reset Password </button></a></div>'.format(rand, site))
             mail = Mail(from_email, to_email, subject, content)

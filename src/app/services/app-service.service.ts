@@ -94,7 +94,7 @@ export class AppServiceService {
 
   forgotPasswordPassword(pass: ForgotPasswordPassword){
     const myheaders = { 'content-type': 'application/json' };
-    return this.httpclient.post(this.baseURL+'forgot-password-password', pass, {headers: myheaders, observe: 'response'});
+    return this.httpclient.put(this.baseURL+'forgot-password-password', pass, {headers: myheaders, observe: 'response'});
   }
 
 }
