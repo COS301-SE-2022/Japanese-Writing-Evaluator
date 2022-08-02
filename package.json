@@ -7,7 +7,7 @@
     "start": "ionic serve",
     "start production": "ionic serve --prod",
     "api": "cd backend/api && python app.py",
-    "api_ut": "python -m pytest backend/test/unittest/",
+    "api_ut": "python -m pytest backend/test/unit/",
     "build": "ionic build",
     "test": "ng test --no-watch --code-coverage",
     "lint": "ng lint",
