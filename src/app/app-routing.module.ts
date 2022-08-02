@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'forgot-password-password',
     loadChildren: () => import('./forgot-password-password/forgot-password-password.module').then( m => m.ForgotPasswordPasswordPageModule)
+  },  {
+    path: 'graph-progress',
+    loadChildren: () => import('./graph-progress/graph-progress.module').then( m => m.GraphProgressPageModule)
   },
+
 
 
 ];
