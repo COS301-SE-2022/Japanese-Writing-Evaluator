@@ -1,6 +1,8 @@
 import { Character } from './../../shared/interfaces/character';
 import { element } from 'protractor';
 import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { GraphModalPage } from '../graph-modal/graph-modal.page';
 
 @Component({
   selector: 'app-progress-block',
@@ -111,10 +113,17 @@ export class ProgressBlockComponent implements OnInit {
     {character: '九', translation:'nine'},
     {character: '十', translation:'ten'},
   ];
-  constructor() {
-   }
+
+  constructor(public modalController: ModalController) {}
 
   ngOnInit() {}
+
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: GraphModalPage,
+    });
+    await modal.present();
+  }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterContentInit(): void {
