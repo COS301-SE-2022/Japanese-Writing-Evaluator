@@ -11,6 +11,12 @@ ion-card{
   border: 5px solid #960722;
   border-radius: 5%;
   text-align: center;
+  transition: all .2s ease-in-out;
+}
+
+ion-card:hover {
+  transform: scale(1.1);
+  box-shadow: 15px 15px 15px -10px rgba(0, 0, 0, 0.4);
 }
 
 .box .percent{

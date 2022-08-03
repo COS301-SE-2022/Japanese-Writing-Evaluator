@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-graph-progress',
@@ -7,10 +6,18 @@ import { Chart } from 'chart.js';
   styleUrls: ['./graph-progress.page.scss'],
 })
 export class GraphProgressPage implements OnInit {
+  bars: any;
+  colorArray: any;
 
   constructor() { }
+  // eslint-disable-next-line @typescript-eslint/member-ordering
 
   ngOnInit() {
   }
 
+  ionViewDidEnter() {
+    this.createBarChart();
+  }
+
+  createBarChart() {}
 }
