@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { ModalPage } from './modal.page';
+import { GraphModalPage } from './graph-modal.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: ModalPage
+    component: GraphModalPage
   }
 ];
 
@@ -14,4 +14,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ModalPageRoutingModule {}
+export class GraphModalPageRoutingModule {}

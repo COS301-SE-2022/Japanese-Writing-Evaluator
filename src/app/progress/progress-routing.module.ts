@@ -8,9 +8,10 @@ const routes: Routes = [
     path: '',
     component: ProgressPage
   },  {
-    path: 'modal',
-    loadChildren: () => import('./modal/modal.module').then( m => m.ModalPageModule)
+    path: 'graph-modal',
+    loadChildren: () => import('./graph-modal/graph-modal.module').then( m => m.GraphModalPageModule)
   }
+
 
 ];
 
