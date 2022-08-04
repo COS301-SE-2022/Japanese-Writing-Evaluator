@@ -49,7 +49,7 @@ describe('AppServiceService', () => {
         style: 'hiragana',
       };
       service.uploadImage(mockimage).subscribe(data => {
-        expect(data.body.data.score).toBeUndefined();
+        expect(data.body.data.score).toBeNull();
       });
 
       const mockuploadrequest = mockhttpRequest.expectOne(service.baseURL+'upload');

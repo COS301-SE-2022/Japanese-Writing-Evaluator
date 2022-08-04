@@ -34,11 +34,10 @@
     "@firebase/storage": "^0.9.6",
     "@ionic/angular": "^6.0.0",
     "angularfire2": "^5.4.2",
-    "chart.js": "^3.9.0",
+    "chart.js": "2.9.4",
     "cypress": "^10.0.3",
     "dotenv": "^16.0.1",
     "e2e": "0.0.8",
-    "echarts": "^5.3.3",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
     "zone.js": "~0.11.4"

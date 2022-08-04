@@ -13,9 +13,9 @@ describe('HomePage', () => {
   let fixture: ComponentFixture<HomePage>;
   let timeout;
 
-  beforeEach(waitForAsync((done) => {
+  beforeEach(waitForAsync(() => {
     timeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-    jasmine.DEFAULT_TIMEOUT_INTERVAL = 1000000;
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000000;
     TestBed.configureTestingModule({
       declarations: [ HomePage, BlockTryCharComponent, OptionsComponent],
       imports: [IonicModule.forRoot(),RouterTestingModule,
