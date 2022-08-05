@@ -16,87 +16,34 @@ import json
 class CharacterRecognition():
     def __init__(self, name):
         self.version = name
-        self.e = 50
-        
-    def one_hot_encoding(self,y):
-        y_res = np.zeros((len(y), 49))
-        for i in range(len(y)):
-            y_res[i][y[i]] = 1
-        return y_res    
-    
-    def getData(self):
-
-        self.train_imgs = np.load('data/input/k49-train-imgs.npz')['arr_0']
-        self.train_labels = np.load('data/input/k49-train-labels.npz')['arr_0']
-        self.test_imgs = np.load('data/input/k49-test-imgs.npz')['arr_0']
-        self.test_labels = np.load('data/input/k49-test-labels.npz')['arr_0']
-        
-        self.train_imgs = np.expand_dims(self.train_imgs, axis=-1)
-        self.test_imgs = np.expand_dims(self.test_imgs, axis=-1)
-        
-        self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(self.train_imgs, self.train_labels, test_size=0.10)
-        self.y_train = self.one_hot_encoding(self.y_train)
-        self.y_val = self.one_hot_encoding(self.y_val)
-        
-    def creatingImages(self):
-        print('\nCreating Imges Array....')
-        my_dir = os.listdir('data/kanji')
-        resized_img_list = os.listdir('resized')
-        lengths = []
-        for file in my_dir:
-            lengths.append(len(os.listdir('data/kanji'+'/'+file)))
-            for img in os.listdir('data/kanji'+'/'+file):
-                i = Image.open('data/kanji'+'/'+file+'/'+ img)
-                image = i.resize((28,28))
-                gray_img = image.convert('L')
-                gray_img.save('resized_kanji' +'/' + img, "jpeg")
-                resized_img_list = os.listdir('resized_kanji')
-            print(file)
-            print(lengths[len(lengths)-1])
-
-        self.img_matrix = np.array([np.array(Image.open('resized_kanji'+ '/' + im2)).flatten()
-                    for im2 in resized_img_list],'f')
-    def createLabels(self):
-        self.labels = np.ones((len(self.img_matrix),), dtype = int)
-        kanji = os.listdir('data/kanji')
-        bound = 0
-        val = 0
-        for files in kanji:
-            size = len(os.listdir('data/kanji/' + files))
-            self.labels[bound:bound + size] = val
-            val+= 1
-            bound += size
-       
+        self.e = 10
+    """
+        createDataset: Creates the training, test and validation dataset.
+        parameters:
+            file name: the file with the dataset
+        return:
+            nothing
+        sets varaibles:
+            train_data
+            test_data
+            val_data
+    """             
     def createDatasets(self):
-        data, labels = shuffle(self.img_matrix, self.labels, random_state = 2)
-        our_data = [self.img_matrix, self.labels,]
-
-        (x,y) = (our_data[0], our_data[1])
-        train_img, test_img, self.y_train, self.y_val = train_test_split(x, y, test_size = 0.10, random_state = 2)
-
-        train_img /= 255
-        test_img /= 255
-
-        test_images = test_img.reshape(test_img.shape[0], 28, 28, 1)
-        train_image = train_img.reshape(train_img.shape[0], 28, 28, 1)
-
-        self.x_train =train_image.astype('float32')
-        self.x_val = test_images.astype('float32')
-
-        print('\nself.train_images.shape: {}, of {}'.format(self.x_train.shape, self.x_train.dtype))
-        print('self.test_images.shape: {}, of {}'.format(self.x_val.shape, self.x_val.dtype))
+        return None
     
     """
-        Creates our convolutional Neural Network 
-        Description:
-            leyers:
-            3 Convolution layers
-            3 Pool layers
-            2 Dense layers on top to perform classification with flatten layer that flattens the input tensor from 3D to 1D
-            model type:
-                Sequantial
-            Activation Function:
-                reLU (more reliable and accelarates the convergence)
+        createModel: 
+            Downloads our model (ResNet V2)
+            Freeze the model
+            Add top-layers to the model:
+                Added GlobalAvaragePooling2D
+                Add a dense layer
+            compile the model
+        parameters:
+            None
+        returns:
+            Nothing
+        Set varable model
     """  
     def createModel(self):  
         print('\nCreating the model......')   
@@ -114,8 +61,16 @@ class CharacterRecognition():
         self.rr_model.add(keras.layers.Dense(64, activation='relu'))
         self.rr_model.add(keras.layers.Dense(49, activation = "softmax")) # the number of labels will replace the ten    
         
-
-
+    """
+        tarinModel: 
+            Trains the model
+        parameters:
+            index: for when we train again
+        returns:
+            Nothing
+        Set varable model
+            histroy to help we train again
+    """ 
     def trainModel(self):
         print('\nTraining the model......')
         self.rr_model.compile(optimizer='adam',
@@ -130,6 +85,27 @@ class CharacterRecognition():
         print('Loss: ' + str(self.test_loss))
         self.rr_model.save("kanji_model.h5")
     
+    """
+        modelFitune: 
+            Finetune the model
+        parameters:
+            none
+        returns:
+            Nothing
+        Set varable model
+            histroy to help we train again
+            updates the model varables
+    """ 
+    def modelFinetune(self):
+        return None
+    
+    """StoreData:
+            Saves the accuracy, loss and name of the model to a .json file
+        parameter:
+            None
+        returns:
+            Nothing
+    """
     def storeData(self):
         print('\nStoring the data......')
         date = datetime.now()
@@ -142,10 +118,3 @@ class CharacterRecognition():
     
 if __name__ == '__main__':
     version = input('model version: ')
-    obj = CharacterRecognition(version)
-    obj.creatingImages()
-    obj.createLabels()
-    obj.createDatasets()
-    obj.createModel()
-    obj.trainModel()
-    obj.storeData()
