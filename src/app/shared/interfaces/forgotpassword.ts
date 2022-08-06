@@ -4,4 +4,5 @@ export interface ForgotPasswordEmail { /// the forgot password email sent to bac
 
 export interface ForgotPasswordPassword { /// the forgot password new password sent to backend
     password: string;
+    token: string;
 }

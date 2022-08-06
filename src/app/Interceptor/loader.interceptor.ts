@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {  HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import {  HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
 import { LoadingController } from '@ionic/angular';
 import { catchError, delay, map, retryWhen } from 'rxjs/operators';
 import { UploadPage } from '../upload/upload.page';
+import { Score } from '../shared/interfaces/score';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
@@ -34,6 +35,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('forgot-password-password')){
+            return this.generalIntercept(req,next);
+        }
+
+        if(req.url.endsWith('register')){
             return this.generalIntercept(req,next);
         }
     }
@@ -78,11 +83,35 @@ export class LoadingInterceptor implements HttpInterceptor{
         });
 
         return next.handle(req).pipe(
-            catchError(() => {
+            catchError((err: HttpErrorResponse) => {
                 //console.log('error' + err);
                 //show that there is an error in the upload page
-                this.loadingController.dismiss();
-                this.uploadPage.showScore(-1);
+                if( err.status === 401){
+                    this.loadingController.dismiss();
+                    let score = new Object() as Score;
+                    score = {
+                        data: {
+                            stroke1: 0,
+                            stroke2: 0,
+                            stroke3: 0,
+                            score: 0
+                        }
+                    };
+                    this.uploadPage.showScore(score);
+                }
+                else{
+                    this.loadingController.dismiss();
+                    let score = new Object() as Score;
+                    score = {
+                        data: {
+                            stroke1: 0,
+                            stroke2: 0,
+                            stroke3: 0,
+                            score: -1
+                        }
+                    };
+                    this.uploadPage.showScore(score);
+                }
                 return EMPTY;
             }),
             retryWhen(err => {
@@ -106,6 +135,18 @@ export class LoadingInterceptor implements HttpInterceptor{
                 if (event instanceof HttpResponse) {
                     // TODO: Check if the response is 200 ok
                     this.loadingController.dismiss();
+                    if(event.status === 401){
+                        let score = new Object() as Score;
+                        score = {
+                            data: {
+                                stroke1: 0,
+                                stroke2: 0,
+                                stroke3: 0,
+                                score: 0
+                            }
+                        };
+                        this.uploadPage.showScore(score);
+                    }
                 }
                 return event;
               })
