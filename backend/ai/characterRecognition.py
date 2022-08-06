@@ -28,7 +28,24 @@ class CharacterRecognition():
             test_data
             val_data
     """             
-    def createDatasets(self):
+    def createDatasets(self, path, train_size, val_size):
+        train = os.path.join(path, 'train')
+        val = os.path.join(path, 'validation')
+        img_size = (150, 150)
+        
+        train_data = tf.keras.utils.image_dataset_from_directory(train, shuffle = True, batch_size = train_size, image_size = img_size)
+        val_data = tf.keras.utils.image_dataset_from_directory(val, shuffle = True, batch_size = val_size, image_size = img_size)
+
+        test_img = val_data
+        val_batches = tf.data.experimental.cardinality(val_data)
+        test_data = val_data.take(val_batches // 5)
+        val_data = val_data.skip(val_batches // 5)
+        
+        AUTOTUNE = tf.data.AUTOTUNE
+
+        self.train_data = train_data.prefetch(buffer_size=AUTOTUNE)
+        self.val_data = val_data.prefetch(buffer_size=AUTOTUNE)
+        self.test_data = test_data.prefetch(buffer_size=AUTOTUNE)
         return None
     
     """
