@@ -59,8 +59,7 @@ class CNN():
       None
     Return:
       our trainned model
-  """
-  
+  """ 
   def trian_model(self, modelName):
     self.CNN.compile(loss='binary_crossentropy',optimizer='adam',metrics=['accuracy'])
     
@@ -74,6 +73,14 @@ class CNN():
     self.CNN.save(modelName + '.h5')
     return self.CNN
   
+  """
+    Function createImages
+      Create image Arrays
+    Parameters:
+      None
+    Return:
+      None
+  """
   def creatingImages(self):
     print('\nCreating Imges Array....')
     my_dir = os.listdir('data/strokes/dataset_a')
@@ -92,7 +99,14 @@ class CNN():
 
     self.img_matrix = np.array([np.array(Image.open('data/resized'+ '/' + im2)).flatten()
                 for im2 in resized_img_list],'f')
-    
+  """
+    Function createLabels:
+      Create the labels for training
+    Parameters:
+      None
+    Return:
+      None
+  """ 
   def createLabels(self):
     self.labels = np.ones((len(self.img_matrix),), dtype = int)
     kanji = os.listdir('data/strokes/dataset_a')
@@ -107,6 +121,15 @@ class CNN():
     print(self.labels)
     print('\nLabels: ', str(len(self.labels)))
     print('\nImages: ', str(len(self.img_matrix)))
+    
+  """
+    Function createDatasets:
+      Create the training and testing dataset
+    Parameters:
+      None
+    Return:
+      None
+  """  
   def createDatasets(self):
     data, labels = shuffle(self.img_matrix, self.labels, random_state = 2)
     our_data = [data, labels,]
@@ -126,6 +149,14 @@ class CNN():
     print('\nself.train_images.shape: {}, of {}'.format(self.x_train.shape, self.x_train.dtype))
     print('self.test_images.shape: {}, of {}'.format(self.x_val.shape, self.x_val.dtype))
 
+  """
+    Function storeData:
+      Stores the models accucary and loss
+    Parameters:
+      None
+    Return:
+      None
+  """ 
   def storeData(self):
     date = datetime.now()
     with open("models_data.json", "r+") as file:
