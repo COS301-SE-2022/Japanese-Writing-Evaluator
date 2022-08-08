@@ -36,7 +36,6 @@ class CharacterRecognition():
         train_data = tf.keras.utils.image_dataset_from_directory(train, shuffle = True, batch_size = train_size, image_size = img_size)
         val_data = tf.keras.utils.image_dataset_from_directory(val, shuffle = True, batch_size = val_size, image_size = img_size)
 
-        test_img = val_data
         val_batches = tf.data.experimental.cardinality(val_data)
         test_data = val_data.take(val_batches // 5)
         val_data = val_data.skip(val_batches // 5)
@@ -64,19 +63,6 @@ class CharacterRecognition():
     """  
     def createModel(self):  
         print('\nCreating the model......')   
-        self.rr_model = keras.Sequential()
-        self.rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
-        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
-
-        self.rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
-
-        self.rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
-        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
-
-        self.rr_model.add(keras.layers.Flatten())
-        self.rr_model.add(keras.layers.Dense(64, activation='relu'))
-        self.rr_model.add(keras.layers.Dense(49, activation = "softmax")) # the number of labels will replace the ten    
         
     """
         tarinModel: 
@@ -90,17 +76,6 @@ class CharacterRecognition():
     """ 
     def trainModel(self):
         print('\nTraining the model......')
-        self.rr_model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy'])
-        
-        self.rr_model.fit(self.x_train, self.y_train, epochs=self.e, validation_data=(self.x_val, self.y_val))
-        self.rr_model.summary()
-        self.test_loss, self.test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
-        
-        print('Accuraccy: ' + str(self.test_acc))
-        print('Loss: ' + str(self.test_loss))
-        self.rr_model.save("kanji_model.h5")
     
     """
         modelFitune: 
