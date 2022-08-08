@@ -41,11 +41,11 @@ class CharacterRecognition():
         test_data = val_data.take(val_batches // 5)
         val_data = val_data.skip(val_batches // 5)
         
-        AUTOTUNE = tf.data.AUTOTUNE
+        auto = tf.data.AUTOTUNE
 
-        self.train_data = train_data.prefetch(buffer_size=AUTOTUNE)
-        self.val_data = val_data.prefetch(buffer_size=AUTOTUNE)
-        self.test_data = test_data.prefetch(buffer_size=AUTOTUNE)
+        self.train_data = train_data.prefetch(buffer_size=auto)
+        self.val_data = val_data.prefetch(buffer_size=auto)
+        self.test_data = test_data.prefetch(buffer_size=auto)
         return None
     
     """
