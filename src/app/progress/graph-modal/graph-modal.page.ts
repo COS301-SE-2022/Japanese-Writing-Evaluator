@@ -11,8 +11,11 @@ export class GraphModalPage implements AfterViewInit {
   @ViewChild('barCanvas') private barCanvas: ElementRef;
 
   barChart: any;
+  array: any;
 
-  constructor(public modalController: ModalController) { }
+  constructor(public modalController: ModalController) {
+    this.array = [80, 60, 23, 95, 34, 10];
+  }
   ngAfterViewInit(): void {
     this.barChartMethod();
   }
@@ -23,8 +26,8 @@ export class GraphModalPage implements AfterViewInit {
       data: {
         labels: ['BJP', 'INC', 'AAP', 'CPI', 'CPI-M', 'NCP'],
         datasets: [{
-          label: '# of Votes',
-          data: [200, 50, 30, 15, 20, 34],
+          label: 'Scores',
+          data: this.array,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
