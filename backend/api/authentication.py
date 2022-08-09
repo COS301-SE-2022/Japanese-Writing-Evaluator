@@ -64,8 +64,11 @@ class Authentication:
 
     def login(self, email, password):
         salt = self.db.fetchSalt(email)
-        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
-        user = self.db.getUser(new_password, email)
-        return user
+        if(salt == None):
+            return None
+        else:
+            new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+            user = self.db.getUser(new_password, email)
+            return user
        
 
