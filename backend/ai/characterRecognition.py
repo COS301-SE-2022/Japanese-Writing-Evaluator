@@ -1,3 +1,4 @@
+from logging.config import valid_ident
 import os
 from tensorflow import keras
 import matplotlib.pyplot as plt
@@ -31,7 +32,7 @@ class CharacterRecognition():
     def createDatasets(self, path, train_size, val_size):
         train = os.path.join(path, 'train')
         val = os.path.join(path, 'validation')
-        img_size = (150, 150)
+        self.img_size = (150, 150)
         
         train_data = tf.keras.utils.image_dataset_from_directory(train, shuffle = True, batch_size = train_size, image_size = img_size)
         val_data = tf.keras.utils.image_dataset_from_directory(val, shuffle = True, batch_size = val_size, image_size = img_size)
@@ -62,19 +63,54 @@ class CharacterRecognition():
         Set varable model
     """  
     def createModel(self):  
-        print('\nCreating the model......')   
+        print('\nCreating the model......')  
+        sequentail_layer = tf.keras.Sequential([
+            tf.keras.layers.RandomFlip('horizontal'),
+            tf.keras.layers.RandomRotation(0.3),
+        ])
+        
+        #create base model
+        base_model = tf.keras.application.ResNet50V2(input_shape  = self.img_size, include_top = False, weight='imagenet')
+        
+        #freeze the convolutional base
+        base_model.trainable = False
+        base_model.summary()
+        image_batch, label_batch = next(iter(self.train_data))
+        feature_batch = base_model(image_batch)
+        
+        #Adding a classification head
+        global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+        feature_batch_average = global_average_layer(feature_batch)
+        
+        #Apply the dense layer
+        prediction_layer = tf.keras.layers.layers.Dense(1, activation = 'softmax')
+        
+        input = tf.keras.Input(shape = self.img_size + (3))
+        x = sequentail_layer(input)
+        x = base_model(x, training=False)
+        x = global_average_layer(x)
+        x = tf.keras.layers.Dropout(0.2)(x)
+        outputs = prediction_layer(x)
+        self.model = tf.keras.Model(input, outputs)
+        
+        #compile the model
+        base_learning_rate = 0.0001
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
+              loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+              metrics=['accuracy'])
+        self.model.summary()
         
     """
         tarinModel: 
             Trains the model
         parameters:
-            index: for when we train again
+            val: for when we train again
         returns:
             Nothing
         Set varable model
             histroy to help we train again
     """ 
-    def trainModel(self):
+    def trainModel(self, val):
         print('\nTraining the model......')
     
     """
