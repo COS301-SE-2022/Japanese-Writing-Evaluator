@@ -112,6 +112,11 @@ class CharacterRecognition():
     """ 
     def trainModel(self, val):
         print('\nTraining the model......')
+        history = self.model.fit(
+            self.train_data,
+            epochs = self.e,
+            validation_data=self.val_data
+        )
     
     """
         modelFitune: 
