@@ -1,3 +1,6 @@
+# Source: TensorFlowhub links:
+# - https://www.tensorflow.org/tutorials/images/transfer_learning_with_hub
+
 from logging.config import valid_ident
 import os
 from tensorflow import keras
