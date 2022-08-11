@@ -15,14 +15,14 @@ import { UserProgress } from '../shared/interfaces/progress';
 
 
 export class ProgressPage implements OnInit {
-  data: SafeHtml;
+
+  //Data for progress
+  progressArray: {writing_style: string, url: string, character: string, score: string, upload_date: string}[];
+  progressSummary =  new Map<string, string> ();
 
   char = '';
   percent = 0;
-
   img: string;
-
-  htmlToAdd = '';
 
   hiragana = 'hiragana';
   katakana = 'katakana';
@@ -30,16 +30,30 @@ export class ProgressPage implements OnInit {
 
   map = new Map();
 
-  progressArray: UserProgress[]; /// user feedback recieved from backend
-
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
     this.char = localStorage.getItem('char');
     this.percent = +localStorage.getItem('percentage');
-    this.service.getProgress().subscribe(data => {
-      this.progressArray = data.body.response;
-    });
+    // this.service.getProgress().subscribe(data => {
+    //   //this.progressArray = data.body.response;
+
+    // });
+
+    //testPurposes
+    this.progressArray = [
+      { "writing_style": "hiragana", "url": " ", "character": "A", "score": "25", "upload_date": "2022-07-19"  },
+      { "writing_style": "hiragana", "url": " ", "character": "Ka", "score": "72", "upload_date": "2022-07-22"  },
+      { "writing_style": "hiragana", "url": " ", "character": "Ha", "score": "11", "upload_date": "2022-08-10"  },
+      { "writing_style": "kanji", "url": " ", "character": "two", "score": "36", "upload_date": "2022-08-22"  },
+      { "writing_style": "katakana", "url": " ", "character": "A", "score": "98", "upload_date": "2022-08-30"  },
+      { "writing_style": "hiragana", "url": " ", "character": "A", "score": "10", "upload_date": "2022-08-30"  },
+      { "writing_style": "katakana", "url": " ", "character": "A", "score": "10", "upload_date": "2022-08-30"  },
+    ];
+
+    this.manipulateScores();
+
+
 
     this.map.set('A', 'A');
     this.map.set('I','I');
@@ -124,6 +138,33 @@ export class ProgressPage implements OnInit {
     this.map.set('nine','nine');
     this.map.set('ten','ten');
   }
+
+  //calculating the averages from the score
+  manipulateScores()
+  {
+    for (let i = 0; i < this.progressArray.length ; i++) {
+
+      let keyString = "";
+      keyString += this.progressArray[i].character + "_";
+      keyString += this.progressArray[i].writing_style;
+
+      if(this.progressSummary.has(keyString)){
+
+        let scoreArray = Number(this.progressArray[i].score);
+        let scoreMap = Number(this.progressSummary.get(keyString));
+
+        scoreMap = (scoreArray+ scoreMap)/2;
+        let scoreMapString = String(scoreMap);
+
+        this.progressSummary.set(keyString, scoreMapString);
+      }
+      else
+      {
+        this.progressSummary.set(keyString, this.progressArray[i].score);
+      }
+
+    }
+  }
   // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
   setDisplay(char: string, percent: number){
     this.char = char;
@@ -135,7 +176,42 @@ export class ProgressPage implements OnInit {
   }
 
   getLetter(letter: string){
-    return this.map.get(letter);
+    let letterString = '';
+    let index = letter.indexOf('_');
+
+    if(index != -1)
+    {
+      index -= 1;
+      while(index!= -1){
+
+        letterString += letter[index];
+        index -= 1;
+      }
+    }
+    return letterString.split("").reverse().join("");
+  }
+
+  getStyle(writingStyle: string){
+
+    if(writingStyle.includes('hiragana'))
+    {
+      console.log(writingStyle);
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      console.log(writingStyle);
+      return 'katakana';
+    }
+    else
+    {
+      console.log(writingStyle);
+      return 'kanji';
+    }
+  }
+
+  getPercent(percent: string){
+      return Number(percent);
   }
 
   onLogout(){

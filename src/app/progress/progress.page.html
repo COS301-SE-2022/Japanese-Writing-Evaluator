@@ -14,22 +14,9 @@
   <div class="container">
     <ion-grid>
       <ion-row>
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana"  [letter]='getLetter("A")' [percent]=30></app-progress-block>
+        <ion-col *ngFor="let item of progressSummary | keyvalue">
+          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)'></app-progress-block>
         </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana" [letter]='getLetter("I")' [percent]=50></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="katakana" [letter]='getLetter("E")' [percent]=60></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="kanji" [letter]='getLetter("one")' [percent]=80></app-progress-block>
-        </ion-col>
-
       </ion-row>
     </ion-grid>
   </div>
