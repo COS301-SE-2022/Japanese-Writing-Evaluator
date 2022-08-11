@@ -39,6 +39,7 @@ export class ProgressPage implements OnInit {
     this.percent = +localStorage.getItem('percentage');
     this.service.getProgress().subscribe(data => {
       this.progressArray = data.body.response;
+      console.log(this.progressArray);
     });
 
     this.map.set('A', 'A');

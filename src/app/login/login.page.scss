@@ -14,6 +14,14 @@
     justify-content: center;
 }
 
+.flexboxReplica{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10%;
+}
+
 .horizontalflexbox{
     display: flex;
     flex-direction: row;
@@ -21,16 +29,36 @@
 }
 
 .ion-button{
-    width: 125px;
-    height: 40px;
+    width: 120px;
+    height: 35px;
 }
 
-ion-item{
+ion-card{
+
+    width: 500px;
+}
+
+.guestButton{
+    width: 100px;
+    height: 35px;
+}
+
+.input{
     border-radius: 20px;
     border-width: 3em;
-    margin-bottom: 1px;
     --background: rgb(170, 162, 162);
     --highlight-color-focused: none;
-    width: 250px;
+    width: 240px;
     height: 45px;
-  }
+}
+
+.loginBackground{
+    //background-color: white;
+    margin-top: 2%;
+    padding: 5%;
+    width: fit-content;
+    height: 380px;
+    //box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    // display: flex;
+    // justify-content: center;
+}
