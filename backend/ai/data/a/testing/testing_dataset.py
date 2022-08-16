@@ -10,6 +10,7 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
+import cv2
 class testing_dataset: 
 
     count = 0 
@@ -43,6 +44,24 @@ class testing_dataset:
                 manipulated.save('picture_'+str(self.count) + '.png')
                 self.count = self.count + 1
 
+    def shear(self):
+        count = 0
+        for i in range (1,9):
+            img = cv2.imread("./pictures/test_"+str(i)+".png")
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            plt.axis('off')
+            plt.imshow(img)
+            plt.show()
+            rows, cols, dim = img.shape
+            M = np.float32([[1, 0.5, 0],
+             	[0, 1  , 0],
+            	[0, 0  , 1]])
+               
+            sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
+            plt.axis('off')
+            for j in range (0,10):
+                plt.imsave("picture_"+ str(self.count)+ ".png", sheared_img)
+                self.count = self.count + 1
 
         
 if __name__ == '__main__':
@@ -61,7 +80,8 @@ if __name__ == '__main__':
     #testing_dataset.rotate_image_(-30)
     #rotate_-45
     #testing_dataset.rotate_image_(-45)
-    testing_dataset.zoom_image()
+    #testing_dataset.zoom_image()
+    testing_dataset.shear()
     print(counter)
     print("done")
 
