@@ -63,6 +63,13 @@ class testing_dataset:
                 plt.imsave("picture_"+ str(self.count)+ ".png", sheared_img)
                 self.count = self.count + 1
 
+    def transpose(self): 
+        for i in range (0,3):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.transpose(Image.ROTATE_90)
+            for j in range (0,10):
+                manipulated.save('picture_'+str(self.count) + '.png')
+                self.count = self.count + 1
         
 if __name__ == '__main__':
     testing_dataset = testing_dataset()
@@ -81,7 +88,8 @@ if __name__ == '__main__':
     #rotate_-45
     #testing_dataset.rotate_image_(-45)
     #testing_dataset.zoom_image()
-    testing_dataset.shear()
+    #testing_dataset.shear()
+    testing_dataset.transpose()
     print(counter)
     print("done")
 
