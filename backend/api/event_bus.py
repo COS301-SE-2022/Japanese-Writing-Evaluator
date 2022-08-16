@@ -131,9 +131,10 @@ def event_getCharacters():
     event_number =  len(event_bus) - 1
     return executeBus(event_number)
 
-def event_getuserFeedback():
-    #TODO
-    return
+def eventListUsers(id):
+    event_bus.append(partial(auth.listUsers, id))
+    event_number = len(event_bus) - 1
+    return executeBus(event_number)
 
 """
 guest Upload Image function:

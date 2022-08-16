@@ -28,6 +28,33 @@ class Authentication:
         else:
             return jsonify({'response': "password reset failed."}), 401
 
+    """
+        listUsers function:
+            calls getAllUsers function
+        parameters:
+            None
+        return:
+            json response
+    """
+    def listUsers(self, id):
+        users = self.db.getAllUsers()
+        response = []
+        if(len(users) != None):
+            for user in users:
+                if(user[0] == id):
+                    continue
+                else:
+                    response.append({
+                        "user_id": user[0],
+                        "username": user[5],
+                        "admin": user[2]
+                    })
+            return jsonify({"response": response}), 200
+        else:
+            return jsonify({"response": "Database is empty"}), 200
+        
+
+
     def findUser(self, email):
         if(self.db.getUserByEmail(email)):
             return jsonify({'response': "user found"}), 200

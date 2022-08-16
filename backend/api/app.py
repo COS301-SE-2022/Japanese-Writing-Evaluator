@@ -105,6 +105,19 @@ def callViewImages():
     return event_bus.event_viewImages(int(request.json["id"]))
 
 """
+    viewUsers function:
+        calls event_bus.py listUsers function
+    request body:
+        none
+    return:
+        json response with all users
+"""
+@app.route('/viewUsers', methods=['GET'])
+# @token_required
+def callListUsers():
+    return event_bus.eventListUsers(int(request.json["id"]))
+
+"""
     login function:
         return the user if they exist
     request body: 

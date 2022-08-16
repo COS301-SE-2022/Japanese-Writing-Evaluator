@@ -107,6 +107,14 @@ class Database:
         user = self.curr.fetchone()
         return user
         
+    """
+        getAllUsers function:
+            functionality: gets all users database
+        aguments: 
+            none
+        return:
+            users
+    """
     def getAllUsers(self):
         q = "SELECT * FROM users;"
         self.curr.execute(q,)
