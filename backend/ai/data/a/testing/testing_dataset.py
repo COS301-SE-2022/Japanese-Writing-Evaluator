@@ -13,21 +13,31 @@ from matplotlib import pyplot
 import cv2
 class testing_dataset: 
 
-    count = 0 
+    
 
     #create the folders for the testing dataset
     #rotate_15
-    def rotate_image_(self,angle):
-        #self.count = self.count + 1
+    def blur(self,blurr,counter): 
+        #blur
+        for i in range (0,3):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            
+            gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
+            for j in range (0,10):
+                gaussImage.save('result_'+str(counter) + '.png')
+                counter = counter + 1
+    
+    def rotate_image_(self,angle,counter):
+        
         for i in range (0,3):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,10):
-                manipulated.save('picture_'+str(self.count) + '.png')
-                self.count = self.count + 1
+                manipulated.save('picture_'+str(counter) + '.png')
+                counter = counter + 1
 
-    def zoom_image(self): 
-        #self.count = self.count + 1
+    def zoom_image(self,counter): 
+       
         for i in range (0,3):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             img_buf = io.BytesIO()
@@ -41,11 +51,11 @@ class testing_dataset:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,10):
-                manipulated.save('picture_'+str(self.count) + '.png')
-                self.count = self.count + 1
+                manipulated.save('picture_'+str(counter) + '.png')
+                counter = counter + 1
 
-    def shear(self):
-        count = 0
+    def shear(self,counter):
+        
         for i in range (1,9):
             img = cv2.imread("./pictures/test_"+str(i)+".png")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -60,36 +70,48 @@ class testing_dataset:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,10):
-                plt.imsave("picture_"+ str(self.count)+ ".png", sheared_img)
-                self.count = self.count + 1
+                plt.imsave("picture_"+ str(counter)+ ".png", sheared_img)
+                counter = counter + 1
 
-    def transpose(self): 
+    def transpose_90(self,counter): 
         for i in range (0,3):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,10):
-                manipulated.save('picture_'+str(self.count) + '.png')
-                self.count = self.count + 1
+                manipulated.save('picture_'+str(counter) + '.png')
+                counter = counter + 1
+
+    def transpose_270(self,counter):
+        for i in range (0,3):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.transpose(Image.ROTATE_270)
+            for j in range (0,10):
+                manipulated.save('picture_'+str(counter) + '.png')
+                counter = counter + 1
         
 if __name__ == '__main__':
     testing_dataset = testing_dataset()
     #testing_dataset.rotate_image()
-    counter = testing_dataset.count
+    counter = 0
     #rotate_1
-    #testing_dataset.rotate_image_(15)
+    testing_dataset.rotate_image_(15,counter)
     #rotate_30
-    #testing_dataset.rotate_image_(30)
+    testing_dataset.rotate_image_(30,counter)
     #rotate_45
-    #testing_dataset.rotate_image_(45)
+    testing_dataset.rotate_image_(45,counter)
     #rotate_-15
-    #testing_dataset.rotate_image_(-15)
+    testing_dataset.rotate_image_(-15,counter)
     #rotate_-30
-    #testing_dataset.rotate_image_(-30)
+    testing_dataset.rotate_image_(-30,counter)
     #rotate_-45
-    #testing_dataset.rotate_image_(-45)
-    #testing_dataset.zoom_image()
-    #testing_dataset.shear()
-    testing_dataset.transpose()
+    testing_dataset.rotate_image_(-45,counter)
+    testing_dataset.zoom_image(counter)
+    testing_dataset.shear(counter)
+    testing_dataset.transpose_90(counter)
+    testing_dataset.transpose_270(counter)
+    testing_dataset.blur(1,counter)
+    testing_dataset.blur(2,counter)
+    testing_dataset.blur(3,counter)
     print(counter)
     print("done")
 
