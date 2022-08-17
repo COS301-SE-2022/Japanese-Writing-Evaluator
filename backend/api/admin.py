@@ -15,10 +15,12 @@ class Admin:
     """    
     def editUserPrivileges(self, id, admin):
         edited = self.db.editUser(id, admin)
-        if(edited == True):
+        print('edited: ', edited)
+        if(edited):
             return jsonify({'response': 'Privileges updated successfully'}), 200
         else:
-            return jsonify({'response': 'Privileges updated failed'}), 401
+            print("Failed at admin")
+            return jsonify({'response': 'Privileges update failed'}), 401
         
     """
         listModelData function:
