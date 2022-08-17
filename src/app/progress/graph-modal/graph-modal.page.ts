@@ -1,6 +1,7 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, ElementRef, ViewChild , Component} from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild , Component, Input} from '@angular/core';
 import { Chart } from 'chart.js';
+
 
 @Component({
   selector: 'app-graph-modal',
@@ -8,6 +9,8 @@ import { Chart } from 'chart.js';
   styleUrls: ['./graph-modal.page.scss'],
 })
 export class GraphModalPage implements AfterViewInit {
+  @Input() scores: string;
+
   @ViewChild('lineCanvas') private lineCanvas: ElementRef;
 
   lineChart: any;
