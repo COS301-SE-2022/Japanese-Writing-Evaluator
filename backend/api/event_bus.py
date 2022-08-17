@@ -1,5 +1,6 @@
 from functools import partial
 from urllib import response
+from admin import Admin
 
 from flask import jsonify
 from authentication import Authentication
@@ -19,6 +20,7 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
+admin = Admin(db)
 event_bus = []
 
 def executeBus(event_number):
@@ -135,6 +137,15 @@ def event_getuserFeedback():
     #TODO
     return
 
+def event_editUserPrivileges(id, ad):
+    event_bus.append(partial(admin.editUserPrivileges, id, ad))
+    event_number = len(event_bus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+       
 """
 guest Upload Image function:
     uploads the given image to firebase and sends it to the evaluator
