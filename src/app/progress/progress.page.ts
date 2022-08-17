@@ -1,3 +1,4 @@
+import { Progress } from './../shared/interfaces/progress';
 import { Character } from './../shared/interfaces/character';
 import { Score } from './../shared/interfaces/score';
 import { DOCUMENT } from '@angular/common';
@@ -20,8 +21,9 @@ export class ProgressPage implements OnInit {
 
   //Data for progress
   progressArray: {writingStyle: string; url: string; character: string; score: string; uploadDate: string}[];
-  scores: { char: string; score: string; date: string }[];
-  progressSummary =  new Map<string, string> ();
+  scoresChar: { char: string; score: string; date: string }[];
+  object: { char: string; score: string; date: string };
+  progressSummary =  new Map<string, {score: string; date: string }[]> ();
 
   char = '';
   percent = 0;
@@ -32,6 +34,8 @@ export class ProgressPage implements OnInit {
   kanji = 'kanji';
 
   map = new Map();
+
+
 
   constructor(private router: Router, private service: AppServiceService) { }
 
@@ -47,13 +51,22 @@ export class ProgressPage implements OnInit {
     //also note the naming conventions are incorrect from the API so they need be changed
     this.progressArray = [
       { writingStyle: 'hiragana', url: ' ', character: 'A', score: '25', uploadDate: '2022-07-19'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'A', score: '50', uploadDate: '2022-07-20'  },
       { writingStyle: 'hiragana', url: ' ', character: 'Ka', score: '72', uploadDate: '2022-07-22'  },
       { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '11', uploadDate: '2022-08-10'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '22', uploadDate: '2022-08-12'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '40', uploadDate: '2022-08-13'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '67', uploadDate: '2022-08-14'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '84', uploadDate: '2022-08-15'  },
       { writingStyle: 'kanji', url: ' ', character: 'two', score: '36', uploadDate: '2022-08-22'  },
+      { writingStyle: 'kanji', url: ' ', character: 'two', score: '80', uploadDate: '2022-08-23'  },
       { writingStyle: 'katakana', url: ' ', character: 'A', score: '98', uploadDate: '2022-08-30'  },
       { writingStyle: 'hiragana', url: ' ', character: 'A', score: '10', uploadDate: '2022-08-30'  },
       { writingStyle: 'katakana', url: ' ', character: 'A', score: '10', uploadDate: '2022-08-30'  },
+      { writingStyle: 'katakana', url: ' ', character: 'A', score: '88', uploadDate: '2022-09-15'  },
+      { writingStyle: 'katakana', url: ' ', character: 'A', score: '70', uploadDate: '2022-09-18'  },
     ];
+
 
     this.manipulateScores();
   }
@@ -63,52 +76,32 @@ export class ProgressPage implements OnInit {
   {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.progressArray.length ; i++) {
-
+      let scores: { score: string; date: string }[];
       let keyString = '';
       keyString += this.progressArray[i].character + '_';
       keyString += this.progressArray[i].writingStyle;
 
       if(this.progressSummary.has(keyString)){
 
-        const scoreArray = Number(this.progressArray[i].score);
-        let scoreMap = Number(this.progressSummary.get(keyString));
-
-        scoreMap = (scoreArray+ scoreMap)/2;
-        const scoreMapString = String(scoreMap);
-
-        this.progressSummary.set(keyString, scoreMapString);
+        const object = {
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        };
+        this.progressSummary.get(keyString).push(object);
       }
       else
       {
-        this.progressSummary.set(keyString, this.progressArray[i].score);
-      }
+        const object = [{
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        }];
 
-      // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      for (let j = 0; j < this.progressArray.length ; j++) {
-          const object = {
-            char: this.progressArray[j].character,
-            score:  this.progressArray[j].score,
-            date:  this.progressArray[j].uploadDate,
-          };
-          this.scores.push(object);
+        this.progressSummary.set(keyString, object);
       }
 
     }
   }
 
-  getMyScore(char: string)
-  {
-    let myScore: { char: string; score: string; date: string }[];
-
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let j = 0; j < this.scores.length ; j++){
-        if(char === this.scores[j].char)
-        {
-            myScore.push(this.scores[j]);
-        }
-    }
-    return myScore;
-  }
   // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
   setDisplay(char: string, percent: number){
     this.char = char;
@@ -139,23 +132,26 @@ export class ProgressPage implements OnInit {
 
     if(writingStyle.includes('hiragana'))
     {
-      console.log(writingStyle);
       return 'hiragana';
     }
     else if(writingStyle.includes('katakana'))
     {
-      console.log(writingStyle);
       return 'katakana';
     }
     else
     {
-      console.log(writingStyle);
       return 'kanji';
     }
   }
 
-  getPercent(percent: string){
-      return Number(percent);
+  getPercent(objArray: {score: string; date: string }[]){
+
+    let totalPercent = 0;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < objArray.length; i++) {
+      totalPercent+=Number(objArray[i].score);
+    }
+      return Math.round(totalPercent/objArray.length);
   }
 
   onLogout(){

@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, ElementRef, ViewChild , Component, Input} from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild, Component, Input, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 
 
@@ -9,32 +9,66 @@ import { Chart } from 'chart.js';
   styleUrls: ['./graph-modal.page.scss'],
 })
 export class GraphModalPage implements AfterViewInit {
-  @Input() scores: string;
+  @Input() scores: { char: string; score: string; date: string }[] = [];
+  @Input() letter: string;
+  @Input() alphabetType: string;
 
   @ViewChild('lineCanvas') private lineCanvas: ElementRef;
 
   lineChart: any;
   array: any;
 
+  allScores: number[];
+  allDates: string[];
+
   constructor(public modalController: ModalController) {
-    this.array = [80, 60, 23, 95, 34, 10];
   }
   ngAfterViewInit(): void {
+    this.getDateScores();
     this.lineChartMethod();
+  }
+
+  getDateScores(){
+    this.allScores = [];
+    this.allDates = [];
+
+    let counter = 0;
+
+    for(const count of this.scores){
+        ++counter;
+    }
+
+    let limit = 0;
+    const lengthArray = counter;
+    if(lengthArray < 10)
+      {
+        limit = lengthArray;
+      }
+    else
+      {
+        limit = 10;
+      }
+
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < limit ; i++) {
+      this.allScores.push(Number(this.scores[i].score));
+      this.allDates.push(this.scores[i].date);
+    }
+    console.log(this.allScores);
   }
 
   lineChartMethod() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'November', 'December'],
+        labels: this.allDates,
         datasets: [
           {
-            label: 'Last ',
+            label: 'Progress of ' + this.alphabetType[0].toUpperCase() + this.alphabetType.slice(1) + ' ' +  this.letter,
             fill: false,
             lineTension: 0.1,
             backgroundColor: 'rgba(75,192,192,0.4)',
-            borderColor: 'black',
+            borderColor: '#648981',
             borderCapStyle: 'butt',
             borderDash: [],
             borderDashOffset: 0.0,
@@ -48,11 +82,22 @@ export class GraphModalPage implements AfterViewInit {
             pointHoverBorderWidth: 2,
             pointRadius: 1,
             pointHitRadius: 10,
-            data: [65, 59, 80, 81, 56, 55, 40, 10, 5, 50, 10, 15],
+            data: this.allScores,
             spanGaps: false,
-          }
+         },
         ]
-      }
+      },
+      options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    min: 0,
+                    max: 100,
+                    stepSize: 10,
+                }
+            }]
+        }
+    }
     });
   }
 
