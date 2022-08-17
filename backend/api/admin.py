@@ -19,3 +19,18 @@ class Admin:
             return jsonify({'response': 'Privileges updated successfully'}), 200
         else:
             return jsonify({'response': 'Privileges updated failed'}), 401
+        
+    """
+        listModelData function:
+            functionality: retrieves model data
+        arguments:
+            None
+        return:
+            json response
+    """    
+    def listModelData(self):
+        try:
+            data = json.load(open('../ai/models_data.json'))
+            return jsonify({'response': 'successfully retrieved model data', 'data' : data['data']}), 200
+        except:
+            return jsonify({'response': 'Failed to get model data'}), 401
