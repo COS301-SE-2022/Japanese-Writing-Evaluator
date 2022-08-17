@@ -17,7 +17,7 @@ import { UserProgress } from '../shared/interfaces/progress';
 export class ProgressPage implements OnInit {
 
   //Data for progress
-  progressArray: {writing_style: string, url: string, character: string, score: string, upload_date: string}[];
+  progressArray: {writingStyle: string; url: string; character: string; score: string; uploadDate: string}[];
   progressSummary =  new Map<string, string> ();
 
   char = '';
@@ -42,13 +42,13 @@ export class ProgressPage implements OnInit {
 
     //testPurposes
     this.progressArray = [
-      { "writing_style": "hiragana", "url": " ", "character": "A", "score": "25", "upload_date": "2022-07-19"  },
-      { "writing_style": "hiragana", "url": " ", "character": "Ka", "score": "72", "upload_date": "2022-07-22"  },
-      { "writing_style": "hiragana", "url": " ", "character": "Ha", "score": "11", "upload_date": "2022-08-10"  },
-      { "writing_style": "kanji", "url": " ", "character": "two", "score": "36", "upload_date": "2022-08-22"  },
-      { "writing_style": "katakana", "url": " ", "character": "A", "score": "98", "upload_date": "2022-08-30"  },
-      { "writing_style": "hiragana", "url": " ", "character": "A", "score": "10", "upload_date": "2022-08-30"  },
-      { "writing_style": "katakana", "url": " ", "character": "A", "score": "10", "upload_date": "2022-08-30"  },
+      { writingStyle: 'hiragana', url: ' ', character: 'A', score: '25', uploadDate: '2022-07-19'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ka', score: '72', uploadDate: '2022-07-22'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'Ha', score: '11', uploadDate: '2022-08-10'  },
+      { writingStyle: 'kanji', url: ' ', character: 'two', score: '36', uploadDate: '2022-08-22'  },
+      { writingStyle: 'katakana', url: ' ', character: 'A', score: '98', uploadDate: '2022-08-30'  },
+      { writingStyle: 'hiragana', url: ' ', character: 'A', score: '10', uploadDate: '2022-08-30'  },
+      { writingStyle: 'katakana', url: ' ', character: 'A', score: '10', uploadDate: '2022-08-30'  },
     ];
 
     this.manipulateScores();
@@ -142,19 +142,20 @@ export class ProgressPage implements OnInit {
   //calculating the averages from the score
   manipulateScores()
   {
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.progressArray.length ; i++) {
 
-      let keyString = "";
-      keyString += this.progressArray[i].character + "_";
-      keyString += this.progressArray[i].writing_style;
+      let keyString = '';
+      keyString += this.progressArray[i].character + '_';
+      keyString += this.progressArray[i].writingStyle;
 
       if(this.progressSummary.has(keyString)){
 
-        let scoreArray = Number(this.progressArray[i].score);
+        const scoreArray = Number(this.progressArray[i].score);
         let scoreMap = Number(this.progressSummary.get(keyString));
 
         scoreMap = (scoreArray+ scoreMap)/2;
-        let scoreMapString = String(scoreMap);
+        const scoreMapString = String(scoreMap);
 
         this.progressSummary.set(keyString, scoreMapString);
       }
@@ -179,16 +180,16 @@ export class ProgressPage implements OnInit {
     let letterString = '';
     let index = letter.indexOf('_');
 
-    if(index != -1)
+    if(index !== -1)
     {
       index -= 1;
-      while(index!= -1){
+      while(index!== -1){
 
         letterString += letter[index];
         index -= 1;
       }
     }
-    return letterString.split("").reverse().join("");
+    return letterString.split('').reverse().join('');
   }
 
   getStyle(writingStyle: string){
