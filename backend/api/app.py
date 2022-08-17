@@ -221,7 +221,7 @@ def callGuestUploadImage():
     return:
         json response
 """
-@app.route('/admi/edit', methods = ['POST'])
+@app.route('/admin/edit', methods = ['POST'])
 def callEditUserPrivileges():
     return event_bus.event_editUserPrivileges(str(request.json['id']), str(request.json['admin']))
 
