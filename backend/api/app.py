@@ -212,5 +212,18 @@ def email_users():
 def callGuestUploadImage():
     return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
 
+"""
+    callEditUserPrivileges function:
+        calls editUserPrivileges frunction from admin.py
+    requset body:
+        id: user's id
+        admin: the new admin privilege
+    return:
+        json response
+"""
+@app.route('/admi/edit', methods = ['POST'])
+def callEditUserPrivileges():
+    return event_bus.event_editUserPrivileges(str(request.json['id']), str(request.json['admin']))
+
 if __name__ == '__main__':
     app.run(debug = True)
