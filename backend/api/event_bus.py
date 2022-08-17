@@ -145,7 +145,16 @@ def event_editUserPrivileges(id, ad):
         return status
     else:
         return None
-       
+    
+def event_listModelData():
+    event_bus.append(partial(admin.listModelData))
+    event_number = len(event_bus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+    
 """
 guest Upload Image function:
     uploads the given image to firebase and sends it to the evaluator
