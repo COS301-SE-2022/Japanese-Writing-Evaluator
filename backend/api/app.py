@@ -225,5 +225,18 @@ def callGuestUploadImage():
 def callEditUserPrivileges():
     return event_bus.event_editUserPrivileges(str(request.json['id']), str(request.json['admin']))
 
+"""
+    callEditUserPrivileges function:
+        calls editUserPrivileges frunction from admin.py
+    requset body:
+        id: user's id
+        admin: the new admin privilege
+    return:
+        json response
+"""
+@app.route('/admin/models', methods = ['GET'])
+def callListModelData():
+    return event_bus.event_listModelData()
+
 if __name__ == '__main__':
     app.run(debug = True)
