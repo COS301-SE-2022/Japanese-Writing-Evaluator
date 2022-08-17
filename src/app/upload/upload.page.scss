@@ -38,7 +38,15 @@
   flex-direction: row;
   justify-content: center;
   margin-bottom: 5%;
-  margin-top: 10%;
+  margin-top: 5%;
+}
+
+@media only screen and (max-device-width: 480px) {
+  /* styles for mobile browsers smaller than 480px; (iPhone) */
+  .horizontalflexbox{
+    margin-bottom: 5%;
+    margin-top: 5%;
+  }
 }
 
 .flexbox{

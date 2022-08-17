@@ -14,12 +14,55 @@
     justify-content: center;
 }
 
-.flexboxReplica{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10%;
+// .flexboxReplica{
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     margin-top: 5%;
+// }
+
+@media screen and (min-width: 800px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 500px;
+    }
+}
+
+@media screen and (min-width: 400px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 500px;
+    }
+}
+
+@media screen and (min-width: 200px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15%;
+    }
+    
+    // ion-card{
+    //     width: 300px;
+    // }
+   
 }
 
 .horizontalflexbox{
@@ -33,10 +76,10 @@
     height: 35px;
 }
 
-ion-card{
+// ion-card{
 
-    width: 500px;
-}
+//     width: 500px;
+// }
 
 .guestButton{
     width: 100px;

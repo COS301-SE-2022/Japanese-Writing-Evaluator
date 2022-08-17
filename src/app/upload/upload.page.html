@@ -1,10 +1,10 @@
-<ion-toolbar>
+<!-- <ion-toolbar>
   <p class="padding">
     <ion-button color="light" href="home">
       <p class="position"><i class="backButton"></i></p>
     </ion-button>
   </p>
-</ion-toolbar>
+</ion-toolbar> -->
 <ion-content>
   <div class="horizontalflexbox">
     <div lines="none" id="backgroundDiv" >
@@ -31,3 +31,30 @@
     <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
   </div>
 </ion-content>
+
+<ion-footer *ngIf="!ifGuest()">
+  <ion-tab-bar>
+    <ion-tabs>
+      <ion-row>
+        <ion-col size="6">
+          <a ><!--direct to suggestions-->
+            <ion-tab-button >
+              <ion-icon name="language"></ion-icon>
+              <ion-label>Characters</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col size="4">
+          <a [routerLink]="['/progress']">
+            <ion-tab-button >
+              <ion-icon name="analytics"></ion-icon>
+              <ion-label>Progress</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ion-tabs>
+  </ion-tab-bar>
+</ion-footer>
+
