@@ -41,6 +41,14 @@ class Authentication:
         else:
             return jsonify({'response': "user does not exist"}), 401
 
+    """
+        getUser function:
+            calls getUserByID function
+        request body: 
+            email
+        return:
+            username and userid
+    """
     def getUser(self, id):
         return self.db.getUserByID(id)
 
