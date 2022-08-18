@@ -184,10 +184,11 @@ class Database:
 
     def editUser(self, id, admin):
         try:
-            query = "UPDATE users SET admin = %s, WHERE userid = %s;";
+            query = "UPDATE users SET isadmin = %s WHERE userid = %s;";
             self.curr.execute(query, (admin, id))
             self.conn.commit()
+            print("Edited")
             return True
-        except:
-            print("edit failed!!!!!")
+        except Exception as e:
+            print(e)
             return False       
