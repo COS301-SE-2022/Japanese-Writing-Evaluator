@@ -3,6 +3,7 @@ from operator import contains
 from pydoc import importfile
 import this
 from urllib import response
+from xmlrpc.client import boolean
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
@@ -223,7 +224,7 @@ def callGuestUploadImage():
 """
 @app.route('/admin/edit', methods = ['POST'])
 def callEditUserPrivileges():
-    return event_bus.event_editUserPrivileges(str(request.json['id']), str(request.json['admin']))
+    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
 
 """
     callEditUserPrivileges function:
