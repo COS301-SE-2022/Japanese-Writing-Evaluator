@@ -90,6 +90,16 @@ class Authentication:
         except Exception as e:
             return jsonify({'response': str(e)}), 401
 
+
+    """
+
+        login function:
+            find a user based on their email and password
+        request body: 
+            email and password
+        return:
+            username and userId
+    """
     def login(self, email, password):
         salt = self.db.fetchSalt(email)
         if(salt == None):
