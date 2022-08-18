@@ -107,10 +107,18 @@ def eventRegister(email, password, username):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_uploadImage(id, imagechar, image, file):
-    event_bus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
-    event_number = len(event_bus) - 1
-    return jsonify(executeBus(event_number))
+"""
+eventUploadImage function:
+    Calls the register function to register a new user
+parameters: 
+    id, imagechar, image and file
+return:
+    json response
+"""
+def eventUploadImage(id, imagechar, image, file):
+    eventBus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
+    eventNumber = len(eventBus) - 1
+    return jsonify(executeBus(eventNumber))
 
 def event_sendImage(id, image_char, image, file, writing_style):
     e = Evaluator(writing_style, image_char)
