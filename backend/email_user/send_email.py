@@ -35,6 +35,15 @@ class Send_Email:
             else:
                   return jsonify({'response': "email unsuccessfully sent"}), 401
 
+
+    """
+    forgotPasswordEmail function:
+        sends an email to the user with their weekly progress
+    parameters:
+        email, score and username
+    return:
+        string response
+    """
     def send_email(self, email, score, username):
 
         try:
