@@ -45,13 +45,21 @@ class Authentication:
         getUser function:
             calls getUserByID function
         request body: 
-            email
+            id
         return:
             username and userid
     """
     def getUser(self, id):
         return self.db.getUserByID(id)
 
+    """
+        addToken function:
+            calls addToken function
+        request body: 
+            email and token
+        return:
+            json response
+    """
     def addToken(self, email, token):
         if(self.db.addToken(email, token)):
             return jsonify({'response': "Token successfully added"}), 200
