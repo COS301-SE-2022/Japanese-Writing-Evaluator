@@ -17,6 +17,14 @@ class imageDB:
         imagePath = "/users/"+str(id)+"/"+file
         return self.db.saveImage(id, imagePath, imageChar, score, writingStyle)
 
+    """
+    getImages function:
+        gets all the users uploaded images
+    parameters: 
+        id
+    return:
+        response from db
+    """
     def getImages(self, id):
         return self.db.getImage(id)
 
