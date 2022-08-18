@@ -166,11 +166,19 @@ def eventViewImages(id):
     else:
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
-def event_sendToEvaluator(image, image_char):
-    obj = Evaluator(image, image_char)
-    event_bus.append(partial(obj.testCharacter, image, image_char))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventSendToEvaluator function:
+    Calls test character function which evaluates the users image
+parameters: 
+    image, imageChar
+return:
+    json response
+"""
+def eventSendToEvaluator(image, imageChar):
+    obj = Evaluator(image, imageChar)
+    eventBus.append(partial(obj.testCharacter, image, imageChar))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_saveToDB(id, file, image_char, score, writing_style):
     event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
