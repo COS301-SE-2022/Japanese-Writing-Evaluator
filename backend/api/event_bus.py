@@ -263,7 +263,7 @@ parameters:
 return:
     json response
 """
-def event_guestUplaodImage(imagechar, image, style):
+def eventGuestUplaodImage(imagechar, image, style):
     image = image.partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
