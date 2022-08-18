@@ -193,10 +193,18 @@ def eventSaveToDB(id, file, imageChar, score, writingStyle):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_getImageUsers():
-    event_bus.append(partial(imagedb.getImageUsers))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventGetImageUsers function:
+    Calls the get image users function which returns all entries inside image database
+parameters: 
+    none
+return:
+    array of all the entries inside image database
+"""
+def eventGetImageUsers():
+    eventBus.append(partial(imagedb.getImageUsers))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_getUser(id):
     event_bus.append(partial(imagedb.getUser, id))
