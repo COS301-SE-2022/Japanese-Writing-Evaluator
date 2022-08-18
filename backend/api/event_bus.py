@@ -55,10 +55,18 @@ def eventResetPassword(email):
     else:
         return response
     
-def event_storeToken(email, token):
-    event_bus.append(partial(auth.addToken, email, token))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+executeBus function:
+    Calls all relevent services to store the users token for forgotten password
+parameters: 
+    users email and a generated token
+return:
+    json response
+"""
+def eventStoreToken(email, token):
+    eventBus.append(partial(auth.addToken, email, token))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_forgotPasswordEmail(email):
     event_bus.append(partial(Send_Email.forgotPasswordEmail, email))
