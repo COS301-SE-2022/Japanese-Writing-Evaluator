@@ -206,9 +206,17 @@ def eventGetImageUsers():
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_getUser(id):
-    event_bus.append(partial(imagedb.getUser, id))
-    event_number = len(event_bus) - 1
+"""
+eventGetUser function:
+    Calls the get user function 
+parameters: 
+    id
+return:
+    array of the specified users details
+"""
+def eventGetUser(id):
+    eventBus.append(partial(imagedb.getUser, id))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_login(email, password):
