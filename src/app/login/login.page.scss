@@ -22,7 +22,7 @@
 //     margin-top: 5%;
 // }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 1008px)  {
     .flexboxReplica{
         display: flex;
         flex-direction: column;
@@ -32,11 +32,11 @@
     }
 
     ion-card{
-        width: 500px;
+        width: 700px;
     }
 }
 
-@media screen and (min-width: 400px) {
+@media screen and (min-width: 641px) and (max-width: 1007px) {
     .flexboxReplica{
         display: flex;
         flex-direction: column;
@@ -46,22 +46,36 @@
     }
 
     ion-card{
-        width: 500px;
+        width: 600px;
     }
 }
 
-@media screen and (min-width: 200px) {
+@media screen and (max-width: 640px) and (min-width: 360px) {
     .flexboxReplica{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 15%;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10%;
     }
     
-    // ion-card{
-    //     width: 300px;
-    // }
+    ion-card{
+        width: 300px;
+    }
    
 }
 
