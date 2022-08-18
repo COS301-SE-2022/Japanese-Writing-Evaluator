@@ -67,11 +67,13 @@ class Authentication:
             return jsonify({'response': "Token unsuccessfully added"}), 401
     """
 
-        Register
-        Takes in a post or get request and adds the user to the database
-
+        register function:
+            registers a new user
+        request body: 
+            email, password and username
+        return:
+            json response
     """
-
     def register(self, email, password, username):
         try:
             Finduser = self.db.getUserByEmail(email)
