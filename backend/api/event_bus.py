@@ -180,10 +180,18 @@ def eventSendToEvaluator(image, imageChar):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_saveToDB(id, file, image_char, score, writing_style):
-    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventSaveToDB function:
+    Calls the save to DB function which saves the path to the users uploaded image in the database
+parameters: 
+    id, file, image, imageChar, score, writingStyle
+return:
+    json response
+"""
+def eventSaveToDB(id, file, imageChar, score, writingStyle):
+    eventBus.append(partial(imagedb.saveToDB, id, file, imageChar, score, writingStyle))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_getImageUsers():
     event_bus.append(partial(imagedb.getImageUsers))
