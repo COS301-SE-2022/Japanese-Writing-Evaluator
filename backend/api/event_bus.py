@@ -237,10 +237,18 @@ def eventLogin(email, password):
     else:
         return None
 
-def event_getCharacters():
-    event_bus.append(partial(img.getCharacters))
-    event_number =  len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventLogin function:
+    Calls the get characters function
+parameters: 
+    none
+return:
+    all the characters in the cloud
+"""
+def eventGetCharacters():
+    eventBus.append(partial(img.getCharacters))
+    eventNumber =  len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_getuserFeedback():
     #TODO
