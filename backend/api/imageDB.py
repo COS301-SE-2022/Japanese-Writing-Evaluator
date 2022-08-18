@@ -28,5 +28,13 @@ class imageDB:
     def getImages(self, id):
         return self.db.getImage(id)
 
+    """
+    getImagesUsers function:
+        gets all image information from database
+    parameters: 
+        none
+    return:
+        response from db
+    """
     def getImageUsers(self):
         return self.db.getImageUsers()
