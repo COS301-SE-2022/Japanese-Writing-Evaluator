@@ -35,7 +35,7 @@ def executeBus(eventNumber):
     return res
 
 """
-executeBus function:
+eventResetPassword function:
     Calls all relevent services to reset the user's password
 parameters: 
     users email
@@ -56,7 +56,7 @@ def eventResetPassword(email):
         return response
     
 """
-executeBus function:
+eventStoreToken function:
     Calls all relevent services to store the users token for forgotten password
 parameters: 
     users email and a generated token
@@ -69,7 +69,7 @@ def eventStoreToken(email, token):
     return executeBus(eventNumber)
 
 """
-executeBus function:
+eventForgotPasswordEmail function:
     Calls function that sends a forgotten password email to the user
 parameters: 
     users email
@@ -81,10 +81,18 @@ def eventForgotPasswordEmail(email):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_changePassword(token, password):
-    event_bus.append(partial(auth.resetPassword, token, password))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventChangePassword function:
+    Calls function that resets the users password
+parameters: 
+    new password and their token
+return:
+    json response
+"""
+def eventChangePassword(token, password):
+    eventBus.append(partial(auth.resetPassword, token, password))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
         
 
 def event_register(email, password, username):
