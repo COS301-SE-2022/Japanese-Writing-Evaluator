@@ -146,15 +146,23 @@ def eventSendImage(id, imageChar, image, file, writingStyle):
         else:
             return jsonify({'response': "Storage to cloud service failed"}), 401
 
-def event_viewImages(id):
-    event_bus.append(partial(imagedb.getImages, id))
-    event_number = len(event_bus) - 1
-    images = executeBus(event_number)
+"""
+eventViewImages function:
+    Calls all relevent functions to retrieve the users progress
+parameters: 
+    id
+return:
+    json response
+"""
+def eventViewImages(id):
+    eventBus.append(partial(imagedb.getImages, id))
+    eventNumber = len(eventBus) - 1
+    images = executeBus(eventNumber)
     code = jsonify(images).status_code
     if(code == 200):
-        event_bus.append(partial(Image.viewImages, img, images))
-        event_number2 = len(event_bus) - 1
-        return executeBus(event_number2)
+        eventBus.append(partial(Image.viewImages, img, images))
+        eventNumber2 = len(eventBus) - 1
+        return executeBus(eventNumber2)
     else:
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
