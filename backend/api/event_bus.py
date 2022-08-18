@@ -94,11 +94,18 @@ def eventChangePassword(token, password):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
         
-
-def event_register(email, password, username):
-    event_bus.append(partial(auth.register, email, password, username))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventRegister function:
+    Calls the register function to register a new user
+parameters: 
+    email, password and username
+return:
+    json response
+"""
+def eventRegister(email, password, username):
+    eventBus.append(partial(auth.register, email, password, username))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_uploadImage(id, imagechar, image, file):
     event_bus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
