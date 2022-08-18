@@ -34,6 +34,9 @@ class Authentication:
         else:
             return jsonify({'response': "user does not exist"}), 401
 
+    def getUser(self, id):
+        return self.db.getUserByID(id)
+
     def addToken(self, email, token):
         if(self.db.addToken(email, token)):
             return jsonify({'response': "Token successfully added"}), 200
