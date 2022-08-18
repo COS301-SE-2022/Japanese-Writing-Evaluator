@@ -109,7 +109,7 @@ def eventRegister(email, password, username):
 
 """
 eventUploadImage function:
-    Calls the register function to register a new user
+    Calls the upload image function to upload a users image
 parameters: 
     id, imagechar, image and file
 return:
@@ -120,16 +120,24 @@ def eventUploadImage(id, imagechar, image, file):
     eventNumber = len(eventBus) - 1
     return jsonify(executeBus(eventNumber))
 
-def event_sendImage(id, image_char, image, file, writing_style):
-    e = Evaluator(writing_style, image_char)
+"""
+eventSendImage function:
+    Calls all relevent functions to send an image to the cloud, add entry to database and evaluate it
+parameters: 
+    id, imagechar, image, file and writingStyle
+return:
+    json response
+"""
+def eventSendImage(id, imageChar, image, file, writingStyle):
+    e = Evaluator(writingStyle, imageChar)
     feedback = e.testCharacter() # call AI
     score = feedback[1]
     if(score == 0):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
-        exitcode = event_uploadImage(id, image_char, image, file)
+        exitcode = eventUploadImage(id, imageChar, image, file)
         if(exitcode.status_code == 200):
-            storeToDB = event_saveToDB(id, file, image_char, score, writing_style)
+            storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
             if(storeToDB == True):
                 strokes = feedback[0]
                 return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
