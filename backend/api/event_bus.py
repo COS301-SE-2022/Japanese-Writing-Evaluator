@@ -215,14 +215,22 @@ return:
     array of the specified users details
 """
 def eventGetUser(id):
-    eventBus.append(partial(imagedb.getUser, id))
-    event_number = len(eventBus) - 1
-    return executeBus(event_number)
+    eventBus.append(partial(auth.getUser, id))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_login(email, password):
-    event_bus.append(partial(auth.login, email, password))
-    event_number = len(event_bus) -  1
-    status = executeBus(event_number)
+"""
+eventLogin function:
+    Calls the login function
+parameters: 
+    email and password
+return:
+    username and userId 
+"""
+def eventLogin(email, password):
+    eventBus.append(partial(auth.login, email, password))
+    eventNumber = len(eventBus) -  1
+    status = executeBus(eventNumber)
     print(status)
     if(status != None):
         return status
