@@ -68,10 +68,18 @@ def eventStoreToken(email, token):
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_forgotPasswordEmail(email):
-    event_bus.append(partial(Send_Email.forgotPasswordEmail, email))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+executeBus function:
+    Calls function that sends a forgotten password email to the user
+parameters: 
+    users email
+return:
+    json response
+"""
+def eventForgotPasswordEmail(email):
+    eventBus.append(partial(Send_Email.forgotPasswordEmail, email))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
 def event_changePassword(token, password):
     event_bus.append(partial(auth.resetPassword, token, password))
