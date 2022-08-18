@@ -34,16 +34,24 @@ def executeBus(eventNumber):
     del eventBus[eventNumber]
     return res
 
-def event_resetPassword(email):
-    event_bus.append(partial(auth.findUser, email))
-    event_number = len(event_bus) - 1
-    response = executeBus(event_number)
+"""
+executeBus function:
+    Calls all relevent services to reset the user's password
+parameters: 
+    users email
+return:
+    json response
+"""
+def eventResetPassword(email):
+    eventBus.append(partial(auth.findUser, email))
+    eventNumber = len(eventBus) - 1
+    response = executeBus(eventNumber)
     if(response[1] == 200): #returns a tuple, element at 1 is the status code
-        email_res = event_forgotPasswordEmail(email)
-        tokenStore = event_storeToken(email, email_res["token"])
+        emailRes = eventForgotPasswordEmail(email)
+        tokenStore = eventStoreToken(email, emailRes["token"])
         if(tokenStore[1] != 200):
             return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
-        return email_res
+        return emailRes
     else:
         return response
     
