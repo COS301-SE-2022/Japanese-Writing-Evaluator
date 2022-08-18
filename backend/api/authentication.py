@@ -17,7 +17,6 @@ class Authentication:
         return:
             json response
     """
-
     def resetPassword(self, token, password):
         salt = self.db.fetchSaltByToken(token)
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
@@ -28,6 +27,14 @@ class Authentication:
         else:
             return jsonify({'response': "password reset failed."}), 401
 
+    """
+        findUser function:
+            calls getUserByEmail function
+        request body: 
+            email
+        return:
+            json response
+    """
     def findUser(self, email):
         if(self.db.getUserByEmail(email)):
             return jsonify({'response': "user found"}), 200
