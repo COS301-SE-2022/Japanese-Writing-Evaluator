@@ -19,11 +19,19 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
-event_bus = []
+eventBus = []
 
-def executeBus(event_number):
-    res = event_bus[event_number]()
-    del event_bus[event_number]
+"""
+executeBus function:
+    Executes the functions added to the even bus
+parameters: 
+    eventNumber of the current event that needs to be executed
+return:
+    json response of the function that was executed
+"""
+def executeBus(eventNumber):
+    res = eventBus[eventNumber]()
+    del eventBus[eventNumber]
     return res
 
 def event_resetPassword(email):
