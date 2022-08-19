@@ -14,12 +14,69 @@
     justify-content: center;
 }
 
-.flexboxReplica{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-top: 10%;
+// .flexboxReplica{
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     margin-top: 5%;
+// }
+
+@media screen and (min-width: 1008px)  {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 700px;
+    }
+}
+
+@media screen and (min-width: 641px) and (max-width: 1007px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 600px;
+    }
+}
+
+@media screen and (max-width: 640px) and (min-width: 360px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10%;
+    }
+    
+    ion-card{
+        width: 300px;
+    }
+   
 }
 
 .horizontalflexbox{
@@ -33,10 +90,10 @@
     height: 35px;
 }
 
-ion-card{
+// ion-card{
 
-    width: 500px;
-}
+//     width: 500px;
+// }
 
 .guestButton{
     width: 100px;
