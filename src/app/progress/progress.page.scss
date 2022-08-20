@@ -1,5 +1,18 @@
 .container {
-display: flex;
+  display: flex;
+  align-items: center;
+}
+
+ion-grid{
+  border-color: black;
+  border-width: .01em;
+  border-style:solid; margin-bottom : -1px;
+  background-color: lightgrey
+
+}
+
+h1{
+  padding: 20px;
 }
 
 ion-button{
@@ -16,6 +29,8 @@ ion-img{
   height: 100px;
   margin-top: -10px;
 }
+
+
 
 .head{
   background-color: #960722;

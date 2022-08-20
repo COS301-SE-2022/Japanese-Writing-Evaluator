@@ -3,19 +3,19 @@
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
     <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
 
-    <h1></h1>
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
       Track your progress below.
     </p>
-</div>
+  </div>
 
-  <div class="container">
-    <ion-grid>
-      <ion-row>
-        <ion-col *ngFor="let item of progressSummary | keyvalue">
-          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
+  <div>
+    <ion-grid class="container" *ngFor="let styles of writingStylesArray">
+      <!-- <h1>{{styles}}</h1><br> -->
+      <ion-row *ngFor="let item of progressSummary | keyvalue" size="col-auto">
+        <ion-col>
+          <app-progress-block *ngIf="getStyle(item.key) === styles" [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
         </ion-col>
       </ion-row>
     </ion-grid>
@@ -34,7 +34,6 @@
             </ion-tab-button>
           </a>
         </ion-col>
-
         <ion-col size="4">
           <a>
             <ion-tab-button >

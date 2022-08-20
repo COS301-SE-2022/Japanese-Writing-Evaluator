@@ -1,13 +1,12 @@
 ion-card{
   display: flex;
   justify-content: center;
-  align-items: center;
+  //align-items: center;
   position: relative;
   width: 220px;
   height: 220px;
-  flex-direction: column;
+  //flex-direction: row-reverse;
   background: #ffffff;
-  //border: 5px solid #960722;
   border: 5px solid #960722;
   border-radius: 5%;
   text-align: center;

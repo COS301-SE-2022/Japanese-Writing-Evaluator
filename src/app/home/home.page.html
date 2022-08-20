@@ -13,17 +13,13 @@
 
   <!-- SUGGESTIONS -->
   <div class="suggestions">
-
     <ion-grid>
       <ion-row>
-        <ion-col *ngFor="let item of alphabetCategory">
+        <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
           <app-options [letter]='item.character' [category]='item.category'></app-options>
         </ion-col>
       </ion-row>
     </ion-grid>
-
-
-
   </div>
 </ion-content>
 
