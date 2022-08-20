@@ -32,7 +32,15 @@ class testing_dataset:
                 gaussImage.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-    
+    """
+   rotate_image_:
+        takes the different images in pictures folder and roates them by a degree
+    request body: 
+        angle: the degree for the rotation
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+"""   
     def rotate_image_(self,angle,counter):
         
         for i in range (0,38):
