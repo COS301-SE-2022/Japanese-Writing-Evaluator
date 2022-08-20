@@ -106,3 +106,4 @@ class training:
                 plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
+
