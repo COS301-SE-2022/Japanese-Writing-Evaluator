@@ -163,7 +163,7 @@ if __name__ == '__main__':
     counter =  testing.transpose_270(counter)
     counter = testing.blur(1,counter)
     counter =  testing.blur(2,counter)
-    counter =  training.blur(3,counter)
+    counter =  testing.blur(3,counter)
     counter =  training.blur(4,counter)
     counter =  training.blur(5,counter)
     print(counter)
