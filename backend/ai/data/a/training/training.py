@@ -99,7 +99,7 @@ class training:
             	[0, 0  , 1]])
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
-            for j in range (0,10):
+            for j in range (0,100):
                 plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
