@@ -76,4 +76,14 @@ class training:
             for j in range (0,100):
                 manipulated.save("./training/picture_"+ str(counter)+ ".png")
                 counter = counter + 1
-        return counter    
+        return counter
+
+    """
+   shear:
+        takes the different images in pictures folder and shear them 
+    request body: 
+       
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+"""     
