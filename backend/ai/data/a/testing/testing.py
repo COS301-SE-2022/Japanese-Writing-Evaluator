@@ -56,7 +56,7 @@ class testing:
         takes the different images in pictures folder and zooms in on them 
     request body: 
        
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
     """
@@ -75,7 +75,7 @@ class testing:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,100):
-                manipulated.save("./training/picture_"+ str(counter)+ ".png")
+                manipulated.save("./testing/picture_"+ str(counter)+ ".png")
                 counter = counter + 1
         return counter
     """
@@ -83,7 +83,7 @@ class testing:
         takes the different images in pictures folder and shear them 
     request body: 
        
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
 """ 
@@ -100,7 +100,7 @@ class testing:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave("./testing/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
     """
@@ -108,7 +108,7 @@ class testing:
         takes the different images in pictures folder and transposes them by 90 degrees
     request body: 
        
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
 """ 
@@ -117,7 +117,7 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -125,7 +125,7 @@ class testing:
         takes the different images in pictures folder and transposes them by 270 degrees
     request body: 
        
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
 """ 
@@ -134,12 +134,12 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
 if __name__ == '__main__':
-    training = testing()
+    testing = testing()
   
     counter = 0
     print(counter)
