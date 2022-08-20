@@ -182,3 +182,4 @@ if __name__ == '__main__':
     counter = testing.blur(2,counter)
     counter = testing.blur(3,counter)
     counter = testing.blur(4,counter)
+    counter = testing.blur(5,counter)
