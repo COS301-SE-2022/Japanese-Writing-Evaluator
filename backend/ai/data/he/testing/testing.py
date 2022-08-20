@@ -33,3 +33,4 @@ class testing:
                 gaussImage.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
