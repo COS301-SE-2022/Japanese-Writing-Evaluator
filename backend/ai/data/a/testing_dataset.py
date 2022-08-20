@@ -142,31 +142,31 @@ if __name__ == '__main__':
     testing_dataset = testing_dataset()
   
     counter = 0
-    #rotate_1
+
     print(counter)
-    # counter= testing_dataset.rotate_image_(15,counter)
+    counter= testing_dataset.rotate_image_(15,counter)
     
-    # # #rotate_30
    
-    # counter = testing_dataset.rotate_image_(30,counter)
+   
+    counter = testing_dataset.rotate_image_(30,counter)
   
-    # # #rotate_45
-    # counter = testing_dataset.rotate_image_(45,counter)
-    # # # #rotate_-15
-    # counter =  testing_dataset.rotate_image_(-15,counter)
-    # # # #rotate_-30
-    # counter = testing_dataset.rotate_image_(-30,counter)
-    # # # #rotate_-45
-    # counter =  testing_dataset.rotate_image_(-45,counter)
-    # counter =  testing_dataset.zoom_image(counter)
+    
+    counter = testing_dataset.rotate_image_(45,counter)
+   
+    counter =  testing_dataset.rotate_image_(-15,counter)
+   
+    counter = testing_dataset.rotate_image_(-30,counter)
+   
+    counter =  testing_dataset.rotate_image_(-45,counter)
+    counter =  testing_dataset.zoom_image(counter)
     counter =  testing_dataset.shear(counter)
-    # counter =  testing_dataset.transpose_90(counter)
-    #counter =  testing_dataset.transpose_270(counter)
-    # counter = testing_dataset.blur(1,counter)
-    # counter =  testing_dataset.blur(2,counter)
-    # counter =  testing_dataset.blur(3,counter)
-    # counter =  testing_dataset.blur(4,counter)
-    # counter =  testing_dataset.blur(5,counter)
+    counter =  testing_dataset.transpose_90(counter)
+    counter =  testing_dataset.transpose_270(counter)
+    counter = testing_dataset.blur(1,counter)
+    counter =  testing_dataset.blur(2,counter)
+    counter =  testing_dataset.blur(3,counter)
+    counter =  testing_dataset.blur(4,counter)
+    counter =  testing_dataset.blur(5,counter)
     print(counter)
     print("done")
 
