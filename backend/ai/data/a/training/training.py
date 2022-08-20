@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
 import cv2
-class testing_dataset: 
+class training: 
 
     """
     blur function:
@@ -139,29 +139,29 @@ class testing_dataset:
         return counter
         
 if __name__ == '__main__':
-    testing_dataset = testing_dataset()
+    training = training()
   
     counter = 0
 
     print(counter)
-    counter= testing_dataset.rotate_image_(15,counter)
+    counter= training.rotate_image_(15,counter)
     
    
    
-    counter = testing_dataset.rotate_image_(30,counter)
+    counter = training.rotate_image_(30,counter)
   
     
-    counter = testing_dataset.rotate_image_(45,counter)
+    counter = training.rotate_image_(45,counter)
    
-    counter =  testing_dataset.rotate_image_(-15,counter)
+    counter =  training.rotate_image_(-15,counter)
    
-    counter = testing_dataset.rotate_image_(-30,counter)
+    counter = training.rotate_image_(-30,counter)
    
-    counter =  testing_dataset.rotate_image_(-45,counter)
-    counter =  testing_dataset.zoom_image(counter)
-    counter =  testing_dataset.shear(counter)
-    counter =  testing_dataset.transpose_90(counter)
-    counter =  testing_dataset.transpose_270(counter)
+    counter =  training.rotate_image_(-45,counter)
+    counter =  training.zoom_image(counter)
+    counter =  training.shear(counter)
+    counter =  training.transpose_90(counter)
+    counter =  training.transpose_270(counter)
     counter = testing_dataset.blur(1,counter)
     counter =  testing_dataset.blur(2,counter)
     counter =  testing_dataset.blur(3,counter)
