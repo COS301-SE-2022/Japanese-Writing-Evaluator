@@ -13,10 +13,15 @@ from matplotlib import pyplot
 import cv2
 class testing_dataset: 
 
-    
-
-    #create the folders for the testing dataset
-    #rotate_15
+    """
+    blur function:
+        takes the different images in pictures folder and blurs them
+    request body: 
+        blurr: the degree for GaussianBlur
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+""" 
     def blur(self,blurr,counter): 
         #blur
         for i in range (0,38):
@@ -100,11 +105,11 @@ if __name__ == '__main__':
     #rotate_1
     print(counter)
     # counter= testing_dataset.rotate_image_(15,counter)
-    # # print(counter)
+    
     # # #rotate_30
-    # # print(counter)
+   
     # counter = testing_dataset.rotate_image_(30,counter)
-    # # print(counter)
+  
     # # #rotate_45
     # counter = testing_dataset.rotate_image_(45,counter)
     # # # #rotate_-15
