@@ -51,3 +51,13 @@ class testing:
                 manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+    """
+   zoom_image:
+        takes the different images in pictures folder and zooms in on them 
+    request body: 
+       
+        counter: the counter of how many images are in the testing folder
+    return:
+        counter
+    """
