@@ -161,7 +161,7 @@ if __name__ == '__main__':
     counter =  testing.shear(counter)
     counter =  testing.transpose_90(counter)
     counter =  testing.transpose_270(counter)
-    counter = training.blur(1,counter)
+    counter = testing.blur(1,counter)
     counter =  training.blur(2,counter)
     counter =  training.blur(3,counter)
     counter =  training.blur(4,counter)
