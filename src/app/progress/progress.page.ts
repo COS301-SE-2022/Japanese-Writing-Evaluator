@@ -22,7 +22,9 @@ export class ProgressPage implements OnInit {
   //Data for progress
   progressArray: {writingStyle: string; url: string; character: string; score: string; uploadDate: string}[];
   object: { char: string; score: string; date: string };
-  progressSummary =  new Map<string, {score: string; date: string }[]> ();
+  progressHiragana =  new Map<string, {score: string; date: string }[]> ();
+  progressKatakana =  new Map<string, {score: string; date: string }[]> ();
+  progressKanji =  new Map<string, {score: string; date: string }[]> ();
   writingStylesArray: string[];
 
   char = '';
@@ -82,33 +84,86 @@ export class ProgressPage implements OnInit {
   manipulateScores()
   {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this.progressArray.length ; i++) {
+    for (let i = 0; i < this.progressArray.length ; i++)
+    {
       let scores: { score: string; date: string }[];
       let keyString = '';
       keyString += this.progressArray[i].character + '_';
       keyString += this.progressArray[i].writingStyle;
 
-      if(true)
-      {
-      //   //this.writingStylesArray.push(this.progressArray[i].writingStyle);
-      }
-
-      if(this.progressSummary.has(keyString)){
+      if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
 
         const object = {
           score: this.progressArray[i].score,
           date: this.progressArray[i].uploadDate,
         };
-        this.progressSummary.get(keyString).push(object);
+        this.progressHiragana.get(keyString).push(object);
       }
-      else
+      else if(keyString.includes('hiragana'))
       {
         const object = [{
           score: this.progressArray[i].score,
           date: this.progressArray[i].uploadDate,
         }];
 
-        this.progressSummary.set(keyString, object);
+        this.progressHiragana.set(keyString, object);
+      }
+    }
+
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < this.progressArray.length ; i++)
+    {
+      let scores: { score: string; date: string }[];
+      let keyString = '';
+      keyString += this.progressArray[i].character + '_';
+      keyString += this.progressArray[i].writingStyle;
+
+
+      if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
+
+        const object = {
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        };
+        this.progressKatakana.get(keyString).push(object);
+      }
+      else if(keyString.includes('katakana'))
+      {
+        const object = [{
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        }];
+
+        this.progressKatakana.set(keyString, object);
+      }
+
+    }
+
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < this.progressArray.length ; i++)
+    {
+      let scores: { score: string; date: string }[];
+      let keyString = '';
+      keyString += this.progressArray[i].character + '_';
+      keyString += this.progressArray[i].writingStyle;
+
+
+      if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
+
+        const object = {
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        };
+        this.progressKanji.get(keyString).push(object);
+      }
+      else if(keyString.includes('kanji'))
+      {
+        const object = [{
+          score: this.progressArray[i].score,
+          date: this.progressArray[i].uploadDate,
+        }];
+
+        this.progressKanji.set(keyString, object);
       }
 
     }
