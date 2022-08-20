@@ -119,3 +119,12 @@ class testing:
                 manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+    """
+   transpose_270:
+        takes the different images in pictures folder and transposes them by 270 degrees
+    request body: 
+       
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+""" 
