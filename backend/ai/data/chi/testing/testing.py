@@ -170,4 +170,6 @@ if __name__ == '__main__':
     print(counter)
     counter= testing.rotate_image_(15,counter)
     counter = testing.rotate_image_(30,counter)
+    counter = testing.rotate_image_(45,counter)
+
     
