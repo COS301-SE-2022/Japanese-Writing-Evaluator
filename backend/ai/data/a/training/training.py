@@ -28,7 +28,7 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
-            for j in range (0,10):
+            for j in range (0,100):
                 gaussImage.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
