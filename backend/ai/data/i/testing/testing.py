@@ -52,3 +52,32 @@ class testing:
                 manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+    """
+   zoom_image:
+        takes the different images in pictures folder and zooms in on them 
+    request body: 
+       
+        counter: the counter of how many images are in the testing folder
+    return:
+        counter
+    """
+
+    def zoom_image(self,counter): 
+       
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            img_buf = io.BytesIO()
+            datagen = ImageDataGenerator()
+            data = img_to_array(manipulated)
+            samples = expand_dims(data,0)
+            datagen = ImageDataGenerator(zoom_range=[0.5,1.5])
+            it = datagen.flow(samples, batch_size = 1)
+            pyplot.subplot(330+1+3)
+            batch = it.next()
+            image = batch[0].astype('uint8')
+            manipulated = Image.fromarray(image)
+            for j in range (0,50):
+                manipulated.save("./testing/picture_"+ str(counter)+ ".png")
+                counter = counter + 1
+        return counter
