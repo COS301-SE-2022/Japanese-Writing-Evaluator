@@ -24,7 +24,7 @@ class testing_dataset:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,10):
-                gaussImage.save('picture_'+str(counter) + '.png')
+                gaussImage.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     
@@ -53,7 +53,7 @@ class testing_dataset:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,10):
-                manipulated.save('picture_'+str(counter) + '.png')
+                manipulated.save("./training/picture_"+ str(counter)+ ".png")
                 counter = counter + 1
         return counter
 
@@ -63,8 +63,7 @@ class testing_dataset:
             img = cv2.imread("./pictures/test_"+str(i)+".png")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             plt.axis('off')
-            plt.imshow(img)
-            plt.show()
+        
             rows, cols, dim = img.shape
             M = np.float32([[1, 0.5, 0],
              	[0, 1  , 0],
@@ -72,7 +71,7 @@ class testing_dataset:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,10):
-                plt.imsave("picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
 
@@ -100,27 +99,29 @@ if __name__ == '__main__':
     counter = 0
     #rotate_1
     print(counter)
-    counter= testing_dataset.rotate_image_(15,counter)
-    # print(counter)
-    # #rotate_30
-    # print(counter)
-    counter = testing_dataset.rotate_image_(30,counter)
-    # print(counter)
-    # #rotate_45
-    counter = testing_dataset.rotate_image_(45,counter)
-    # # #rotate_-15
-    counter =  testing_dataset.rotate_image_(-15,counter)
-    # # #rotate_-30
-    counter = testing_dataset.rotate_image_(-30,counter)
-    # # #rotate_-45
-    counter =  testing_dataset.rotate_image_(-45,counter)
-    counter =  testing_dataset.zoom_image(counter)
+    # counter= testing_dataset.rotate_image_(15,counter)
+    # # print(counter)
+    # # #rotate_30
+    # # print(counter)
+    # counter = testing_dataset.rotate_image_(30,counter)
+    # # print(counter)
+    # # #rotate_45
+    # counter = testing_dataset.rotate_image_(45,counter)
+    # # # #rotate_-15
+    # counter =  testing_dataset.rotate_image_(-15,counter)
+    # # # #rotate_-30
+    # counter = testing_dataset.rotate_image_(-30,counter)
+    # # # #rotate_-45
+    # counter =  testing_dataset.rotate_image_(-45,counter)
+    # counter =  testing_dataset.zoom_image(counter)
     counter =  testing_dataset.shear(counter)
-    counter =  testing_dataset.transpose_90(counter)
-    counter =  testing_dataset.transpose_270(counter)
-    counter = testing_dataset.blur(1,counter)
-    counter =  testing_dataset.blur(2,counter)
-    counter =  testing_dataset.blur(3,counter)
+    # counter =  testing_dataset.transpose_90(counter)
+    #counter =  testing_dataset.transpose_270(counter)
+    # counter = testing_dataset.blur(1,counter)
+    # counter =  testing_dataset.blur(2,counter)
+    # counter =  testing_dataset.blur(3,counter)
+    # counter =  testing_dataset.blur(4,counter)
+    # counter =  testing_dataset.blur(5,counter)
     print(counter)
     print("done")
 
