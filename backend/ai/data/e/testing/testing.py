@@ -139,3 +139,10 @@ class testing:
                 manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+if __name__ == '__main__':
+    testing = testing()
+  
+    counter = 0
+    print(counter)
+    counter= testing.rotate_image_(15,counter)
