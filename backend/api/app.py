@@ -73,7 +73,7 @@ def resetPassword():
     return:
         json response from resetPassword
 """
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['POST'])
 def callRegister():
     return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
@@ -238,6 +238,18 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 def callListModelData():
     return event_bus.event_listModelData()
+
+"""
+    callViewModel function:
+        calls viewModel frunction from admin.py
+    requset body:
+        version: the version of the model
+    return:
+        json response
+"""
+@app.route('/admin/view-model', methods = ['POST'])
+def callViewModel():
+    return event_bus.eventViewModelData(str(request.json['version']))
 
 if __name__ == '__main__':
     app.run(debug = True)
