@@ -16,6 +16,7 @@ export class LoginPage implements OnInit {
   //usernameInputColor = 'border-color: dark;';
   isPassword = false; // is there a username provided
   //passwordInputColor = 'border-color: dark;';
+  hide = true;
 
   constructor(formBuilder: FormBuilder, private router: Router, private appService: AppServiceService) {//
     this.login = formBuilder.group({ // building a responsive form with two inputs
@@ -72,5 +73,6 @@ export class LoginPage implements OnInit {
       localStorage.setItem('id','guest');
       this.router.navigate(['/home']);
   }
+
 
 }
