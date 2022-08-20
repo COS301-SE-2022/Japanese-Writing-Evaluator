@@ -1,3 +1,4 @@
+from ensurepip import version
 import json
 from flask import jsonify
 
@@ -24,7 +25,7 @@ class Admin:
         
     """
         listModelData function:
-            functionality: retrieves model data
+            functionality: retrieves all model data
         arguments:
             None
         return:
@@ -35,4 +36,28 @@ class Admin:
             data = json.load(open('../ai/models_data.json'))
             return jsonify({'response': 'successfully retrieved model data', 'data' : data['data']}), 200
         except:
+            return jsonify({'response': 'Failed to get model data'}), 401
+        
+    """
+        ViewModelData function:
+            functionality: retrieves model data
+        arguments:
+            version : the version of the model
+        return:
+            json response
+    """    
+    def viewModelData(self, version):
+        try:
+            data = json.load(open('../ai/models_data.json'))
+            arr = data['data']
+            resp = ""
+            for a in arr:
+                print(a['version'])
+                if a['version'] == version:
+                    resp = a
+                    break
+            print(resp)
+            return jsonify({'response': 'successfully retrieved model data', 'data' : resp}), 200
+        except Exception as e:
+            print(e)
             return jsonify({'response': 'Failed to get model data'}), 401
