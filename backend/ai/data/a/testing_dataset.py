@@ -51,10 +51,10 @@ class testing_dataset:
                 counter = counter + 1
         return counter
     """
-   rotate_image_:
-        takes the different images in pictures folder and roates them by a degree
+   zoom_image:
+        takes the different images in pictures folder and zooms in on them 
     request body: 
-        angle: the degree for the rotation
+       
         counter: the counter of how many images are in the training folder
     return:
         counter
