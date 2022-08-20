@@ -12,3 +12,13 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
 import cv2
 class training:
+
+    """
+    blur function:
+        takes the different images in pictures folder and blurs them
+    request body: 
+        blurr: the degree for GaussianBlur
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+"""
