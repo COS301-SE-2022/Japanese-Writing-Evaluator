@@ -141,3 +141,11 @@ class training:
                 manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+if __name__ == '__main__':
+    training = training()
+  
+    counter = 0
+
+    print(counter)
+    counter= training.rotate_image_(15,counter)
