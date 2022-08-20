@@ -19,7 +19,7 @@ class testing:
         takes the different images in pictures folder and blurs them
     request body: 
         blurr: the degree for GaussianBlur
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
 """ 
@@ -165,6 +165,6 @@ if __name__ == '__main__':
     counter =  testing.blur(2,counter)
     counter =  testing.blur(3,counter)
     counter =  testing.blur(4,counter)
-    counter =  training.blur(5,counter)
+    counter =  testing.blur(5,counter)
     print(counter)
     print("done")
