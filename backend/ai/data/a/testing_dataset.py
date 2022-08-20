@@ -103,7 +103,15 @@ class testing_dataset:
                 plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
-
+    """
+   transpose_90:
+        takes the different images in pictures folder and transposes them by 90 degrees
+    request body: 
+       
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+""" 
     def transpose_90(self,counter): 
         for i in range (0,38):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
@@ -112,7 +120,15 @@ class testing_dataset:
                 manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
+    """
+   transpose_270:
+        takes the different images in pictures folder and transposes them by 270 degrees
+    request body: 
+       
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+""" 
     def transpose_270(self,counter):
         for i in range (0,38):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
