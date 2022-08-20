@@ -124,3 +124,4 @@ class training:
                 manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
