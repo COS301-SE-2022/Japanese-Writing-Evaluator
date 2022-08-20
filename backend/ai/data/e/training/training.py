@@ -133,3 +133,11 @@ class training:
     return:
         counter
 """ 
+    def transpose_270(self,counter):
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.transpose(Image.ROTATE_270)
+            for j in range (0,100):
+                manipulated.save('./training/picture_'+str(counter) + '.png')
+                counter = counter + 1
+        return counter
