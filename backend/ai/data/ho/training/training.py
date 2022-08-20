@@ -107,3 +107,20 @@ class training:
                 counter = counter + 1
         return counter
 
+    """
+   transpose_90:
+        takes the different images in pictures folder and transposes them by 90 degrees
+    request body: 
+       
+        counter: the counter of how many images are in the training folder
+    return:
+        counter
+""" 
+    def transpose_90(self,counter): 
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.transpose(Image.ROTATE_90)
+            for j in range (0,100):
+                manipulated.save('./training/picture_'+str(counter) + '.png')
+                counter = counter + 1
+        return counter
