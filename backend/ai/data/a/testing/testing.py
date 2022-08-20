@@ -30,7 +30,7 @@ class testing:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,50):
-                gaussImage.save('./training/picture_'+str(counter) + '.png')
+                gaussImage.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -38,7 +38,7 @@ class testing:
         takes the different images in pictures folder and roates them by a degree
     request body: 
         angle: the degree for the rotation
-        counter: the counter of how many images are in the training folder
+        counter: the counter of how many images are in the testing folder
     return:
         counter
 """ 
@@ -48,7 +48,7 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,50):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
