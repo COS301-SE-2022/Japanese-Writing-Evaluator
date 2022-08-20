@@ -166,7 +166,7 @@ if __name__ == '__main__':
     counter =  training.blur(2,counter)
     counter =  training.blur(3,counter)
     counter =  training.blur(4,counter)
-    counter =  testing_dataset.blur(5,counter)
+    counter =  training.blur(5,counter)
     print(counter)
     print("done")
 
