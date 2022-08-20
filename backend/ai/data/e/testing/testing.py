@@ -104,3 +104,13 @@ class testing:
                 plt.imsave("./testing/picture_"+ str(counter)+ ".png", sheared_img)
                 counter = counter + 1
         return counter
+
+    """
+   transpose_90:
+        takes the different images in pictures folder and transposes them by 90 degrees
+    request body: 
+       
+        counter: the counter of how many images are in the testing folder
+    return:
+        counter
+""" 
