@@ -116,3 +116,34 @@ class testing:
                 manipulated.save('./testing/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+if __name__ == '__main__':
+    testing = testing()
+  
+    counter = 0
+    print(counter)
+    counter= testing.rotate_image_(15,counter)
+    
+   
+   
+    counter = testing.rotate_image_(30,counter)
+  
+    
+    counter = testing.rotate_image_(45,counter)
+   
+    counter =  testing.rotate_image_(-15,counter)
+   
+    counter = testing.rotate_image_(-30,counter)
+   
+    counter =  testing.rotate_image_(-45,counter)
+    counter =  testing.zoom_image(counter)
+    counter =  testing.shear(counter)
+    counter =  testing.transpose_90(counter)
+    counter =  testing.transpose_270(counter)
+    counter = testing.blur(1,counter)
+    counter =  testing.blur(2,counter)
+    counter =  testing.blur(3,counter)
+    counter =  testing.blur(4,counter)
+    counter =  testing.blur(5,counter)
+    print(counter)
+    print("done")
