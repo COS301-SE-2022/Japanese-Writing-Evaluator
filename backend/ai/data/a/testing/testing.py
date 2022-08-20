@@ -159,7 +159,7 @@ if __name__ == '__main__':
     counter =  testing.rotate_image_(-45,counter)
     counter =  testing.zoom_image(counter)
     counter =  testing.shear(counter)
-    counter =  training.transpose_90(counter)
+    counter =  testing.transpose_90(counter)
     counter =  training.transpose_270(counter)
     counter = training.blur(1,counter)
     counter =  training.blur(2,counter)
