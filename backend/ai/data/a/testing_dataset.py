@@ -34,7 +34,7 @@ class testing_dataset:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,10):
-                manipulated.save('picture_'+str(counter) + '.png')
+                manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
@@ -80,7 +80,7 @@ class testing_dataset:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,10):
-                manipulated.save('picture_'+str(counter) + '.png')
+                manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
