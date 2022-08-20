@@ -90,3 +90,19 @@ class testing:
     return:
         counter
 """ 
+    def shear(self,counter):
+        for i in range (0,38):
+            img = cv2.imread("./pictures/test_"+str(i)+".png")
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            plt.axis('off')
+        
+            rows, cols, dim = img.shape
+            M = np.float32([[1, 0.5, 0],
+             	[0, 1  , 0],
+            	[0, 0  , 1]])
+            sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
+            plt.axis('off')
+            for j in range (0,50):
+                plt.imsave("./testing/picture_"+ str(counter)+ ".png", sheared_img)
+                counter = counter + 1
+        return counter
