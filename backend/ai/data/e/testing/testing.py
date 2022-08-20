@@ -153,3 +153,4 @@ if __name__ == '__main__':
     counter =  testing.rotate_image_(-45,counter)
     counter =  testing.zoom_image(counter)
     counter =  testing.shear(counter)
+    counter =  testing.transpose_90(counter)
