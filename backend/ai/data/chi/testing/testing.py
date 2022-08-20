@@ -177,3 +177,4 @@ if __name__ == '__main__':
     counter =  testing.zoom_image(counter)
     counter = testing.shear(counter)
     counter = testing.transpose_90(counter)
+    counter = testing.transpose_270(counter)
