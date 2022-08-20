@@ -142,3 +142,35 @@ class training:
                 manipulated.save('./training/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
+
+if __name__ == '__main__':
+    training = training()
+  
+    counter = 0
+
+    print(counter)
+    counter= training.rotate_image_(15,counter)
+    
+   
+   
+    counter = training.rotate_image_(30,counter)
+  
+    
+    counter = training.rotate_image_(45,counter)
+   
+    counter =  training.rotate_image_(-15,counter)
+   
+    counter = training.rotate_image_(-30,counter)
+   
+    counter =  training.rotate_image_(-45,counter)
+    counter =  training.zoom_image(counter)
+    counter =  training.shear(counter)
+    counter =  training.transpose_90(counter)
+    counter =  training.transpose_270(counter)
+    counter = training.blur(1,counter)
+    counter =  training.blur(2,counter)
+    counter =  training.blur(3,counter)
+    counter =  training.blur(4,counter)
+    counter =  training.blur(5,counter)
+    print(counter)
+    print("done")
