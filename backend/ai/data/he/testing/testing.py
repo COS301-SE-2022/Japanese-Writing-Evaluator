@@ -115,3 +115,11 @@ class testing:
     return:
         counter
 """ 
+    def transpose_90(self,counter): 
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.transpose(Image.ROTATE_90)
+            for j in range (0,50):
+                manipulated.save('./testing/picture_'+str(counter) + '.png')
+                counter = counter + 1
+        return counter
