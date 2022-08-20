@@ -151,4 +151,6 @@ if __name__ == '__main__':
     counter = training.rotate_image_(45,counter)  
     counter =  training.rotate_image_(-15,counter)  
     counter = training.rotate_image_(-30,counter)  
-    counter =  training.rotate_image_(-45,counter)  
+    counter =  training.rotate_image_(-45,counter)
+    counter =  training.zoom_image(counter)
+      
