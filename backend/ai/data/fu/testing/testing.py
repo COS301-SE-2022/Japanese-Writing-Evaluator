@@ -42,3 +42,12 @@ class testing:
     return:
         counter
 """ 
+    def rotate_image_(self,angle,counter):
+        
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated = manipulated.rotate(angle)
+            for j in range (0,50):
+                manipulated.save('./testing/picture_'+str(counter) + '.png')
+                counter = counter + 1
+        return counter
