@@ -178,3 +178,6 @@ if __name__ == '__main__':
     counter = testing.shear(counter)
     counter = testing.transpose_90(counter)
     counter = testing.transpose_270(counter)
+    counter = testing.blur(1,counter)
+    counter = testing.blur(2,counter)
+    
