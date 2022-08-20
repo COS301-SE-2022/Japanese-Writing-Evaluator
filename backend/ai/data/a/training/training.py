@@ -73,7 +73,7 @@ class training:
             batch = it.next()
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
-            for j in range (0,10):
+            for j in range (0,100):
                 manipulated.save("./training/picture_"+ str(counter)+ ".png")
                 counter = counter + 1
         return counter
