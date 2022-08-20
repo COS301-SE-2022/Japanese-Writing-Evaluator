@@ -142,3 +142,8 @@ class training:
 
 if __name__ == '__main__':
     training = training()
+
+    counter = 0
+
+    print(counter)
+    counter= training.rotate_image_(15,counter)
