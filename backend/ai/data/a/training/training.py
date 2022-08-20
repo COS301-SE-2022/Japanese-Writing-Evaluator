@@ -164,7 +164,7 @@ if __name__ == '__main__':
     counter =  training.transpose_270(counter)
     counter = training.blur(1,counter)
     counter =  training.blur(2,counter)
-    counter =  testing_dataset.blur(3,counter)
+    counter =  training.blur(3,counter)
     counter =  testing_dataset.blur(4,counter)
     counter =  testing_dataset.blur(5,counter)
     print(counter)
