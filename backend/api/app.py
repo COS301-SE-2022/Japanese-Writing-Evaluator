@@ -3,6 +3,7 @@ from operator import contains
 from pydoc import importfile
 import this
 from urllib import response
+from xmlrpc.client import boolean
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session
 from datetime import datetime, timedelta
@@ -72,7 +73,7 @@ def resetPassword():
     return:
         json response from resetPassword
 """
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['POST'])
 def callRegister():
     return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
@@ -211,6 +212,44 @@ def email_users():
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
     return event_bus.event_guestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
+
+"""
+    callEditUserPrivileges function:
+        calls editUserPrivileges frunction from admin.py
+    requset body:
+        id: user's id
+        admin: the new admin privilege
+    return:
+        json response
+"""
+@app.route('/admin/edit', methods = ['POST'])
+def callEditUserPrivileges():
+    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+
+"""
+    callEditUserPrivileges function:
+        calls editUserPrivileges frunction from admin.py
+    requset body:
+        id: user's id
+        admin: the new admin privilege
+    return:
+        json response
+"""
+@app.route('/admin/models', methods = ['GET'])
+def callListModelData():
+    return event_bus.event_listModelData()
+
+"""
+    callViewModel function:
+        calls viewModel frunction from admin.py
+    requset body:
+        version: the version of the model
+    return:
+        json response
+"""
+@app.route('/admin/view-model', methods = ['POST'])
+def callViewModel():
+    return event_bus.eventViewModelData(str(request.json['version']))
 
 if __name__ == '__main__':
     app.run(debug = True)
