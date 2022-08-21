@@ -16,7 +16,7 @@
           <div class="horizontalflexbox">
             <ion-item  lines="none" > <!--Username input item-->
               <ion-label position="floating">Username</ion-label>
-              <ion-input  formControlName="username" type="text"  class="input"></ion-input>
+              <ion-input  formControlName="username" type="text"  class="input" size="24"></ion-input>
             </ion-item>
             <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/>
           </div><br>
@@ -24,8 +24,9 @@
           <div class="horizontalflexbox">
              <ion-item  lines="none"><!-- Password input item -->
               <ion-label position="floating">Password</ion-label>
-              <ion-input  formControlName="password" type="password" class="input"></ion-input>
-              
+              <app-password>
+                <ion-input  formControlName="password" type="password" class="input"></ion-input>
+              </app-password>
             </ion-item>
             <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/>
           </div><br/>
@@ -39,6 +40,9 @@
         </div>
         <div class="horizontalflexbox">
           <a [routerLink]="['/forgot-password-email']" style="color:rgb(124, 167, 245);">Forgot Password?</a>
+        </div>
+        <div class="horizontalflexbox">
+          <p>Don't have an account? <a [routerLink]="['/sign-up']" style="color:rgb(124, 167, 245);">Signup</a></p>
         </div>
       </ion-card-content>      
     </ion-card> 

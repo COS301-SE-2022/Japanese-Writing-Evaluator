@@ -5,32 +5,47 @@
 </p>
 
 <ion-content>
-  <p class="ion-text-center">
-    <img id="logo" src="../../assets/images/JWE-logos_black.png" alt="JWE-Logo"/>
-  </p>
-
+<!-- 
   <ion-buttons slot="start">
     <ion-back-button></ion-back-button>
-  </ion-buttons>
+  </ion-buttons> -->
+  <div  class="flexboxReplica">
+    <ion-card > 
+      <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
+      <ion-card-content >
+        <form #form="ngForm" (ngSubmit)="signUp(form.value,form)" > <!-- login form-->
+          <div class="horizontalflexbox">
+            <ion-item  lines="none" > <!--Username input item-->
+              <ion-label position="floating">Username</ion-label>
+              <ion-input class="input" type="text" name="Username" ngModel required size="24"></ion-input>
+            </ion-item>
+            <!-- <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/> -->
+          </div><br>
 
-    <div class="flexbox">
-        <form class="ion-text-center" #form="ngForm" (ngSubmit)="signUp(form.value,form)">
-          <ion-item lines="none">
-            <ion-input class="input" type="text" name="Username" placeholder="Username" ngModel required ></ion-input>
-          </ion-item>
+          <div class="horizontalflexbox">
+            <ion-item  lines="none" > <!--Username input item-->
+              <ion-label position="floating">Email</ion-label>
+              <ion-input class="input" type="text" name="Email"  ngModel required size="24"></ion-input>
+            </ion-item>
+            <!-- <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/> -->
+          </div><br>
 
-          <ion-item lines="none">
-            <ion-input class="input" type="text" name="Email" placeholder="Email" ngModel required ></ion-input>
-          </ion-item>
+          <div class="horizontalflexbox">
+             <ion-item  lines="none"><!-- Password input item -->
+              <ion-label position="floating">Password</ion-label>
+              <app-password>
+                <ion-input class="input" type="password" name="Password" ngModel required></ion-input>
+              </app-password>
+            </ion-item>
+            <!-- <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/> -->
+          </div><br/><br/>
 
-          <ion-item lines="none">
-            <ion-input class="input" type="password" name="Password" placeholder="Password" ngModel required></ion-input>
-          </ion-item>
-
-          <p class="ion-text-center">
-            <ion-button type="submit" [disabled]="form.invalid">SignUp</ion-button>
-          </p>
-
+          <div class="horizontalflexbox">
+            <ion-button class="ion-button" type="submit" shape="round" color="primary" [disabled]="form.invalid">Create Profile</ion-button>
+          </div>
         </form>
-    </div>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

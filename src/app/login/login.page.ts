@@ -4,7 +4,6 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/app-service.service';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -16,7 +15,7 @@ export class LoginPage implements OnInit {
   //usernameInputColor = 'border-color: dark;';
   isPassword = false; // is there a username provided
   //passwordInputColor = 'border-color: dark;';
-  hide = true;
+  hide = true; // a variable used to show or hide a password
 
   constructor(formBuilder: FormBuilder, private router: Router, private appService: AppServiceService) {//
     this.login = formBuilder.group({ // building a responsive form with two inputs
