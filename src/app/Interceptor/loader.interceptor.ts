@@ -5,11 +5,12 @@ import { LoadingController } from '@ionic/angular';
 import { catchError, delay, map, retryWhen } from 'rxjs/operators';
 import { UploadPage } from '../upload/upload.page';
 import { Score } from '../shared/interfaces/score';
+import { ToastComponent } from '../shared/components/toast/toast.component';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
     //private animeBuilder: AnimationBuilder,
-    constructor(private loadingController: LoadingController, private uploadPage: UploadPage){
+    constructor(private loadingController: LoadingController, private uploadPage: UploadPage, private toast: ToastComponent){
 
     }
 
@@ -156,7 +157,44 @@ export class LoadingInterceptor implements HttpInterceptor{
     generalIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         return next.handle(req).pipe(
             catchError(err => {
-                console.log('error' + err);
+                console.log('error' + err.status);
+                if (err.status === 0) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 0);
+                }
+                else if (err.status === 401) {
+                    this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
+                }
+                //show that there is an error in the upload page
+                return EMPTY;
+            }),
+            retryWhen(err => {
+                let retryRequestCount = 1;// remove later
+                return err.pipe(
+                    delay(2000),
+                    map(error => {
+                        if(retryRequestCount === 2){
+                            throw error;
+                        }
+                        else{
+                            retryRequestCount++;
+                        }
+                        return error;
+                    })
+                );
+            })
+        );
+    }
+
+    loginIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        return next.handle(req).pipe(
+            catchError(err => {
+                console.log('error' + err.status);
+                if (err.status === 0) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 0);
+                }
+                else if (err.status === 401) {
+                    this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
+                }
                 //show that there is an error in the upload page
                 return EMPTY;
             }),

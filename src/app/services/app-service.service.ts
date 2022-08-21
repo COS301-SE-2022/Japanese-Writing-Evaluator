@@ -42,14 +42,14 @@ export class AppServiceService {
 
   addUser(name: string, mail: string, pass: string)
   {
-    const headers = { 'content-type': 'application/json'};
+    const myheaders = { 'content-type': 'application/json'};
     const user = {
       username: name,
       email: mail,
       password:pass
     };
     const body=JSON.stringify(user);
-    return this.httpclient.post(this.baseURL + 'register', body,{ headers });
+    return this.httpclient.post(this.baseURL + 'register', body,{headers: myheaders, observe: 'response' });
   }
   // getCharacters(): Observable<Character[]>{
   //   return this.httpclient.get<Character[]>(''); /// calling api to get the character images stored in firebase
