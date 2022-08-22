@@ -39,7 +39,7 @@ class Authentication:
     def listUsers(self, id):
         users = self.db.getAllUsers()
         response = []
-        if(len(users) != None):
+        if(len(users) != 0):
             for user in users:
                 if(user[0] == id):
                     continue
