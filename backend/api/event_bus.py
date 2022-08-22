@@ -21,16 +21,16 @@ auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
 admin = Admin(db)
-event_bus = []
+eventBus = []
 
 def executeBus(event_number):
-    res = event_bus[event_number]()
-    del event_bus[event_number]
+    res = eventBus[event_number]()
+    del eventBus[event_number]
     return res
 
 def event_resetPassword(email):
-    event_bus.append(partial(auth.findUser, email))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(auth.findUser, email))
+    event_number = len(eventBus) - 1
     response = executeBus(event_number)
     if(response[1] == 200): #returns a tuple, element at 1 is the status code
         email_res = event_forgotPasswordEmail(email)
@@ -42,29 +42,29 @@ def event_resetPassword(email):
         return response
     
 def event_storeToken(email, token):
-    event_bus.append(partial(auth.addToken, email, token))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(auth.addToken, email, token))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_forgotPasswordEmail(email):
-    event_bus.append(partial(Send_Email.forgotPasswordEmail, email))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(Send_Email.forgotPasswordEmail, email))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_changePassword(token, password):
-    event_bus.append(partial(auth.resetPassword, token, password))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(auth.resetPassword, token, password))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
         
 
 def event_register(email, password, username):
-    event_bus.append(partial(auth.register, email, password, username))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(auth.register, email, password, username))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_uploadImage(id, imagechar, image, file):
-    event_bus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
+    event_number = len(eventBus) - 1
     return jsonify(executeBus(event_number))
 
 def event_sendImage(id, image_char, image, file, writing_style):
@@ -86,41 +86,41 @@ def event_sendImage(id, image_char, image, file, writing_style):
             return jsonify({'response': "Storage to cloud service failed"}), 401
 
 def event_viewImages(id):
-    event_bus.append(partial(imagedb.getImages, id))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(imagedb.getImages, id))
+    event_number = len(eventBus) - 1
     images = executeBus(event_number)
     code = jsonify(images).status_code
     if(code == 200):
-        event_bus.append(partial(Image.viewImages, img, images))
-        event_number2 = len(event_bus) - 1
+        eventBus.append(partial(Image.viewImages, img, images))
+        event_number2 = len(eventBus) - 1
         return executeBus(event_number2)
     else:
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
 def event_sendToEvaluator(image, image_char):
     obj = Evaluator(image, image_char)
-    event_bus.append(partial(obj.testCharacter, image, image_char))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(obj.testCharacter, image, image_char))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_saveToDB(id, file, image_char, score, writing_style):
-    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_getImageUsers():
-    event_bus.append(partial(imagedb.getImageUsers))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(imagedb.getImageUsers))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_getUser(id):
-    event_bus.append(partial(imagedb.getUser, id))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(imagedb.getUser, id))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_login(email, password):
-    event_bus.append(partial(auth.login, email, password))
-    event_number = len(event_bus) -  1
+    eventBus.append(partial(auth.login, email, password))
+    event_number = len(eventBus) -  1
     status = executeBus(event_number)
     print(status)
     if(status != None):
@@ -129,18 +129,18 @@ def event_login(email, password):
         return None
 
 def event_getCharacters():
-    event_bus.append(partial(img.getCharacters))
-    event_number =  len(event_bus) - 1
+    eventBus.append(partial(img.getCharacters))
+    event_number =  len(eventBus) - 1
     return executeBus(event_number)
 
 def eventListUsers(id):
-    event_bus.append(partial(auth.listUsers, id))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(auth.listUsers, id))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
 def event_editUserPrivileges(id, ad):
-    event_bus.append(partial(admin.editUserPrivileges, id, ad))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.editUserPrivileges, id, ad))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
@@ -148,8 +148,8 @@ def event_editUserPrivileges(id, ad):
         return None
     
 def event_listModelData():
-    event_bus.append(partial(admin.listModelData))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.listModelData))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
@@ -157,8 +157,8 @@ def event_listModelData():
         return None
    
 def eventViewModelData(version):
-    event_bus.append(partial(admin.viewModelData, version))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.viewModelData, version))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
