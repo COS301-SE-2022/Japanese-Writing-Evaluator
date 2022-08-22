@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { UserProgress } from '../shared/interfaces/progress';
 //import { AppServiceService } from '../services/app-service.service';
 

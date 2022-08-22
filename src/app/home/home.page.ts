@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { Router } from '@angular/router';
 import character_sets from '../shared/character_data/character_sets.json';
 @Component({

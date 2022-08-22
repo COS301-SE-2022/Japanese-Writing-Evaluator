@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ForgotPasswordPassword } from '../shared/interfaces/forgotpassword';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 
 

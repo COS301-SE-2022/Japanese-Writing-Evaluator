@@ -1,9 +1,9 @@
 import { fakeAsync, inject, TestBed } from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { AppServiceService } from './app-service.service';
-import { UploadedImage } from '../shared/interfaces/image';
+import { UploadedImage } from '../../shared/interfaces/image';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Score } from '../shared/interfaces/score';
+import { Score } from '../../shared/interfaces/score';
 
 describe('AppServiceService', () => {
   let service: AppServiceService;
