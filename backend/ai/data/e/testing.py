@@ -29,8 +29,8 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
-            for j in range (0,50):
-                gaussImage.save('./testing/picture_'+str(counter) + '.png')
+            for j in range (0,5):
+                gaussImage.save('../../dataset/test/e/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -48,10 +48,9 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,50):
-                manipulated.save('./testing/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/e/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    zoom_image:
         takes the different images in pictures folder and zooms in on them 
@@ -76,7 +75,7 @@ class testing:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,50):
-                manipulated.save("./testing/picture_"+ str(counter)+ ".png")
+                manipulated.save('../../dataset/test/e/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -87,7 +86,7 @@ class testing:
         counter: the counter of how many images are in the testing folder
     return:
         counter
-"""
+""" 
     def shear(self,counter):
         for i in range (0,38):
             img = cv2.imread("./pictures/test_"+str(i)+".png")
@@ -101,10 +100,9 @@ class testing:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,50):
-                plt.imsave("./testing/picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave('../../dataset/test/e/picture_'+str(counter) + '.png', sheared_img)
                 counter = counter + 1
         return counter
-
     """
    transpose_90:
         takes the different images in pictures folder and transposes them by 90 degrees
@@ -119,7 +117,7 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,50):
-                manipulated.save('./testing/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/e/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -136,7 +134,7 @@ class testing:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,50):
-                manipulated.save('./testing/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/e/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
@@ -146,10 +144,18 @@ if __name__ == '__main__':
     counter = 0
     print(counter)
     counter= testing.rotate_image_(15,counter)
+    
+   
+   
     counter = testing.rotate_image_(30,counter)
+  
+    
     counter = testing.rotate_image_(45,counter)
+   
     counter =  testing.rotate_image_(-15,counter)
+   
     counter = testing.rotate_image_(-30,counter)
+   
     counter =  testing.rotate_image_(-45,counter)
     counter =  testing.zoom_image(counter)
     counter =  testing.shear(counter)
