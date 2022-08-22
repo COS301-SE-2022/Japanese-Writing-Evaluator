@@ -52,13 +52,13 @@
     }
 }
 
-@media screen and (max-width: 640px) and (min-width: 360px) {
+@media screen and (max-width: 640px) and (min-width: 361px) {
     .flexboxReplica{
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 5%;
+        margin-top: 15%;
     }
 
     ion-card{
@@ -72,7 +72,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 10%;
+        margin-top: 18%;
     }
     
     ion-card{

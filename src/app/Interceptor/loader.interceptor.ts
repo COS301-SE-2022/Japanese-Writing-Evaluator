@@ -16,7 +16,7 @@ export class LoadingInterceptor implements HttpInterceptor{
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if(req.url.endsWith('login')){
-            return this.generalIntercept(req,next);
+            return this.loginIntercept(req,next);
         }
 
         if(req.url.endsWith('register')){
@@ -161,8 +161,11 @@ export class LoadingInterceptor implements HttpInterceptor{
                 if (err.status === 0) {
                     this.toast.showToast('Something went wrong on our side, Try again', 0);
                 }
+                else if (err.status === 500) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 500);
+                }
                 else if (err.status === 401) {
-                    this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
+                    this.toast.showToast('Incorrect token entered', 401);
                 }
                 //show that there is an error in the upload page
                 return EMPTY;
