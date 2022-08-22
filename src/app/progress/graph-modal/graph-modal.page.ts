@@ -102,7 +102,7 @@ export class GraphModalPage implements AfterViewInit {
               },
               scaleLabel: {
                 display: true,
-                labelString: 'Last 10 Uploads'
+                labelString: 'Last <= 10 Uploads'
             }
 
             }]
