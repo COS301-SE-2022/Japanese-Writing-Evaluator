@@ -258,8 +258,8 @@ def event_getuserFeedback():
     return
 
 def event_editUserPrivileges(id, ad):
-    event_bus.append(partial(admin.editUserPrivileges, id, ad))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.editUserPrivileges, id, ad))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
@@ -267,8 +267,8 @@ def event_editUserPrivileges(id, ad):
         return None
     
 def event_listModelData():
-    event_bus.append(partial(admin.listModelData))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.listModelData))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
@@ -276,8 +276,8 @@ def event_listModelData():
         return None
    
 def eventViewModelData(version):
-    event_bus.append(partial(admin.viewModelData, version))
-    event_number = len(event_bus) - 1
+    eventBus.append(partial(admin.viewModelData, version))
+    event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
         return status
