@@ -96,6 +96,15 @@ export class GraphModalPage implements AfterViewInit {
                     max: 100,
                     stepSize: 10,
                 }
+            }],
+            xAxes: [{
+              ticks: {
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Last 10 Uploads'
+            }
+
             }]
         }
     }
