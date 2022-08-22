@@ -9,6 +9,7 @@ export class ProgressResultPage implements OnInit {
 
   category: string;
   heading: string;
+  currentStyle: Map<string, {score: string; date: string }[]>;
 
   progressArray: {writingStyle: string; url: string; character: string; score: string; uploadDate: string}[];
   object: { char: string; score: string; date: string };
@@ -21,7 +22,7 @@ export class ProgressResultPage implements OnInit {
 
   ngOnInit() {
 
-    //this.category = this.route.snapshot.queryParamMap.get('category');
+    this.category = this.route.snapshot.queryParamMap.get('category');
     this.heading = this.category;
 
     //testPurposes
@@ -118,6 +119,24 @@ export class ProgressResultPage implements OnInit {
       }
 
     }
+
+    this.setStyle();
+  }
+
+  setStyle(){
+    if(this.category === 'Hiragana')
+    {
+      this.currentStyle = this.progressHiragana;
+    }
+    else if(this.category === 'Katakana')
+    {
+      this.currentStyle = this.progressKatakana;
+    }
+    else if(this.category === 'Kanji')
+    {
+      this.currentStyle = this.progressKanji;
+    }
+
   }
 
   onLogout(){

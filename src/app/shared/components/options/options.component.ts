@@ -20,7 +20,7 @@ export class OptionsComponent implements OnInit {
       this.router.navigateByUrl('/home/alphabet-category?category='+ this.category);
     }
     else{
-      this.router.navigateByUrl('/progress/progress-result');
+      this.router.navigateByUrl('/progress/progress-result?category='+ this.category);
     }
   }
 

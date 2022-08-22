@@ -10,9 +10,9 @@
   </div>
 
   <div>
-    <ion-grid >
-      <ion-row>
-        <ion-col *ngFor="let item of (progressHiragana) | keyvalue">
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of (currentStyle) | keyvalue" size="col-auto">
           <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
         </ion-col>
       </ion-row>

@@ -6,7 +6,7 @@
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
-      Track your progress below.
+      Select which writing style progress results you would like to view below.
     </p>
   </div>
 
@@ -14,7 +14,7 @@
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
         <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
-          <app-options [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
+          <app-options  [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
         </ion-col>
       </ion-row>
     </ion-grid>
