@@ -33,15 +33,17 @@ def token_required(function):
     def decorated(*args, **kwargs):
         token = None
         print(request.headers)
+        if session['logged_in'] == True:
+            return jsonify({'response': 'user not login'}), 403
         if 'user-token' in request.headers:
             print("we have token")
             token = request.headers['user-token']
         if not token:
-            return jsonify({'arlet' : 'Token is missing !!'}), 401
+            return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
-            return jsonify({'arlet' : 'The token is invaild!'}), 401
+            return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
     return decorated 
@@ -124,10 +126,21 @@ def login():
         token = jwt.encode({
             'username' : user[0],
             'id': user[1],
-            'experation': str(datetime.utcnow() + timedelta(seconds=120)),
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
+"""
+    logout function
+        kills the session and token
+    request boby:
+        None
+    return:
+        json response
+"""
+@app.rout('/logout', methods=['GET'])
+def logout():
+    session["logged_in"] = False
+        
 """
     home function:
         calls getCharacters to send character url's to front-end for the homepage
