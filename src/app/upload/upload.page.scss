@@ -33,12 +33,63 @@
 
 
 
-.horizontalflexbox{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 5%;
-  margin-top: 10%;
+// .horizontalflexbox{
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   margin-bottom: 5%;
+//   margin-top: 5%;
+// }
+
+
+
+@media screen and (min-width: 1008px)  {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 5%;
+    margin-top: 5%;
+  }
+}
+
+@media screen and (min-width: 641px) and (max-width: 1007px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 10%;
+    margin-top: 10%;
+  }
+}
+
+@media screen and (max-width: 640px) and (min-width: 360px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 20%;
+    margin-top: 20%;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 75px;
+    margin-top: 100px;
+  }
+
+  .input{
+    width: 230px;
+  }
+
+  ion-card{
+    size: 6;
+  }
+ 
 }
 
 .flexbox{

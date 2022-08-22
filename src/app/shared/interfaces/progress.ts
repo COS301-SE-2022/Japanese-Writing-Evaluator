@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface Progress {
-    response: ImageProgress[];
+    response: UserProgress[];
 }
 
-interface ImageProgress{
+export interface UserProgress { // interface for response from backend
     character: string;
     score: number;
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    upload_date: string;
+    upload_Date: string;
     url: string;
+    writing_Style: string;
 }

@@ -42,10 +42,30 @@ class Evaluator(object):
             print('\nprediction:\n', predicted_char)
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
-            return p
+            if(predicted_char == 'a'): 
+                strokes = self.strokesModel()   
+                return (strokes, p)
+            else:
+                return ([0,0,0], p)
         except Exception as e:
             print(e)
-            return None
+            return 0
+        
+    def strokesModel(self):
+        self.loadModels()
+        pre_stroke = self.strokes_model.predict([self.prepare()]).flatten()
+        array_strokes = []   
+        val = 0
+        for p in pre_stroke:
+            if(len(array_strokes) == 3):
+                break
+            if(p*100 > 1):
+                array_strokes.append(p*100)
+                val+=1
+        if(len(array_strokes) < 3):
+            array_strokes.append(45.3)
+        return array_strokes
+        
         
     def testKanji(self):
         pre = self.kanji_model.predict([self.prepare()]).flatten()
@@ -62,11 +82,10 @@ class Evaluator(object):
             print('\nprediction:\n', predicted_char)
             print('accuracy: ' + str(temp * 100) + '%')
             p = temp * 100
-            return p
+            return ([0,0,0], p)
         except Exception as e:
-            print("Fail!!")
             print(e)
-            return None
+            return 0
         
     def mockTestCharacter(self):
         pre = self.model.predict([self.prepare()]).flatten()
@@ -78,10 +97,11 @@ class Evaluator(object):
     def loadModels(self):
         self.hiregana_model = tf.keras.models.load_model('../ai/models/hiregana_model.h5')
         self.kanji_model = tf.keras.models.load_model('../ai/models/kanji_model.h5')
+        self.strokes_model = tf.keras.models.load_model('../ai/models/a_strokes.h5')
         
 
 if __name__ == '__main__':
     # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
     e = Evaluator('predict_data/ya.jpeg', '*')
-    e.testKanji()
+    e.strokesModel()

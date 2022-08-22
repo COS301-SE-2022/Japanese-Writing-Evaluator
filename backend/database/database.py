@@ -68,7 +68,6 @@ class Database:
         return:
             number of rows modified for bound checking
     """
-
     def updatePassword(self, token, password):
         update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
         try:
@@ -83,6 +82,18 @@ class Database:
             print(error)
             return 0
 
+    def fetchSalt(self, email):
+        query = "SELECT password_salt FROM users WHERE email = %s;"
+        self.curr.execute(query, (email,))
+        salt = self.curr.fetchone()
+        return salt
+
+    def fetchSaltByToken(self, token):
+        query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+        self.curr.execute(query, (token,))
+        salt = self.curr.fetchone()
+        return salt
+
 #function used to add a user to the database
     def addUser(self, username, password, email, admin, passwordSalt, avgScore):
         q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
@@ -94,7 +105,6 @@ class Database:
         q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
-        print(user)
         return user
         
     def getAllUsers(self):
@@ -172,4 +182,13 @@ class Database:
         except:
             return False
 
-        
+    def editUser(self, id, admin):
+        try:
+            query = "UPDATE users SET admin = %s WHERE userid = %s;";
+            self.curr.execute(query, (admin, id))
+            self.conn.commit()
+            print("Edited")
+            return True
+        except Exception as e:
+            print(e)
+            return False       

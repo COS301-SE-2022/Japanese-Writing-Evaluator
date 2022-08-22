@@ -3,6 +3,7 @@ import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } fro
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/app-service.service';
+import { UserProgress } from '../shared/interfaces/progress';
 //import { AppServiceService } from '../services/app-service.service';
 
 
@@ -29,14 +30,16 @@ export class ProgressPage implements OnInit {
 
   map = new Map();
 
+  progressArray: UserProgress[]; /// user feedback recieved from backend
+
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
     this.char = localStorage.getItem('char');
     this.percent = +localStorage.getItem('percentage');
-    // console.log(this.service.getProgress().subscribe())
     this.service.getProgress().subscribe(data => {
-      console.log(data.body.response);
+      this.progressArray = data.body.response;
+      console.log(this.progressArray);
     });
 
     this.map.set('A', 'A');

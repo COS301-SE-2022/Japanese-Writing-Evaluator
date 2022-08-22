@@ -1,5 +1,6 @@
 from functools import partial
 from urllib import response
+from admin import Admin
 
 from flask import jsonify
 from authentication import Authentication
@@ -19,6 +20,7 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
+admin = Admin(db)
 event_bus = []
 
 def executeBus(event_number):
@@ -67,16 +69,17 @@ def event_uploadImage(id, imagechar, image, file):
 
 def event_sendImage(id, image_char, image, file, writing_style):
     e = Evaluator(writing_style, image_char)
-    score = e.testCharacter() # call AI
-    print(score)
-    if(score == None):
+    feedback = e.testCharacter() # call AI
+    score = feedback[1]
+    if(score == 0):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
         exitcode = event_uploadImage(id, image_char, image, file)
         if(exitcode.status_code == 200):
             storeToDB = event_saveToDB(id, file, image_char, score, writing_style)
             if(storeToDB == True):
-                return jsonify({'response': "image upload successful", 'score': score}), 200
+                strokes = feedback[0]
+                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
             else:
                 return jsonify({'response': "Database storage failed"}), 401
         else:
@@ -118,7 +121,12 @@ def event_getUser(id):
 def event_login(email, password):
     event_bus.append(partial(auth.login, email, password))
     event_number = len(event_bus) -  1
-    return executeBus(event_number)
+    status = executeBus(event_number)
+    print(status)
+    if(status != None):
+        return status
+    else:
+        return None
 
 def event_getCharacters():
     event_bus.append(partial(img.getCharacters))
@@ -129,9 +137,36 @@ def event_getuserFeedback():
     #TODO
     return
 
+def event_editUserPrivileges(id, ad):
+    event_bus.append(partial(admin.editUserPrivileges, id, ad))
+    event_number = len(event_bus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+    
+def event_listModelData():
+    event_bus.append(partial(admin.listModelData))
+    event_number = len(event_bus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+   
+def eventViewModelData(version):
+    event_bus.append(partial(admin.viewModelData, version))
+    event_number = len(event_bus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+     
 """
 guest Upload Image function:
-    uploads teh given image to firebase and sends it to the evaluator
+    uploads the given image to firebase and sends it to the evaluator
 parameters: 
     image_char: the charector of the image
     image: the guest user image
@@ -144,9 +179,10 @@ def event_guestUplaodImage(imagechar, image, style):
         fh.write(base64.b64decode(image))
         
     e = Evaluator(style, imagechar)
-    score = e.testCharacter() # call the AI
-    print(score)
-    if score == None:
+    feedback = e.testCharacter() # call AI
+    score = feedback[1]
+    if score == 0:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        return jsonify({'response': "image evaluation successful", 'score': score}), 200
+        strokes = feedback[0]
+        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
