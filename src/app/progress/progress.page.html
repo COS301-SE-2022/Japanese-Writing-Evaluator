@@ -10,7 +10,15 @@
     </p>
   </div>
 
-  
+  <div class>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
+          <app-options [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
 
   <!-- <div>
     <h1>Hiragana</h1>
@@ -22,8 +30,6 @@
       </ion-row>
     </ion-grid>
   </div> -->
-
-
 </ion-content>
 
 <ion-footer>

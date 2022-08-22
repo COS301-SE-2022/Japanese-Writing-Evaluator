@@ -27,6 +27,14 @@ export class ProgressPage implements OnInit {
   progressKanji =  new Map<string, {score: string; date: string }[]> ();
   writingStylesArray: string[];
 
+  alphabetCategory = [
+    {character: 'あ', category: 'Hiragana'},
+    {character: 'ア', category: 'Katakana'},
+    {character: '一', category: 'Kanji'}
+  ];
+
+  pageRequest = 'progress';
+
   char = '';
   percent = 0;
   img: string;

@@ -1,3 +1,4 @@
+import { OptionsModule } from './../shared/components/options/options.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -14,6 +15,7 @@ import { ProgressBlockComponent } from './progress-block/progress-block.componen
     CommonModule,
     FormsModule,
     IonicModule,
+    OptionsModule,
     ProgressPageRoutingModule,
   ],
   declarations: [ProgressPage, ProgressBlockComponent]
