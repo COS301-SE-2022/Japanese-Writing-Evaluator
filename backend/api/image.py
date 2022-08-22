@@ -37,7 +37,7 @@ class Image:
         return:
             json response
     """
-    def uploadImage(self, id, image_char, image, file):
+    def uploadImage(self, id, imageChar, image, file):
         image = image.partition(",")[2]
         with open("imageToSave.png", "wb") as fh:
             fh.write(base64.b64decode(image))
@@ -63,11 +63,11 @@ class Image:
             i = 0
             for imgs in images:
                 response.append({
-                    "writing_style": imgs[4],
+                    "writingStyle": imgs[4],
                     "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
                     "character": imgs[2],
                     "score": imgs[3],
-                    "upload_date": imgs[5]
+                    "uploadDate": imgs[5]
                 })
                 i = i + 1
             return jsonify({'response': response}), 200

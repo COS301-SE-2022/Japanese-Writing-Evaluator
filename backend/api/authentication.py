@@ -17,7 +17,6 @@ class Authentication:
         return:
             json response
     """
-
     def resetPassword(self, token, password):
         salt = self.db.fetchSaltByToken(token)
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
@@ -28,12 +27,39 @@ class Authentication:
         else:
             return jsonify({'response': "password reset failed."}), 401
 
+    """
+        findUser function:
+            calls getUserByEmail function
+        request body: 
+            email
+        return:
+            json response
+    """
     def findUser(self, email):
         if(self.db.getUserByEmail(email)):
             return jsonify({'response': "user found"}), 200
         else:
             return jsonify({'response': "user does not exist"}), 401
 
+    """
+        getUser function:
+            calls getUserByID function
+        request body: 
+            id
+        return:
+            username and userid
+    """
+    def getUser(self, id):
+        return self.db.getUserByID(id)
+
+    """
+        addToken function:
+            calls addToken function
+        request body: 
+            email and token
+        return:
+            json response
+    """
     def addToken(self, email, token):
         if(self.db.addToken(email, token)):
             return jsonify({'response': "Token successfully added"}), 200
@@ -41,11 +67,13 @@ class Authentication:
             return jsonify({'response': "Token unsuccessfully added"}), 401
     """
 
-        Register
-        Takes in a post or get request and adds the user to the database
-
+        register function:
+            registers a new user
+        request body: 
+            email, password and username
+        return:
+            json response
     """
-
     def register(self, email, password, username):
         try:
             Finduser = self.db.getUserByEmail(email)
@@ -62,6 +90,16 @@ class Authentication:
         except Exception as e:
             return jsonify({'response': str(e)}), 401
 
+
+    """
+
+        login function:
+            find a user based on their email and password
+        request body: 
+            email and password
+        return:
+            username and userId
+    """
     def login(self, email, password):
         salt = self.db.fetchSalt(email)
         if(salt == None):

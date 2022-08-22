@@ -11,6 +11,14 @@ load_dotenv()
 
 class Send_Email:
 
+    """
+    forgotPasswordEmail function:
+        sends an email to the user with their forgot password token
+    parameters:
+        email
+    return:
+        json response
+    """
     def forgotPasswordEmail(email):
             sg = sendgrid.SendGridAPIClient(api_key = os.getenv('SENDGRID_API_KEY'))
             from_email = Email(os.environ.get('SENDGRID_EMAIL'))
@@ -27,6 +35,15 @@ class Send_Email:
             else:
                   return jsonify({'response': "email unsuccessfully sent"}), 401
 
+
+    """
+    forgotPasswordEmail function:
+        sends an email to the user with their weekly progress
+    parameters:
+        email, score and username
+    return:
+        string response
+    """
     def send_email(self, email, score, username):
 
         try:
