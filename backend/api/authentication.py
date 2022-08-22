@@ -54,7 +54,7 @@ class Authentication:
         
 
 
-
+    """
         findUser function:
             calls getUserByEmail function
         request body: 
