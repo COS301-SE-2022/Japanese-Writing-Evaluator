@@ -20,7 +20,7 @@ describe('AppServiceService', () => {
   // it('check for invalid image', inject(
   //   [HttpTestingController, AppServiceService],
   //   () => {
-  //     let mockScore = new HttpResponse<Score>();
+  //     let mockScore = new HttpResponse();
   //     const mockHeader = new HttpHeaders();
   //     mockHeader.set('content-type', 'application/json');
   //     mockScore = {
@@ -49,7 +49,8 @@ describe('AppServiceService', () => {
   //       style: 'hiragana',
   //     };
   //     service.uploadImage(mockimage).subscribe(data => {
-  //       expect(data.body.data.score).toBeUndefined();
+  //       console.log(data.body.data);
+  //       expect(data.body.data.score).toBeNull();
   //     });
 
   //     const mockuploadrequest = mockhttpRequest.expectOne(service.baseURL+'upload');
@@ -104,11 +105,11 @@ describe('AppServiceService', () => {
   //     })
   //     );
 
-  //   afterEach(() => {
-  //     mockhttpRequest.verify();
-  //   });
+    afterEach(() => {
+      mockhttpRequest.verify();
+    });
 
-  // it('should be created', () => {
-  //   expect(service).toBeTruthy();
-  // });
+    it('should be created', () => {
+      expect(service).toBeTruthy();
+    });
 });

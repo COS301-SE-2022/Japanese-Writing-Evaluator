@@ -12,17 +12,21 @@
     <ion-card > 
       <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
       <ion-card-content >
-        <form [formGroup]="login" (ngSubmit)="onLogin()" >
+        <form [formGroup]="login" (ngSubmit)="onLogin()" > <!-- login form-->
           <div class="horizontalflexbox">
-            <ion-item class="input" lines="none" >
-              <ion-input  formControlName="username" type="text" placeholder="Username"></ion-input>
+            <ion-item  lines="none" > <!--Username input item-->
+              <ion-label position="floating">Username</ion-label>
+              <ion-input  formControlName="username" type="text"  class="input" size="24"></ion-input>
             </ion-item>
             <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/>
           </div><br>
 
           <div class="horizontalflexbox">
-            <ion-item class="input" lines="none">
-            <ion-input  formControlName="password" type="password" placeholder="Password"></ion-input>
+             <ion-item  lines="none"><!-- Password input item -->
+              <ion-label position="floating">Password</ion-label>
+              <app-password>
+                <ion-input  formControlName="password" type="password" class="input"></ion-input>
+              </app-password>
             </ion-item>
             <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/>
           </div><br/>
@@ -36,6 +40,9 @@
         </div>
         <div class="horizontalflexbox">
           <a [routerLink]="['/forgot-password-email']" style="color:rgb(124, 167, 245);">Forgot Password?</a>
+        </div>
+        <div class="horizontalflexbox">
+          <p>Don't have an account? <a [routerLink]="['/sign-up']" style="color:rgb(124, 167, 245);">Signup</a></p>
         </div>
       </ion-card-content>      
     </ion-card> 
