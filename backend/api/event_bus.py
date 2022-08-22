@@ -23,7 +23,6 @@ imagedb = imageDB(db)
 admin = Admin(db)
 eventBus = []
 
-
 """
 executeBus function:
     Executes the functions added to the even bus
@@ -109,7 +108,6 @@ def eventRegister(email, password, username):
     eventBus.append(partial(auth.register, email, password, username))
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
-
 """
 eventUploadImage function:
     Calls the upload image function to upload a users image
@@ -253,9 +251,10 @@ def eventGetCharacters():
     eventNumber =  len(eventBus) - 1
     return executeBus(eventNumber)
 
-def event_getuserFeedback():
-    #TODO
-    return
+def eventListUsers(id):
+    eventBus.append(partial(auth.listUsers, id))
+    event_number = len(eventBus) - 1
+    return executeBus(event_number)
 
 def event_editUserPrivileges(id, ad):
     eventBus.append(partial(admin.editUserPrivileges, id, ad))
