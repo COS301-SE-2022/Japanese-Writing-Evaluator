@@ -29,7 +29,7 @@ class training:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,100):
-                gaussImage.save('./training/picture_'+str(counter) + '.png')
+                gaussImage.save('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -47,7 +47,7 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -74,7 +74,7 @@ class training:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,100):
-                manipulated.save("./training/picture_"+ str(counter)+ ".png")
+                manipulated.save('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -100,7 +100,7 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -117,7 +117,7 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -134,7 +134,7 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ta/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
         
