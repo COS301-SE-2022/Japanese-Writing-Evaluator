@@ -15,8 +15,8 @@
   <div class="suggestions">
     <ion-grid>
       <ion-row>
-        <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
-          <app-options [letter]='item.character' [category]='item.category'></app-options>
+        <ion-col *ngFor="let item of alphabetCategory">
+          <app-options [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
         </ion-col>
       </ion-row>
     </ion-grid>
