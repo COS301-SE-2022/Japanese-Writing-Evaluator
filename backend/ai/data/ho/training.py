@@ -29,10 +29,9 @@ class training:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,100):
-                gaussImage.save('./training/picture_'+str(counter) + '.png')
+                gaussImage.save('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    rotate_image_:
         takes the different images in pictures folder and roates them by a degree
@@ -41,17 +40,16 @@ class training:
         counter: the counter of how many images are in the training folder
     return:
         counter
-"""  
+"""   
     def rotate_image_(self,angle,counter):
         
         for i in range (0,38):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    zoom_image:
         takes the different images in pictures folder and zooms in on them 
@@ -76,10 +74,9 @@ class training:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,100):
-                manipulated.save("./training/picture_"+ str(counter)+ ".png")
+                manipulated.save('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    shear:
         takes the different images in pictures folder and shear them 
@@ -103,10 +100,9 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    transpose_90:
         takes the different images in pictures folder and transposes them by 90 degrees
@@ -121,10 +117,9 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    transpose_270:
         takes the different images in pictures folder and transposes them by 270 degrees
@@ -139,10 +134,10 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/ho/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
+        
 if __name__ == '__main__':
     training = training()
   
