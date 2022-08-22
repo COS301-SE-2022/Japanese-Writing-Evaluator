@@ -223,6 +223,7 @@ def callGuestUploadImage():
         json response
 """
 @app.route('/admin/edit', methods = ['POST'])
+@token_required
 def callEditUserPrivileges():
     return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
 
@@ -236,6 +237,7 @@ def callEditUserPrivileges():
         json response
 """
 @app.route('/admin/models', methods = ['GET'])
+@token_required
 def callListModelData():
     return event_bus.event_listModelData()
 
@@ -248,6 +250,7 @@ def callListModelData():
         json response
 """
 @app.route('/admin/view-model', methods = ['POST'])
+@token_required
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
 
