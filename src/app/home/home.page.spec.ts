@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 import { ProgressPage } from '../progress/progress.page';
 import { BlockTryCharComponent } from './block-try-char/block-try-char.component';
-import { OptionsComponent } from './options/options.component';
+import { OptionsComponent } from '../shared/components/options/options.component';
 import { HomePage } from './home.page';
 
 describe('HomePage', () => {
