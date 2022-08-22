@@ -21,7 +21,7 @@ auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
 admin = Admin(db)
-event_bus = []
+eventBus = []
 
 
 """
