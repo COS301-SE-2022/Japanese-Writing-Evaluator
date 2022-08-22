@@ -11,7 +11,7 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
 import cv2
-class training:
+class training: 
 
     """
     blur function:
@@ -21,7 +21,7 @@ class training:
         counter: the counter of how many images are in the training folder
     return:
         counter
-"""
+""" 
     def blur(self,blurr,counter): 
         #blur
         for i in range (0,38):
@@ -29,7 +29,7 @@ class training:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,100):
-                gaussImage.save('./training/picture_'+str(counter) + '.png')
+                gaussImage.save('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -40,14 +40,14 @@ class training:
         counter: the counter of how many images are in the training folder
     return:
         counter
-"""
+"""   
     def rotate_image_(self,angle,counter):
         
         for i in range (0,38):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -74,10 +74,9 @@ class training:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,100):
-                manipulated.save("./training/picture_"+ str(counter)+ ".png")
+                manipulated.save('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    shear:
         takes the different images in pictures folder and shear them 
@@ -86,7 +85,7 @@ class training:
         counter: the counter of how many images are in the training folder
     return:
         counter
-"""     
+""" 
     def shear(self,counter):
         
         for i in range (0,38):
@@ -101,7 +100,7 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave("./training/picture_"+ str(counter)+ ".png", sheared_img)
+                plt.imsave('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -112,16 +111,15 @@ class training:
         counter: the counter of how many images are in the training folder
     return:
         counter
-"""         
+""" 
     def transpose_90(self,counter): 
         for i in range (0,38):
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
     """
    transpose_270:
         takes the different images in pictures folder and transposes them by 270 degrees
@@ -136,21 +134,29 @@ class training:
             manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,100):
-                manipulated.save('./training/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/chi/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
-
+        
 if __name__ == '__main__':
     training = training()
-
+  
     counter = 0
 
     print(counter)
     counter= training.rotate_image_(15,counter)
+    
+   
+   
     counter = training.rotate_image_(30,counter)
-    counter = training.rotate_image_(45,counter)  
-    counter =  training.rotate_image_(-15,counter)  
-    counter = training.rotate_image_(-30,counter)  
+  
+    
+    counter = training.rotate_image_(45,counter)
+   
+    counter =  training.rotate_image_(-15,counter)
+   
+    counter = training.rotate_image_(-30,counter)
+   
     counter =  training.rotate_image_(-45,counter)
     counter =  training.zoom_image(counter)
     counter =  training.shear(counter)
@@ -162,4 +168,5 @@ if __name__ == '__main__':
     counter =  training.blur(4,counter)
     counter =  training.blur(5,counter)
     print(counter)
-    print("done")      
+    print("done")
+
