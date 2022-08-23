@@ -101,12 +101,17 @@ export class AppServiceService {
   /* https://medium.com/@ryanchenkie_40935/angular-authentication-using-route-guards-bf7a4ca13ae3 */
   public isAuthenticated(): boolean{
     const token = localStorage.getItem('token');
-    if (token === '') {
+    const id = localStorage.getItem('id');
+    if (token === null && id === 'guest') {
+      return true;
+    }
+    else if (token === '' ) {
       return false;
     }
     else if (token === null) {
       return false;
     }
+
 
     return true;
   }
