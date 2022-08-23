@@ -10,6 +10,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './Interceptor/loader.interceptor';
 import { UploadPage } from './upload/upload.page';
+import { LoginPage } from './login/login.page';
+import { ToastComponent } from './shared/components/toast/toast.component';
 
 
 
@@ -26,7 +28,8 @@ import { UploadPage } from './upload/upload.page';
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
-    UploadPage
+    UploadPage,
+    ToastComponent,
   ],
   bootstrap: [AppComponent],
 })
