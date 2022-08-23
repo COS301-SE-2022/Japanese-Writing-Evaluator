@@ -5,7 +5,7 @@ import this
 from urllib import response
 from xmlrpc.client import boolean
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, redirect
 from datetime import datetime, timedelta
 import jwt
 import os
@@ -33,8 +33,6 @@ def token_required(function):
     def decorated(*args, **kwargs):
         token = None
         print(request.headers)
-        if session['logged_in'] == True:
-            return jsonify({'response': 'user not login'}), 403
         if 'user-token' in request.headers:
             print("we have token")
             token = request.headers['user-token']
@@ -137,9 +135,14 @@ def login():
     return:
         json response
 """
-@app.rout('/logout', methods=['GET'])
+@app.route('/logout', methods=['DELETE'])
+@token_required
 def logout():
-    session["logged_in"] = False
+    try:
+        session["logged_in"] = False
+        return jsonify({"response": 'logged out'}), 200
+    except:
+        return jsonify({"response": 'Error'}), 401
         
 """
     home function:
