@@ -5,7 +5,7 @@ import this
 from urllib import response
 from xmlrpc.client import boolean
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, redirect
 from datetime import datetime, timedelta
 import jwt
 import os
@@ -37,11 +37,11 @@ def token_required(function):
             print("we have token")
             token = request.headers['user-token']
         if not token:
-            return jsonify({'arlet' : 'Token is missing !!'}), 401
+            return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
-            return jsonify({'arlet' : 'The token is invaild!'}), 401
+            return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
     return decorated 
@@ -137,10 +137,26 @@ def login():
         token = jwt.encode({
             'username' : user[0],
             'id': user[1],
-            'experation': str(datetime.utcnow() + timedelta(seconds=120)),
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
+"""
+    logout function
+        kills the session and token
+    request boby:
+        None
+    return:
+        json response
+"""
+@app.route('/logout', methods=['DELETE'])
+@token_required
+def logout():
+    try:
+        session["logged_in"] = False
+        return jsonify({"response": 'logged out'}), 200
+    except:
+        return jsonify({"response": 'Error'}), 401
+        
 """
     home function:
         calls getCharacters to send character url's to front-end for the homepage
@@ -236,6 +252,7 @@ def callGuestUploadImage():
         json response
 """
 @app.route('/admin/edit', methods = ['POST'])
+@token_required
 def callEditUserPrivileges():
     return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
 
@@ -249,6 +266,7 @@ def callEditUserPrivileges():
         json response
 """
 @app.route('/admin/models', methods = ['GET'])
+@token_required
 def callListModelData():
     return event_bus.event_listModelData()
 
@@ -261,6 +279,7 @@ def callListModelData():
         json response
 """
 @app.route('/admin/view-model', methods = ['POST'])
+@token_required
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
 
