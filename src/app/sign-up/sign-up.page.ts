@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { SignUp } from './sign-up';
+import { ToastComponent } from '../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,7 +15,7 @@ export class SignUpPage implements OnInit {
   password = '';
   user;
 
-  constructor(private router: Router, private apiService: AppServiceService) { }
+  constructor(private router: Router, private apiService: AppServiceService, private toast: ToastComponent) { }
 
   ngOnInit() {
   }
@@ -32,14 +33,17 @@ export class SignUpPage implements OnInit {
   sendData()
   {
     this.user = new SignUp(this.username, this.email, this.password);
-    this.addUser(this.user);
+    this.addUser();
   }
 
-  addUser(obj)
+  addUser()
   {
     this.apiService.addUser(this.username, this.email, this.password)
       .subscribe(data => {
-        this.router.navigate(['/login']);
+        if(data.status === 200){
+          this.toast.showToast('Registered', 200);
+          this.router.navigate(['/login']);
+        }
       });
   }
 
