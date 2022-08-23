@@ -120,6 +120,7 @@ export class ProgressBlockComponent implements OnInit {
 
   ngOnInit() {}
 
+//TODO: open the modal as well as send the modal data, #183, Maryam Mohamad Al Mahdi
   async presentModal() {
     const modal = await this.modalController.create({
       component: GraphModalPage,

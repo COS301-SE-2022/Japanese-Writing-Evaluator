@@ -28,6 +28,7 @@ export class GraphModalPage implements AfterViewInit {
     this.lineChartMethod();
   }
 
+  //TODO: get the particular scores and dates within an array to plug as data for the chart, #183, Maryam Mohamad Al Mahdi
   getDateScores(){
     this.allScores = [];
     this.allDates = [];
@@ -57,6 +58,7 @@ export class GraphModalPage implements AfterViewInit {
     console.log(this.allScores);
   }
 
+  //TODO: form the chart using chartjs, #183, Maryam Mohamad Al Mahdi
   lineChartMethod() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
@@ -111,7 +113,7 @@ export class GraphModalPage implements AfterViewInit {
     });
   }
 
-
+//TODO: closes the modal, #183, Maryam Mohamad Al Mahdi
   close() {
     this.modalController.dismiss();
   }

@@ -20,6 +20,7 @@ export class ProgressResultPage implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute) { }
 
+  //TODO: get category from the url, that data is sent in from options in shared folder, #183, Maryam Mohamad Al Mahdi
   ngOnInit() {
 
     this.category = this.route.snapshot.queryParamMap.get('category');
@@ -55,8 +56,7 @@ export class ProgressResultPage implements OnInit {
 
     this.manipulateScores();
   }
-
-  //calculating the averages from the score
+//TODO: calculating the averages from the score of the letters that were practised per writing style, #183, Maryam Mohamad Al Mahdi
   manipulateScores()
   {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -123,6 +123,7 @@ export class ProgressResultPage implements OnInit {
     this.setStyle();
   }
 
+  //TODO: set the writing style based on the category variable, #183, Maryam Mohamad Al Mahdi
   setStyle(){
     if(this.category === 'Hiragana')
     {
@@ -149,6 +150,8 @@ export class ProgressResultPage implements OnInit {
 
   }
 
+
+  //TODO: get the singely typed character based on the string feed in, #183, Maryam Mohamad Al Mahdi
   getLetter(letter: string){
     let letterString = '';
     let index = letter.indexOf('_');
@@ -165,6 +168,8 @@ export class ProgressResultPage implements OnInit {
     return letterString.split('').reverse().join('');
   }
 
+
+  //TODO: get the writing style, #183, Maryam Mohamad Al Mahdi
   getStyle(writingStyle: string){
 
     if(writingStyle.includes('hiragana'))
@@ -181,6 +186,7 @@ export class ProgressResultPage implements OnInit {
     }
   }
 
+  //TODO: get get the percentage of progress, #183, Maryam Mohamad Al Mahdi
   getPercent(objArray: {score: string; date: string }[]){
 
     let totalPercent = 0;

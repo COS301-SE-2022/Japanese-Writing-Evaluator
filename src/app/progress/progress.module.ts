@@ -8,7 +8,6 @@ import { IonicModule } from '@ionic/angular';
 import { ProgressPageRoutingModule } from './progress-routing.module';
 
 import { ProgressPage } from './progress.page';
-import { ProgressBlockComponent } from './progress-block/progress-block.component';
 
 @NgModule({
   imports: [
@@ -18,6 +17,6 @@ import { ProgressBlockComponent } from './progress-block/progress-block.componen
     OptionsModule,
     ProgressPageRoutingModule,
   ],
-  declarations: [ProgressPage, ProgressBlockComponent]
+  declarations: [ProgressPage]
 })
 export class ProgressPageModule {}
