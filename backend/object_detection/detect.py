@@ -14,11 +14,10 @@ class detect:
     def detect(image):
         model = torch.hub.load('ultralytics/yolov5', 'yolov5x')
 
-        img = ""
-        image = img.partition(",")[2]
+        img = image.partition(",")[2]
 
         with open("objectImage.jpeg", "wb") as fh:
-            fh.write(base64.b64decode(image))
+            fh.write(base64.b64decode(img))
 
         im = "objectImage.jpeg"
 
