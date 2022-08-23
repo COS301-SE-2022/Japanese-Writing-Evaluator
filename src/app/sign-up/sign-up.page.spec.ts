@@ -4,6 +4,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { SignUpPage } from './sign-up.page';
+import { ToastModule } from '../shared/components/toast/toast.module';
+import { ToastComponent } from '../shared/components/toast/toast.component';
 
 describe('SignUpPage', () => {
   let component: SignUpPage;
@@ -12,7 +14,8 @@ describe('SignUpPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ SignUpPage ],
-      imports: [IonicModule.forRoot(),RouterTestingModule, FormsModule, HttpClientTestingModule],
+      imports: [IonicModule.forRoot(),RouterTestingModule, FormsModule, HttpClientTestingModule, ToastModule ],
+      providers:[ToastComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(SignUpPage);
