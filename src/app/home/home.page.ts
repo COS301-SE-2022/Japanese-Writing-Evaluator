@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { Router } from '@angular/router';
-import character_sets from '../shared/character_data/character_sets.json';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -28,16 +27,15 @@ export class HomePage implements OnInit {
     {character: 'ア', category: 'Katakana'},
     {character: '一', category: 'Kanji'}
   ];
+
+  pageRequest = 'home';
   constructor(private service: AppServiceService, private router: Router) {
-  }//private repository: AppServiceService  ;
-
-
+  }
 
   //TODO: check local storage to check if user is guest, #, Phumu
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return true;
       }
     }
@@ -56,19 +54,5 @@ export class HomePage implements OnInit {
     this.router.navigate(['/login']);
 
   }
-
-  // TODO: components are dynamically updated for katakana, #73, Maryam Mohamad Al Mahdi
-  navigateKatakana(){
-
-  }
-
-  // TODO: components are dynamically updated for hiragana, #73, Maryam Mohamad Al Mahdi
-  navigateHome(){
-  }
-
-  // TODO: components are dynamically updated for kanji, #73, Maryam Mohamad Al Mahdi
-  navigateKanji(){
-  }
-
 
 }
