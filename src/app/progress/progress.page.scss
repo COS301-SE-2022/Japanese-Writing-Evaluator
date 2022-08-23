@@ -1,5 +1,10 @@
 .container {
-display: flex;
+  display: flex;
+  align-items: center;
+}
+
+h1{
+  padding: 20px;
 }
 
 ion-button{
@@ -16,6 +21,8 @@ ion-img{
   height: 100px;
   margin-top: -10px;
 }
+
+
 
 .head{
   background-color: #960722;

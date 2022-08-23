@@ -3,36 +3,33 @@
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
     <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
 
-    <h1></h1>
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
       Track your progress below.
     </p>
-</div>
+  </div>
 
-  <div class="container">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana"  [letter]='getLetter("A")' [percent]=30></app-progress-block>
+  <div class>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
+          <app-options [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
         </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana" [letter]='getLetter("I")' [percent]=50></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="katakana" [letter]='getLetter("E")' [percent]=60></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="kanji" [letter]='getLetter("one")' [percent]=80></app-progress-block>
-        </ion-col>
-
       </ion-row>
     </ion-grid>
   </div>
+
+  <!-- <div>
+    <h1>Hiragana</h1>
+    <ion-grid >
+      <ion-row>
+        <ion-col *ngFor="let item of (progressHiragana) | keyvalue" size="auto">
+          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div> -->
 </ion-content>
 
 <ion-footer>
@@ -47,7 +44,6 @@
             </ion-tab-button>
           </a>
         </ion-col>
-
         <ion-col size="4">
           <a>
             <ion-tab-button >
