@@ -1,5 +1,6 @@
 from functools import partial
 from urllib import response
+from admin import Admin
 
 from flask import jsonify
 from authentication import Authentication
@@ -19,62 +20,125 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
-event_bus = []
+admin = Admin(db)
+eventBus = []
 
-def executeBus(event_number):
-    res = event_bus[event_number]()
-    del event_bus[event_number]
+"""
+executeBus function:
+    Executes the functions added to the even bus
+parameters: 
+    eventNumber of the current event that needs to be executed
+return:
+    json response of the function that was executed
+"""
+def executeBus(eventNumber):
+    res = eventBus[eventNumber]()
+    del eventBus[eventNumber]
     return res
 
-def event_resetPassword(email):
-    event_bus.append(partial(auth.findUser, email))
-    event_number = len(event_bus) - 1
-    response = executeBus(event_number)
+"""
+eventResetPassword function:
+    Calls all relevent services to reset the user's password
+parameters: 
+    users email
+return:
+    json response
+"""
+def eventResetPassword(email):
+    eventBus.append(partial(auth.findUser, email))
+    eventNumber = len(eventBus) - 1
+    response = executeBus(eventNumber)
     if(response[1] == 200): #returns a tuple, element at 1 is the status code
-        email_res = event_forgotPasswordEmail(email)
-        tokenStore = event_storeToken(email, email_res["token"])
+        emailRes = eventForgotPasswordEmail(email)
+        tokenStore = eventStoreToken(email, emailRes["token"])
         if(tokenStore[1] != 200):
             return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
-        return email_res
+        return emailRes
     else:
         return response
     
-def event_storeToken(email, token):
-    event_bus.append(partial(auth.addToken, email, token))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventStoreToken function:
+    Calls all relevent services to store the users token for forgotten password
+parameters: 
+    users email and a generated token
+return:
+    json response
+"""
+def eventStoreToken(email, token):
+    eventBus.append(partial(auth.addToken, email, token))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_forgotPasswordEmail(email):
-    event_bus.append(partial(Send_Email.forgotPasswordEmail, email))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventForgotPasswordEmail function:
+    Calls function that sends a forgotten password email to the user
+parameters: 
+    users email
+return:
+    json response
+"""
+def eventForgotPasswordEmail(email):
+    eventBus.append(partial(Send_Email.forgotPasswordEmail, email))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_changePassword(token, password):
-    event_bus.append(partial(auth.resetPassword, token, password))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventChangePassword function:
+    Calls function that resets the users password
+parameters: 
+    new password and their token
+return:
+    json response
+"""
+def eventChangePassword(token, password):
+    eventBus.append(partial(auth.resetPassword, token, password))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
         
+"""
+eventRegister function:
+    Calls the register function to register a new user
+parameters: 
+    email, password and username
+return:
+    json response
+"""
+def eventRegister(email, password, username):
+    eventBus.append(partial(auth.register, email, password, username))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
+"""
+eventUploadImage function:
+    Calls the upload image function to upload a users image
+parameters: 
+    id, imagechar, image and file
+return:
+    json response
+"""
+def eventUploadImage(id, imagechar, image, file):
+    eventBus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
+    eventNumber = len(eventBus) - 1
+    return jsonify(executeBus(eventNumber))
 
-def event_register(email, password, username):
-    event_bus.append(partial(auth.register, email, password, username))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
-
-def event_uploadImage(id, imagechar, image, file):
-    event_bus.append(partial(Image.uploadImage, img, id, imagechar, image, file))
-    event_number = len(event_bus) - 1
-    return jsonify(executeBus(event_number))
-
-def event_sendImage(id, image_char, image, file, writing_style):
-    e = Evaluator(writing_style, image_char)
+"""
+eventSendImage function:
+    Calls all relevent functions to send an image to the cloud, add entry to database and evaluate it
+parameters: 
+    id, imagechar, image, file and writingStyle
+return:
+    json response
+"""
+def eventSendImage(id, imageChar, image, file, writingStyle):
+    e = Evaluator(writingStyle, imageChar)
     feedback = e.testCharacter() # call AI
     score = feedback[1]
     if(score == 0):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
-        exitcode = event_uploadImage(id, image_char, image, file)
+        exitcode = eventUploadImage(id, imageChar, image, file)
         if(exitcode.status_code == 200):
-            storeToDB = event_saveToDB(id, file, image_char, score, writing_style)
+            storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
             if(storeToDB == True):
                 strokes = feedback[0]
                 return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
@@ -83,58 +147,142 @@ def event_sendImage(id, image_char, image, file, writing_style):
         else:
             return jsonify({'response': "Storage to cloud service failed"}), 401
 
-def event_viewImages(id):
-    event_bus.append(partial(imagedb.getImages, id))
-    event_number = len(event_bus) - 1
-    images = executeBus(event_number)
+"""
+eventViewImages function:
+    Calls all relevent functions to retrieve the users progress
+parameters: 
+    id
+return:
+    json response
+"""
+def eventViewImages(id):
+    eventBus.append(partial(imagedb.getImages, id))
+    eventNumber = len(eventBus) - 1
+    images = executeBus(eventNumber)
     code = jsonify(images).status_code
     if(code == 200):
-        event_bus.append(partial(Image.viewImages, img, images))
-        event_number2 = len(event_bus) - 1
-        return executeBus(event_number2)
+        eventBus.append(partial(Image.viewImages, img, images))
+        eventNumber2 = len(eventBus) - 1
+        return executeBus(eventNumber2)
     else:
         return jsonify({"response": "User image retrieval from database failed"}), 401
 
-def event_sendToEvaluator(image, image_char):
-    obj = Evaluator(image, image_char)
-    event_bus.append(partial(obj.testCharacter, image, image_char))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventSendToEvaluator function:
+    Calls test character function which evaluates the users image
+parameters: 
+    image, imageChar
+return:
+    json response
+"""
+def eventSendToEvaluator(image, imageChar):
+    obj = Evaluator(image, imageChar)
+    eventBus.append(partial(obj.testCharacter, image, imageChar))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_saveToDB(id, file, image_char, score, writing_style):
-    event_bus.append(partial(imagedb.saveToDB, id, file, image_char, score, writing_style))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventSaveToDB function:
+    Calls the save to DB function which saves the path to the users uploaded image in the database
+parameters: 
+    id, file, image, imageChar, score, writingStyle
+return:
+    json response
+"""
+def eventSaveToDB(id, file, imageChar, score, writingStyle):
+    eventBus.append(partial(imagedb.saveToDB, id, file, imageChar, score, writingStyle))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_getImageUsers():
-    event_bus.append(partial(imagedb.getImageUsers))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventGetImageUsers function:
+    Calls the get image users function which returns all entries inside image database
+parameters: 
+    none
+return:
+    array of all the entries inside image database
+"""
+def eventGetImageUsers():
+    eventBus.append(partial(imagedb.getImageUsers))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_getUser(id):
-    event_bus.append(partial(imagedb.getUser, id))
-    event_number = len(event_bus) - 1
-    return executeBus(event_number)
+"""
+eventGetUser function:
+    Calls the get user function 
+parameters: 
+    id
+return:
+    array of the specified users details
+"""
+def eventGetUser(id):
+    eventBus.append(partial(auth.getUser, id))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
 
-def event_login(email, password):
-    event_bus.append(partial(auth.login, email, password))
-    event_number = len(event_bus) -  1
-    status = executeBus(event_number)
+"""
+eventLogin function:
+    Calls the login function
+parameters: 
+    email and password
+return:
+    username and userId 
+"""
+def eventLogin(email, password):
+    eventBus.append(partial(auth.login, email, password))
+    eventNumber = len(eventBus) -  1
+    status = executeBus(eventNumber)
     print(status)
     if(status != None):
         return status
     else:
         return None
 
-def event_getCharacters():
-    event_bus.append(partial(img.getCharacters))
-    event_number =  len(event_bus) - 1
+"""
+eventLogin function:
+    Calls the get characters function
+parameters: 
+    none
+return:
+    all the characters in the cloud
+"""
+def eventGetCharacters():
+    eventBus.append(partial(img.getCharacters))
+    eventNumber =  len(eventBus) - 1
+    return executeBus(eventNumber)
+
+def eventListUsers(id):
+    eventBus.append(partial(auth.listUsers, id))
+    event_number = len(eventBus) - 1
     return executeBus(event_number)
 
-def event_getuserFeedback():
-    #TODO
-    return
-
+def event_editUserPrivileges(id, ad):
+    eventBus.append(partial(admin.editUserPrivileges, id, ad))
+    event_number = len(eventBus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+    
+def event_listModelData():
+    eventBus.append(partial(admin.listModelData))
+    event_number = len(eventBus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+   
+def eventViewModelData(version):
+    eventBus.append(partial(admin.viewModelData, version))
+    event_number = len(eventBus) - 1
+    status = executeBus(event_number)
+    if(status != None):
+        return status
+    else:
+        return None
+     
 """
 guest Upload Image function:
     uploads the given image to firebase and sends it to the evaluator
@@ -144,7 +292,7 @@ parameters:
 return:
     json response
 """
-def event_guestUplaodImage(imagechar, image, style):
+def eventGuestUplaodImage(imagechar, image, style):
     image = image.partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))

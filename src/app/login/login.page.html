@@ -1,40 +1,51 @@
-<ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" >
+<ion-content class=" no-scroll " style="--background: url('../../assets/images/loginbackground.png');" ><!--style="--background: url('../../assets/images/loginbackground.png');#EEEEEE"-->
   <!--Guest Login button-->
-  <ion-toolbar id="guestBtn">
+  <!-- <ion-toolbar id="guestBtn">
     
-  </ion-toolbar>
+  </ion-toolbar> -->
 
   <!-- logo -->
-  <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
+  
 
-  <!-- login form -->
-  <div class="flexbox">
-    <form [formGroup]="login" (ngSubmit)="onLogin()"><!---->
-      <ion-item lines="none">
-        <ion-input class="input" formControlName="username" type="text" placeholder="Username"></ion-input>
-      </ion-item>
-      <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/><br>
-      
-      <ion-item lines="none">
-      <ion-input class="input" formControlName="password" type="password" placeholder="    Password"></ion-input>
-      </ion-item>
-      
-      <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/><br/>
-      <p class="ion-text-center">
-        <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
-      </p>
-    </form>
+  <!-- login form class="loginbackground"-->
+  <div  class="flexboxReplica">
+    <ion-card > 
+      <ion-img src="assets/images/JWE-logos_black.png" id="logo"></ion-img>
+      <ion-card-content >
+        <form [formGroup]="login" (ngSubmit)="onLogin()" > <!-- login form-->
+          <div class="horizontalflexbox">
+            <ion-item  lines="none" > <!--Username input item-->
+              <ion-label position="floating">Username</ion-label>
+              <ion-input  formControlName="username" type="text"  class="input" size="24"></ion-input>
+            </ion-item>
+            <ion-label *ngIf="isUsername" color="primary">Username(Email) required</ion-label><br *ngIf="isUsername"/>
+          </div><br>
 
-  </div>
-  <div class="horizontalflexbox">
-    <ion-button slot="end" shape="round" color="dark" (click)="onGuestLogin()">guest</ion-button>
-  </div>
-  <div class="horizontalflexbox">
-      <a [routerLink]="['/forgot-password-email']" style="color:rgb(124, 167, 245);">Forgot Password?</a>
-  </div>
+          <div class="horizontalflexbox">
+             <ion-item  lines="none"><!-- Password input item -->
+              <ion-label position="floating">Password</ion-label>
+              <app-password>
+                <ion-input  formControlName="password" type="password" class="input"></ion-input>
+              </app-password>
+            </ion-item>
+            <ion-label *ngIf="isPassword" color="primary">Password required</ion-label><br *ngIf="isPassword"/>
+          </div><br/>
 
-  <div class="horizontalflexbox">
-    <p style="color: rgb(124, 167, 245);">Don't have an account?<a [routerLink]="['/sign-up']" style="color: #ff5776;">SignUp</a></p>
+          <div class="horizontalflexbox">
+            <ion-button class="ion-button" type="submit" shape="round" color="primary">Login</ion-button>
+          </div>
+        </form>
+        <div class="horizontalflexbox">
+          <ion-button slot="end" shape="round" color="dark" class="guestButton" (click)="onGuestLogin()">guest</ion-button>
+        </div>
+        <div class="horizontalflexbox">
+          <a [routerLink]="['/forgot-password-email']" style="color:rgb(124, 167, 245);">Forgot Password?</a>
+        </div>
+        <div class="horizontalflexbox">
+          <p>Don't have an account? <a [routerLink]="['/sign-up']" style="color:rgb(124, 167, 245);">Signup</a></p>
+        </div>
+      </ion-card-content>      
+    </ion-card> 
   </div>
 </ion-content>
 

@@ -52,6 +52,7 @@ export class ProgressPage implements OnInit {
   ngOnInit() {
     this.char = localStorage.getItem('char');
     this.percent = +localStorage.getItem('percentage');
+
     // this.service.getProgress().subscribe(data => {
     //   //this.progressArray = data.body.response;
 
