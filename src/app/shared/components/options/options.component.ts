@@ -9,13 +9,19 @@ export class OptionsComponent implements OnInit {
 
   @Input() letter: string;
   @Input() category: string;
+  @Input() pageReq: string;
 
   constructor(private router: Router) { }
 
   ngOnInit() {}
 
   navigateAlphabet(){
-    this.router.navigateByUrl('/home/alphabet-category?category='+ this.category);
+    if(this.pageReq === 'home'){
+      this.router.navigateByUrl('/home/alphabet-category?category='+ this.category);
+    }
+    else{
+      this.router.navigateByUrl('/progress/alphabet-category?category='+ this.category);
+    }
   }
 
 }
