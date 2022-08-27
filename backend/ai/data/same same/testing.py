@@ -25,7 +25,7 @@ class testing:
 """ 
     def blur(self,blurr,counter): 
         #blur
-        for i in range (0,151):
+        for i in range (0,152):
             manipulated =Image.open('test_'+ str(i) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
@@ -44,7 +44,7 @@ class testing:
 """ 
     def rotate_image_(self,angle,counter):
         
-        for i in range (0,151):
+        for i in range (0,152):
             manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,50):
@@ -62,7 +62,7 @@ class testing:
     """
     def zoom_image(self,counter): 
        
-        for i in range (0,151):
+        for i in range (0,152):
             manipulated =Image.open('test_'+ str(i) + '.png')
             img_buf = io.BytesIO()
             datagen = ImageDataGenerator()
@@ -88,7 +88,7 @@ class testing:
         counter
 """ 
     def shear(self,counter):
-        for i in range (0,151):
+        for i in range (0,152):
             img = cv2.imread("test_"+str(i)+".png")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             plt.axis('off')
@@ -113,7 +113,7 @@ class testing:
         counter
 """ 
     def transpose_90(self,counter): 
-        for i in range (0,151):
+        for i in range (0,152):
             manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,50):
@@ -130,7 +130,7 @@ class testing:
         counter
 """ 
     def transpose_270(self,counter):
-        for i in range (0,151):
+        for i in range (0,152):
             manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,50):

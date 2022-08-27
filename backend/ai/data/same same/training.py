@@ -24,12 +24,12 @@ class training:
 """ 
     def blur(self,blurr,counter): 
         #blur
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for i in range (0,152):
+            manipulated =Image.open('test_'+ str(i) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,100):
-                gaussImage.save('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                gaussImage.save('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -43,11 +43,11 @@ class training:
 """   
     def rotate_image_(self,angle,counter):
         
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for i in range (0,152):
+            manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,100):
-                manipulated.save('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -61,8 +61,8 @@ class training:
 """ 
     def zoom_image(self,counter): 
        
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for i in range (0,152):
+            manipulated =Image.open('test_'+ str(i) + '.png')
             img_buf = io.BytesIO()
             datagen = ImageDataGenerator()
             data = img_to_array(manipulated)
@@ -74,7 +74,7 @@ class training:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,100):
-                manipulated.save('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -88,8 +88,8 @@ class training:
 """ 
     def shear(self,counter):
         
-        for i in range (0,38):
-            img = cv2.imread("./pictures/test_"+str(i)+".png")
+        for i in range (0,152):
+            img = cv2.imread("test_"+str(i)+".png")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             plt.axis('off')
         
@@ -100,7 +100,7 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                plt.imsave('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -113,11 +113,11 @@ class training:
         counter
 """ 
     def transpose_90(self,counter): 
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for i in range (0,152):
+            manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,100):
-                manipulated.save('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -130,11 +130,11 @@ class training:
         counter
 """ 
     def transpose_270(self,counter):
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for i in range (0,152):
+            manipulated =Image.open('test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,100):
-                manipulated.save('../../dataset/train/shi/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/train/same same/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
         
