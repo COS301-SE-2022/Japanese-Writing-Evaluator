@@ -1,1 +1,30 @@
+ion-content{
+  position: relative;
+  height: 140px;
+  width: 335px;
+}
 
+ion-avatar{
+  position: relative;
+  top: 15px;
+  left: 8px;
+}
+
+div{
+  border: 5px solid #960722;
+  height: 100px;
+  width: 300px;
+  border-radius: 25px;
+  padding: auto;
+}
+
+ion-icon{
+  background-color: white;
+}
+
+.icon{
+  position: absolute;
+  background-color: white;
+  left: 270px;
+  top: 22px;
+}
