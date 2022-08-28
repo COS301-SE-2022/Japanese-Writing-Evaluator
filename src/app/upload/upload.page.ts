@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
 
