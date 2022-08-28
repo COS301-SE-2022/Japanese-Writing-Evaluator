@@ -1,12 +1,18 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>profile</ion-title>
-  </ion-toolbar>
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+
+    <p>
+      <strong>Profile</strong><br>
+      View profiles of users/admin below.
+    </p>
+  </div>
+
   <button ion-button icon-only>
     <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
   </button>
-</ion-header>
 
-<ion-content>
+  <app-profile-block></app-profile-block>
 
 </ion-content>
