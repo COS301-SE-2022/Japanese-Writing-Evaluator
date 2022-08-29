@@ -7,8 +7,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PopoverComponent implements OnInit {
 
+  list: string[];
   constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    //list of the popover options
+    this.list = ['edit privileges', 'view dashboard'];
+  }
+
+  popoverOption(item: string){
+
+    if(item === this.list[0]){
+
+    }
+    if(item === this.list[1]){
+
+    }
+
+  }
 
 }

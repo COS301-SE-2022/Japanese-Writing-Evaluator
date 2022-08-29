@@ -1,3 +1,5 @@
-<p>
-  popover works!
-</p>
+<ion-list>
+  <ion-item lines="none" button *ngFor="let item of list" (click)="popoverOption(item)">
+      {{item}}
+  </ion-item>
+</ion-list>
