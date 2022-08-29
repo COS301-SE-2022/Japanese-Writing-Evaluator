@@ -15,6 +15,7 @@ export class PopoverComponent implements OnInit {
     this.list = ['edit privileges', 'view dashboard'];
   }
 
+  //TODO: Navigate to the appropriate page based on which popover function was selected, #203, Maryam
   popoverOption(item: string){
 
     if(item === this.list[0]){

@@ -2,12 +2,18 @@ ion-content{
   position: relative;
   height: 140px;
   width: 335px;
+  text-align: center;
 }
 
 ion-avatar{
   position: relative;
   top: 15px;
   left: 8px;
+}
+
+p{
+  position: relative;
+  bottom: 28px;
 }
 
 div{
