@@ -1,12 +1,11 @@
 <ion-content class="ion-padding">
   <div>
-    <button ion-button icon-only class="icon">
+    <button ion-button (click)="openPopover($event)" id="icon">
       <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
     </button>
-
-      <ion-avatar slot="start">
-        <img src="assets/icon/user.png" />
-      </ion-avatar>
+    <ion-avatar slot="start">
+      <img src="assets/icon/user.png" />
+    </ion-avatar>
 
   </div>
 </ion-content>

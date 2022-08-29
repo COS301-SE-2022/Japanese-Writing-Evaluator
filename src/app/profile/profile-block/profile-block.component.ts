@@ -1,4 +1,6 @@
+import { PopoverComponent } from './../popover/popover.component';
 import { Component, OnInit } from '@angular/core';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-profile-block',
@@ -7,8 +9,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfileBlockComponent implements OnInit {
 
-  constructor() { }
+  constructor(private popCtrl: PopoverController) { }
 
   ngOnInit() {}
+
+  //TODO: Opens the popover, #203, Maryam
+  async openPopover(ev: any){
+    const popover =  await this.popCtrl.create({
+      component: PopoverComponent,
+      event: ev
+    });
+    return await popover.present();
+  }
 
 }
