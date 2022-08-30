@@ -142,7 +142,7 @@ if __name__ == '__main__':
     testing = testing()
     katakana = []
     katakana = ['a','i','u','e','o','ka','ki','ku','ke','ko']
-    for i in range(0,1): 
+    for i in range(0,10): 
         character = katakana[i]
         counter = 0
         print(counter)
@@ -169,5 +169,6 @@ if __name__ == '__main__':
         counter =  testing.blur(3,counter,character)
         counter =  testing.blur(4,counter,character)
         counter =  testing.blur(5,counter,character)
+        print(character) 
         print(counter)
         print("done")
