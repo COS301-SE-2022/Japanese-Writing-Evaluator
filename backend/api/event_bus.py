@@ -8,6 +8,8 @@ from authentication import Authentication
 import sys
 sys.path.insert(0, '../database')
 sys.path.insert(1, '../email_user')
+sys.path.insert(2, '../object_detection')
+from detect import detect
 from send_email import Send_Email
 import base64
 import json
@@ -239,7 +241,7 @@ def eventLogin(email, password):
         return None
 
 """
-eventLogin function:
+eventGetCharacters function:
     Calls the get characters function
 parameters: 
     none
@@ -305,3 +307,16 @@ def eventGuestUplaodImage(imagechar, image, style):
     else:
         strokes = feedback[0]
         return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+
+"""
+eventObjectDetection function:
+    calls the object detection function
+parameters: 
+    image: the users uploaded image
+return:
+    json response
+"""
+def eventObjectDetection(image):
+    eventBus.append(partial(detect.detect, image))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
