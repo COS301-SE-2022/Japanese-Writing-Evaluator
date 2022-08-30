@@ -23,14 +23,14 @@ class testing:
     return:
         counter
 """ 
-    def blur(self,blurr,counter): 
+    def blur(self,blurr,counter,character): 
         #blur
         for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,5):
-                gaussImage.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                gaussImage.save('../../dataset/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -45,10 +45,10 @@ class testing:
     def rotate_image_(self,angle,counter):
         
         for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -60,10 +60,10 @@ class testing:
     return:
         counter
     """
-    def zoom_image(self,counter): 
+    def zoom_image(self,counter,character): 
        
         for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             img_buf = io.BytesIO()
             datagen = ImageDataGenerator()
             data = img_to_array(manipulated)
@@ -75,7 +75,7 @@ class testing:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -89,7 +89,7 @@ class testing:
 """ 
     def shear(self,counter):
         for i in range (0,38):
-            img = cv2.imread("./pictures/test_"+str(i)+".png")
+            img = cv2.imread('./' + character + '/test_'+ str(i) + '.png')
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             plt.axis('off')
         
@@ -100,7 +100,7 @@ class testing:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,50):
-                plt.imsave('../../dataset/test/a/picture_'+str(counter) + '.png', sheared_img)
+                plt.imsave('../../dataset/test/' + character + '/picture_'+str(counter) + '.png', sheared_img)
                 counter = counter + 1
         return counter
     """
@@ -114,10 +114,10 @@ class testing:
 """ 
     def transpose_90(self,counter): 
         for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -131,43 +131,43 @@ class testing:
 """ 
     def transpose_270(self,counter):
         for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                manipulated.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
 if __name__ == '__main__':
     testing = testing()
     katakana = []
-    katakana = ['a','e','i','o','u',]
-    for in range(0,10): 
-    
+    katakana = ['a','i','u','e','o','ka','ki','ku','ke','ko']
+    for i in range(0,10): 
+        character = katakana[i]
         counter = 0
         print(counter)
-        counter= testing.rotate_image_(15,counter)
+        counter= testing.rotate_image_(15,counter,character)
     
    
    
-        counter = testing.rotate_image_(30,counter)
+        counter = testing.rotate_image_(30,counter,character)
   
     
-        counter = testing.rotate_image_(45,counter)
+        counter = testing.rotate_image_(45,counter,character)
    
-        counter =  testing.rotate_image_(-15,counter)
+        counter =  testing.rotate_image_(-15,counter,character)
    
-        counter = testing.rotate_image_(-30,counter)
+        counter = testing.rotate_image_(-30,counter,character)
    
-        counter =  testing.rotate_image_(-45,counter)
-        counter =  testing.zoom_image(counter)
-        counter =  testing.shear(counter)
-        counter =  testing.transpose_90(counter)
-        counter =  testing.transpose_270(counter)
-        counter = testing.blur(1,counter)
-        counter =  testing.blur(2,counter)
-        counter =  testing.blur(3,counter)
-        counter =  testing.blur(4,counter)
-        counter =  testing.blur(5,counter)
+        counter =  testing.rotate_image_(-45,counter,character)
+        counter =  testing.zoom_image(counter,character)
+        counter =  testing.shear(counter,character)
+        counter =  testing.transpose_90(counter,character)
+        counter =  testing.transpose_270(counter,character)
+        counter = testing.blur(1,counter,character)
+        counter =  testing.blur(2,counter,character)
+        counter =  testing.blur(3,counter,character)
+        counter =  testing.blur(4,counter,character)
+        counter =  testing.blur(5,counter,character)
         print(counter)
         print("done")
