@@ -144,7 +144,7 @@ if __name__ == '__main__':
     katakana = ['a','i','u','e','o','ka','ki','ku','ke','ko']
     for i in range(0,10): 
         character = katakana[i]
-        print(counter)
+        counter = 0 
         counter= training.rotate_image_(15,counter,character)
         counter = training.rotate_image_(30,counter,character)
         counter = training.rotate_image_(45,counter,character)
@@ -161,5 +161,5 @@ if __name__ == '__main__':
         counter =  training.blur(4,counter,character)
         counter =  training.blur(5,counter,character)
         print(character)
-        print(counter)
+        #print(counter)
         print("done")
