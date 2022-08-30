@@ -23,3 +23,14 @@ class testing:
     return:
         counter
 """ 
+    def blur(self,blurr,counter): 
+        #blur
+        for i in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+            
+            gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
+            for j in range (0,5):
+                gaussImage.save('../../dataset/test/a/picture_'+str(counter) + '.png')
+                counter = counter + 1
+        return counter
+        
