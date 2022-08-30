@@ -42,7 +42,7 @@ class testing:
     return:
         counter
 """ 
-    def rotate_image_(self,angle,counter):
+    def rotate_image_(self,angle,counter,character):
         
         for i in range (0,38):
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
@@ -87,7 +87,7 @@ class testing:
     return:
         counter
 """ 
-    def shear(self,counter):
+    def shear(self,counter,character):
         for i in range (0,38):
             img = cv2.imread('./' + character + '/test_'+ str(i) + '.png')
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
@@ -112,7 +112,7 @@ class testing:
     return:
         counter
 """ 
-    def transpose_90(self,counter): 
+    def transpose_90(self,counter,character): 
         for i in range (0,38):
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
@@ -129,7 +129,7 @@ class testing:
     return:
         counter
 """ 
-    def transpose_270(self,counter):
+    def transpose_270(self,counter,character):
         for i in range (0,38):
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
@@ -142,7 +142,7 @@ if __name__ == '__main__':
     testing = testing()
     katakana = []
     katakana = ['a','i','u','e','o','ka','ki','ku','ke','ko']
-    for i in range(0,10): 
+    for i in range(0,1): 
         character = katakana[i]
         counter = 0
         print(counter)
