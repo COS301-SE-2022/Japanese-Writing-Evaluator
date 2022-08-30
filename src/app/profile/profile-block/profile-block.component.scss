@@ -1,25 +1,39 @@
 ion-content{
   position: relative;
-  height: 140px;
-  width: 335px;
+  height: 235px;
+  width: 235px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.privilege{
+  color: white;
+  border-radius: 5px;
+}
+
+a {
+  color: blue;
+  background-color: transparent;
 }
 
 ion-avatar{
   position: relative;
-  top: 15px;
-  left: 8px;
+  top: 40px;
+  margin: 0 auto;
 }
 
 p{
   position: relative;
-  bottom: 28px;
+  margin: 0 auto;
+  top: 45px;
 }
 
 div{
   border: 5px solid #960722;
-  height: 100px;
-  width: 300px;
+  height: 200px;
+  width: 200px;
   border-radius: 25px;
   padding: auto;
 }
@@ -31,6 +45,6 @@ ion-icon{
 #icon{
   position: absolute;
   background-color: white;
-  left: 270px;
+  left: 170px;
   top: 22px;
 }
