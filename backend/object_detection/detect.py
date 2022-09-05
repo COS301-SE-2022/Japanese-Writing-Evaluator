@@ -1,5 +1,7 @@
 import base64
+from flask import jsonify
 import torch
+import re
 
 class detect:
 
@@ -22,4 +24,21 @@ class detect:
         im = "objectImage.jpeg"
 
         results = model(im)
-        results.show()
+        res = str(results.pandas().xyxy[0])
+        splitted = res.split('name')
+        
+        print(results.print())
+
+        classes = re.findall(r'[a-zA-Z]+', splitted[1])
+        print(classes)
+        print(len(classes))
+
+        store = []
+        for i in classes:
+            if i in store: 
+                continue
+            else:
+                store.append(i)
+
+        return jsonify({'response': store}), 200
+
