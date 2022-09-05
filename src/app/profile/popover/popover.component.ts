@@ -30,6 +30,7 @@ export class PopoverComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: PrivilegeModalPage,
+      cssClass: 'my-modal-class'
       // componentProps: {
       //   scores: this.myScores,
       //   letter : this.letter,

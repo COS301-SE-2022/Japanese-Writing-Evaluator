@@ -1,3 +1,20 @@
 <div class="ion-padding">
-<ion-button expand="block" color="primary" (click)="close()">Close</ion-button>
+  Update the current user's permissions:
+  <ion-list>
+    <ion-radio-group value="admin">
+      <ion-item>
+        <ion-label>admin</ion-label>
+        <ion-radio slot="start" value="admin"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>user</ion-label>
+        <ion-radio slot="start" value="user"></ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </ion-list>
 </div>
+
+<ion-button color="primary" (click)="close()">Close</ion-button>
+
