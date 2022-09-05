@@ -1,9 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>models</ion-title>
-  </ion-toolbar>
-</ion-header>
+
 
 <ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+
+    <h1></h1>
+    <p>
+      <strong>Dashboard</strong><br> <span>ダッシュボード</span><br>
+      "In some narrow use cases, computer vision is more effective than human vision."<br>
+      -<a href="https://loupfunds.com/eight-fun-facts-about-computer-vision/">Doug Clinton</a>
+    </p>
+  </div>
+
+  <div > <!--graph will go here-->
+
+  </div>
+
+
+  <ion-accordion-group> <!--the drop down for the models for each of the writing styles-->
+    <ion-grid>
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" >
+            <ion-label>Character Recognition</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col >
+              <ion-card [routerLink]="['']" class="models" ><!--for loop for the number of models-->
+                <h5>Character Recognition Model</h5>
+              </ion-card>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" >
+            <ion-label>Hiragana</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col *ngFor="">
+              <div [routerLink]="['']" class="models" ><!--for loop for the number of models-->
+                <h5>Each Strokes model</h5>
+              </div>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" >
+            <ion-label>Katakana</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col *ngFor="">
+              <div [routerLink]="['']" class="models" ><!--for loop for the number of models-->
+                <h5>Each Strokes model</h5>
+              </div>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" >
+            <ion-label>Kanji</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col *ngFor="">
+              <div [routerLink]="['']" class="models" ><!--for loop for the number of models-->
+                <h5>Each Strokes model</h5>
+              </div>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+    </ion-grid>
+  </ion-accordion-group>
 
 </ion-content>
