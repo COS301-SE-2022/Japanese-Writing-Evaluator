@@ -34,9 +34,10 @@ class CharacterRecognition():
             val_data
     """             
     def createDatasets(self, path, train_size, val_size):
+        print("\nCreating Data.....")
         train = os.path.join(path, 'train')
         val = os.path.join(path, 'validation')
-        self.img_size = (150, 150)
+        self.img_size = (224, 224)
         
         train_data = tf.keras.utils.image_dataset_from_directory(train, shuffle = True, batch_size = train_size, image_size = self.img_size)
         val_data = tf.keras.utils.image_dataset_from_directory(val, shuffle = True, batch_size = val_size, image_size = self.img_size)
@@ -68,17 +69,12 @@ class CharacterRecognition():
     """  
     def createModel(self):  
         print('\nCreating the model......')  
-        #create base model
-        base_model = tf.keras.application.ResNet50V2(input_shape = self.img_size, include_top = False, weight='imagenet')
-        feature_layer = hub.KerasLayer(
-            base_model,
-            input_shape=(150,150,3),
-            trainable=False
-        )
+        base_model = tf.keras.applications.ResNet50V2(input_shape = self.img_size + (3,), include_top = False)
         self.model = tf.keras.Sequential([
-            feature_layer,
+            base_model,
             tf.keras.layers.Dense(self.num_classes, activation = "softmax")
         ])
+        self.model.trainable=False
         self.model.summary()
               
         #compile the model
@@ -98,7 +94,7 @@ class CharacterRecognition():
         Set varable model
             histroy to help we train again
     """ 
-    def trainModel(self, val):
+    def trainModel(self):
         print('\nTraining the model......')
         history = self.model.fit(
             self.train_data,
@@ -139,3 +135,8 @@ class CharacterRecognition():
     
 if __name__ == '__main__':
     version = input('model version: ')
+    cr = CharacterRecognition(version, 0)
+    cr.createDatasets('../../../../dataset', 57000, 19650)
+    cr.createModel()
+    cr.trainModel()
+    cr.storeData()
