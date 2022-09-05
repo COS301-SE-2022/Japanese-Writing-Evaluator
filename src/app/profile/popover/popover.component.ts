@@ -12,7 +12,7 @@ export class PopoverComponent implements OnInit {
 
   ngOnInit() {
     //list of the popover options
-    this.list = ['edit privileges', 'view dashboard'];
+    this.list = ['edit privileges'];
   }
 
   //TODO: Navigate to the appropriate page based on which popover function was selected, #203, Maryam
@@ -21,10 +21,6 @@ export class PopoverComponent implements OnInit {
     if(item === this.list[0]){
 
     }
-    if(item === this.list[1]){
-
-    }
-
   }
 
 }
