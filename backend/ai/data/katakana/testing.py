@@ -30,7 +30,7 @@ class testing:
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
             for j in range (0,5):
-                gaussImage.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
+                gaussImage.save('../../katakana/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -48,7 +48,7 @@ class testing:
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.rotate(angle)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
+                manipulated.save('../../katakana/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -75,7 +75,7 @@ class testing:
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
+                manipulated.save('../../katakana/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -100,7 +100,7 @@ class testing:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,50):
-                plt.imsave('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png',sheared_img)
+                plt.imsave('../../katakana/test/' + character + '/picture_'+str(counter) + '.png',sheared_img)
                 counter = counter + 1
         return counter
     """
@@ -117,7 +117,7 @@ class testing:
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
+                manipulated.save('../../katakana/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """
@@ -134,7 +134,7 @@ class testing:
             manipulated =Image.open('./' + character + '/test_'+ str(i) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
             for j in range (0,50):
-                manipulated.save('../../dataset/test/katakana/' + character + '/picture_'+str(counter) + '.png')
+                manipulated.save('../../katakana/test/' + character + '/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
 
