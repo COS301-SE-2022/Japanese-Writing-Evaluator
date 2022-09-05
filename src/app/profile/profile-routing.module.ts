@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: ProfilePage
+  },  {
+    path: 'privilege-modal',
+    loadChildren: () => import('./privilege-modal/privilege-modal.module').then( m => m.PrivilegeModalPageModule)
   }
+
 ];
 
 @NgModule({
