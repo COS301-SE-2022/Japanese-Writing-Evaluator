@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ModalController } from '@ionic/angular';
+import { PrivilegeModalPage } from '../privilege-modal/privilege-modal.page';
+import { PopoverController } from '@ionic/angular';
 @Component({
   selector: 'app-popover',
   templateUrl: './popover.component.html',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class PopoverComponent implements OnInit {
 
   list: string[];
-  constructor() { }
+  constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {}
 
   ngOnInit() {
     //list of the popover options
@@ -19,8 +21,27 @@ export class PopoverComponent implements OnInit {
   popoverOption(item: string){
 
     if(item === this.list[0]){
-
+        this.presentModal();
+        this.close();
     }
+  }
+
+  //TODO: open the modal as well as send the modal data, #183, Maryam Mohamad Al Mahdi
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: PrivilegeModalPage,
+      // componentProps: {
+      //   scores: this.myScores,
+      //   letter : this.letter,
+      //   alphabetType : this.alphabetType
+      // }
+    });
+    await modal.present();
+  }
+
+  //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
+  close() {
+    this.popOverCtrl.dismiss();
   }
 
 }

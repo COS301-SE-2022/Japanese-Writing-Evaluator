@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-privilege-modal',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrivilegeModalPage implements OnInit {
 
-  constructor() { }
+  constructor(public modalController: ModalController, private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  //TODO: closes the modal, #183, Maryam Mohamad Al Mahdi
+  close() {
+    this.modalController.dismiss();
   }
 
 }
