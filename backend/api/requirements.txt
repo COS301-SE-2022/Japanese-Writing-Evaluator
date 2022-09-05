@@ -3,6 +3,11 @@ pyjwt
 datetime
 uuid
 Flask-SQLAlchemy
-pyscopg2==2.9.3
-dotenv
+tensorflow
+tensorflow-gpu
+manager
+pandas
+Pyrebase
+firebase-admin
 sendgrid
+schedule
