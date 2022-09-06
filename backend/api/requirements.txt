@@ -10,3 +10,4 @@ Pyrebase
 firebase-admin
 sendgrid
 schedule
+python-dotenv
