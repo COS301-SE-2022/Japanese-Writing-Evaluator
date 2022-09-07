@@ -105,31 +105,21 @@ class CharacterRecognition():
         self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
         self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
         
+        resnet = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
         img_shape = self.img_size + (3,)
-        base_model = tf.keras.applications.ResNet50V2(input_shape=img_shape,include_top=False,weights='imagenet')
-        
-        # image_batch, label_batch = next(iter(self.train_data))
-        # feature_batch = base_model(image_batch)
-        # print(feature_batch.shape)
-        
-        base_model.trainable = False
+        base_model = hub.KerasLayer(
+            resnet,
+            input_shape = img_shape,
+            trainable = False
+        )
         base_model.summary()
-        # global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
-        # feature_batch_average = global_average_layer(feature_batch)
-        # print(feature_batch_average.shape)
         
-        prediction_layer = tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
-        pred_batch = prediction_layer(feature_batch_average)
-        print(pred_batch.shape)
-         
-        inputs = tf.keras.Input(shape= img_shape)
-        x = rescale(inputs)
-        x = base_model(x, training=False)
-        x = global_average_layer(x)
-        x = tf.keras.layers.Dropout(0.2)(x)
-        outputs = prediction_layer(x)
-        self.model = tf.keras.Model(inputs, outputs)
-                    
+        self.model = tf.keras.Sequential([
+            base_model,
+            tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
+        ])        
+        self.model.summary()
+                 
         #compile the model
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
                            #    optimizer='adam',
