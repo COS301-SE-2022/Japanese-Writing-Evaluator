@@ -105,7 +105,8 @@ class CharacterRecognition():
         self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
         self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
         
-        resnet = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
+        url = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
+        resnet = url
         img_shape = self.img_size + (3,)
         base_model = hub.KerasLayer(
             resnet,
