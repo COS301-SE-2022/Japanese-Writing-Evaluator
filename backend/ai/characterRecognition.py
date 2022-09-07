@@ -123,7 +123,7 @@ class CharacterRecognition():
         #compile the model
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
                            #    optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
               metrics=['accuracy'])
         self.model.summary()
         
