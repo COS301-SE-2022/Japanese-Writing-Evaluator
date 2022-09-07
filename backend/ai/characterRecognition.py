@@ -31,26 +31,56 @@ class CharacterRecognition():
         sets varaibles:
             train_data
             test_data
-            val_data
+            test_data
     """             
-    def createDatasets(self, path, train_size, val_size):
+    def createDatasets(self, path, train_size, test_size):
         print("\nCreating Data.....")
         train = os.path.join(path, 'train')
-        val = os.path.join(path, 'validation')
+        test = os.path.join(path, 'test')
         self.img_size = (224, 224)
         
-        train_data = tf.keras.utils.image_dataset_from_directory(train, shuffle = True, batch_size = train_size, image_size = self.img_size)
-        val_data = tf.keras.utils.image_dataset_from_directory(val, shuffle = True, batch_size = val_size, image_size = self.img_size)
+        train_data = tf.keras.utils.image_dataset_from_directory(
+            train, 
+            shuffle = True, 
+            batch_size = train_size, 
+            image_size = self.img_size,
+            label_mode = 'categorical'
+        )
+        test_data = tf.keras.utils.image_dataset_from_directory(
+            test, 
+            shuffle = True, 
+            batch_size = test_size, 
+            image_size = self.img_size,
+            validation_split = 0.2,
+            seed=1969,
+            subset = 'training',
+            label_mode = 'categorical'
+        )   
+        val_data = tf.keras.utils.image_dataset_from_directory(
+            test, 
+            shuffle = True, 
+            batch_size = test_size, 
+            image_size = self.img_size,
+            validation_split = 0.2,
+            seed=1969,
+            subset = 'validation',
+            label_mode = 'categorical'
+        ) 
 
-        val_batches = tf.data.experimental.cardinality(val_data)
-        test_data = val_data.take(val_batches // 5)
-        val_data = val_data.skip(val_batches // 5)
+        self.data_classes = test_data.class_names
+        
+        print("Classes: ", self.data_classes)
+        
+        print('\nTrain Batches: %d' % tf.data.experimental.cardinality(train_data))
+        print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
+        print('Val Batches: %d' % tf.data.experimental.cardinality(val_data))
+
         
         auto = tf.data.AUTOTUNE
 
         self.train_data = train_data.prefetch(buffer_size=auto)
-        self.val_data = val_data.prefetch(buffer_size=auto)
         self.test_data = test_data.prefetch(buffer_size=auto)
+        self.val_data = val_data.prefetch(buffer_size=auto)
         return None
     
     """
@@ -69,18 +99,41 @@ class CharacterRecognition():
     """  
     def createModel(self):  
         print('\nCreating the model......')  
-        base_model = tf.keras.applications.ResNet50V2(input_shape = self.img_size + (3,), include_top = False)
-        self.model = tf.keras.Sequential([
-            base_model,
-            tf.keras.layers.Dense(self.num_classes, activation = "softmax")
-        ])
-        self.model.trainable=False
-        self.model.summary()
-              
+      
+        rescale = tf.keras.layers.Rescaling(1./127.5, offset=-1)
+        self.train_data = self.train_data.map(lambda x, y: (rescale(x), y))
+        self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
+        self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
+        
+        img_shape = self.img_size + (3,)
+        base_model = tf.keras.applications.ResNet50V2(input_shape=img_shape,include_top=False,weights='imagenet')
+        
+        # image_batch, label_batch = next(iter(self.train_data))
+        # feature_batch = base_model(image_batch)
+        # print(feature_batch.shape)
+        
+        base_model.trainable = False
+        base_model.summary()
+        # global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+        # feature_batch_average = global_average_layer(feature_batch)
+        # print(feature_batch_average.shape)
+        
+        prediction_layer = tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
+        pred_batch = prediction_layer(feature_batch_average)
+        print(pred_batch.shape)
+         
+        inputs = tf.keras.Input(shape= img_shape)
+        x = rescale(inputs)
+        x = base_model(x, training=False)
+        x = global_average_layer(x)
+        x = tf.keras.layers.Dropout(0.2)(x)
+        outputs = prediction_layer(x)
+        self.model = tf.keras.Model(inputs, outputs)
+                    
         #compile the model
-        base_learning_rate = 0.0001
-        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=base_learning_rate),
-              loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+                           #    optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
               metrics=['accuracy'])
         self.model.summary()
         
@@ -101,6 +154,11 @@ class CharacterRecognition():
             epochs = self.e,
             validation_data=self.val_data
         )
+        self.test_loss, self.test_acc = self.model.evaluate(self.stest_data, verbose=2)
+        
+        print('\nAccuraccy: ' + str(self.test_acc))
+        print('Loss: ' + str(self.test_loss))
+        
     
     """
         modelFitune: 
@@ -136,7 +194,7 @@ class CharacterRecognition():
 if __name__ == '__main__':
     version = input('model version: ')
     cr = CharacterRecognition(version, 0)
-    cr.createDatasets('../../../../dataset', 57000, 19650)
+    cr.createDatasets('../../../dataset', 57000, 19650)
     cr.createModel()
     cr.trainModel()
     cr.storeData()
