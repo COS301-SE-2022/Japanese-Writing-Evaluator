@@ -113,7 +113,6 @@ class CharacterRecognition():
             input_shape = img_shape,
             trainable = False
         )
-        base_model.summary()
         
         self.model = tf.keras.Sequential([
             base_model,
