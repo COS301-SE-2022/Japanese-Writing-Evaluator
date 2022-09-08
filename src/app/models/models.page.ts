@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { Models } from '../shared/interfaces/models';
 
 @Component({
   selector: 'app-models',
@@ -8,9 +9,27 @@ import { Router } from '@angular/router';
 })
 export class ModelsPage implements OnInit {
 
+  @ViewChild('pieCanvas') private pieCanvas: ElementRef;
+
+  characterModel: Models[];
+  pieChartData: number[];
+  pieChartLabels: string[] = ['accuracy','loss'];
+
+
   constructor(private router: Router) { }
 
   ngOnInit() {
+    this.characterModel = [{
+      version: 'Character',
+      date: new Date('2022-07-18'),
+      accuracy: 90.44,
+      loss: 39.84,
+    }];
+    this.pieChartData = []; // initializing the arrayso it isnt null
+    this.characterModel.forEach(model =>{ // assigning data from api
+      this.pieChartData.push(model.accuracy);
+      this.pieChartData.push(model.loss);
+    });
   }
 
   onLogout(){
