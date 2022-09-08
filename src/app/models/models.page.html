@@ -27,8 +27,11 @@
           </ion-item>
           <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
             <ion-col >
-              <ion-card [routerLink]="['']" class="models" ><!--for loop for the number of models-->
+              <app-piechart [data]="pieChartData" [labels]="pieChartLabels" ></app-piechart>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
                 <h5>Character Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <app-piechart [data]="pieChartData" [labels]="pieChartLabels"  ></app-piechart>
               </ion-card>
             </ion-col>
           </div>
