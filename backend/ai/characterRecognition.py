@@ -43,43 +43,35 @@ class CharacterRecognition():
             train, 
             shuffle = True, 
             batch_size = train_size, 
-            image_size = self.img_size,
-            label_mode = 'categorical'
+            image_size = self.img_size
         )
-        test_data = tf.keras.utils.image_dataset_from_directory(
-            test, 
-            shuffle = True, 
-            batch_size = test_size, 
-            image_size = self.img_size,
-            validation_split = 0.2,
-            seed=1969,
-            subset = 'training',
-            label_mode = 'categorical'
-        )   
+        # test_data = tf.keras.utils.image_dataset_from_directory(
+        #     test, 
+        #     shuffle = True, 
+        #     batch_size = test_size, 
+        #     image_size = self.img_size,
+        #     label_mode = 'categorical'
+        # )   
         val_data = tf.keras.utils.image_dataset_from_directory(
             test, 
             shuffle = True, 
             batch_size = test_size, 
-            image_size = self.img_size,
-            validation_split = 0.2,
-            seed=1969,
-            subset = 'validation',
-            label_mode = 'categorical'
+            image_size = self.img_size
         ) 
 
-        self.data_classes = test_data.class_names
+        self.data_classes = train_data.class_names
         
         print("Classes: ", self.data_classes)
         
         print('\nTrain Batches: %d' % tf.data.experimental.cardinality(train_data))
-        print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
+        # print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
         print('Val Batches: %d' % tf.data.experimental.cardinality(val_data))
 
         
         auto = tf.data.AUTOTUNE
 
         self.train_data = train_data.prefetch(buffer_size=auto)
-        self.test_data = test_data.prefetch(buffer_size=auto)
+        # self.test_data = test_data.prefetch(buffer_size=auto)
         self.val_data = val_data.prefetch(buffer_size=auto)
         return None
     
@@ -103,7 +95,7 @@ class CharacterRecognition():
         rescale = tf.keras.layers.Rescaling(1./127.5, offset=-1)
         self.train_data = self.train_data.map(lambda x, y: (rescale(x), y))
         self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
-        self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
+        # self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
         
         url = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
         resnet = url
@@ -141,10 +133,12 @@ class CharacterRecognition():
         print('\nTraining the model......')
         history = self.model.fit(
             self.train_data,
-            epochs = self.e,
-            validation_data=self.val_data
+            validation_data=self.val_data,
+            epochs = self.e
         )
-        self.test_loss, self.test_acc = self.model.evaluate(self.stest_data, verbose=2)
+        
+        print('\nTesing the model.....')
+        self.test_loss, self.test_acc = self.model.evaluate(self.val_data, verbose=2)
         
         print('\nAccuraccy: ' + str(self.test_acc))
         print('Loss: ' + str(self.test_loss))
@@ -184,7 +178,7 @@ class CharacterRecognition():
 if __name__ == '__main__':
     version = input('model version: ')
     cr = CharacterRecognition(version, 0)
-    cr.createDatasets('../../../dataset', 57000, 19650)
+    cr.createDatasets('../../../dataset', 57000, 19950)
     cr.createModel()
     cr.trainModel()
     cr.storeData()
