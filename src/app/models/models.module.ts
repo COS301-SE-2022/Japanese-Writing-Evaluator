@@ -7,13 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { ModelsPageRoutingModule } from './models-routing.module';
 
 import { ModelsPage } from './models.page';
+import { PiechartModule } from '../shared/components/piechart/piechart.module';
+
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ModelsPageRoutingModule
+    ModelsPageRoutingModule,
+    PiechartModule
   ],
   declarations: [ModelsPage]
 })
