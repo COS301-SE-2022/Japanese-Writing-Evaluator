@@ -2,6 +2,7 @@ import base64
 from flask import jsonify
 import torch
 import re
+from googletrans import Translator
 import pykakasi
 
 class detect:
@@ -54,13 +55,17 @@ class detect:
             characters = list(text[1])
 
             word = text[1]
+            res = convert.convert(word)
 
-            pronun = translation[3].split("pronunciation=")
+            for j in res:
+    
+                chars = list(j['hira'])
 
-            words.append({
-                "Object": i,
-                "Characters": characters,
-                "Pronunciation": pronun[1]
-            })
+                words.append({
+                    "Object": i,
+                    "Characters": chars,
+                    "Pronunciation": j['hepburn']
+                })
+
 
         return jsonify({'response': words}), 200
