@@ -42,7 +42,7 @@ class detect:
                 store.append(i)
 
         translator = Translator()
-
+        convert = pykakasi.kakasi()
         # store = translator.translate(text1, "ja", "en")
 
         words = []
