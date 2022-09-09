@@ -55,4 +55,10 @@ class detect:
 
             pronun = translation[3].split("pronunciation=")
 
+            words.append({
+                "Object": i,
+                "Characters": characters,
+                "Pronunciation": pronun[1]
+            })
+
         return jsonify({'response': words}), 200
