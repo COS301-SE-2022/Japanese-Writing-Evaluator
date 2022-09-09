@@ -6,3 +6,4 @@ Flask-SQLAlchemy
 pyscopg2==2.9.3
 dotenv
 sendgrid
+googletrans==4.0.0-rc1
