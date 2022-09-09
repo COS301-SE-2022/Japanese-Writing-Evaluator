@@ -33,8 +33,11 @@ class CharacterRecognition():
             train, 
             shuffle = True, 
             batch_size = train_size, 
-            image_size = self.img_size
-        )
+            image_size = self.img_size,
+            validation_split = 0.3,
+            subset = "training",
+            seed = 369
+            )
         # test_data = tf.keras.utils.image_dataset_from_directory(
         #     test, 
         #     shuffle = True, 
