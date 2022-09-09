@@ -7,3 +7,4 @@ pyscopg2==2.9.3
 dotenv
 sendgrid
 pykakasi
+googletrans==4.0.0-rc1
