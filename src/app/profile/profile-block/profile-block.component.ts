@@ -1,5 +1,5 @@
 import { PopoverComponent } from './../popover/popover.component';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 
 @Component({
@@ -8,6 +8,8 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./profile-block.component.scss'],
 })
 export class ProfileBlockComponent implements OnInit {
+  @Input() name: string;
+  @Input() role: string;
 
   constructor(private popCtrl: PopoverController) { }
 
@@ -17,7 +19,8 @@ export class ProfileBlockComponent implements OnInit {
   async openPopover(ev: any){
     const popover =  await this.popCtrl.create({
       component: PopoverComponent,
-      event: ev
+     componentProps: {value: 123},
+      event: ev,
     });
     return await popover.present();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { PrivilegeModalPage } from '../privilege-modal/privilege-modal.page';
 import { PopoverController } from '@ionic/angular';
@@ -8,7 +8,7 @@ import { PopoverController } from '@ionic/angular';
   styleUrls: ['./popover.component.scss'],
 })
 export class PopoverComponent implements OnInit {
-
+  @Input() role: string;
   list: string[];
   constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {}
 
@@ -30,12 +30,10 @@ export class PopoverComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: PrivilegeModalPage,
-      cssClass: 'my-modal-class'
-      // componentProps: {
-      //   scores: this.myScores,
-      //   letter : this.letter,
-      //   alphabetType : this.alphabetType
-      // }
+      cssClass: 'my-modal-class',
+      componentProps: {
+        role: this.role,
+      }
     });
     await modal.present();
   }

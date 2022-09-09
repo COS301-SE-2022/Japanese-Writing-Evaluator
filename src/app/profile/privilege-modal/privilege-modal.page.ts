@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 
@@ -8,6 +8,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./privilege-modal.page.scss'],
 })
 export class PrivilegeModalPage implements OnInit {
+  @Input() role;
 
   constructor(public modalController: ModalController, private router: Router) {}
 
