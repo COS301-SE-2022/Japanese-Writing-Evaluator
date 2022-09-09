@@ -2,7 +2,7 @@ import base64
 from flask import jsonify
 import torch
 import re
-from googletrans import Translator
+import pykakasi
 
 class detect:
 
