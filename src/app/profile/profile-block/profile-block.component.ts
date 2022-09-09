@@ -19,7 +19,7 @@ export class ProfileBlockComponent implements OnInit {
   async openPopover(ev: any){
     const popover =  await this.popCtrl.create({
       component: PopoverComponent,
-     componentProps: {value: 123},
+     componentProps: {role: this.role},
       event: ev,
     });
     return await popover.present();
