@@ -1,19 +1,9 @@
 # Source: TensorFlowhub links:
 # - https://www.tensorflow.org/tutorials/images/transfer_learning_with_hub
 
-from logging.config import valid_ident
 import os
-from tensorflow import keras
-import matplotlib.pyplot as plt
 import tensorflow as tf
-import numpy as np
-from random import shuffle
-from PIL import Image
-from sklearn.utils import shuffle
-from sklearn.model_selection import train_test_split
 import tensorflow_hub as hub
-from keras.losses import categorical_crossentropy
-from keras.metrics import categorical_accuracy
 from datetime import datetime
 import json
 
