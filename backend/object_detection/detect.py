@@ -53,4 +53,6 @@ class detect:
             text = translation[2].split("text=")
             characters = list(text[1])
 
+            pronun = translation[3].split("pronunciation=")
+
         return jsonify({'response': words}), 200
