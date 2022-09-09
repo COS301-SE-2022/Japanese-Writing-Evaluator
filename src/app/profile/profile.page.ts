@@ -8,6 +8,15 @@ import { Router } from '@angular/router';
 })
 export class ProfilePage implements OnInit {
 
+  //Test Data
+  users = [
+    {name: 'Maryam', role: 'admin'},
+    {name: 'Sihle', role: 'admin'},
+    {name: 'Phumu', role: 'admin'},
+    {name: 'Raymond', role: 'user'},
+    {name: 'Phil', role: 'user'},
+  ];
+
   constructor(private router: Router) { }
 
   ngOnInit() {

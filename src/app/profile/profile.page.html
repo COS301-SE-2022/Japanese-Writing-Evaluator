@@ -8,7 +8,16 @@
       View profiles of users/admin below.
     </p>
   </div>
-  <app-profile-block></app-profile-block>
-  <app-profile-block></app-profile-block>
+
+  <div class>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of users" size="col-auto">
+          <app-profile-block></app-profile-block>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
 
 </ion-content>
