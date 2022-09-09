@@ -35,13 +35,13 @@ class CharacterRecognition():
             batch_size = train_size, 
             image_size = self.img_size
         )
-        test_data = tf.keras.utils.image_dataset_from_directory(
-            test, 
-            shuffle = True, 
-            batch_size = test_size, 
-            image_size = self.img_size,
-            label_mode = 'categorical'
-        )   
+        # test_data = tf.keras.utils.image_dataset_from_directory(
+        #     test, 
+        #     shuffle = True, 
+        #     batch_size = test_size, 
+        #     image_size = self.img_size,
+        #     label_mode = 'categorical'
+        # )   
         val_data = tf.keras.utils.image_dataset_from_directory(
             test, 
             shuffle = True, 
