@@ -49,5 +49,6 @@ class detect:
         for i in store:
 
             trans = translator.translate(i, "ja", "en")
+            translation = str(trans).split(",")
 
         return jsonify({'response': words}), 200
