@@ -2,6 +2,7 @@ import base64
 from flask import jsonify
 import torch
 import re
+from googletrans import Translator
 
 class detect:
 
@@ -40,5 +41,26 @@ class detect:
             else:
                 store.append(i)
 
+        translator = Translator()
+
+        # store = translator.translate(text1, "ja", "en")
+
+        words = []
+        for i in store:
+            words.append(translator.translate())
+
         return jsonify({'response': store}), 200
+
+text1 = "hello"
+
+translator = Translator()
+
+# print(translator.detect(text1))
+store = translator.translate(text1, "ja", "en")
+
+splitted = str(store).split(",")
+
+for i in range(len(splitted)):
+    print(splitted[i])
+
 
