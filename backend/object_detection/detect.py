@@ -51,5 +51,6 @@ class detect:
             trans = translator.translate(i, "ja", "en")
             translation = str(trans).split(",")
             text = translation[2].split("text=")
+            characters = list(text[1])
 
         return jsonify({'response': words}), 200
