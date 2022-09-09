@@ -38,17 +38,16 @@ class CharacterRecognition():
             subset = "training",
             seed = 369
             )
-        # test_data = tf.keras.utils.image_dataset_from_directory(
-        #     test, 
-        #     shuffle = True, 
-        #     batch_size = test_size, 
-        #     image_size = self.img_size,
-        #     label_mode = 'categorical'
-        # )   
-        val_data = tf.keras.utils.image_dataset_from_directory(
+        test_data = tf.keras.utils.image_dataset_from_directory(
             test, 
             shuffle = True, 
             batch_size = test_size, 
+            image_size = self.img_size,
+        )   
+        val_data = tf.keras.utils.image_dataset_from_directory(
+            test, 
+            shuffle = True, 
+            batch_size = train_size, 
             image_size = self.img_size,
             validation_split = 0.3,
             subset = "validation",
