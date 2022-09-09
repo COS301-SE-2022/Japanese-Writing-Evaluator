@@ -28,11 +28,11 @@ class detect:
         res = str(results.pandas().xyxy[0])
         splitted = res.split('name')
         
-        print(results.print())
+        # print(results.print())
 
         classes = re.findall(r'[a-zA-Z]+', splitted[1])
-        print(classes)
-        print(len(classes))
+        # print(classes)
+        # print(len(classes))
 
         store = []
         for i in classes:
@@ -47,20 +47,7 @@ class detect:
 
         words = []
         for i in store:
-            words.append(translator.translate())
 
-        return jsonify({'response': store}), 200
+            trans = translator.translate(i, "ja", "en")
 
-text1 = "hello"
-
-translator = Translator()
-
-# print(translator.detect(text1))
-store = translator.translate(text1, "ja", "en")
-
-splitted = str(store).split(",")
-
-for i in range(len(splitted)):
-    print(splitted[i])
-
-
+        return jsonify({'response': words}), 200
