@@ -53,6 +53,8 @@ class detect:
             text = translation[2].split("text=")
             characters = list(text[1])
 
+            word = text[1]
+
             pronun = translation[3].split("pronunciation=")
 
             words.append({
