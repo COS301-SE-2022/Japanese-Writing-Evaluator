@@ -49,7 +49,10 @@ class CharacterRecognition():
             test, 
             shuffle = True, 
             batch_size = test_size, 
-            image_size = self.img_size
+            image_size = self.img_size,
+            validation_split = 0.3,
+            subset = "validation",
+            seed = 369
         ) 
 
         self.data_classes = train_data.class_names
