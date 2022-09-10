@@ -114,7 +114,7 @@ def callViewImages():
         json response with all users
 """
 @app.route('/viewUsers', methods=['GET'])
-# @token_required
+@token_required
 def callListUsers():
     return event_bus.eventListUsers(int(request.json["id"]))
 
@@ -282,6 +282,20 @@ def callListModelData():
 @token_required
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
+
+"""
+    callObjectDetection function:
+        calls the object detection which detects objects in image
+    request body: 
+        image
+    return:
+        json response
+"""
+@app.route('/object-detection', methods = ['POST'])
+@token_required
+def callObjectDetection():
+    return event_bus.eventObjectDetection(str(request.json["image"]))
+
 
 if __name__ == '__main__':
     app.run(debug = True)
