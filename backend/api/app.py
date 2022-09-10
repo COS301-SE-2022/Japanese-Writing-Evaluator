@@ -1,5 +1,5 @@
 from functools import wraps
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
@@ -12,7 +12,7 @@ sys.path.insert(0, '../email_user')
 from send_email import Send_Email
 import event_bus
 
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
