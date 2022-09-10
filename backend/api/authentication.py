@@ -1,7 +1,5 @@
-from getpass import getuser
 import hashlib
 import uuid
-from evaluator import Evaluator
 from flask import jsonify
 
 class Authentication:
