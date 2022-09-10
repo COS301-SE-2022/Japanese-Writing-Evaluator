@@ -1,5 +1,4 @@
 from functools import partial
-from urllib import response
 from admin import Admin
 
 from flask import jsonify
