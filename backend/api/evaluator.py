@@ -1,8 +1,6 @@
 from PIL import Image
 import tensorflow as tf
 import numpy as np
-from flask import jsonify
-import base64
 
 class Evaluator(object):
     def __init__(self, style, input_char):

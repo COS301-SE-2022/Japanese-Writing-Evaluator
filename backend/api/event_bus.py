@@ -1,6 +1,4 @@
 from functools import partial
-from urllib import response
-from admin import Admin
 
 from flask import jsonify
 from authentication import Authentication
@@ -22,7 +20,6 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
-admin = Admin(db)
 eventBus = []
 
 """
@@ -259,7 +256,7 @@ def eventListUsers(id):
     return executeBus(event_number)
 
 def event_editUserPrivileges(id, ad):
-    eventBus.append(partial(admin.editUserPrivileges, id, ad))
+    eventBus.append(partial(auth.editUserPrivileges, id, ad))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
@@ -268,7 +265,7 @@ def event_editUserPrivileges(id, ad):
         return None
     
 def event_listModelData():
-    eventBus.append(partial(admin.listModelData))
+    eventBus.append(partial(auth.listModelData))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
@@ -277,7 +274,7 @@ def event_listModelData():
         return None
    
 def eventViewModelData(version):
-    eventBus.append(partial(admin.viewModelData, version))
+    eventBus.append(partial(auth.viewModelData, version))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
