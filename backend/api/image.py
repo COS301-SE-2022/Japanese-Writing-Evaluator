@@ -62,8 +62,9 @@ class Image:
             response = []
             i = 0
             for imgs in images:
+                style = imgs[4]
                 response.append({
-                    "writingStyle": imgs[4],
+                    "writing_style": style.lower(),
                     "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
                     "character": imgs[2],
                     "score": imgs[3],
