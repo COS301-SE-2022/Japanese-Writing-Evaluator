@@ -12,7 +12,9 @@ export class PopoverComponent implements OnInit {
   list: string[];
   selectedRole: string;
 
-  constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {}
+  constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {
+    this.selectedRole = 'N/A';
+  }
 
   ngOnInit() {
     //list of the popover options
@@ -43,7 +45,6 @@ export class PopoverComponent implements OnInit {
       (data: any) => {
         if (data) {
           this.selectedRole = data.data.data;
-          console.log(this.selectedRole);
         }
       });
   }
@@ -51,6 +52,7 @@ export class PopoverComponent implements OnInit {
   //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
   close() {
     this.popOverCtrl.dismiss();
+
   }
 
 }
