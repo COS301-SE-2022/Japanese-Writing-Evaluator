@@ -34,7 +34,7 @@ class Admin:
     def listModelData(self):
         try:
             data = json.load(open('../ai/models_data.json'))
-            return jsonify({'response': 'successfully retrieved model data', 'data' : data}), 200
+            return jsonify({'response': 'successfully retrieved model data', 'data' :  data}), 200
         except:
             return jsonify({'response': 'Failed to get model data'}), 401
         
@@ -46,10 +46,10 @@ class Admin:
         return:
             json response
     """    
-    def viewModelData(self, version):
+    def viewModelData(self, version, type, style):
         try:
             data = json.load(open('../ai/models_data.json'))
-            arr = data['data']
+            arr = data['data'][style][type]
             resp = ""
             for a in arr:
                 print(a['version'])
