@@ -5,8 +5,7 @@ from authentication import Authentication
 
 import sys
 sys.path.insert(0, '../database')
-sys.path.insert(1, '../email_user')
-sys.path.insert(2, '../object_detection')
+sys.path.insert(1, '../services')
 from detect import detect
 from send_email import Send_Email
 import base64
@@ -129,6 +128,9 @@ return:
     json response
 """
 def eventSendImage(id, imageChar, image, file, writingStyle):
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
     e = Evaluator(writingStyle, imageChar)
     feedback = e.testCharacter() # call AI
     score = feedback[1]
