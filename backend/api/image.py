@@ -1,9 +1,6 @@
-from sqlalchemy import true
-from evaluator import Evaluator
 from flask import jsonify
 import base64
 from flask import jsonify
-from firebase_admin import credentials, initialize_app, storage
 import pyrebase
 import os
 import json
@@ -62,8 +59,9 @@ class Image:
             response = []
             i = 0
             for imgs in images:
+                style = imgs[4]
                 response.append({
-                    "writingStyle": imgs[4],
+                    "writing_style": style.lower(),
                     "url": self.storage.child(imgs[1]).get_url(self.user['idToken']),
                     "character": imgs[2],
                     "score": imgs[3],

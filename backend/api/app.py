@@ -1,18 +1,10 @@
 from functools import wraps
-from operator import contains
-from pydoc import importfile
-import this
-from urllib import response
-from xmlrpc.client import boolean
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
-from datetime import datetime, timedelta
 import jwt
 import os
 from flask_cors import CORS;
 from schedule import every, repeat, run_pending
-import time
-import numpy as np
 import requests
 
 import sys
@@ -20,7 +12,7 @@ sys.path.insert(0, '../email_user')
 from send_email import Send_Email
 import event_bus
 
-load_dotenv()
+# load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
