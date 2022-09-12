@@ -17,9 +17,9 @@ export interface ModelsArray{
 }
 
 export interface Models {
-    version: string;
-    date: Date;
     accuracy: number;
+    date: Date;
     loss: number;
+    version: string;
 }
 
