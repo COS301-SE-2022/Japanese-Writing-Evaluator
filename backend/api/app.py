@@ -6,9 +6,9 @@ import os
 from flask_cors import CORS;
 from schedule import every, repeat, run_pending
 import requests
-
 import sys
-sys.path.insert(0, '../email_user')
+sys.path.insert(0, '../sevices')
+sys.path.insert(1, '../evntBus')
 from send_email import Send_Email
 import event_bus
 
