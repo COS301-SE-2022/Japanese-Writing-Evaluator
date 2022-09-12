@@ -28,7 +28,10 @@ export class PrivilegeModalPage implements OnInit {
   //TODO: update the privileges of current user, #183, Maryam Mohamad Al Mahdi
   updatePrivileges(){
     if(this.selectedRole !== undefined){
-      console.log(this.selectedRole);
+      this.modalController.dismiss({ data: this.selectedRole });
+    }
+    else{
+      this.modalController.dismiss();
     }
   }
 

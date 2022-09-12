@@ -10,6 +10,8 @@ import { PopoverController } from '@ionic/angular';
 export class PopoverComponent implements OnInit {
   @Input() role: string;
   list: string[];
+  selectedRole: string;
+
   constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {}
 
   ngOnInit() {
@@ -36,6 +38,14 @@ export class PopoverComponent implements OnInit {
       }
     });
     await modal.present();
+
+      return modal.onDidDismiss().then(
+      (data: any) => {
+        if (data) {
+          this.selectedRole = data.data.data;
+          console.log(this.selectedRole);
+        }
+      });
   }
 
   //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
