@@ -28,10 +28,10 @@ export class PiechartComponent implements AfterViewInit {
     this.pieChart = new Chart(this.pieCanvas.nativeElement,{
       type: 'doughnut',
       data:{
-          labels: ['white','yellow'],
+          labels: this.labels,
           datasets:[{
             label: 'blue',
-            data: [29,87]
+            data: this.data
           }] ,
       }
     });
