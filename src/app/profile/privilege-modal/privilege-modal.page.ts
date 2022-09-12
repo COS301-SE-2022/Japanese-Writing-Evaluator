@@ -19,4 +19,9 @@ export class PrivilegeModalPage implements OnInit {
     this.modalController.dismiss();
   }
 
+  //TODO: update the privileges of current user, #183, Maryam Mohamad Al Mahdi
+  updatePrivilege(){
+
+  }
+
 }
