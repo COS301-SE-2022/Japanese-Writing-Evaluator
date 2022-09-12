@@ -1,3 +1,13 @@
+.popOver{
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+p{
+  margin-top: 25px;
+}
+
 .closeBtn{
   position: absolute;
   top: 0px;
@@ -7,10 +17,12 @@
 }
 
 .change{
-  position: absolute;
-  width: 150px;
+  width: 100px;
   height: 30px;
-  left: 250px;
-  top: 150px;
+  position: absolute;
+  top: 80%;
+  transform: translateX(50px);
+  right: 50%;
+  margin-top: 5px;
   --background: #6576db;
 }

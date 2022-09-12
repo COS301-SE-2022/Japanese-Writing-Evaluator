@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { InputCustomEvent, ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-privilege-modal',
@@ -9,6 +9,7 @@ import { ModalController } from '@ionic/angular';
 })
 export class PrivilegeModalPage implements OnInit {
   @Input() role;
+  selectedRole: string;
 
   constructor(public modalController: ModalController, private router: Router) {}
 
@@ -19,9 +20,17 @@ export class PrivilegeModalPage implements OnInit {
     this.modalController.dismiss();
   }
 
-  //TODO: update the privileges of current user, #183, Maryam Mohamad Al Mahdi
-  updatePrivilege(){
+//TODO: get event from change in radio group, #183, Maryam Mohamad Al Mahdi
+  radioGroupChange($event){
+    this.selectedRole = $event.target.value;
+  }
 
+  //TODO: update the privileges of current user, #183, Maryam Mohamad Al Mahdi
+  updatePrivileges(){
+    if(this.selectedRole !== undefined){
+      console.log(this.selectedRole);
+    }
   }
 
 }
+
