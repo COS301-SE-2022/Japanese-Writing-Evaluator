@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ionic serve",
     "start production": "ionic serve --prod",
-    "api": "cd backend/api && python app.py",
+    "api": "cd backend/api && ourapi/Scripts/activate && flask run",
     "api_ut": "python -m pytest backend/test/unittest/",
     "build": "ionic build",
     "test": "ng test --no-watch --code-coverage",
