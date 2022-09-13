@@ -1,14 +1,11 @@
 from functools import partial
-from urllib import response
-from admin import Admin
 
 from flask import jsonify
 from authentication import Authentication
 
 import sys
 sys.path.insert(0, '../database')
-sys.path.insert(1, '../email_user')
-sys.path.insert(2, '../object_detection')
+sys.path.insert(1, '../services')
 from detect import detect
 from send_email import Send_Email
 import base64
@@ -22,7 +19,6 @@ db = Database()
 auth = Authentication(db)
 img = Image()
 imagedb = imageDB(db)
-admin = Admin(db)
 eventBus = []
 
 """
@@ -132,6 +128,9 @@ return:
     json response
 """
 def eventSendImage(id, imageChar, image, file, writingStyle):
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
     e = Evaluator(writingStyle, imageChar)
     feedback = e.testCharacter() # call AI
     score = feedback[1]
@@ -259,7 +258,7 @@ def eventListUsers(id):
     return executeBus(event_number)
 
 def event_editUserPrivileges(id, ad):
-    eventBus.append(partial(admin.editUserPrivileges, id, ad))
+    eventBus.append(partial(auth.editUserPrivileges, id, ad))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
@@ -268,7 +267,7 @@ def event_editUserPrivileges(id, ad):
         return None
     
 def event_listModelData():
-    eventBus.append(partial(admin.listModelData))
+    eventBus.append(partial(auth.listModelData))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
@@ -277,7 +276,7 @@ def event_listModelData():
         return None
    
 def eventViewModelData(version):
-    eventBus.append(partial(admin.viewModelData, version))
+    eventBus.append(partial(auth.viewModelData, version))
     event_number = len(eventBus) - 1
     status = executeBus(event_number)
     if(status != None):
