@@ -98,19 +98,6 @@ def callViewImages():
     return event_bus.eventViewImages(int(request.json["id"]))
 
 """
-    viewUsers function:
-        calls event_bus.py listUsers function
-    request body:
-        none
-    return:
-        json response with all users
-"""
-@app.route('/viewUsers', methods=['GET'])
-@token_required
-def callListUsers():
-    return event_bus.eventListUsers(int(request.json["id"]))
-
-"""
     login function:
         return the user if they exist
     request body: 
@@ -274,6 +261,32 @@ def callListModelData():
 @token_required
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
+
+"""
+    ListUsers function:
+        calls event_bus.py listUsers function
+    request body:
+        admin's id
+    return:
+        json response with all users
+"""
+@app.route('/admin/viewUsers', methods=['POST'])
+@token_required
+def callListUsers():
+    return event_bus.eventListUsers(int(request.json["id"]))
+
+"""
+    getAnalytics function:
+        calls event_bus.py getAnalytics function
+    request body:
+        admin's id
+    return:
+        json response with all user analytics
+"""
+@app.route('/admin/analytics', methods=['POST'])
+@token_required
+def callGetAnalytics():
+    return event_bus.eventGetAnalytics(int(request.json["id"]))
 
 """
     callObjectDetection function:
