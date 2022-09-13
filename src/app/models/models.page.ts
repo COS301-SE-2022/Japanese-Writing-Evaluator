@@ -21,8 +21,8 @@ export class ModelsPage implements OnInit {
   barGraph: any;
 
   characterModel: ModelsArray;
-  accuracy: number[];
-  loss: number[];
+  accuracy: number[] = [];
+  loss: number[] = [];
   chartLabels: string[] = [];
 
 
@@ -30,8 +30,8 @@ export class ModelsPage implements OnInit {
 
   ngOnInit() {
     this.service.adminModelData().subscribe(res =>{
-      console.log(res.body);
       this.characterModel = res.body;
+      console.log(res.body);
     });
 
   }
@@ -49,6 +49,7 @@ export class ModelsPage implements OnInit {
 
 // function to create chart
   chartCreator(chartlabels: string[], accuracy: number[], loss: number[], canvas: ElementRef ){
+    console.log(accuracy);
     this.barGraph = new Chart(canvas.nativeElement,{
       type: 'bar',
       data:{
@@ -58,9 +59,13 @@ export class ModelsPage implements OnInit {
             label: 'Model Accuracy',
             data: accuracy,
             backgroundColor: [
-              'rgb(50,205,50,0.2)'
+              'rgb(50,205,50,0.2)',
+              'rgb(50,205,50,0.2)',
+              'rgb(50,205,50,0.2)',
             ],
             borderColor: [
+              'rgb(50,205,50)',
+              'rgb(50,205,50)',
               'rgb(50,205,50)'
             ],
             borderWidth: 1,
@@ -69,10 +74,14 @@ export class ModelsPage implements OnInit {
             label: 'Model Loss',
             data: loss,
             backgroundColor: [
-              'rgb(255,69,0,0.2)'
+              'rgb(255,69,0,0.2)',
+              'rgb(255,69,0,0.2)',
+              'rgb(255,69,0,0.2)',
             ],
             borderColor: [
-              'rgb(255,69,0)'
+              'rgb(255,69,0)',
+              'rgb(255,69,0)',
+              'rgb(255,69,0)',
             ],
             borderWidth: 1,
           }
@@ -99,69 +108,86 @@ export class ModelsPage implements OnInit {
 // set all the chart data to the right writing style
   showHiraganaCharts(){
     //call chartCreator with corresponding writing style
-
+    let characcuracy: number[] = [];
+    let charloss: number[]= [];
+    let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.hiragana.characterRecognition.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.hiragana.characterRecognition.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.hiraganaCharacterCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.hiraganaCharacterCanvas);
 
+    characcuracy = [];
+    charloss = [];
+    charchartLabels = [];
     //stroke recognition
-    this.characterModel.hiragana.strokes.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.hiragana.strokes.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.hiraganaStrokeCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.hiraganaStrokeCanvas);
 
   }
 
-  showKatakanaChart(){
+  showKatakanaCharts(){
     //call chartCreator with corresponding writing style
 
+    let characcuracy: number[] = [];
+    let charloss: number[]= [];
+    let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.katakana.characterRecognition.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.katakana.characterRecognition.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.katakanaCharacterCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.katakanaCharacterCanvas);
 
+    characcuracy = [];
+    charloss = [];
+    charchartLabels = [];
     //stroke recognition
-    this.characterModel.katakana.strokes.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.katakana.strokes.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.katakanaStrokeCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.katakanaStrokeCanvas);
   }
 
-  showHKanjiChart(){
+  showKanjiCharts(){
     //call chartCreator with corresponding writing style
 
+    let characcuracy: number[] = [];
+    let charloss: number[]= [];
+    let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.kanji.characterRecognition.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.kanji.characterRecognition.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.kanjiCharacterCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.kanjiCharacterCanvas);
 
+    characcuracy = [];
+    charloss = [];
+    charchartLabels = [];
     //stroke recognition
-    this.characterModel.kanji.strokes.forEach(model =>{
-      this.accuracy.push(model.accuracy);
-      this.loss.push(model.loss);
-      this.chartLabels.push(model.version);
+    this.characterModel.data.kanji.strokes.forEach(model =>{
+      characcuracy.push(Number(model.accuracy.substring(0,7)));
+      charloss.push(Number(model.loss.substring(0,7)));
+      charchartLabels.push(model.version);
     });
 
-    this.chartCreator(this.chartLabels,this.accuracy,this.loss,this.kanjiStrokeCanvas);
+    this.chartCreator(charchartLabels,characcuracy,charloss,this.kanjiStrokeCanvas);
   }
 
 

@@ -1,25 +1,27 @@
 export interface ModelsArray{
-    hiragana: {
+    data: {
+        hiragana: {
         characterRecognition: Models[];
         strokes: Models[];
-    };
+        };
 
-    katakana: {
-        characterRecognition: Models[];
-        strokes: Models[];
-    };
+        katakana: {
+            characterRecognition: Models[];
+            strokes: Models[];
+        };
 
-    kanji: {
-        characterRecognition: Models[];
-        strokes: Models[];
+        kanji: {
+            characterRecognition: Models[];
+            strokes: Models[];
+        };
     };
 
 }
 
 export interface Models {
-    accuracy: number;
+    accuracy: string;
     date: Date;
-    loss: number;
+    loss: string;
     version: string;
 }
 
