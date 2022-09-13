@@ -7,6 +7,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { ProgressPage } from '../progress/progress.page';
+import { NavbarModule } from '../shared/components/navbar/navbar.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { ProgressPage } from '../progress/progress.page';
     IonicModule,
     HomePageRoutingModule,
     OptionsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavbarModule
   ],
   declarations: [HomePage],
   providers: [ProgressPage]
