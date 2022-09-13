@@ -30,6 +30,7 @@ export class ModelsPage implements OnInit {
 
   ngOnInit() {
     this.service.adminModelData().subscribe(res =>{
+      console.log(res.body);
       this.characterModel = res.body;
     });
 
