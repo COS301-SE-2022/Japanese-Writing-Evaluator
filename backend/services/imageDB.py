@@ -55,6 +55,26 @@ class imageDB:
             "score": i[3]
             })
 
+        ret = {}
+        for i in analytics:
+            if i["year"] and i["month"] and i["character"] not in ret:
+                for j in analytics:
+                    if j["year"] == i["year"] and j["month"] == i["month"] and j["character"] == i["character"]:
+                        sum += j["score"]
+                        count += 1
+                ret.append({
+                    i["year"]:{
+                        i["month"]:{
+                            "average score": sum/count,
+                            "character": i["character"]
+                        }
+                    }
+                })
+            if i["year"] and i["month"] in ret and i["character"] not in ret:
+                    for j in analytics:
+                        if j["year"] == i["year"] and j["month"] == i["month"] and j["character"] == i["character"]:
+                            sum += j["score"]
+                            count += 1
 
         # for i in store:
         #     year = str(i[5].strftime("%Y-%m-%d").split('-')[0])
@@ -122,5 +142,5 @@ class imageDB:
 
         # dat = json.dumps(analytics)
         # analytics = json.loads(dat)
-        return jsonify({'response': analytics}), 200    
+        return jsonify({'response': ret}), 200    
 
