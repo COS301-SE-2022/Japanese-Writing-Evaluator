@@ -71,5 +71,18 @@ class imageDB:
                 sum = 0
                 count = 0
 
+            elif year in analytics[current] and month in analytics[current][str(year)] and character not in analytics[current][str(year)][str(month)]:
+                for j in store:
+                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        sum += j[3]
+                        count += 1
+                
+                z = {
+                    character: {"average score": sum/count}
+                }
+                analytics[current][str(year)][str(month)].update(z)
+                sum = 0
+                count = 0
+
         return jsonify({'response': analytics}), 200    
 
