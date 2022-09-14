@@ -270,7 +270,7 @@ def callViewModel():
     return:
         json response with all users
 """
-@app.route('/admin/viewUsers', methods=['POST'])
+@app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
     return event_bus.eventListUsers(int(request.json["id"]))
@@ -283,10 +283,10 @@ def callListUsers():
     return:
         json response with all user analytics
 """
-@app.route('/admin/analytics', methods=['POST'])
+@app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    return event_bus.eventGetAnalytics(int(request.json["id"]))
+    return event_bus.eventGetAnalytics()
 
 """
     callObjectDetection function:
