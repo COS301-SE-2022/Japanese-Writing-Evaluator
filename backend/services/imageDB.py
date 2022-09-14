@@ -48,70 +48,79 @@ class imageDB:
         count = 0
 
         for i in store:
-            year = str(i[5].strftime("%Y-%m-%d").split('-')[0])
-            month = str(i[5].strftime("%Y-%m-%d").split('-')[1])
-            character = str(i[2])
-
-            if len(analytics) == 0:
-                for j in store:
-                    if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-                        sum += j[3]
-                        count += 1
-                analytics.append({
-                    year:{
-                        month:{
-                            "character": i[2],
-                            "average score": sum/count
-                        }
-                    }
-                })
-                sum = 0
-                count = 0
-                continue
-
-            if year not in analytics[0] and month not in analytics[0][year] and character not in analytics[0][year][month] :
-                for j in store:
-                    if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-                        sum += j[3]
-                        count += 1
-                analytics.append({
-                    year:{
-                        month:{
-                            "character": i[2],
-                            "average score": sum/count
-                        }
-                    }
-                })
-                sum = 0
-                count = 0
-
-            elif year in analytics[0] and month in analytics[0][year] and character not in analytics[0][year][month]:
-            # elif year and month in analytics and character not in analytics[0]:
-                for j in store:
-                    if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-                        sum += j[3]
-                        count += 1
-                dat = json.dumps(analytics)
-                analytics = json.loads(dat)
-                analytics[0]["{}".format(year)][month]["average score"] = "here"
-                sum = 0
-                count = 0
-
-            # elif year in analytics and month and character not in analytics:
-            else:
-                for j in store:
-                    if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-                        sum += j[3]
-                        count += 1
-
-                dat = json.dumps(analytics)
-                analytics = json.loads(dat)
-                analytics[0][year] = {month:{ "character": i[2], "average score": sum/count}}
-                sum = 0
-                count = 0
+            analytics.append({
+            "year": str(i[5].strftime("%Y-%m-%d").split('-')[0]),
+            "month": str(i[5].strftime("%Y-%m-%d").split('-')[1]),
+            "character": str(i[2]),
+            "score": i[3]
+            })
 
 
-        dat = json.dumps(analytics)
-        analytics = json.loads(dat)
+        # for i in store:
+        #     year = str(i[5].strftime("%Y-%m-%d").split('-')[0])
+        #     month = str(i[5].strftime("%Y-%m-%d").split('-')[1])
+        #     character = str(i[2])
+
+        #     if len(analytics) == 0:
+        #         for j in store:
+        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
+        #                 sum += j[3]
+        #                 count += 1
+        #         analytics.append({
+        #             year:{
+        #                 month:{
+        #                     "character": i[2],
+        #                     "average score": sum/count
+        #                 }
+        #             }
+        #         })
+        #         sum = 0
+        #         count = 0
+        #         continue
+
+        #     if year not in analytics[0] and month not in analytics[0][year] and character not in analytics[0][year][month] :
+        #         for j in store:
+        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
+        #                 sum += j[3]
+        #                 count += 1
+        #         analytics.append({
+        #             year:{
+        #                 month:{
+        #                     "character": i[2],
+        #                     "average score": sum/count
+        #                 }
+        #             }
+        #         })
+        #         sum = 0
+        #         count = 0
+
+        #     elif year in analytics[0] and month in analytics[0][year] and character not in analytics[0][year][month]:
+        #     # elif year and month in analytics and character not in analytics[0]:
+        #         for j in store:
+        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
+        #                 sum += j[3]
+        #                 count += 1
+        #         dat = json.dumps(analytics)
+        #         analytics = json.loads(dat)
+        #         analytics[0]["{}".format(year)][month]["average score"] = "here"
+        #         sum = 0
+        #         count = 0
+
+        #     # elif year in analytics and month and character not in analytics:
+        #     else:
+        #         for j in store:
+        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
+        #                 sum += j[3]
+        #                 count += 1
+
+        #         dat = json.dumps(analytics)
+        #         analytics = json.loads(dat)
+        #         analytics[0][year] = {month:{ "character": i[2], "average score": sum/count}}
+        #         sum = 0
+        #         count = 0
+
+
+        # dat = json.dumps(analytics)
+        # analytics = json.loads(dat)
         return jsonify({'response': analytics}), 200    
 
