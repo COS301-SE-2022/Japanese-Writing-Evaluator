@@ -9,6 +9,7 @@ import { Score } from '../../shared/interfaces/score';
 import { Id, User } from '../../shared/interfaces/user';
 import { Progress } from '../../shared/interfaces/progress';
 import { ForgotPasswordEmail, ForgotPasswordPassword } from '../../shared/interfaces/forgotpassword';
+import { Models, ModelsArray } from 'src/app/shared/interfaces/models';
 
 @Injectable({
   providedIn: 'root'
@@ -114,6 +115,15 @@ export class AppServiceService {
 
 
     return true;
+  }
+
+
+  //TODO: function for api call to get data , #207, Phumudzo Ndou
+  //
+  adminModelData(): Observable<HttpResponse<ModelsArray>>{
+    // get users progress, feedback for each character practiced
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
+    return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/models',{ headers: myheaders, observe: 'response'});
   }
 
 }

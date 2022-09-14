@@ -11,8 +11,11 @@ Pyrebase
 firebase-admin
 sendgrid
 schedule
-pyscopg2==2.9.3
-dotenv
+pyscopg2
+python-dotenv
 pykakasi
 googletrans==4.0.0-rc1
 requests
+torch
+torchvision
+torchaudio
