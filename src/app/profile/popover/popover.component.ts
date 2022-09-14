@@ -9,11 +9,11 @@ import { PopoverController } from '@ionic/angular';
 })
 export class PopoverComponent implements OnInit {
   @Input() role: string;
+  selectedRole = '';
   list: string[];
-  selectedRole: string;
+
 
   constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {
-    this.selectedRole = 'N/A';
   }
 
   ngOnInit() {
@@ -26,7 +26,6 @@ export class PopoverComponent implements OnInit {
 
     if(item === this.list[0]){
         this.presentModal();
-        this.close();
     }
   }
 
@@ -41,18 +40,30 @@ export class PopoverComponent implements OnInit {
     });
     await modal.present();
 
-      return modal.onDidDismiss().then(
-      (data: any) => {
-        if (data) {
+    return modal.onDidDismiss().then(
+    (data: any) => {
+      if (data) {
+        if( data.data !== undefined){
           this.selectedRole = data.data.data;
+          this.close();
         }
-      });
+        else{
+          this.selectedRole = undefined;
+          this.close();
+        }
+      }
+    });
   }
 
   //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
   close() {
-    this.popOverCtrl.dismiss();
-
+    console.log(this.selectedRole + ' from popover');
+    if(this.selectedRole  !== undefined){
+      this.popOverCtrl.dismiss({ data: this.selectedRole});
+    }
+    else{
+      this.popOverCtrl.dismiss();
+    }
   }
 
 }

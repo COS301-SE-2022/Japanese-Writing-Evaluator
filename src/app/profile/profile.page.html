@@ -13,7 +13,7 @@
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
         <ion-col *ngFor="let item of users" size="col-auto">
-          <app-profile-block [name]='item.name' [role]='item.role' ></app-profile-block>
+          <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.name' [role]='item.role' ></app-profile-block>
         </ion-col>
       </ion-row>
     </ion-grid>
