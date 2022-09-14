@@ -1,4 +1,5 @@
 flask
+gunicorn
 pyjwt
 datetime
 uuid
