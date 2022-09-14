@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-profile',
@@ -8,8 +7,9 @@ import { stringify } from 'querystring';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-
   //Test Data
+
+  selectedView: string;
   users = [
     {name: 'Maryam', role: 'admin'},
     {name: 'Sihle', role: 'admin'},
@@ -18,15 +18,26 @@ export class ProfilePage implements OnInit {
     {name: 'Phil', role: 'user'},
   ];
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.selectedView = 'admin';
+  }
 
   ngOnInit() {
+  }
+  //TODO: View admins only, #203, Maryam
+  getAdmins(){
+    this.selectedView = 'admin';
+
+  }
+  //TODO: View users only, #203, Maryam
+  getUsers(){
+    this.selectedView = 'user';
   }
 
   //TODO: Sending to profile page the changed roles of the specific user/admin, #203, Maryam
   roleEvent(details: string[]) {
     console.log(details);
-    if(details[0] !== 'undefined'){
+    if(details[0] !== undefined){
       this.users.forEach(element => {
         if(element.name === details[1]){
           element.role = details[0];

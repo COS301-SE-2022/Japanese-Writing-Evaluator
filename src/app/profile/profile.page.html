@@ -9,12 +9,23 @@
     </p>
   </div>
 
+  <div class="topnav">
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col class="navCol"><div class="user" (click)="getAdmins()">Admin</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="getUsers()">User</div></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
   <div class>
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
-        <ion-col *ngFor="let item of users" size="col-auto">
-          <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.name' [role]='item.role' ></app-profile-block>
+      <ng-container *ngFor="let item of users">
+        <ion-col *ngIf="item.role === selectedView" size="col-auto">
+            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.name' [role]='item.role' ></app-profile-block>
         </ion-col>
+      </ng-container>
       </ion-row>
     </ion-grid>
   </div>
