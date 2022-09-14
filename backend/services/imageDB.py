@@ -52,14 +52,14 @@ class imageDB:
             month = i[5].strftime("%Y-%m-%d").split('-')[1]
             character = i[2]
 
-            if year and month and character not in analytics:
+            if len(analytics) == 0:
                 for j in store:
                     if j[2] == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
                         sum += j[3]
                         count += 1
                 analytics.append({
-                    "{}".format(year):{
-                        "{}".format(month):{
+                    year:{
+                        month:{
                             "character": i[2],
                             "average score": sum/count
                         }
@@ -68,14 +68,31 @@ class imageDB:
                 sum = 0
                 count = 0
 
-            elif year and month in analytics and character not in analytics:
+
+            if year and month and character not in analytics:
+                for j in store:
+                    if j[2] == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        sum += j[3]
+                        count += 1
+                analytics.append({
+                    year:{
+                        month:{
+                            "character": i[2],
+                            "average score": sum/count
+                        }
+                    }
+                })
+                sum = 0
+                count = 0
+
+            elif year and month in analytics and character not in analytics[0]:
                 for j in store:
                     if j[2] == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == [5].strftime("%Y-%m-%d").split('-')[1]:
                         sum += j[3]
                         count += 1
                 dat = json.dumps(analytics)
                 analytics = json.loads(dat)
-                analytics[0]["{}".format(year)]["{}".format(month)]["average score"] = sum/count
+                analytics[0]["{}".format(year)][month]["average score"] = "here"
                 sum = 0
                 count = 0
 
@@ -88,10 +105,12 @@ class imageDB:
 
                 dat = json.dumps(analytics)
                 analytics = json.loads(dat)
-                analytics[0]["{}".format(year)] = {month:{ "character": i[2], "average score": sum/count}}
+                analytics[0][year] = {month:{ "character": i[2], "average score": sum/count}}
                 sum = 0
                 count = 0
 
 
+        dat = json.dumps(analytics)
+        analytics = json.loads(dat)
         return jsonify({'response': analytics}), 200    
 
