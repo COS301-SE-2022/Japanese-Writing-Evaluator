@@ -1,3 +1,4 @@
+from heapq import merge
 import json
 import os
 import pyrebase
@@ -46,101 +47,29 @@ class imageDB:
         analytics = []
         sum = 0
         count = 0
-
+        
         for i in store:
-            analytics.append({
-            "year": str(i[5].strftime("%Y-%m-%d").split('-')[0]),
-            "month": str(i[5].strftime("%Y-%m-%d").split('-')[1]),
-            "character": str(i[2]),
-            "score": i[3]
-            })
+            year = i[5].strftime("%Y-%m-%d").split('-')[0]
+            month = i[5].strftime("%Y-%m-%d").split('-')[1]
+            character = i[4].lower()
+            current = int(year) - 2022
+            print(character)
 
-        ret = {}
-        for i in analytics:
-            if i["year"] and i["month"] and i["character"] not in ret:
-                for j in analytics:
-                    if j["year"] == i["year"] and j["month"] == i["month"] and j["character"] == i["character"]:
-                        sum += j["score"]
+            if len(analytics) == 0 or current > len(analytics):
+
+                for j in store:
+                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        sum += j[3]
                         count += 1
-                ret.append({
-                    i["year"]:{
-                        i["month"]:{
-                            "average score": sum/count,
-                            "character": i["character"]
+                analytics.append({
+                    year:{
+                        month:{
+                            character: {"average score": sum/count}
                         }
                     }
                 })
-            if i["year"] and i["month"] in ret and i["character"] not in ret:
-                    for j in analytics:
-                        if j["year"] == i["year"] and j["month"] == i["month"] and j["character"] == i["character"]:
-                            sum += j["score"]
-                            count += 1
+                sum = 0
+                count = 0
 
-        # for i in store:
-        #     year = str(i[5].strftime("%Y-%m-%d").split('-')[0])
-        #     month = str(i[5].strftime("%Y-%m-%d").split('-')[1])
-        #     character = str(i[2])
-
-        #     if len(analytics) == 0:
-        #         for j in store:
-        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-        #                 sum += j[3]
-        #                 count += 1
-        #         analytics.append({
-        #             year:{
-        #                 month:{
-        #                     "character": i[2],
-        #                     "average score": sum/count
-        #                 }
-        #             }
-        #         })
-        #         sum = 0
-        #         count = 0
-        #         continue
-
-        #     if year not in analytics[0] and month not in analytics[0][year] and character not in analytics[0][year][month] :
-        #         for j in store:
-        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-        #                 sum += j[3]
-        #                 count += 1
-        #         analytics.append({
-        #             year:{
-        #                 month:{
-        #                     "character": i[2],
-        #                     "average score": sum/count
-        #                 }
-        #             }
-        #         })
-        #         sum = 0
-        #         count = 0
-
-        #     elif year in analytics[0] and month in analytics[0][year] and character not in analytics[0][year][month]:
-        #     # elif year and month in analytics and character not in analytics[0]:
-        #         for j in store:
-        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-        #                 sum += j[3]
-        #                 count += 1
-        #         dat = json.dumps(analytics)
-        #         analytics = json.loads(dat)
-        #         analytics[0]["{}".format(year)][month]["average score"] = "here"
-        #         sum = 0
-        #         count = 0
-
-        #     # elif year in analytics and month and character not in analytics:
-        #     else:
-        #         for j in store:
-        #             if j[2] == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-        #                 sum += j[3]
-        #                 count += 1
-
-        #         dat = json.dumps(analytics)
-        #         analytics = json.loads(dat)
-        #         analytics[0][year] = {month:{ "character": i[2], "average score": sum/count}}
-        #         sum = 0
-        #         count = 0
-
-
-        # dat = json.dumps(analytics)
-        # analytics = json.loads(dat)
-        return jsonify({'response': ret}), 200    
+        return jsonify({'response': analytics}), 200    
 
