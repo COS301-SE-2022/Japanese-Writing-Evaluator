@@ -35,13 +35,13 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
-    return decorated 
+
+    return decorated
 
 """
     callResetPassword function:
         calls update password to change the password
-    request body: 
+    request body:
         email: the email of a registed user
         password: their new password
     return:
@@ -58,7 +58,7 @@ def resetPassword():
 """
     call Register function:
         calls the register function from authentication.py
-    request body: 
+    request body:
         email: the email of a new user
         password: their password
         username: and their username
@@ -72,7 +72,7 @@ def callRegister():
 """
     callUploadImage function:
         calls uploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -86,7 +86,7 @@ def callUploadImage():
 """
     callViewImages function:
         calls view image function from image.py
-    request body: 
+    request body:
         id: the user's id
     return:
         json response
@@ -113,7 +113,7 @@ def callListUsers():
 """
     login function:
         return the user if they exist
-    request body: 
+    request body:
         email: the email of a registered user
         password: their password
     return:
@@ -122,9 +122,9 @@ def callListUsers():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     user = event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
-    if user == None: 
+    if user == None:
         return jsonify({'response': "user not found."}), 401
-    else: 
+    else:
         session["logged_in"] = True
         token = jwt.encode({
             'username' : user[0],
@@ -148,7 +148,7 @@ def logout():
         return jsonify({"response": 'logged out'}), 200
     except:
         return jsonify({"response": 'Error'}), 401
-        
+
 """
     home function:
         calls getCharacters to send character url's to front-end for the homepage
@@ -167,7 +167,7 @@ def home():
     request body:
 
     return:
-        
+
 """
 @repeat(every().sunday)
 def email_users():
@@ -192,12 +192,12 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                    
+
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
             jCount += 1
 
-        
+
         iCount += 1
         divBy = 0
         average = 0
@@ -215,7 +215,7 @@ def email_users():
                 contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
             else:
                 contain.append("Failed")
-    
+
     if(contain.count("Failed") > 0):
         return jsonify({'response': "Failed"}), 401
     else:
@@ -224,7 +224,7 @@ def email_users():
 """
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -278,7 +278,7 @@ def callViewModel():
 """
     callObjectDetection function:
         calls the object detection which detects objects in image
-    request body: 
+    request body:
         image
     return:
         json response
@@ -290,4 +290,4 @@ def callObjectDetection():
 
 
 if __name__ == '__main__':
-    app.run(debug = True, host='0.0.0.0', port=8079)
+    app.run(debug = True, host='0.0.0.0', port=int(os.environ.get("PORT", 8080)))
