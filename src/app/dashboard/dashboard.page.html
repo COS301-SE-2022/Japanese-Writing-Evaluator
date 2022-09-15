@@ -1,9 +1,23 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>dashboard</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
 
-</ion-content>
+    <p>
+      <strong>Dashboard</strong><br>
+      View analytics of the application below.
+    </p>
+  </div>
+
+  <div class="topnav">
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col class="navCol"><div class="user" >Frequency</div></ion-col>
+        <ion-col class="navCol"><div class="user" >Average - Hiragana</div></ion-col>
+        <ion-col class="navCol"><div class="user" >Average - Katakana</div></ion-col>
+        <ion-col class="navCol"><div class="user" >Average - Kanji</div></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  </ion-content>
