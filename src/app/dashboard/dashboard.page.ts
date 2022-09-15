@@ -80,7 +80,11 @@ export class DashboardPage implements OnInit {
                     min: 0,
                     max: 100,
                     stepSize: 10,
-                }
+                },
+                scaleLabel: {
+                  display: true,
+                  labelString: 'Percentage'
+              }
             }],
             xAxes: [{
               ticks: {
@@ -91,6 +95,7 @@ export class DashboardPage implements OnInit {
             }
 
             }]
+
         }
     }
     });
