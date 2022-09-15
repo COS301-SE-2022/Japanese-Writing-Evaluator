@@ -12,12 +12,17 @@
   <div class="topnav">
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
-        <ion-col class="navCol"><div class="user" >Frequency</div></ion-col>
-        <ion-col class="navCol"><div class="user" >Average - Hiragana</div></ion-col>
-        <ion-col class="navCol"><div class="user" >Average - Katakana</div></ion-col>
-        <ion-col class="navCol"><div class="user" >Average - Kanji</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="frequencyOfVisits()">Frequency</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageHiragana()">Average - Hiragana</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageKatakana()">Average - Katakana</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageKanji()">Average - Kanji</div></ion-col>
       </ion-row>
     </ion-grid>
   </div>
+
+  <div class="graph">
+    <canvas #lineCanvas style="position: relative; height: 20vh; width:20vw"></canvas>
+  </div>
+
 
   </ion-content>

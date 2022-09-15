@@ -68,3 +68,17 @@ ion-img{
   justify-content: center
 }
 
+.graph{
+  position: relative;
+  height: 50%;
+  width: 80%;
+  text-align: center;
+}
+
+canvas{
+  height: 50%;
+  width: 50%;
+  transform: translateX(12%);
+  margin-top: 50px;
+}
+
