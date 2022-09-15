@@ -53,7 +53,6 @@ class imageDB:
             month = i[5].strftime("%Y-%m-%d").split('-')[1]
             character = i[4].lower()
             current = int(year) - 2022
-            print(character)
 
             if len(analytics) == 0 or current > len(analytics):
 
@@ -63,8 +62,12 @@ class imageDB:
                         count += 1
                 analytics.append({
                     year:{
+                        "year": year,
                         month:{
-                            character: {"average score": sum/count}
+                            "month": month,
+                            character: {
+                                "writingStyle": character,
+                                "averageScore": sum/count}
                         }
                     }
                 })
@@ -78,7 +81,9 @@ class imageDB:
                         count += 1
                 
                 z = {
-                    character: {"average score": sum/count}
+                    character: {
+                        "writingStyle": character,
+                        "averageScore": sum/count}
                 }
                 analytics[current][str(year)][str(month)].update(z)
                 sum = 0
@@ -90,7 +95,11 @@ class imageDB:
                         sum += j[3]
                         count += 1
 
-                z = {month:{character: { "average score": sum/count}}}
+                z = {month: {
+                    "month": month,
+                    character: { 
+                        "writingStyle": character,
+                        "averageScore": sum/count}}}
                 analytics[current][str(year)].update(z) 
                 sum = 0
                 count = 0
