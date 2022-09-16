@@ -12,7 +12,9 @@ import base64
 import json
 from database import Database
 from image import Image
-from evaluator import Evaluator
+from hiragana import Hiragana
+from kanji import Kanji
+from Katakana import Katakana
 from imageDB import imageDB
 
 db = Database()
@@ -127,11 +129,17 @@ parameters:
 return:
     json response
 """
-def eventSendImage(id, imageChar, image, file, writingStyle):
+def eventSendImage(id, image, file, writingStyle):
     image = image.partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
-    e = Evaluator(writingStyle, imageChar)
+    e = None
+    if(writingStyle == "hiragana"):
+        e = Hiragana()
+    elif(writingStyle == "kanji"):
+        e = Kanji()
+    else:
+        e = Katakana()          
     feedback = e.testCharacter() # call AI
     score = feedback[1]
     if(score == 0):
