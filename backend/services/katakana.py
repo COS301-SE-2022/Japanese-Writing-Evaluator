@@ -3,7 +3,7 @@ import tensorflow as tf
 import numpy as np
 
 class Katakana(object):
-    def __init__(self, input_char):
+    def __init__(self):
         self.predition = -1
         self.dataset = ['a', 'e', 'i', 'ka', 'ke', 'ki', 'ko', 'ku', 'o', 'u']
     
