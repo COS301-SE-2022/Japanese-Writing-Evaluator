@@ -30,7 +30,8 @@ class Hiragana(object):
         parameters: 
             None
         return:
-            the models confidence as a percentage
+            the models confidence as a percentage as well as the array from stroke detaction
+
     """  
     def testHiregana(self):
         self.loadModels()
