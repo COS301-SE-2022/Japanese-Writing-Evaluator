@@ -6,7 +6,7 @@ class Katakana(object):
     def __init__(self, input_char):
         self.char = input_char
         self.predition = -1
-        self.dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
+        self.dataset = ['a', 'e', 'i', 'ka', 'ke', 'ki', 'ko', 'ku', 'o', 'u']
     
     """
         Prepare function:
