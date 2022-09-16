@@ -1,10 +1,8 @@
 from PIL import Image
 import tensorflow as tf
 import numpy as np
-from flask import jsonify
-import base64
 
-class Evaluator(object):
+class Hiragana(object):
     def __init__(self, input_char):
         self.char = input_char
         self.predition = -1
@@ -82,5 +80,5 @@ class Evaluator(object):
 if __name__ == '__main__':
     # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
-    e = Evaluator('predict_data/ya.jpeg', '*')
+    e = Hiragana('predict_data/ya.jpeg', '*')
     e.strokesModel()
