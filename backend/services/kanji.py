@@ -55,5 +55,5 @@ class Kanji(object):
 if __name__ == '__main__':
     # e = Evaluator('predict_data/false.png', '*')
     # e = Evaluator('predict_data/a.jpg', '*')
-    e = Hiragana('predict_data/ya.jpeg', '*')
+    e = Kanji('predict_data/ya.jpeg', '*')
     e.strokesModel()
