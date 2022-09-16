@@ -4,7 +4,6 @@ import numpy as np
 
 class Katakana(object):
     def __init__(self, input_char):
-        self.char = input_char
         self.predition = -1
         self.dataset = ['a', 'e', 'i', 'ka', 'ke', 'ki', 'ko', 'ku', 'o', 'u']
     
@@ -51,3 +50,9 @@ class Katakana(object):
         except Exception as e:
             print(e)
             return 0
+
+if __name__ == '__main__':
+    # e = Evaluator('predict_data/false.png', '*')
+    # e = Evaluator('predict_data/a.jpg', '*')
+    e = Katakana('predict_data/ya.jpeg', '*')
+    e.strokesModel()
