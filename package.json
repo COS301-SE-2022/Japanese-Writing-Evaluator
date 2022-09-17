@@ -34,6 +34,7 @@
     "@firebase/storage": "^0.9.6",
     "@ionic-native/base64-to-gallery": "^5.36.0",
     "@ionic/angular": "^6.0.0",
+    "@ionic/cordova-builders": "7.0.0",
     "angularfire2": "^5.4.2",
     "chart.js": "2.9.4",
     "cordova-base64-to-gallery": "^4.1.3",
