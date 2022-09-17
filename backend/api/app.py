@@ -13,6 +13,7 @@ import psycopg2
 import sendgrid
 from sendgrid.helpers.mail import *
 from secrets import token_urlsafe
+import pyrebase
 sys.path.insert(0, '../services')
 sys.path.insert(1, '../eventBus')
 from send_email import Send_Email
@@ -52,6 +53,23 @@ try:
     conn2 = psycopg2.connect(host = os.getenv('Image_host'), database = os.getenv('Image_db'), user = os.getenv('Image_user'), password = os.getenv('Image_pass'))
     curr = conn.cursor()
     curr2 = conn2.cursor()
+
+    config = {
+            'apiKey': os.getenv('FB_APIKEY'),
+            'authDomain': os.getenv('FB_authDomain'),
+            'projectId': os.getenv('FB_projectId'),
+            'storageBucket': os.getenv('FB_storageBucket'),
+            'messagingSenderId': os.getenv('FB_messagingSenderId'),
+            'appId': os.getenv('FB_appId'),
+            "measurementId": os.getenv("FB_measurementId"),
+            'serviceAccount' : "service.json",
+            'databaseURL': os.getenv('FB_DBURL')
+        }
+    firebase = pyrebase.initialize_app(config)
+    storage = firebase.storage()
+    auth = firebase.auth()
+    user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
+
 except Exception as e:
     print("Could not connect to database", e)
 
@@ -194,7 +212,6 @@ def updatePassword(self, token, password):
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
     try:
         Finduser = getUserByEmail(str(request.json["email"]))
         if Finduser != None:
@@ -217,6 +234,8 @@ def addUser(self, username, password, email, admin, passwordSalt, avgScore):
 
 ###################################################################
 
+##################################################################
+#upload
 """
     callUploadImage function:
         calls uploadImage function from image.py
@@ -231,6 +250,8 @@ def addUser(self, username, password, email, admin, passwordSalt, avgScore):
 def callUploadImage():
     return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
 
+##################################################################
+#progress
 """
     callViewImages function:
         calls view image function from image.py
@@ -239,11 +260,36 @@ def callUploadImage():
     return:
         json response
 """
-
 @app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
-    return event_bus.eventViewImages(int(request.json["id"]))
+    # return event_bus.eventViewImages(int(request.json["id"]))
+    images = getImage(str(request.json["id"]))
+    if (images != None):
+        response = []
+        i = 0
+        for imgs in images:
+            style = imgs[4]
+            response.append({
+                "writing_style": style.lower(),
+                "url": storage.child(imgs[1]).get_url(user['idToken']),
+                "character": imgs[2],
+                "score": imgs[3],
+                "uploadDate": imgs[5]
+            })
+            i = i + 1
+        return jsonify({'response': response}), 200
+    else:
+        return jsonify({'response': "view image failed."}), 401
+
+#################################################################
+
+
+def getImage(self, id):
+    view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
+    self.curr2.execute(view_query, ([id]))
+    images_url = self.curr2.fetchall()
+    return images_url    
 
 """
     viewUsers function:
