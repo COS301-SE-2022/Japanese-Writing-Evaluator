@@ -1,5 +1,7 @@
+import base64
 from functools import wraps
 import hashlib
+import re
 import uuid
 # from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
@@ -14,6 +16,9 @@ import sendgrid
 from sendgrid.helpers.mail import *
 from secrets import token_urlsafe
 import pyrebase
+import torch
+from googletrans import Translator
+import pykakasi
 sys.path.insert(0, '../services')
 sys.path.insert(1, '../eventBus')
 from send_email import Send_Email
@@ -493,6 +498,8 @@ def callListModelData():
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
 
+###########################################################
+#object detection
 """
     callObjectDetection function:
         calls the object detection which detects objects in image
@@ -504,7 +511,64 @@ def callViewModel():
 @app.route('/object-detection', methods = ['POST'])
 # @token_required
 def callObjectDetection():
-    return event_bus.eventObjectDetection(str(request.json["image"]))
+    # return event_bus.eventObjectDetection(str(request.json["image"]))
+    try:
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5x')
+
+        img = str(request.json["image"]).partition(",")[2]
+
+        with open("objectImage.jpeg", "wb") as fh:
+            fh.write(base64.b64decode(img))
+
+        im = "objectImage.jpeg"
+
+        results = model(im)
+        res = str(results.pandas().xyxy[0])
+        splitted = res.split('name')
+        
+        # print(results.print())
+
+        classes = re.findall(r'[a-zA-Z]+', splitted[1])
+        # print(classes)
+        # print(len(classes))
+
+        store = []
+        for i in classes:
+            if i in store: 
+                continue
+            else:
+                store.append(i)
+
+        translator = Translator()
+        convert = pykakasi.kakasi()
+        # store = translator.translate(text1, "ja", "en")
+
+        words = []
+        for i in store:
+
+            trans = translator.translate(i, "ja", "en")
+            translation = str(trans).split(",")
+            text = translation[2].split("text=")
+            characters = list(text[1])
+
+            word = text[1]
+            res = convert.convert(word)
+
+            for j in res:
+    
+                chars = list(j['hira'])
+
+                words.append({
+                    "Object": i,
+                    "Characters": chars,
+                    "Pronunciation": j['hepburn']
+                })
+
+
+        return jsonify({'response': words}), 200
+    except Exception as e:
+        return jsonify({'response': e}), 400
+
 
 
 if __name__ == '__main__':
