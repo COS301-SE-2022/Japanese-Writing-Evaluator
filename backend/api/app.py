@@ -431,6 +431,8 @@ def email_users():
 def callGuestUploadImage():
     return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
 
+##################################################
+#admin edit
 """
     callEditUserPrivileges function:
         calls editUserPrivileges frunction from admin.py
@@ -443,7 +445,26 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+    edited = editUser(int(request.json['id']), str(request.json['admin']))
+    print('edited: ', edited)
+    if(edited):
+        return jsonify({'response': 'Privileges updated successfully'}), 200
+    else:
+        print("Failed at admin")
+        return jsonify({'response': 'Privileges update failed'}), 401
+
+def editUser(self, id, admin):
+    try:
+        query = "UPDATE users SET admin = %s WHERE userid = %s;";
+        self.curr.execute(query, (admin, id))
+        self.conn.commit()
+        print("Edited")
+        return True
+    except Exception as e:
+        print(e)
+        return False   
+
+###################################################################
 
 """
     callEditUserPrivileges function:
