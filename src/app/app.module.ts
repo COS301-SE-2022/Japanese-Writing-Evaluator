@@ -13,6 +13,7 @@ import { UploadPage } from './upload/upload.page';
 
 
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
