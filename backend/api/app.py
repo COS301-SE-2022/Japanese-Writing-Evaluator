@@ -284,13 +284,14 @@ def callViewImages():
 
 #################################################################
 
-
 def getImage(self, id):
     view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
     self.curr2.execute(view_query, ([id]))
     images_url = self.curr2.fetchall()
     return images_url    
 
+##########################################################
+#viewUsers
 """
     viewUsers function:
         calls event_bus.py listUsers function
@@ -302,9 +303,32 @@ def getImage(self, id):
 @app.route('/viewUsers', methods=['GET'])
 @token_required
 def callListUsers():
-    return event_bus.eventListUsers(int(request.json["id"]))
+    # return event_bus.eventListUsers(int(request.json["id"]))
+    users = getAllUsers()
+    response = []
+    if(len(users) != 0):
+        for user in users:
+            if(user[0] == id):
+                continue
+            else:
+                response.append({
+                    "user_id": user[0],
+                    "username": user[5],
+                    "admin": user[2]
+                })
+        return jsonify({"response": response}), 200
+    else:
+        return jsonify({"response": "Database is empty"}), 200
 
-    
+def getAllUsers(self):
+    q = "SELECT * FROM users;"
+    self.curr.execute(q,)
+    users = self.curr.fetchall()
+    return users   
+
+##################################################################
+
+
 """
     logout function
         kills the session and token
