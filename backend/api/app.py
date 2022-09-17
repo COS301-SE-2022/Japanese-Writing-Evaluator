@@ -99,6 +99,9 @@ def getUser(password,email):
 
 ###################################################################
 
+###################################################################
+#forgot password email
+
 """
     callResetPassword function:
         calls update password to change the password
@@ -133,17 +136,51 @@ def forgotPasswordEmail(email):
     else:
             return jsonify({'response': "email unsuccessfully sent"}), 401
 
-
 def getUserByEmail(self, email):
     query = " SELECT username FROM users WHERE email = %s"
     self.curr.execute(query, (email,))
     name = self.curr.fetchone()
     return name
-    
+
+##################################################################
+#forgot password password    
+
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-    return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
+        salt = fetchSaltByToken(str(requests.json["token"]))
+        new_password = hashlib.sha512((str(request.json["password"]) + salt[0]).encode()).hexdigest()
+        
+        editedRow = updatePassword(str(requests.json["token"]), new_password)
+        if editedRow == 1:
+            return jsonify({'response': "password reset successful."}), 200
+        else:
+            return jsonify({'response': "password reset failed."}), 401
 
+def fetchSaltByToken(self, token):
+    query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+    self.curr.execute(query, (token,))
+    salt = self.curr.fetchone()
+    return salt
+
+def updatePassword(self, token, password):
+    update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
+    try:
+        print(token)
+        self.curr.execute(update_query, (password, token))
+        self.conn.commit()
+        setTokenNull = "UPDATE users SET forgot_password_token = NULL WHERE forgot_password_token = %s"
+        self.curr.execute(setTokenNull, (token,))
+        self.conn.commit()
+        return self.curr.rowcount    
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return 0
+
+####################################################################
+
+
+####################################################################
+#Register
 """
     call Register function:
         calls the register function from authentication.py
