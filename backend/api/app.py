@@ -1,4 +1,5 @@
 from functools import wraps
+import hashlib
 # from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
@@ -7,6 +8,7 @@ from flask_cors import CORS;
 from schedule import every, repeat, run_pending
 import requests
 import sys
+import psycopg2
 sys.path.insert(0, '../services')
 sys.path.insert(1, '../eventBus')
 from send_email import Send_Email
@@ -18,7 +20,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 send = Send_Email()
 CORS(app)
-
 
 def token_required(function):
     @wraps(function)
@@ -37,6 +38,61 @@ def token_required(function):
         return  function(*args, **kwargs)
 
     return decorated
+
+#####################################################
+#login
+try:
+    conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
+    conn2 = psycopg2.connect(host = os.getenv('Image_host'), database = os.getenv('Image_db'), user = os.getenv('Image_user'), password = os.getenv('Image_pass'))
+    curr = conn.cursor()
+    curr2 = conn2.cursor()
+except Exception as e:
+    print("Could not connect to database", e)
+
+"""
+    login function:
+        return the user if they exist
+    request body:
+        email: the email of a registered user
+        password: their password
+    return:
+        json response
+"""
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    email = str(request.json["email"])
+    password = str(request.json["password"])
+    salt = fetchSalt(email)
+    if(salt == None):
+            return jsonify({'response': "user does not exist"})
+    else:
+        user_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        user = getUser(user_password, email)
+
+        if user == None:
+            return jsonify({'response': "user not found."}), 401
+        else:
+            session["logged_in"] = True
+            token = jwt.encode({
+                'username' : user[0],
+                'id': user[1],
+            }, app.config['SECRET_KEY'], "HS256")
+            return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+
+
+def fetchSalt(email):
+    query = "SELECT password_salt FROM users WHERE email = %s;"
+    curr.execute(query, (email,))
+    salt = curr.fetchone()
+    return salt
+
+def getUser(password,email):
+    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    curr.execute(q, (password,email))
+    user = curr.fetchone()
+    return user
+
+###################################################################
 
 """
     callResetPassword function:
@@ -110,28 +166,7 @@ def callViewImages():
 def callListUsers():
     return event_bus.eventListUsers(int(request.json["id"]))
 
-"""
-    login function:
-        return the user if they exist
-    request body:
-        email: the email of a registered user
-        password: their password
-    return:
-        json response
-"""
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    user = event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
-    if user == None:
-        return jsonify({'response': "user not found."}), 401
-    else:
-        session["logged_in"] = True
-        token = jwt.encode({
-            'username' : user[0],
-            'id': user[1],
-        }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
-
+    
 """
     logout function
         kills the session and token
@@ -284,7 +319,7 @@ def callViewModel():
         json response
 """
 @app.route('/object-detection', methods = ['POST'])
-@token_required
+# @token_required
 def callObjectDetection():
     return event_bus.eventObjectDetection(str(request.json["image"]))
 
