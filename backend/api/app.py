@@ -1,5 +1,6 @@
 from functools import wraps
 import hashlib
+import uuid
 # from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
@@ -193,7 +194,28 @@ def updatePassword(self, token, password):
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    try:
+        Finduser = getUserByEmail(str(request.json["email"]))
+        if Finduser != None:
+            res = "User already exists"
+            return jsonify({"response": res}), 409
+        else:
+            salt = uuid.uuid4().hex
+            passwordSalt = hashlib.sha512((str(request.json["password"]) + salt).encode()).hexdigest()
+            addUser(str(request.json["username"]), passwordSalt, email, False, salt, 0)
+            res = "Registration Successful"
+            return jsonify({'response': res}), 200
+
+    except Exception as e:
+        return jsonify({'response': str(e)}), 401
+
+def addUser(self, username, password, email, admin, passwordSalt, avgScore):
+    q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+    self.curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+    self.conn.commit()
+
+###################################################################
 
 """
     callUploadImage function:
