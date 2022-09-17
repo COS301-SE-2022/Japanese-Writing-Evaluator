@@ -9,10 +9,15 @@ from schedule import every, repeat, run_pending
 import requests
 import sys
 import psycopg2
+import sendgrid
+from sendgrid.helpers.mail import *
+from secrets import token_urlsafe
 sys.path.insert(0, '../services')
 sys.path.insert(1, '../eventBus')
 from send_email import Send_Email
 import event_bus
+
+
 
 # load_dotenv()
 
@@ -105,8 +110,36 @@ def getUser(password,email):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    return event_bus.eventResetPassword(str(request.json["email"]))
+    # return event_bus.eventResetPassword(str(request.json["email"]))
+    user = getUserByEmail(str(request.json["email"]))
+    if(user != None):
+        return forgotPasswordEmail(str(request.json["email"]))
+    else:
+        return jsonify({'response': "user does not exist"}), 401
 
+def forgotPasswordEmail(email):
+    sg = sendgrid.SendGridAPIClient(api_key = os.getenv('SENDGRID_API_KEY'))
+    from_email = Email(os.environ.get('SENDGRID_EMAIL'))
+    to_email = To(email)
+    subject = "Forgot Password"
+    site = "http://localhost:8100/forgot-password-password"
+    rand = token_urlsafe(8)
+    content = Content("text/html", '<div align="center" style="color: rgb(210, 4, 45); background-size: 100% 100%; background-repeat: no-repeat; background-image: url(\'https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2Femail_Background.png?alt=media&token=f72405e1-5607-47b6-957c-81cda3c94af5\');"><div><td style="font-size:6px; line-height:10px; padding:0px 0px 0px 0px;" valign="top" align="center"><img class="max-width" border="0" style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:12% !important; width:12%; height:auto !important;" width="84" alt="" data-proportionally-constrained="true" data-responsive="true" src="https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2FJWE-logos_black.png?alt=media&token=4f64c15a-a0b6-4fbb-8dda-be74e7a45739"></td></div> <p>Token is: {}<p> <br><a href="{}""><button> Reset Password </button></a></div>'.format(rand, site))
+    mail = Mail(from_email, to_email, subject, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    if(response.status_code == 202):
+            send = {'response': "email successfully sent", 'token': rand}
+            return send
+    else:
+            return jsonify({'response': "email unsuccessfully sent"}), 401
+
+
+def getUserByEmail(self, email):
+    query = " SELECT username FROM users WHERE email = %s"
+    self.curr.execute(query, (email,))
+    name = self.curr.fetchone()
+    return name
+    
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
     return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
