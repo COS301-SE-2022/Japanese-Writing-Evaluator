@@ -12,4 +12,16 @@ export class DrawingPadPage implements OnInit {
   ngOnInit() {
   }
 
+  startDrawing($event){
+
+  }
+
+  moved($event){
+
+  }
+
+  endDrawing(){
+    
+  }
+
 }
