@@ -170,8 +170,12 @@ def getUser():
     return:
         json response
 """
-def register(self, email, password, username):
+@app.route("/register", methods=["POST"])
+def register():
     try:
+        email = request.json["email"]
+        password = request.json["password"]
+        username = request.json["username"]
         Finduser = getUserByEmail(email)
         if Finduser != None:
             res = "User already exists"
@@ -187,6 +191,16 @@ def register(self, email, password, username):
         return jsonify({'response': str(e)}), 401
 
 
+def getUserByEmail(email):
+    query = " SELECT username FROM users WHERE email = %s"
+    curr.execute(query, (email,))
+    name = curr.fetchone()
+    return name
+
+def addUser(username, password, email, admin, passwordSalt, avgScore):
+    q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+    curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+    conn.commit()
 """
 
     login function:
