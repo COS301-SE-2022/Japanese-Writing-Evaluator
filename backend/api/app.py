@@ -51,16 +51,13 @@ def token_required(function):
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
     send = requests.post("http://127.0.0.1:5005/findUser", json = {"email": request.json["email"]})
-    res = send.json()["response"]
-    if(res == "user does not exist"):
-        return jsonify({"response": res}), 400
-    else:
-        return jsonify({"response": res}), 200
+    return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-    return None
+    send = requests.put("http://127.0.0.1:5005/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
+    return send.json()
     # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
 
 """
