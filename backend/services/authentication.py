@@ -150,7 +150,7 @@ def addToken(email, token):
         username and userid
 """
 @app.route("/getUserByID", methods=["POST"])
-def getUser():
+def getUserByID():
     id = request.json["id"]
     query = " SELECT * FROM users WHERE userid = %s"
     curr.execute(query, (id,))
@@ -210,14 +210,29 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
     return:
         username and userId
 """
-def login(self, email, password):
+@app.route("/login", methods=["POST"])
+def login():
+    email = request.json['email']
+    password = request.json['password']
     salt = fetchSalt(email)
     if(salt == None):
         return None
     else:
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
-        return user 
+        return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
+
+def fetchSalt(email):
+    query = "SELECT password_salt FROM users WHERE email = %s;"
+    curr.execute(query, (email,))
+    salt = curr.fetchone()
+    return salt
+
+def getUser(password,email):
+    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    curr.execute(q, (password,email))
+    user = curr.fetchone()
+    return user
 
 """
     edit user Privileges function:
