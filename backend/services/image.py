@@ -12,8 +12,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
-
-
 config = {
     'apiKey': os.getenv('FB_APIKEY'),
     'authDomain': os.getenv('FB_authDomain'),
@@ -59,10 +57,10 @@ def uploadImage(self, id, imageChar, image, file):
         json response
 """
 @app.route("/viewImages", methods=["POST"])
-def viewImages(self, images):
-    if images:
+def viewImages():
+    images = request.json["images"]
+    if len(images) > 0:
         response = []
-        i = 0
         for imgs in images:
             style = imgs[4]
             response.append({
@@ -72,7 +70,7 @@ def viewImages(self, images):
                 "score": imgs[3],
                 "uploadDate": imgs[5]
             })
-            i = i + 1
+
         return jsonify({'response': response}), 200
     else:
         return jsonify({'response': "view image failed."}), 401
