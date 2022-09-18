@@ -35,8 +35,7 @@ def forgotPasswordEmail():
         mail = Mail(from_email, to_email, subject, content)
         response = sg.client.mail.send.post(request_body=mail.get())
         if(response.status_code == 202):
-                send = {'response': "email successfully sent", 'token': rand}
-                return send
+                return jsonify({'response': "email successfully sent", 'token': rand}), 200
         else:
                 return jsonify({'response': "email unsuccessfully sent"}), 401
     except Exception as e:
