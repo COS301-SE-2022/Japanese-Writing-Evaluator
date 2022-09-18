@@ -8,16 +8,16 @@ from flask_cors import CORS;
 from schedule import every, repeat, run_pending
 import requests
 import sys
-sys.path.insert(0, '../services')
-sys.path.insert(1, '../eventBus')
-from send_email import Send_Email
-import event_bus
+# sys.path.insert(0, '../services')
+# sys.path.insert(1, '../eventBus')
+# from send_email import Send_Email
+# import event_bus
 
 # load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-send = Send_Email()
+# send = Send_Email()
 CORS(app)
 
 
@@ -50,11 +50,18 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    return event_bus.eventResetPassword(str(request.json["email"]))
+    send = requests.post("http://127.0.0.1:5005/findUser", json = {"email": request.json["email"]})
+    res = send.json()["response"]
+    if(res == "user does not exist"):
+        return jsonify({"response": res}), 400
+    else:
+        return jsonify({"response": res}), 200
+    # return event_bus.eventResetPassword(str(request.json["email"]))
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-    return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
+    return None
+    # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
 
 """
     call Register function:
@@ -68,7 +75,8 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    return None
+    # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
@@ -82,7 +90,8 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
+    return None
+    # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
 
 """
     callViewImages function:
@@ -96,7 +105,8 @@ def callUploadImage():
 @app.route('/progress', methods = ['GET', 'POST'])
 @token_required
 def callViewImages():
-    return event_bus.eventViewImages(int(request.json["id"]))
+    return None
+    # return event_bus.eventViewImages(int(request.json["id"]))
 
 """
     login function:
@@ -109,7 +119,7 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
+    user = None#event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -147,7 +157,8 @@ def logout():
 """
 @app.route('/home', methods=['GET'])
 def home():
-    return event_bus.eventGetCharacters()
+    return None
+    # return event_bus.eventGetCharacters()
 
 """
     email function:
@@ -157,10 +168,14 @@ def home():
     return:
         
 """
+@app.route("/email", methods=["POST"])
 @repeat(every().sunday)
 def email_users():
-    users = event_bus.eventGetImageUsers()
+
+    imgs = requests.get("http://127.0.0.1:5003/getImageUsers")
+    users = imgs.json()["response"]
     keep = []
+    c = 0
     for i in users:
         if(keep.count(i[0]) == 0):
             keep.append(i[0])
@@ -193,14 +208,20 @@ def email_users():
 
     contain = []
     for i in store:
-        thisUser = event_bus.eventGetUser(i[0])
+        # thisUser = event_bus.eventGetUser(i[0])
+        print(i)
+        user = requests.post("http://127.0.0.1:5005/getUserByID", json = {"id": i[0]})
+        thisUser = user.json()["response"]
+        # print(thisUser["email"])
         if(thisUser != None):
-            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
 
             valid = response.json()['status']
 
             if(valid == "valid"):
-                contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
+                send = requests.post("http://127.0.0.1:5002/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
+                print(send)
+                contain.append(send.json()["response"])
             else:
                 contain.append("Failed")
     
@@ -220,7 +241,8 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
+    return None
+    # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
 
 """
     callEditUserPrivileges function:
@@ -234,7 +256,8 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+    return None
+    # return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
 
 """
     callEditUserPrivileges function:
@@ -248,7 +271,8 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
-    return event_bus.event_listModelData()
+    return None
+    # return event_bus.event_listModelData()
 
 """
     callViewModel function:
@@ -261,7 +285,8 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
-    return event_bus.eventViewModelData(str(request.json['version']))
+    return None
+    # return event_bus.eventViewModelData(str(request.json['version']))
 
 """
     ListUsers function:
@@ -274,7 +299,8 @@ def callViewModel():
 @app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
-    return event_bus.eventListUsers(int(request.json["id"]))
+    return None
+    # return event_bus.eventListUsers(int(request.json["id"]))
 
 """
     getAnalytics function:
@@ -287,7 +313,8 @@ def callListUsers():
 @app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    return event_bus.eventGetAnalytics()
+    return None
+    # return event_bus.eventGetAnalytics()
 
 """
     callObjectDetection function:
