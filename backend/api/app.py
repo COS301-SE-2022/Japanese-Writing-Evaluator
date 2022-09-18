@@ -118,14 +118,16 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = None#event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
+    # user = None#event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
+    user = requests.post("http://127.0.0.1:5005/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
+    print(user)
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
         session["logged_in"] = True
         token = jwt.encode({
-            'username' : user[0],
-            'id': user[1],
+            'username' : user['username'],
+            'id': user['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
