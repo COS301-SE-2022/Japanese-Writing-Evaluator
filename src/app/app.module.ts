@@ -10,8 +10,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './Interceptor/loader.interceptor';
 import { UploadPage } from './upload/upload.page';
-import { LoginPage } from './login/login.page';
 import { ToastComponent } from './shared/components/toast/toast.component';
+
+
 
 
 
