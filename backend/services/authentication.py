@@ -28,7 +28,10 @@ except Exception as e:
     return:
         json response
 """
-def resetPassword(self, token, password):
+@app.route("/reset-password", methods=["PUT"])
+def resetPassword():
+    token = request.json["token"]
+    password = request.json["password"]
     salt = fetchSaltByToken(token)
     new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
     
@@ -37,6 +40,35 @@ def resetPassword(self, token, password):
         return jsonify({'response': "password reset successful."}), 200
     else:
         return jsonify({'response': "password reset failed."}), 401
+
+def fetchSaltByToken(token):
+    query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+    curr.execute(query, (token,))
+    salt = curr.fetchone()
+    return salt
+
+"""
+    update password function:
+        functionality: updates the password of the user
+    aguments: 
+        email
+        password
+    return:
+        number of rows modified for bound checking
+"""
+def updatePassword(token, password):
+    update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
+    try:
+        print(token)
+        curr.execute(update_query, (password, token))
+        conn.commit()
+        setTokenNull = "UPDATE users SET forgot_password_token = NULL WHERE forgot_password_token = %s"
+        curr.execute(setTokenNull, (token,))
+        conn.commit()
+        return curr.rowcount    
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return 0
 
 """
     listUsers function:
