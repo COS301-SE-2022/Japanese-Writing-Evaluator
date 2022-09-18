@@ -21,7 +21,10 @@ parameters:
 return:
     json response
 """
-def forgotPasswordEmail(email):
+@app.route("/forgot-password", methods=["POST"])
+def forgotPasswordEmail():
+    try:
+        email = request.json["email"]
         sg = sendgrid.SendGridAPIClient(api_key = os.getenv('SENDGRID_API_KEY'))
         from_email = Email(os.environ.get('SENDGRID_EMAIL'))
         to_email = To(email)
@@ -36,7 +39,8 @@ def forgotPasswordEmail(email):
                 return send
         else:
                 return jsonify({'response': "email unsuccessfully sent"}), 401
-
+    except Exception as e:
+        return jsonify({"response": "Failed"}), 400 
 
 """
 forgotPasswordEmail function:
@@ -46,9 +50,13 @@ parameters:
 return:
     string response
 """
-def send_email(self, email, score, username):
+@app.route("/send-email", methods=["POST"])
+def send_email():
 
     try:
+        email = request.json["email"]
+        score = request.json["score"]
+        username = request.json["username"]
         sg = sendgrid.SendGridAPIClient(api_key = os.getenv('SENDGRID_API_KEY'))
         from_email = Email(os.environ.get('SENDGRID_EMAIL'))
         to_email = To(email)
@@ -69,9 +77,9 @@ def send_email(self, email, score, username):
         print(response.body)
         print(response.headers)
 
-        return "Email successfully sent" 
+        return jsonify({"response": "Email successfully sent"}), 200 
     except Exception as e:
-        return "Failed"
+        return jsonify({"response": "Failed"}), 400 
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
