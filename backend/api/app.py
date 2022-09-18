@@ -100,10 +100,11 @@ def callUploadImage():
         json response
 """
 
-@app.route('/progress', methods = ['GET', 'POST'])
+@app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
-    return None
+    send = requests.post("http://127.0.0.1:5003/getImages", json = {"id": request.json["id"]})
+    return send.json()
     # return event_bus.eventViewImages(int(request.json["id"]))
 
 """
