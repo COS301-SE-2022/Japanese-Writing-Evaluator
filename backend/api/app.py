@@ -1,4 +1,5 @@
 from functools import wraps
+import json
 # from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
@@ -15,7 +16,7 @@ import event_bus
 # load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 send = Send_Email()
 CORS(app)
 
@@ -284,10 +285,14 @@ def callViewModel():
         json response
 """
 @app.route('/object-detection', methods = ['POST'])
-@token_required
+# @token_required
 def callObjectDetection():
-    return event_bus.eventObjectDetection(str(request.json["image"]))
-
+    image = request.json["image"]
+    data = requests.post('http://127.0.0.1:5001/detect', json = {'image': image})
+    res = data.json()["response"]
+    # print(res)
+    return jsonify({"response": res}), 200
 
 if __name__ == '__main__':
+    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(debug = True)
