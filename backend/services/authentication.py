@@ -75,10 +75,39 @@ def listUsers(self, id):
 """
 @app.route("/findUser", methods=["POST"])
 def findUser():
-    if(getUserByEmail(email)):
-        return jsonify({'response': "user found"}), 200
+    email = request.json["email"]
+    query = " SELECT username FROM users WHERE email = %s"
+    curr.execute(query, (email,))
+    name = curr.fetchone()
+    if(name != None):
+        send = requests.post("http://127.0.0.1:5002/forgot-password", json = {"email": email})
+        res = send.json()
+        token = addToken(email, res["token"])
+        if(token == False):
+            return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
+        else:
+            r = {"email": email, "token": res["token"]}
+            return jsonify({"response": r}), 200
+
     else:
-        return jsonify({'response': "user does not exist"}), 401
+        return jsonify({"response": "user does not exist"}), 400
+
+"""
+    addToken function:
+        calls addToken function
+    request body: 
+        email and token
+    return:
+        json response
+"""
+def addToken(email, token):
+    try:
+        query = "UPDATE users SET forgot_password_token = %s WHERE email = %s;"
+        curr.execute(query, (token, email))
+        conn.commit()
+        return True
+    except:
+        return False
 
 """
     getUser function:
@@ -100,19 +129,6 @@ def getUser():
     }
     return jsonify({"response": res}), 200
 
-"""
-    addToken function:
-        calls addToken function
-    request body: 
-        email and token
-    return:
-        json response
-"""
-def addToken(self, email, token):
-    if(addToken(email, token)):
-        return jsonify({'response': "Token successfully added"}), 200
-    else:
-        return jsonify({'response': "Token unsuccessfully added"}), 401
 """
 
     register function:
