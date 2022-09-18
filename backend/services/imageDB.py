@@ -44,9 +44,17 @@ def getImages():
     view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
     curr2.execute(view_query, ([id]))
     images = curr2.fetchall()
-    call = requests.post("http://127.0.0.1:5004/", images)
-    res = images.json()["response"]
-    return jsonify({'response': res}), 200    
+
+    if(len(images) > 0):
+        # print(images)
+        imgs = []
+        for i in images:
+            imgs.append((i[0], i[1], i[2], i[3], i[4], i[5].strftime("%Y-%m-%d")))
+        print(imgs)
+        call = requests.post("http://127.0.0.1:5004/viewImages", json = {"images": imgs})
+        return call.json()
+    else:
+        return jsonify({'response': "no user images"}), 400    
 
 """
 getImagesUsers function:
