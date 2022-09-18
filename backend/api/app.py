@@ -72,7 +72,8 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    return None
+    send = requests.post("http://127.0.0.1:5005/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
+    return send.json()
     # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
