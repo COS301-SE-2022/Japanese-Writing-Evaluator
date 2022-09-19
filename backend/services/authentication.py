@@ -271,40 +271,73 @@ def listModelData():
     res = getModels()
     print(res)
     if res != None:
-        data =  """{
-            "hiragana":{
-                "characterRecognition":[
-                    
-                ],
-                "strokes": [
-                    
-                ]
+        data_Hiragana =  []
+        data_kanji = []
+        data_katakana =[]
+        hiragana_strokes =  []
+        katakana_strokes = []
+        kanji_strokes =[]
+        for model in res:
+            if(model[2] == 'hiragana'):
+                data_Hiragana.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            elif(model[2] == 'katakana'):
+                data_kanji.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            elif(model[2] == 'kanji'):
+                data_katakana.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            elif(model[2] == 'hiragana_strokes'):
+                hiragana_strokes.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            elif(model[2] == 'katakana_strokes'):
+                katakana_strokes.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            elif(model[2] == 'kanji_strokes'):
+                kanji_strokes.append({
+                    'version': model,
+                    'data': model[3],
+                    'accuracy': model[5],
+                    'loss': model[4]
+                })
+            else:
+                return jsonify({'response': 'data error!'}), 400
+        data = []
+        data.append({
+            'hiragana':{
+                'characterRecognition':[],
+                'strokes': []
             },
-            "katakana":{
-                "characterRecognition":[
-                    
-                ],
-                "strokes": [
-                    
-                ]
+            'Katakana':{
+                'characterRecognition':[],
+                'strokes': []
             },
-            "kanji":{
-                "characterRecognition":[
-                    
-                ],
-                "strokes": [
-                    
-                ]
+            'kanji':{
+                'characterRecognition':[],
+                'strokes': []
             }
-        }"""
-        data = json.loads(data)
-        for r in res:
-            data.append({
-                "version": "beta model",
-                "date": "2022-07-18 21:02:36.402017",
-                "accuracy": "90.44196605682373%",
-                "loss": "39.844363927841187%"
-            })
+        })
+                
         return jsonify({'response': 'successfully retrieved model data', 'data' :  data}), 200
     else:
         return jsonify({'response': 'Failed to get model data'}), 401
