@@ -4,10 +4,13 @@ import json
 import uuid
 from flask import jsonify
 import os
+from dotenv import load_dotenv
 import requests
 import psycopg2
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
