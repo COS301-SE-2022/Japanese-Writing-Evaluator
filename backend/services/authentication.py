@@ -263,11 +263,13 @@ def editUserPrivileges():
     return:
         json response
 """    
+@app.route("/admin/models", methods=["GET"]) 
 def listModelData():
-    try:
-        data = getModels()
+    data = getModels()
+    print(data)
+    if data:   
         return jsonify({'response': 'successfully retrieved model data', 'data' :  data}), 200
-    except:
+    else:
         return jsonify({'response': 'Failed to get model data'}), 401
     
 """
@@ -277,7 +279,8 @@ def listModelData():
         version : the version of the model
     return:
         json response
-"""    
+"""  
+@app.route("/admin/view-model", methods=["GET", "POST"])  
 def viewModelData():
     try:
         resp = getAModel(request.json[version])
@@ -286,6 +289,7 @@ def viewModelData():
     except Exception as e:
         print(e)
         return jsonify({'response': 'Failed to get model data'}), 401
+
 """
     getAModel function:
         queries the database for the a of the given version
