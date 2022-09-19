@@ -248,7 +248,7 @@ def getUser(password,email):
 """    
 @app.route('/admin/edit', methods = ['POST'])
 def editUserPrivileges():
-    edited = editUser(request.json['userid'], request.json['admin'])
+    edited = editUser(request.json['id'], request.json['admin'])
     print('edited: ', edited)
     if(edited):
         return jsonify({'response': 'Privileges updated successfully'}), 200
@@ -333,14 +333,16 @@ def getModels():
     return:
         object
 """
-def editUser(id, admin):
+def editUser( id, admin):
     try:
-        q = "UPDATE users SET admin = %s WHERE userid = %s"
-        curr.execute(q, (id, admin))
+        query = "UPDATE users SET admin = %s WHERE userid = %s;";
+        curr.execute(query, (admin, id))
         conn.commit()
+        print("Edited")
         return True
-    except:
-        return False
+    except Exception as e:
+        print(e)
+        return False  
     
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
