@@ -280,42 +280,42 @@ def listModelData():
         for model in res:
             if(model[2] == 'hiragana'):
                 data_Hiragana.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
             elif(model[2] == 'katakana'):
                 data_kanji.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
             elif(model[2] == 'kanji'):
                 data_katakana.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
             elif(model[2] == 'hiragana_strokes'):
                 hiragana_strokes.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
             elif(model[2] == 'katakana_strokes'):
                 katakana_strokes.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
             elif(model[2] == 'kanji_strokes'):
                 kanji_strokes.append({
-                    'version': model,
+                    'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
