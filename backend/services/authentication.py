@@ -240,14 +240,14 @@ def getUser(password,email):
 """
     edit user Privileges function:
         functionality: change the users admin privileges
-    arguments:
+    request body:
         id: user's id
         admin: the new admin privilege (boolean)
     return:
         json response
 """    
-def editUserPrivileges(self, id, admin):
-    edited = editUser(id, admin)
+def editUserPrivileges():
+    edited = editUser(request.json['id'], request.json['admin'])
     print('edited: ', edited)
     if(edited):
         return jsonify({'response': 'Privileges updated successfully'}), 200
@@ -319,7 +319,24 @@ def getModels():
         return model
     except:
         return None
-
+    
+"""
+    editUser function:
+        Edit the users admin status
+    arguments:
+        id, admin
+    return:
+        object
+"""
+def editUser(id, admin):
+    try:
+        q = "UPDATE users SET admin = %s WHERE id = %s"
+        curr.execute(q, (id, admin))
+        conn.commit()
+        return True
+    except:
+        return False
+    
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(debug = True, port = 5005)
