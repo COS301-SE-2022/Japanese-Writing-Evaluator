@@ -8,6 +8,9 @@ from flask import jsonify
 from secrets import token_urlsafe
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
