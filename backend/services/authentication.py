@@ -263,9 +263,9 @@ def editUserPrivileges(self, id, admin):
     return:
         json response
 """    
-def listModelData(self):
+def listModelData():
     try:
-        data = json.load(open('../ai/models_data.json'))
+        data = getModels()
         return jsonify({'response': 'successfully retrieved model data', 'data' :  data}), 200
     except:
         return jsonify({'response': 'Failed to get model data'}), 401
@@ -296,12 +296,13 @@ def viewModelData():
 """ 
 def getAModel(version):
     try:
-        q = "SELECT * WHERE version = %s;"
+        q = "SELECT * FROM models WHERE version = %s;"
         curr.execute(q, (version))
         model = curr.fetchone()
         return model
     except:
         return None
+
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
