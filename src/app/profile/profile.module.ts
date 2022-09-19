@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
-
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 import { ProfilePage } from './profile.page';
 import { ProfileBlockComponent } from './profile-block/profile-block.component';
 import { PopoverComponent } from './popover/popover.component';
@@ -15,7 +15,8 @@ import { PopoverComponent } from './popover/popover.component';
     CommonModule,
     FormsModule,
     IonicModule,
-    ProfilePageRoutingModule
+    ProfilePageRoutingModule,
+    AdminNavBarModule
   ],
   declarations: [ProfilePage, ProfileBlockComponent, PopoverComponent]
 })

@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { RouteguardService as RouteGuard } from '../app/services/routeGaurd/routeguard.service';
+//import { RouteguardService as RouteGuard } from '../app/services/routeGuard/routeguard.service';
+import { RouteguardService as RouteGuard } from './services/routeGaurd/routeguard.service';
 
 const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    canActivate: [RouteGuard] //checks if the user is authenticated, if not the user will be redirected to login
+    //canActivate: [RouteGuard] //checks if the user is authenticated, if not the user will be redirected to login
   },
   {
     path: '',
@@ -24,12 +25,12 @@ const routes: Routes = [
   {
     path: 'progress',
     loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule),
-    canActivate: [RouteGuard]
+    //canActivate: [RouteGuard]
   },
   {
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule),
-    canActivate: [RouteGuard]
+    //canActivate: [RouteGuard]
   },
   {
     path: 'forgot-password-email',

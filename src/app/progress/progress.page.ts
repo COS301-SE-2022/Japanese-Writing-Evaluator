@@ -15,6 +15,14 @@ import { UserProgress } from '../shared/interfaces/progress';
 export class ProgressPage implements OnInit {
 
   //Data for progress
+   //Data for progress
+   progressArray: {writingStyle: string; url: string; character: string; score: string; uploadDate: string}[];
+   object: { char: string; score: string; date: string };
+   progressHiragana =  new Map<string, {score: string; date: string }[]> ();
+   progressKatakana =  new Map<string, {score: string; date: string }[]> ();
+   progressKanji =  new Map<string, {score: string; date: string }[]> ();
+   writingStylesArray: string[];
+
 
   alphabetCategory = [
     {character: 'あ', category: 'Hiragana'},
@@ -33,10 +41,6 @@ export class ProgressPage implements OnInit {
   kanji = 'kanji';
 
   map = new Map();
-  writingStylesArray: string[];
-  progressArray: { writingStyle: string; url: string; character: string; score: string; uploadDate: string; }[];
-
-
 
   constructor(private router: Router, private service: AppServiceService) { }
 
@@ -80,27 +84,130 @@ export class ProgressPage implements OnInit {
     this.manipulateScores();
   }
   manipulateScores() {
-    throw new Error('Method not implemented.');
-  }
+      // eslint-disable-next-line @typescript-eslint/prefer-for-of
+      for (let i = 0; i < this.progressArray.length ; i++)
+      {
+        let scores: { score: string; date: string }[];
+        let keyString = '';
+        keyString += this.progressArray[i].character + '_';
+        keyString += this.progressArray[i].writingStyle;
 
+        if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
 
-  // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-  setDisplay(char: string, percent: number){
-    this.char = char;
-    this.percent = percent;
-  }
-  // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
-  setHome(){
-    this.router.navigate(['/home']);
-  }
+          const object = {
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          };
+          this.progressHiragana.get(keyString).push(object);
+        }
+        else if(keyString.includes('hiragana'))
+        {
+          const object = [{
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          }];
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
+          this.progressHiragana.set(keyString, object);
+        }
+        else if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
+
+          const object = {
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          };
+          this.progressKatakana.get(keyString).push(object);
+        }
+        else if(keyString.includes('katakana')){
+          const object = [{
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          }];
+
+          this.progressKatakana.set(keyString, object);
+        }
+        else if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
+
+          const object = {
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          };
+          this.progressKanji.get(keyString).push(object);
+        }
+        else if(keyString.includes('kanji'))
+        {
+          const object = [{
+            score: this.progressArray[i].score,
+            date: this.progressArray[i].uploadDate,
+          }];
+
+          this.progressKanji.set(keyString, object);
+        }
+
+      }
     }
-    this.router.navigate(['/login']);
+
+    // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
+    setDisplay(char: string, percent: number){
+      this.char = char;
+      this.percent = percent;
+    }
+    // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
+    setHome(){
+      this.router.navigate(['/home']);
+    }
+
+    onLogout(){
+      // this function logs the user out of the system
+      localStorage.removeItem('id');
+      if (localStorage.getItem('token')) {
+        localStorage.removeItem('token');
+      }
+      this.router.navigate(['/login']);
+
+    }
+
+  getLetter(letter: string){
+    let letterString = '';
+    let index = letter.indexOf('_');
+
+    if(index !== -1)
+    {
+      index -= 1;
+      while(index!== -1){
+
+        letterString += letter[index];
+        index -= 1;
+      }
+    }
+    return letterString.split('').reverse().join('');
+  }
+
+  getStyle(writingStyle: string){
+
+    if(writingStyle.includes('hiragana'))
+    {
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      return 'katakana';
+    }
+    else
+    {
+      return 'kanji';
+    }
+  }
+
+  getPercent(objArray: {score: string; date: string }[]){
+
+    let totalPercent = 0;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < objArray.length; i++) {
+      totalPercent+=Number(objArray[i].score);
+    }
+      return Math.round(totalPercent/objArray.length);
+  }
+
 
   }
-}
+
