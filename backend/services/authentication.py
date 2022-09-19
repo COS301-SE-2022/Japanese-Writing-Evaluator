@@ -81,7 +81,8 @@ def updatePassword(token, password):
     return:
         json response
 """
-def listUsers(self, id):
+def listUsers():
+    id = request.json['id']
     users = getAllUsers()
     response = []
     if(len(users) != 0):
@@ -269,7 +270,7 @@ def listModelData():
     res = getModels()
     print(res)
     if res != None:
-        data = {
+        data =  """{
             "hiragana":{
                 "characterRecognition":[
                     
@@ -294,7 +295,8 @@ def listModelData():
                     
                 ]
             }
-        }
+        }"""
+        data = json.loads(data)
         for r in res:
             data.append({
                 "version": "beta model",
@@ -376,6 +378,20 @@ def editUser( id, admin):
     except Exception as e:
         print(e)
         return False  
+    
+"""
+    getAllUsers function:
+        functionality: gets all users database
+    aguments: 
+        none
+    return:
+        users
+"""
+def getAllUsers():
+    q = "SELECT * FROM users;"
+    curr.execute(q,)
+    users = curr.fetchall()
+    return users
     
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
