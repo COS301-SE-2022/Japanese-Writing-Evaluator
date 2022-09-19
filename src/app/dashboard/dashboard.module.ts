@@ -7,6 +7,7 @@ import { AdminNavBarComponent } from '../shared/components/admin-nav-bar/admin-n
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 import { DashboardPage } from './dashboard.page';
+import { LogoutModule } from '../shared/components/logout/logout.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { DashboardPage } from './dashboard.page';
     FormsModule,
     IonicModule,
     DashboardPageRoutingModule,
-    AdminNavBarModule
+    AdminNavBarModule,
+    LogoutModule
   ],
   declarations: [DashboardPage]
 })

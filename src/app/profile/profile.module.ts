@@ -9,6 +9,7 @@ import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-
 import { ProfilePage } from './profile.page';
 import { ProfileBlockComponent } from './profile-block/profile-block.component';
 import { PopoverComponent } from './popover/popover.component';
+import { LogoutModule } from '../shared/components/logout/logout.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { PopoverComponent } from './popover/popover.component';
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    AdminNavBarModule
+    AdminNavBarModule,
+    LogoutModule
   ],
   declarations: [ProfilePage, ProfileBlockComponent, PopoverComponent]
 })
