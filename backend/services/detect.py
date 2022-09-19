@@ -1,5 +1,6 @@
 import base64
 import os
+from dotenv import load_dotenv
 from flask import jsonify
 import torch
 import re
@@ -9,6 +10,8 @@ from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
 import json
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
