@@ -266,9 +266,42 @@ def editUserPrivileges():
 """    
 @app.route("/admin/models", methods=["GET"]) 
 def listModelData():
-    data = getModels()
-    print(data)
-    if data:   
+    res = getModels()
+    print(res)
+    if res != None:
+        data = {
+            "hiragana":{
+                "characterRecognition":[
+                    
+                ],
+                "strokes": [
+                    
+                ]
+            },
+            "katakana":{
+                "characterRecognition":[
+                    
+                ],
+                "strokes": [
+                    
+                ]
+            },
+            "kanji":{
+                "characterRecognition":[
+                    
+                ],
+                "strokes": [
+                    
+                ]
+            }
+        }
+        for r in res:
+            data.append({
+                "version": "beta model",
+                "date": "2022-07-18 21:02:36.402017",
+                "accuracy": "90.44196605682373%",
+                "loss": "39.844363927841187%"
+            })
         return jsonify({'response': 'successfully retrieved model data', 'data' :  data}), 200
     else:
         return jsonify({'response': 'Failed to get model data'}), 401
