@@ -2,26 +2,29 @@ from flask import jsonify
 import base64
 from flask import jsonify
 import pyrebase
+from dotenv import load_dotenv
 import os
 import json
 
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
 
+load_dotenv()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
 config = {
-    'apiKey': os.getenv('FB_APIKEY'),
-    'authDomain': os.getenv('FB_authDomain'),
-    'projectId': os.getenv('FB_projectId'),
-    'storageBucket': os.getenv('FB_storageBucket'),
-    'messagingSenderId': os.getenv('FB_messagingSenderId'),
-    'appId': os.getenv('FB_appId'),
+    "apiKey": os.getenv("FB_APIKEY"),
+    "authDomain": os.getenv("FB_authDomain"),
+    "databaseURL": os.getenv("FB_DBURL"),
+    "projectId": os.getenv("FB_projectId"),
+    "storageBucket": os.getenv("FB_storageBucket"),
+    "messagingSenderId": os.getenv("FB_messagingSenderId"),
+    "appId": os.getenv("FB_appId"),
     "measurementId": os.getenv("FB_measurementId"),
-    'serviceAccount' : "service.json",
-    'databaseURL': os.getenv('FB_DBURL')
+    'serviceAccount' : "service.json"
 }
 firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
@@ -39,14 +42,23 @@ user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("
     return:
         json response
 """
-def uploadImage(self, id, imageChar, image, file):
+@app.route("/uploadImage", methods=["POST"])
+def uploadImage():
     try:
+        id = request.json["id"]
+        image = request.json["image"]
+        file = request.json["file"]
+
         res = storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
         store = jsonify(res)
-        print(store.status_code)
-        return json(store)
+        # print(store.status_code)
+        # return json(store)
+        if(store.status_code == 200):
+            return jsonify({'response': "cloud storgae successful"}), 200
+        else:
+            return jsonify({'reponse': "upload unsuccessful"}), 400    
     except:
-        return None
+        return jsonify({'reponse': "upload unsuccessful"}), 400
 
 """
     viewImages function:
@@ -83,7 +95,7 @@ def viewImages():
     return:
         returns a json object containing grouped image urls
 """
-def getCharacters(self):
+def getCharacters():
     try:
         allDirectories = storage.list_files()
         hiraganaG1 = "characters/Hiragana/Group_1/"
