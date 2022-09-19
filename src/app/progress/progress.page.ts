@@ -33,6 +33,8 @@ export class ProgressPage implements OnInit {
   kanji = 'kanji';
 
   map = new Map();
+  writingStylesArray: string[];
+  progressArray: { writingStyle: string; url: string; character: string; score: string; uploadDate: string; }[];
 
 
 
@@ -76,6 +78,9 @@ export class ProgressPage implements OnInit {
 
 
     this.manipulateScores();
+  }
+  manipulateScores() {
+    throw new Error('Method not implemented.');
   }
 
 
