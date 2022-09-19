@@ -10,7 +10,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './Interceptor/loader.interceptor';
 import { UploadPage } from './upload/upload.page';
-import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx'
 
 
 @NgModule({
@@ -26,8 +25,7 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx'
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
-    UploadPage,
-    Base64ToGallery
+    UploadPage
   ],
   bootstrap: [AppComponent],
 })
