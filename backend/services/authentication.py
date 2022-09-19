@@ -278,21 +278,30 @@ def listModelData(self):
     return:
         json response
 """    
-def viewModelData(self, version, type, style):
+def viewModelData():
     try:
-        data = json.load(open('../ai/models_data.json'))
-        arr = data['data'][style][type]
-        resp = ""
-        for a in arr:
-            print(a['version'])
-            if a['version'] == version:
-                resp = a
-                break
+        resp = getAModel(request.json[version])
         print(resp)
         return jsonify({'response': 'successfully retrieved model data', 'data' : resp}), 200
     except Exception as e:
         print(e)
         return jsonify({'response': 'Failed to get model data'}), 401
+"""
+    getAModel function:
+        queries the database for the a of the given version
+    request body:
+        version : the version of the model
+    return:
+        object
+""" 
+def getAModel(version):
+    try:
+        q = "SELECT * WHERE version = %s;"
+        curr.execute(q, (version))
+        model = curr.fetchone()
+        return model
+    except:
+        return None
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
