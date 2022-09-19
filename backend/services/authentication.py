@@ -328,7 +328,7 @@ def listModelData():
                 'characterRecognition': data_Hiragana,
                 'strokes': hiragana_strokes
             },
-            'Katakana':{
+            'katakana':{
                 'characterRecognition': data_katakana,
                 'strokes': katakana_strokes
             },
