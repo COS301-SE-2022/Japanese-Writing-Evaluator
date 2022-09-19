@@ -81,10 +81,11 @@ def updatePassword(token, password):
     return:
         json response
 """
+@app.route("admin/users", methods = ['POST'])
 def listUsers():
     id = request.json['id']
     users = getAllUsers()
-    response = []
+    response = [] 
     if(len(users) != 0):
         for user in users:
             if(user[0] == id):
@@ -97,7 +98,7 @@ def listUsers():
                 })
         return jsonify({"response": response}), 200
     else:
-        return jsonify({"response": "Database is empty"}), 200
+        return jsonify({"response": "Database is empty"}), 401
     
 
 
