@@ -325,16 +325,16 @@ def listModelData():
         data = []
         data.append({
             'hiragana':{
-                'characterRecognition':[],
-                'strokes': []
+                'characterRecognition': data_Hiragana,
+                'strokes': hiragana_strokes
             },
             'Katakana':{
-                'characterRecognition':[],
-                'strokes': []
+                'characterRecognition': data_katakana,
+                'strokes': katakana_strokes
             },
             'kanji':{
-                'characterRecognition':[],
-                'strokes': []
+                'characterRecognition': data_kanji,
+                'strokes': kanji_strokes
             }
         })
                 
@@ -389,8 +389,8 @@ def getModels():
     try:
         q = "SELECT * From models;"
         curr.execute(q,)
-        model = curr.fetchall
-        return model
+        models = curr.fetchall()
+        return models
     except:
         return None
     
