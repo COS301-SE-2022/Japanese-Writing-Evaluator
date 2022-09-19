@@ -46,6 +46,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         if(req.url.endsWith('admin/models')){
             return this.generalIntercept(req,next);
         }
+
+        if(req.url.endsWith('/object-detection')){
+            return this.generalIntercept(req,next);
+        }
     }
 
     uploadIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

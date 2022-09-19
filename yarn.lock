@@ -1335,20 +1335,25 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
-"@capacitor/android@^4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-4.2.0.tgz#f06539694adbaf189cf38cb039f079bde4f7422b"
-  integrity sha512-LWZhM31DoQuNSW8ZGslJ8gZfOAZS2A5TLq30HP1bn0OQTJGvOFIizQysraVRSOOq5FRptykf2nZWu6WEwoKMlA==
+"@capacitor/android@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-4.0.0-beta.2.tgz#caf872c5d1cceea2227ba85ee27843b6e2892fd3"
+  integrity sha512-bamzyJXT4p3X9mLPfvHDg9wLT6UBCEm2lVYVmbgIEZzybcXt6qxiSWmNpkWPtEwr4JDouNRNDixmCzmDxYR1Sw==
 
 "@capacitor/app@1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-1.1.1.tgz#bde7202faad1b47c4ae2c4a622285d7569384c5e"
   integrity sha512-8ADkldHnoE1xkWvPUsGlERVGm6/Zvcxy6hCI80AxydIKyaCG7kbDAvUclebbnw/eFRxj2zBoVatGLjmJNvTbYw==
 
-"@capacitor/cli@4.2.0":
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-4.2.0.tgz#626b8ea447a210d38d77eedf3d0dc629bf19beaa"
-  integrity sha512-34L/BoDe3BmWBdrXRoF7lszT27ho6ikMdCeMePohU+cEn4ceqiURN7tnPZRyUlpc/1TO+d8d+qb1QQQSTq2oPA==
+"@capacitor/camera@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/camera/-/camera-4.1.1.tgz#a361b3595c378666614e3bd3384d158b85e4d7c3"
+  integrity sha512-L/1KLg4IRCAUmwhmu5jIic4U2OLAHFSW5GoExFU9yR8iCJo1SBGSiay2TpU3PpgmJHRtazO6pxKUCyAmDExkhw==
+
+"@capacitor/cli@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-4.0.0-beta.2.tgz#f3d99882bf0cd27f1219f3210a37106cb9b737b8"
+  integrity sha512-iGt0N20KiLLKDWU/jpRUxlWNO+Bcq5NGJxZdm7f6IPVRp4/cGkHOHCWAxFz17KMWMW6ZveYpwnDO/hAqhyER1Q==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.5"
     "@ionic/utils-fs" "^3.1.6"
@@ -1362,18 +1367,22 @@
     open "^8.4.0"
     plist "^3.0.5"
     prompts "^2.4.2"
-    rimraf "^3.0.2"
     semver "^7.3.7"
     tar "^6.1.11"
     tslib "^2.4.0"
     xml2js "^0.4.23"
 
-"@capacitor/core@3.5.1":
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-3.5.1.tgz#49d48c0261d811a4d8c43d89d8a10bd519675bd2"
-  integrity sha512-UTROxB7q/hZBnhDLcCN7mVsAX3SxXNMhVuPbtddsDOUCm4hExLXN62gPD7rjgmumhfHMjeXmkw/EfRzSjttL1g==
+"@capacitor/core@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.0.0-beta.2.tgz#b161857d86c144300214f95557c59b95dc229768"
+  integrity sha512-0uEArXtGH5sno1jxXrPvzntydB1Y1WG/3tFWjaqbGES8uMd6OOH/UNVmmJpQS23jyiiAQgA5i+kPNvsY2gY6Yw==
   dependencies:
     tslib "^2.1.0"
+
+"@capacitor/filesystem@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/filesystem/-/filesystem-4.1.1.tgz#8a0b4d543d131cc8a421af2d22a21f4577f09fbe"
+  integrity sha512-qpXIR4kxW2age91EiDFOh5KpZ5SUFs1rgWmNrO60wo+AT3Ok0Dzfol2aLSqvNAenDGUilA44ThJPeE+ArRPVzg==
 
 "@capacitor/haptics@1.1.4":
   version "1.1.4"
@@ -1389,6 +1398,11 @@
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@capacitor/keyboard/-/keyboard-1.2.2.tgz#7be5d2e4956b77e5eb7235ec020d131c9f87f30a"
   integrity sha512-dOZSXJTY/tTbRQ+Neiny72BIXN2Hvf/2AgPpMdTErDfaQM7C2MMgtJrm+Mi+YUeT6AnJFmt68nHJGImAL4lzmA==
+
+"@capacitor/preferences@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/@capacitor/preferences/-/preferences-4.0.1.tgz#fd56f24fe2cde1222cf5c3057d52cd55fd033e7b"
+  integrity sha512-FffJjKS4XcodUj/rtFtWizQ9q/oYDSn5opZ+JYwj/EkjiMWMhY/Pk9lN3vwQfp+VJrTt3hjr+bwKXjhTbYBqKw==
 
 "@capacitor/status-bar@1.0.8":
   version "1.0.8"
@@ -1967,6 +1981,11 @@
     "@stencil/core" "^2.17.4"
     ionicons "^6.0.3"
     tslib "^2.1.0"
+
+"@ionic/pwa-elements@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@ionic/pwa-elements/-/pwa-elements-3.1.1.tgz#ae1a97260886545b3285364974674576f2b090a7"
+  integrity sha512-BoEX1pSrKn5dP4VQwaf8DweAmT4ynmpW+9f6oj/W1xLe54bmuXcUY07ziuZX1DLu50xHSYcO5qJ/dbYC/w6wgA==
 
 "@ionic/utils-array@2.1.5":
   version "2.1.5"

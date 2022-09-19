@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ObjectDetectionService } from 'src/app/services/objectDetection/object-detection.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,12 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(public objDetectionService: ObjectDetectionService) { }
 
   ngOnInit() {}
 
   takePhoto(){
-
+    this.objDetectionService.getPicture();
   }
 
 }
