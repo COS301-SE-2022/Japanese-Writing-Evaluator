@@ -1,0 +1,51 @@
+.head{
+    background-color: #960722;
+    width: 100%;
+    height: 200px;//20%
+    margin-top: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.head strong{
+  font-size: 200%;
+}
+
+.head span{
+  font-size: 100%;
+}
+
+  
+ion-img{
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    width: 100px;
+    height: 100px;
+    margin-top: -10px;
+}
+
+ion-button{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+a{
+  color: white;
+}
+
+// ion-accordion{
+//   --border-color: #D3D3D3;
+// }
+
+.models{
+  margin: 2px;
+  width: 250px;
+  height: inherit;
+  border: solid 3px #960722 ;
+
+}
