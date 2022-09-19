@@ -246,6 +246,7 @@ def getUser(password,email):
     return:
         json response
 """    
+@app.route('/admin/edit', methods = ['POST'])
 def editUserPrivileges():
     edited = editUser(request.json['id'], request.json['admin'])
     print('edited: ', edited)
