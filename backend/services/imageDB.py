@@ -1,4 +1,3 @@
-from heapq import merge
 import json
 import os
 import pyrebase
@@ -7,6 +6,10 @@ from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
 import psycopg2
 import requests
+from datetime import date
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -26,9 +29,26 @@ parameters:
 return:
     response from db
 """
-def saveToDB(self, id, file, imageChar, score, writingStyle):
+@app.route("/saveToDB", methods=["POST"])
+def saveToDB():
+    id = request.json["id"]
+    imageChar = request.json["imageChar"]
+    score = request.json["score"]
+    writingStyle = request.json["writingStyle"]
+    file = request.json["file"]
+
     imagePath = "/users/"+str(id)+"/"+file
-    return self.db.saveImage(id, imagePath, imageChar, score, writingStyle)
+    success = saveImage(id, imagePath, imageChar, score, writingStyle)
+    if(success == True):
+        return jsonify({"response": "upload successful"}), 200
+    else:
+        return jsonify({"response": "upload unsuccessful"}), 400
+
+def saveImage(id, image_path, image_char, score, writing_style):
+    upload_query = "INSERT INTO image(id, image_path, character, writing_style, score, upload_date) VALUES(%s, %s, %s, %s, %s, %s);"
+    curr2.execute(upload_query, (id, image_path, image_char, writing_style, score, date.today()))
+    conn2.commit()
+    return True
 
 """
 getImages function:
@@ -65,18 +85,16 @@ return:
     response from db
 """
 @app.route("/getImageUsers", methods=["GET"])
-def getImageUsers():
-    getUsers = "SELECT * FROM image";
-    curr2.execute(getUsers)
-    users = curr2.fetchall()
-    print(users)
+def getImage():
+    users = getImageUsers()
     res = []
     for i in users:
         res.append(i)
     return jsonify({"response": res}), 200
 
-def getUserAnalytics(self):
-    store = self.db.getImageUsers()
+@app.route("/getUserAnalytics", methods=["GET"])
+def getUserAnalytics():
+    store = getImageUsers()
     analytics = []
     sum = 0
     count = 0
@@ -138,6 +156,20 @@ def getUserAnalytics(self):
             count = 0
 
     return jsonify({'response': analytics}), 200    
+
+"""
+    getImageUsers function:
+        returns all users with id's in images database
+    arguments:
+
+    return:
+        array of all entries in image database
+"""
+def getImageUsers():
+    getUsers = "SELECT * FROM image";
+    curr2.execute(getUsers)
+    users = curr2.fetchall()
+    return users
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
