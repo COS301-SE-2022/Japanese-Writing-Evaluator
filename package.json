@@ -35,6 +35,7 @@
     "@firebase/storage": "^0.9.6",
     "@ionic/angular": "^6.0.0",
     "@schematics/angular": "^14.2.3",
+    "@types/chart.js": "^2.9.37",
     "angularfire2": "^5.4.2",
     "chart.js": "2.9.4",
     "cypress": "^10.0.3",

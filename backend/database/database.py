@@ -107,6 +107,14 @@ class Database:
         user = self.curr.fetchone()
         return user
         
+    """
+        getAllUsers function:
+            functionality: gets all users database
+        aguments: 
+            none
+        return:
+            users
+    """
     def getAllUsers(self):
         q = "SELECT * FROM users;"
         self.curr.execute(q,)
@@ -133,7 +141,7 @@ class Database:
         query = "DELETE FROM users WHERE email = %s;"
         self.curr.execute(query, (email,))
         self.conn.commit()
- 
+
     """
         getImage function:
             functionality: return images for the user
@@ -143,7 +151,7 @@ class Database:
             None
     """
     def getImage(self, id):
-        view_query = "SELECT * FROM image WHERE id=%s;"
+        view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
         self.curr2.execute(view_query, ([id]))
         images_url = self.curr2.fetchall()
         return images_url
@@ -182,4 +190,13 @@ class Database:
         except:
             return False
 
-        
+    def editUser(self, id, admin):
+        try:
+            query = "UPDATE users SET admin = %s WHERE userid = %s;";
+            self.curr.execute(query, (admin, id))
+            self.conn.commit()
+            print("Edited")
+            return True
+        except Exception as e:
+            print(e)
+            return False       

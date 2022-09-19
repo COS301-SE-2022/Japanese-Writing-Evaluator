@@ -12,7 +12,7 @@
   </div>
 
   <!-- SUGGESTIONS -->
-  <div class>
+  <div >
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
         <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
@@ -23,30 +23,5 @@
   </div>
 </ion-content>
 
-  <!-- tabs for the navigation bar-->
-<ion-footer *ngIf="!ifGuest()">
-  <ion-tab-bar>
-    <ion-tabs>
-      <ion-row>
-        <ion-col size="6">
-          <a ><!--direct to suggestions-->
-            <ion-tab-button >
-              <ion-icon name="language"></ion-icon>
-              <ion-label>Characters</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-
-        <ion-col size="4">
-          <a [routerLink]="['/progress']">
-            <ion-tab-button >
-              <ion-icon name="analytics"></ion-icon>
-              <ion-label>Progress</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-      </ion-row>
-    </ion-tabs>
-  </ion-tab-bar>
-</ion-footer>
+<app-navbar *ngIf="!ifGuest()"></app-navbar>
 

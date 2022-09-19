@@ -1,10 +1,10 @@
-<ion-toolbar>
+<!-- <ion-toolbar>
   <p class="padding">
     <ion-button color="light" href="home">
       <p class="position"><i class="backButton"></i></p>
     </ion-button>
   </p>
-</ion-toolbar>
+</ion-toolbar> -->
 <ion-content>
   <div class="horizontalflexbox">
     <div lines="none" id="backgroundDiv" >
@@ -31,3 +31,6 @@
     <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
   </div>
 </ion-content>
+
+<app-navbar *ngIf="!ifGuest()"></app-navbar>
+
