@@ -335,7 +335,7 @@ def getModels():
 """
 def editUser(id, admin):
     try:
-        q = "UPDATE users SET admin = %s WHERE id = %s"
+        q = "UPDATE users SET admin = %s WHERE userid = %s"
         curr.execute(q, (id, admin))
         conn.commit()
         return True
