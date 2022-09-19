@@ -59,27 +59,25 @@ export class ProgressResultPage implements OnInit {
 //TODO: calculating the averages from the score of the letters that were practised per writing style, #183, Maryam Mohamad Al Mahdi
   manipulateScores()
   {
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < this.progressArray.length ; i++)
-    {
+    for(const result of this.progressArray){
       let scores: { score: string; date: string }[];
       let keyString = '';
-      keyString += this.progressArray[i].character + '_';
-      keyString += this.progressArray[i].writingStyle;
+      keyString += result.character + '_';
+      keyString += result.writingStyle;
 
       if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
 
         const object = {
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         };
         this.progressHiragana.get(keyString).push(object);
       }
       else if(keyString.includes('hiragana'))
       {
         const object = [{
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         }];
 
         this.progressHiragana.set(keyString, object);
@@ -87,15 +85,15 @@ export class ProgressResultPage implements OnInit {
       else if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
 
         const object = {
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         };
         this.progressKatakana.get(keyString).push(object);
       }
       else if(keyString.includes('katakana')){
         const object = [{
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         }];
 
         this.progressKatakana.set(keyString, object);
@@ -103,16 +101,16 @@ export class ProgressResultPage implements OnInit {
       else if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
 
         const object = {
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         };
         this.progressKanji.get(keyString).push(object);
       }
       else if(keyString.includes('kanji'))
       {
         const object = [{
-          score: this.progressArray[i].score,
-          date: this.progressArray[i].uploadDate,
+          score: result.score,
+          date: result.uploadDate,
         }];
 
         this.progressKanji.set(keyString, object);
@@ -190,9 +188,8 @@ export class ProgressResultPage implements OnInit {
   getPercent(objArray: {score: string; date: string }[]){
 
     let totalPercent = 0;
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < objArray.length; i++) {
-      totalPercent+=Number(objArray[i].score);
+    for(const obj of objArray){
+      totalPercent+=Number(obj.score);
     }
       return Math.round(totalPercent/objArray.length);
   }
