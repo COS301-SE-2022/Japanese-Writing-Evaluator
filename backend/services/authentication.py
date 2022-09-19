@@ -81,7 +81,7 @@ def updatePassword(token, password):
     return:
         json response
 """
-@app.route("admin/users", methods = ['POST'])
+@app.route("/admin/users", methods = ['POST'])
 def listUsers():
     id = request.json['id']
     users = getAllUsers()
