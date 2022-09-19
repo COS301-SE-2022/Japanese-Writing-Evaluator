@@ -302,7 +302,23 @@ def getAModel(version):
         return model
     except:
         return None
-
+    
+"""
+    getModels function:
+        queries the database for the a of the given version
+    request body:
+        version : the version of the model
+    return:
+        object
+""" 
+def getModels():
+    try:
+        q = "SELECT * From models;"
+        curr.execute(q,)
+        model = curr.fetchall
+        return model
+    except:
+        return None
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
