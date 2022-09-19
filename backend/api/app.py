@@ -1,3 +1,4 @@
+import base64
 from functools import wraps
 import json
 # from dotenv import load_dotenv
@@ -86,10 +87,41 @@ def callRegister():
         json response
 """
 @app.route('/upload', methods = ['POST'])
-@token_required
+# @token_required
 def callUploadImage():
-    return None
+    # return None
     # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
+    image = request.json["image"].partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+
+        #############################################
+        #           EVALUATOR
+        #############################################
+    # e = Evaluator(writingStyle, imageChar)
+    # feedback = e.testCharacter() # call AI
+
+    ###################################
+    #       MAKE PROPER
+    ###################################
+    score = 1
+    if(score == 0):
+        return jsonify({'response': "image evaluation failed."}), 401
+    else:
+        # exitcode = eventUploadImage(id, imageChar, image, file)
+        exitcode = requests.post("http://127.0.0.1:5004/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]})
+        if(exitcode.status_code == 200):
+            # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
+            storeToDB = requests.post("http://127.0.0.1:5003/saveToDB", json = {"id": request.json["id"], "writingStyle": request.json["writingStyle"], "score": score, "imageChar": request.json["imageChar"], "file": request.json["file"]}).json()['response']
+            print(storeToDB)
+            if(storeToDB == "upload successful"):
+                # strokes = feedback[0]
+                strokes = [0, 1, 2]
+                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+            else:
+                return jsonify({'response': "Database storage failed"}), 401
+        else:
+            return jsonify({'response': "Storage to cloud service failed"}), 401
 
 """
     callViewImages function:
@@ -118,7 +150,6 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # user = None#event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
     user = requests.post("http://127.0.0.1:5005/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
     print(user)
     if user == None: 
@@ -314,8 +345,10 @@ def callListUsers():
 @app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    return None
+    # return None
     # return event_bus.eventGetAnalytics()
+    data = requests.get("http://127.0.0.1:5003/getUserAnalytics")
+    return data.json()
 
 """
     callObjectDetection function:
@@ -326,7 +359,7 @@ def callGetAnalytics():
         json response
 """
 @app.route('/object-detection', methods = ['POST'])
-# @token_required
+@token_required
 def callObjectDetection():
     image = request.json["image"]
     data = requests.post('http://127.0.0.1:5001/detect', json = {'image': image})
