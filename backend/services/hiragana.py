@@ -24,10 +24,10 @@ dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se',
 """  
 def prepare():
     i = Image.open('imageToSave.png')
-    img = i.resize((28,28))
+    img = i.resize((224,224))
     gray_img = img.convert('L')
     test_img = np.array([np.array(gray_img).flatten()],'f')
-    test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
+    test_img = test_img.reshape(test_img.shape[0], 224, 224, 1)
     return test_img
 
 """
