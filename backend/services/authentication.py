@@ -102,6 +102,7 @@ def updatePassword(token, password):
         json response
 """
 @app.route("/admin/users", methods = ['POST'])
+@token_required
 def listUsers():
     id = request.json['id']
     users = getAllUsers()
@@ -119,8 +120,6 @@ def listUsers():
         return jsonify({"response": response}), 200
     else:
         return jsonify({"response": "Database is empty"}), 401
-    
-
 
 """
     findUser function:
@@ -269,6 +268,7 @@ def getUser(password,email):
         json response
 """    
 @app.route('/admin/edit', methods = ['POST'])
+@token_required
 def editUserPrivileges():
     edited = editUser(request.json['id'], request.json['admin'])
     print('edited: ', edited)
@@ -287,9 +287,9 @@ def editUserPrivileges():
         json response
 """    
 @app.route("/admin/models", methods=["GET"]) 
+@token_required
 def listModelData():
     res = getModels()
-    print(res)
     if res != None:
         data_Hiragana =  []
         data_kanji = []
@@ -298,42 +298,42 @@ def listModelData():
         katakana_strokes = []
         kanji_strokes =[]
         for model in res:
-            if(model[2] == 'hiragana'):
+            if(model[2].lower() == 'hiragana'):
                 data_Hiragana.append({
                     'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
-            elif(model[2] == 'katakana'):
+            elif(model[2].lower() == 'katakana'):
                 data_kanji.append({
                     'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
-            elif(model[2] == 'kanji'):
+            elif(model[2].lower() == 'kanji'):
                 data_katakana.append({
                     'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
-            elif(model[2] == 'hiragana_strokes'):
+            elif(model[2].lower() == 'hiragana_strokes'):
                 hiragana_strokes.append({
                     'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
-            elif(model[2] == 'katakana_strokes'):
+            elif(model[2].lower() == 'katakana_strokes'):
                 katakana_strokes.append({
                     'version': model[1],
                     'data': model[3],
                     'accuracy': model[5],
                     'loss': model[4]
                 })
-            elif(model[2] == 'kanji_strokes'):
+            elif(model[2].lower() == 'kanji_strokes'):
                 kanji_strokes.append({
                     'version': model[1],
                     'data': model[3],
@@ -370,7 +370,7 @@ def listModelData():
     return:
         json response
 """  
-@app.route("/admin/view-model", methods=["GET", "POST"])  
+@app.route("/admin/view-model", methods=["POST"])  
 def viewModelData():
     try:
         resp = getAModel(request.json['version'])
