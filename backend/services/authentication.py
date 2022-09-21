@@ -353,7 +353,7 @@ def listModelData():
 @app.route("/admin/view-model", methods=["GET", "POST"])  
 def viewModelData():
     try:
-        resp = getAModel(request.json[version])
+        resp = getAModel(request.json['version'])
         print(resp)
         return jsonify({'response': 'successfully retrieved model data', 'data' : resp}), 200
     except Exception as e:
