@@ -1,7 +1,7 @@
 import base64
 from functools import wraps
 import json
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
@@ -14,7 +14,7 @@ import sys
 # from send_email import Send_Email
 # import event_bus
 
-# load_dotenv()
+load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -87,7 +87,7 @@ def callRegister():
         json response
 """
 @app.route('/upload', methods = ['POST'])
-# @token_required
+@token_required
 def callUploadImage():
     # return None
     # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
@@ -109,10 +109,11 @@ def callUploadImage():
         return jsonify({'response': "image evaluation failed."}), 401
     else:
         # exitcode = eventUploadImage(id, imageChar, image, file)
-        exitcode = requests.post("http://127.0.0.1:5004/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]})
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        exitcode = requests.post("http://127.0.0.1:5004/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
         if(exitcode.status_code == 200):
             # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
-            storeToDB = requests.post("http://127.0.0.1:5003/saveToDB", json = {"id": request.json["id"], "writingStyle": request.json["writingStyle"], "score": score, "imageChar": request.json["imageChar"], "file": request.json["file"]}).json()['response']
+            storeToDB = requests.post("http://127.0.0.1:5003/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
             print(storeToDB)
             if(storeToDB == "upload successful"):
                 # strokes = feedback[0]
@@ -135,7 +136,8 @@ def callUploadImage():
 @app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
-    send = requests.post("http://127.0.0.1:5003/getImages", json = {"id": request.json["id"]})
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    send = requests.post("http://127.0.0.1:5003/getImages", headers = headers, json = {"id": request.json["id"]})
     return send.json()
     # return event_bus.eventViewImages(int(request.json["id"]))
 
@@ -200,7 +202,7 @@ def home():
     return:
         
 """
-@app.route("/email", methods=["POST"])
+@app.route("/email", methods=["GET"])
 @repeat(every().sunday)
 def email_users():
 
@@ -288,7 +290,10 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return requests.get("http://127.0.0.1:5005/admin/models").json()
+    id = request.json['id']
+    admin = request.json['admin']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post("http://127.0.0.1:5005/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
 
 """
     callEditUserPrivileges function:
@@ -302,7 +307,8 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
-    return requests.get("http://127.0.0.1:5005/admin/models").json()
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.get("http://127.0.0.1:5005/admin/models", headers = headers).json()
 
 """
     callViewModel function:
@@ -315,7 +321,9 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
-    return requests.get("http://127.0.0.1:5005/admin/view-model").json()
+    version = request.json['version']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post("http://127.0.0.1:5005/admin/view-model", headers = headers, json = {"version": version}).json()
 
 """
     ListUsers function:
@@ -328,7 +336,9 @@ def callViewModel():
 @app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
-    return requests.get("http://127.0.0.1:5005/admin/view-users").json()
+    id = request.json['id']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post("http://127.0.0.1:5005/admin/users", headers = headers, json = {"id": id}).json()
 
 """
     getAnalytics function:
@@ -343,7 +353,8 @@ def callListUsers():
 def callGetAnalytics():
     # return None
     # return event_bus.eventGetAnalytics()
-    data = requests.get("http://127.0.0.1:5003/getUserAnalytics")
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    data = requests.get("http://127.0.0.1:5003/getUserAnalytics", headers = headers)
     return data.json()
 
 """
@@ -358,7 +369,8 @@ def callGetAnalytics():
 @token_required
 def callObjectDetection():
     image = request.json["image"]
-    data = requests.post('http://127.0.0.1:5001/detect', json = {'image': image})
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    data = requests.post('http://127.0.0.1:5001/detect', headers = headers, json = {'image': image})
     res = data.json()["response"]
     # print(res)
     return jsonify({"response": res}), 200
