@@ -55,7 +55,9 @@ def testhiragana(hiragana_model):
         print('\nprediction:\n', predicted_char)
         print('accuracy: ' + str(temp * 100) + '%')
         p = temp * 100
-        strokes = strokesModel()   
+        stroke = tf.keras.models.load_model('../ai/models/a_strokes.h5') # to be changed to route from the cloud
+
+        strokes = strokesModel(stroke)   
         return (strokes, p)
     except Exception as e:
         print(e)
