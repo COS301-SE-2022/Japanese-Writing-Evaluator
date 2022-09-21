@@ -63,6 +63,7 @@ def token_required(function):
         json response
 """
 @app.route("/uploadImage", methods=["POST"])
+@token_required
 def uploadImage():
     try:
         id = request.json["id"]
@@ -89,6 +90,7 @@ def uploadImage():
         json response
 """
 @app.route("/viewImages", methods=["POST"])
+@token_required
 def viewImages():
     images = request.json["images"]
     if len(images) > 0:
