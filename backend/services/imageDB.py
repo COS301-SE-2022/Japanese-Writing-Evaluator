@@ -50,11 +50,12 @@ return:
     response from db
 """
 @app.route("/saveToDB", methods=["POST"])
+@token_required
 def saveToDB():
     id = request.json["id"]
-    imageChar = request.json["imageChar"]
+    imageChar = request.json["imagechar"]
     score = request.json["score"]
-    writingStyle = request.json["writingStyle"]
+    writingStyle = request.json["style"]
     file = request.json["file"]
 
     imagePath = "/users/"+str(id)+"/"+file
@@ -79,6 +80,7 @@ return:
     response from db
 """
 @app.route("/getImages", methods=["POST"])
+@token_required
 def getImages():
     id = request.json["id"]
     view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
@@ -90,8 +92,8 @@ def getImages():
         imgs = []
         for i in images:
             imgs.append((i[0], i[1], i[2], i[3], i[4], i[5].strftime("%Y-%m-%d")))
-        print(imgs)
-        call = requests.post("http://127.0.0.1:5004/viewImages", json = {"images": imgs})
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        call = requests.post("http://127.0.0.1:5004/viewImages", headers = headers, json = {"images": imgs})
         return call.json()
     else:
         return jsonify({'response': "no user images"}), 400    
