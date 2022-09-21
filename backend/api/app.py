@@ -288,8 +288,7 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return None
-    # return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+    return requests.get("http://127.0.0.1:5005/admin/models").json()
 
 """
     callEditUserPrivileges function:
@@ -303,8 +302,7 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
-    return None
-    # return event_bus.event_listModelData()
+    return requests.get("http://127.0.0.1:5005/admin/models").json()
 
 """
     callViewModel function:
@@ -317,8 +315,7 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
-    return None
-    # return event_bus.eventViewModelData(str(request.json['version']))
+    return requests.get("http://127.0.0.1:5005/admin/view-model").json()
 
 """
     ListUsers function:
@@ -331,8 +328,7 @@ def callViewModel():
 @app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
-    return None
-    # return event_bus.eventListUsers(int(request.json["id"]))
+    return requests.get("http://127.0.0.1:5005/admin/view-users").json()
 
 """
     getAnalytics function:
