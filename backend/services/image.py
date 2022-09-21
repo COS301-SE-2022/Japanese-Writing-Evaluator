@@ -1,3 +1,5 @@
+from functools import wraps
+import jwt
 from flask import jsonify
 import base64
 from flask import jsonify
@@ -30,6 +32,24 @@ firebase = pyrebase.initialize_app(config)
 storage = firebase.storage()
 auth = firebase.auth()
 user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
+
+def token_required(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        token = None
+        print(request.headers)
+        if 'user-token' in request.headers:
+            print("we have token")
+            token = request.headers['user-token']
+        if not token:
+            return jsonify({'response' : 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return jsonify({'response' : 'The token is invaild!'}), 401
+        return  function(*args, **kwargs)
+  
+    return decorated 
 
 """
     upload Image function:
@@ -183,4 +203,5 @@ def getCharacters():
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(debug = True, port = 5004)
+    # app.run(debug = True, port = 5004)
+    app.run(port=int(os.environ.get("PORT", 5004)),host='0.0.0.0',debug=True)
