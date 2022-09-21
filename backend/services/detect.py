@@ -18,8 +18,6 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect()
-csrf.init_app(app) 
 CORS(app)
 
 def token_required(function):
@@ -49,7 +47,7 @@ def token_required(function):
         the objects detected in the image
 """
 @app.route('/detect', methods=['POST'])
-@csrf.exempt
+@token_required
 def detect():
     try:
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
