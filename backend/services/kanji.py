@@ -1,3 +1,5 @@
+from functools import wraps
+import jwt
 from PIL import Image
 import tensorflow as tf
 import numpy as np
@@ -12,6 +14,24 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 dataset = []
+
+def token_required(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        token = None
+        print(request.headers)
+        if 'user-token' in request.headers:
+            print("we have token")
+            token = request.headers['user-token']
+        if not token:
+            return jsonify({'response' : 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return jsonify({'response' : 'The token is invaild!'}), 401
+        return  function(*args, **kwargs)
+  
+    return decorated 
 
 """
     Prepare function:
@@ -73,4 +93,5 @@ def loadAndPredict():
     testKanji(Kanji)
     
 if __name__ == '__main__':
-       app.run(debug = True, port = 5008)
+    #    app.run(debug = True, port = 5008)
+    app.run(port=int(os.environ.get("PORT", 5008)),host='0.0.0.0',debug=True)
