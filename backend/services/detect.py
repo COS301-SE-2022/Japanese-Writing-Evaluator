@@ -1,4 +1,6 @@
 import base64
+from functools import wraps
+import jwt
 import os
 from dotenv import load_dotenv
 from flask import jsonify
@@ -17,6 +19,23 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app)
 
+def token_required(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        token = None
+        print(request.headers)
+        if 'user-token' in request.headers:
+            print("we have token")
+            token = request.headers['user-token']
+        if not token:
+            return jsonify({'response' : 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return jsonify({'response' : 'The token is invaild!'}), 401
+        return  function(*args, **kwargs)
+  
+    return decorated 
 
 """
     detect function:
@@ -29,7 +48,7 @@ CORS(app)
 @app.route('/detect', methods=['POST'])
 def detect():
     try:
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5x')
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
         img = str(request.json["image"]).partition(",")[2]
 
         with open("objectImage.jpeg", "wb") as fh:
@@ -84,4 +103,5 @@ def detect():
         return jsonify({'response': e}), 400
             
 if __name__ == '__main__':
-    app.run(debug = True, host='0.0.0.0', port=5001)
+    # app.run(debug = True, host='0.0.0.0', port=5001)
+    app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=True)
