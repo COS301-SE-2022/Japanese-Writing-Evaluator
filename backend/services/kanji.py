@@ -88,6 +88,7 @@ def testKanji(kanji_model):
 """   
  
 @app.route("/kanji", methods=["POST"]) 
+@token_required
 def loadAndPredict():
     Kanji = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
     testKanji(Kanji)

@@ -45,6 +45,7 @@ return:
     json response
 """
 @app.route("/forgot-password", methods=["POST"])
+@token_required
 def forgotPasswordEmail():
     try:
         email = request.json["email"]
@@ -73,6 +74,7 @@ return:
     string response
 """
 @app.route("/send-email", methods=["POST"])
+@token_required
 def send_email():
 
     try:

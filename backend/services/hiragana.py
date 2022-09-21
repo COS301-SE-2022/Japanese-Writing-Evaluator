@@ -106,6 +106,7 @@ def strokesModel(strokes_model):
         None
 """    
 @app.route("/hiragana", methods=["POST"]) 
+@token_required
 def loadAndPredict():
     hiragana_model = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
     testhiragana(hiragana_model)

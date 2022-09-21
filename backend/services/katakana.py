@@ -86,6 +86,7 @@ def testKatakana(katakana_model):
         None
 """   
 @app.route("/katakana", methods=["POST"]) 
+@token_required
 def loadAndPredict():
     kana = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
     testKatakana(kana)
