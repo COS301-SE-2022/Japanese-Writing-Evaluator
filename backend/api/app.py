@@ -19,7 +19,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 # send = Send_Email()
-CORS(app)
+CORS(app, resources = r'/')
 
 
 def token_required(function):
