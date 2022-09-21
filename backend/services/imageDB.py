@@ -1,3 +1,5 @@
+from functools import wraps
+import jwt
 import json
 import os
 import pyrebase
@@ -21,6 +23,24 @@ try:
 except Exception as e:
     print("Could not connect to database", e)
     
+def token_required(function):
+    @wraps(function)
+    def decorated(*args, **kwargs):
+        token = None
+        print(request.headers)
+        if 'user-token' in request.headers:
+            print("we have token")
+            token = request.headers['user-token']
+        if not token:
+            return jsonify({'response' : 'Token is missing !!'}), 401
+        try:
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        except:
+            return jsonify({'response' : 'The token is invaild!'}), 401
+        return  function(*args, **kwargs)
+  
+    return decorated 
+
 """
 saveToDB function:
     Saves users uploaded image information to database
@@ -173,4 +193,5 @@ def getImageUsers():
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(debug = True, port = 5003)
+    # app.run(debug = True, port = 5003)
+    app.run(port=int(os.environ.get("PORT", 5003)),host='0.0.0.0',debug=True)
