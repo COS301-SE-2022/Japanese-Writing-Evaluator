@@ -373,9 +373,13 @@ def listModelData():
 @app.route("/admin/view-model", methods=["POST"])  
 def viewModelData():
     try:
-        resp = getAModel(request.json['version'])
+        resp = getAModel()
         print(resp)
-        return jsonify({'response': 'successfully retrieved model data', 'data' : resp}), 200
+        for i in resp:
+            print(str(i[1]))
+            if(str(i[1]) == request.json['version']):
+                return jsonify({'response': 'successfully retrieved model data', 'data' : i}), 200
+        return jsonify({'response': 'Failed to get model data'}), 401
     except Exception as e:
         print(e)
         return jsonify({'response': 'Failed to get model data'}), 401
@@ -388,11 +392,11 @@ def viewModelData():
     return:
         object
 """ 
-def getAModel(version):
+def getAModel():
     try:
-        q = "SELECT * FROM models WHERE version = %s;"
-        curr.execute(q, (version))
-        model = curr.fetchone()
+        q = "SELECT * FROM models;"
+        curr.execute(q,)
+        model = curr.fetchall()
         return model
     except:
         return None
