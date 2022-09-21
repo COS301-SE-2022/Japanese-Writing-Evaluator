@@ -1,4 +1,5 @@
 import base64
+from email import header
 from functools import wraps
 import json
 from dotenv import load_dotenv
@@ -356,6 +357,12 @@ def callGetAnalytics():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     data = requests.get("http://127.0.0.1:5003/getUserAnalytics", headers = headers)
     return data.json()
+
+@app.route('/admin/getFrequency', methods=["GET"])
+@token_required
+def callGetFrequency():
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.get("http://127.0.0.1:5003/getFrequency", headers = headers).json()
 
 """
     callObjectDetection function:
