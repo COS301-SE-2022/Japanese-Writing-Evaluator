@@ -179,6 +179,56 @@ def getUserAnalytics():
 
     return jsonify({'response': analytics}), 200    
 
+@app.route("/getFrequency", methods=["GET"])
+@token_required
+def getFrequency():
+    store = getImageUsers()
+    analytics = []
+    sum = 0
+    count = 0
+    
+    for i in store:
+        year = i[5].strftime("%Y-%m-%d").split('-')[0]
+        month = i[5].strftime("%Y-%m-%d").split('-')[1]
+        character = i[4].lower()
+        current = int(year) - 2022
+
+        if len(analytics) == 0 or current > len(analytics):
+            for j in store:
+                if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                    sum += j[3]
+                    count += 1
+            analytics.append({
+                year:{
+                    "year": year,
+                    month:{
+                        "month": month,
+                        "frequency": count
+                    }
+                }
+            })
+
+            sum = 0
+            count = 0
+
+        elif year in analytics[current] and month not in analytics[current][str(year)]:
+            for j in store:
+                if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                    sum += j[3]
+                    count += 1
+            
+            z = {
+                month:{
+                    "month": month,
+                    "frequency": count
+                }
+            }
+            analytics[current][str(year)].update(z)
+            sum = 0
+            count = 0
+
+    return jsonify({'response': analytics}), 200    
+
 """
     getImageUsers function:
         returns all users with id's in images database
