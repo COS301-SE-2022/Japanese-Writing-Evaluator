@@ -3,6 +3,10 @@ export interface Odpicture {
 }
 
 export interface Odresponse {
+    response: OdresponseElements[];
+}
+
+export interface OdresponseElements{
     characters: string[];
     object: string;
     pronounciation: string;
