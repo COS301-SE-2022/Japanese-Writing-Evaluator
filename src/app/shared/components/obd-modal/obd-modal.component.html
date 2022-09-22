@@ -1,0 +1,31 @@
+<!--Creating slides for the object detection-->
+<!-- <ion-modal #modal trigger="open-modal">
+  <ng-template>
+     -->
+  <ion-toolbar>
+    <ion-title>Modal</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="dark" (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  
+  <ion-content>
+    <ion-slides>
+      <ion-slide *ngfor="let obj of this.objectsArr"><!---->
+        <img/> <!--image of the identified object-->
+        <h4>Identified item: {{obj.object}}</h4><!--name of object identified-->
+        <h6>Pronounciation: {{obj.pronounciation}}</h6><!--japanese pronounciation of object identified-->
+        <h6>Try the word's characters:</h6>
+        <div>
+          <ion-item *ngfor="let char of obj.characters"><!-- -->
+            <ion-card class="character" ><!--(click)="showUploadPage()" -->
+            <h1>{{char}}</h1>
+            </ion-card>   <!--get every character in the identified word-->
+          </ion-item>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </ion-content><!-- -->
+    <!-- 
+  </ng-template>
+</ion-modal> -->
