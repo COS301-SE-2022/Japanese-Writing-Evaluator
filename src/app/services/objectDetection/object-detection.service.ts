@@ -6,12 +6,14 @@ import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera
 //import { Filesystem, Directory } from '@capacitor/filesystem';
 // import { Preferences } from '@capacitor/preferences';
 import { Observable } from 'rxjs';
-import { Odpicture, Odresponse } from 'src/app/shared/interfaces/odpicture';
+import { Odpicture, Odresponse, OdresponseElements } from 'src/app/shared/interfaces/odpicture';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ObjectDetectionService {
+
+  responseData: OdresponseElements[] = null;
   baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   constructor(private httpClient: HttpClient) { }
 
@@ -24,17 +26,21 @@ export class ObjectDetectionService {
       quality: 100
     });
 
-    console.log(picture.webPath);
-    const base64Result = await this.readAsBase64(picture);
-    console.log(base64Result);
-    let image = new Object() as Odpicture;
-    image = {
-      image: base64Result,
-    };
-    console.log(image);
-    this.sendODPicture(image).subscribe(res => {
-      console.log(res);
-    });
+
+    if(picture != null){
+      const base64Result = await this.readAsBase64(picture);
+
+      let image = new Object() as Odpicture;
+      image = {
+        image: base64Result,
+      };
+
+      this.sendODPicture(image).subscribe(res => {
+        this.responseData = [];
+        this.responseData = res.body.response;
+      });
+
+    }
   }
 
   // send the base64 string to backend for object detection
