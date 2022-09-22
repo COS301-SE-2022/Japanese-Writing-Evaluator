@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import {  HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { EMPTY, Observable } from 'rxjs';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, ModalController } from '@ionic/angular';
 import { catchError, delay, map, retryWhen } from 'rxjs/operators';
 import { UploadPage } from '../upload/upload.page';
 import { Score } from '../shared/interfaces/score';
 import { ToastComponent } from '../shared/components/toast/toast.component';
+import { ObdModalComponent } from '../shared/components/obd-modal/obd-modal.component';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
     //private animeBuilder: AnimationBuilder,
-    constructor(private loadingController: LoadingController, private uploadPage: UploadPage, private toast: ToastComponent){
+    constructor(private loadingController: LoadingController, private uploadPage: UploadPage, private toast: ToastComponent,
+        public modalController: ModalController){
 
     }
 
@@ -48,7 +50,7 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('/object-detection')){
-            return this.generalIntercept(req,next);
+            return this.objDetectionIntercept(req,next);
         }
     }
 
@@ -181,7 +183,7 @@ export class LoadingInterceptor implements HttpInterceptor{
             retryWhen(err => {
                 let retryRequestCount = 1;// remove later
                 return err.pipe(
-                    delay(2000),
+                    delay(1000),
                     map(error => {
                         if(retryRequestCount === 2){
                             throw error;
@@ -212,7 +214,7 @@ export class LoadingInterceptor implements HttpInterceptor{
             retryWhen(err => {
                 let retryRequestCount = 1;// remove later
                 return err.pipe(
-                    delay(2000),
+                    delay(1000),
                     map(error => {
                         if(retryRequestCount === 2){
                             throw error;
@@ -226,6 +228,72 @@ export class LoadingInterceptor implements HttpInterceptor{
             })
         );
     }
+
+    objDetectionIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+
+        this.loadingController.getTop().then( isloading => {
+            if (!isloading) {
+                this.loadingController.create({
+                    spinner: 'crescent',
+                    message: 'Detected items loading...',
+                    animated: true,
+                    cssClass: 'loader'
+                    // enterAnimation: this.animeBuilder.build ,
+                    // leaveAnimation: animeBuilder
+                }).then(loader => loader.present());
+            }
+        });
+
+        return next.handle(req).pipe(
+            catchError((err: HttpErrorResponse) => {
+                //console.log('error' + err);
+                //show that there is an error in the upload page
+                if( err.status === 401){
+                    this.loadingController.dismiss();
+                    //show error
+                }
+                else{
+                    this.loadingController.dismiss();
+                    // show error
+                }
+                return EMPTY;
+            }),
+            retryWhen(err => {
+                let retryRequestCount = 1;// remove later
+                return err.pipe(
+                    delay(1000),
+                    map(error => {
+                        console.log(retryRequestCount);
+                        if(retryRequestCount === 2){
+                            throw error;
+                        }
+                        else{
+                            retryRequestCount++;
+                            console.log(retryRequestCount);
+                        }
+                        return error;
+                    })
+                );
+            }),
+            map((event: HttpEvent<any>) => {
+                if (event instanceof HttpResponse) {
+                    // TODO: Check if the response is 200 ok
+                    this.loadingController.dismiss();
+                    if(event.status === 200){
+                        this.showModal();
+                    }
+                }
+                return event;
+              })
+        );
+    }
+
+    async showModal(){
+        const modal = await this.modalController.create({
+          component: ObdModalComponent
+        });
+        return await modal.present();
+      }
 
 }
 

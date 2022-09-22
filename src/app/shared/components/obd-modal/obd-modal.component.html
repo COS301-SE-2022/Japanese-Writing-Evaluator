@@ -10,22 +10,24 @@
   </ion-toolbar>
   
   <ion-content>
-    <ion-slides>
-      <ion-slide *ngfor="let obj of this.objectsArr"><!---->
+    <!--<swiper [autoplay]="true" [keyboard]="true" [pagination]="true" [scrollbar]="true" [zoom]="true">
+      <ng-template swiper-slide  >-->
+      <ion-item *ngFor="let obj of objectsArr" class="horizontalflexbox">
         <img/> <!--image of the identified object-->
-        <h4>Identified item: {{obj.object}}</h4><!--name of object identified-->
-        <h6>Pronounciation: {{obj.pronounciation}}</h6><!--japanese pronounciation of object identified-->
-        <h6>Try the word's characters:</h6>
+        <h4 >Identified item: {{obj.object}}</h4><!--name of object identified-->
+        <h4>Pronunciation: {{obj.pronunciation}}</h4><!--japanese pronounciation of object identified-->
+        <h4>Try the word's characters:</h4>
         <div>
-          <ion-item *ngfor="let char of obj.characters"><!-- -->
+          <ion-item *ngFor="let char of obj.characters" ><!-- -->
             <ion-card class="character" ><!--(click)="showUploadPage()" -->
             <h1>{{char}}</h1>
             </ion-card>   <!--get every character in the identified word-->
           </ion-item>
         </div>
-      </ion-slide>
-    </ion-slides>
-  </ion-content><!-- -->
+      </ion-item>
+      <!--</ng-template>
+    </swiper>-->
+  </ion-content> 
     <!-- 
   </ng-template>
 </ion-modal> -->

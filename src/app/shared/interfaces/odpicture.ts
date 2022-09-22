@@ -9,5 +9,5 @@ export interface Odresponse {
 export interface OdresponseElements{
     characters: string[];
     object: string;
-    pronounciation: string;
+    pronunciation: string;
 }
