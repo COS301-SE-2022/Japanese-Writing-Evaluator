@@ -10,6 +10,7 @@ import { ModelsPage } from './models.page';
 import { PiechartModule } from '../shared/components/piechart/piechart.module';
 
 import { LogoutModule } from '../shared/components/logout/logout.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { LogoutModule } from '../shared/components/logout/logout.module';
     IonicModule,
     ModelsPageRoutingModule,
     PiechartModule,
-    LogoutModule
+    LogoutModule,
+    AdminNavBarModule
   ],
   declarations: [ModelsPage]
 })
