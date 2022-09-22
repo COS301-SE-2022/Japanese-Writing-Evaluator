@@ -139,6 +139,7 @@ export class ProgressBlockComponent implements OnInit {
   }
   // TODO: dynamically set the progress percentage, #69, Maryam Mohamad Al Mahdi
   setStyleCalc(){
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.styles = {'stroke-dashoffset': 'calc(440 - (440 *' + this.percent +') / 100)'};
     return this.styles;
   }
