@@ -120,6 +120,7 @@ export class ProgressBlockComponent implements OnInit {
 
   ngOnInit() {}
 
+//TODO: open the modal as well as send the modal data, #183, Maryam Mohamad Al Mahdi
   async presentModal() {
     const modal = await this.modalController.create({
       component: GraphModalPage,
@@ -138,6 +139,7 @@ export class ProgressBlockComponent implements OnInit {
   }
   // TODO: dynamically set the progress percentage, #69, Maryam Mohamad Al Mahdi
   setStyleCalc(){
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.styles = {'stroke-dashoffset': 'calc(440 - (440 *' + this.percent +') / 100)'};
     return this.styles;
   }

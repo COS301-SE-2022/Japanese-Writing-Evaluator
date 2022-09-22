@@ -17,6 +17,7 @@ import { ObdModalModule } from './shared/components/obd-modal/obd-modal.module';
 
 
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

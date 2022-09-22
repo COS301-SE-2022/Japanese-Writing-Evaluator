@@ -1,0 +1,50 @@
+ion-content{
+  position: relative;
+  height: 235px;
+  width: 235px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.privilege{
+  color: white;
+  border-radius: 5px;
+}
+
+a {
+  color: blue;
+  background-color: transparent;
+}
+
+ion-avatar{
+  position: relative;
+  top: 40px;
+  margin: 0 auto;
+}
+
+p{
+  position: relative;
+  margin: 0 auto;
+  top: 45px;
+}
+
+div{
+  border: 5px solid #960722;
+  height: 200px;
+  width: 200px;
+  border-radius: 25px;
+  padding: auto;
+}
+
+ion-icon{
+  background-color: white;
+}
+
+#icon{
+  position: absolute;
+  background-color: white;
+  left: 170px;
+  top: 22px;
+}
