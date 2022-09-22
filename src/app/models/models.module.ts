@@ -9,6 +9,9 @@ import { ModelsPageRoutingModule } from './models-routing.module';
 import { ModelsPage } from './models.page';
 import { PiechartModule } from '../shared/components/piechart/piechart.module';
 
+import { LogoutModule } from '../shared/components/logout/logout.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
+
 
 @NgModule({
   imports: [
@@ -16,7 +19,9 @@ import { PiechartModule } from '../shared/components/piechart/piechart.module';
     FormsModule,
     IonicModule,
     ModelsPageRoutingModule,
-    PiechartModule
+    PiechartModule,
+    LogoutModule,
+    AdminNavBarModule
   ],
   declarations: [ModelsPage]
 })

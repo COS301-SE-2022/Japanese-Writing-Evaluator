@@ -1,0 +1,22 @@
+<div class="popOver">
+
+    <p>Update the current user's permissions:</p>
+  <ion-list>
+    <ion-radio-group value={{role}} (ionChange)= "radioGroupChange($event)">
+      <ion-item>
+        <ion-label>admin</ion-label>
+        <ion-radio slot="start" value="admin"></ion-radio>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>user</ion-label>
+        <ion-radio slot="start" value="user"></ion-radio>
+      </ion-item>
+
+    </ion-radio-group>
+  </ion-list>
+</div>
+<ion-button class="change" (click)="updatePrivileges()">Save</ion-button>
+
+<ion-button color="primary" (click)="close()" class="closeBtn">X</ion-button>
+
