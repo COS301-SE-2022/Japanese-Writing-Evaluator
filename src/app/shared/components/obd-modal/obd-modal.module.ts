@@ -7,7 +7,7 @@ import { SwiperModule } from 'swiper/angular';
 
 @NgModule({
   declarations: [ObdModalComponent],
-  imports: [IonicModule, CommonModule,BrowserModule, SwiperModule],
+  imports: [IonicModule, CommonModule,BrowserModule],
   exports: [ObdModalComponent]
 })
 

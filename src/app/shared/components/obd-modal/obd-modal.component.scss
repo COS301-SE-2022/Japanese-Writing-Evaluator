@@ -1,6 +1,6 @@
 .character{
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background: #ffffff;
     border-radius: 5%;
     position: relative;
@@ -11,6 +11,16 @@
 
 .horizontalflexbox{
   display:flex;
-  align-items: center;
+  align-items: row;
   justify-content: center;
+}
+
+ion-card:hover {
+  transform: scale(1.1);
+  box-shadow: 15px 15px 15px -10px rgba(0, 0, 0, 0.4);
+}
+
+ion-img{
+  width: 100px;
+  height: 100px;
 }

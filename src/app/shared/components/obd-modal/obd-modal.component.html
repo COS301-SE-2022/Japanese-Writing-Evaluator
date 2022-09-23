@@ -13,17 +13,27 @@
     <!--<swiper [autoplay]="true" [keyboard]="true" [pagination]="true" [scrollbar]="true" [zoom]="true">
       <ng-template swiper-slide  >-->
       <ion-item *ngFor="let obj of objectsArr" class="horizontalflexbox">
-        <img/> <!--image of the identified object-->
-        <h4 >Identified item: {{obj.object}}</h4><!--name of object identified-->
-        <h4>Pronunciation: {{obj.pronunciation}}</h4><!--japanese pronounciation of object identified-->
-        <h4>Try the word's characters:</h4>
-        <div>
-          <ion-item *ngFor="let char of obj.characters" ><!-- -->
-            <ion-card class="character" ><!--(click)="showUploadPage()" -->
-            <h1>{{char}}</h1>
-            </ion-card>   <!--get every character in the identified word-->
-          </ion-item>
-        </div>
+          <ion-grid>
+          <ion-row>
+            <ion-img [src]="this.photo"></ion-img> <!--image of the identified object-->
+          </ion-row>
+          <ion-row>
+            <h4 >Identified item: {{obj.object}}</h4><!--name of object identified-->
+          </ion-row>
+          <ion-row>
+            <h4>Pronunciation: {{obj.pronunciation}}</h4><!--japanese pronounciation of object identified-->
+          </ion-row>
+          <ion-row>
+            <h4>Try the word's characters:</h4>
+          </ion-row>
+          <div class="horizontalflexbox">
+            <ion-item *ngFor="let char of obj.characters" lines="none"><!-- -->
+              <ion-card class="character" (click)="showUploadPage(char)"><!--(click)="showUploadPage()" -->
+              <h1>{{char}}</h1>
+              </ion-card>   <!--get every character in the identified word-->
+            </ion-item>
+          </div>
+      </ion-grid>
       </ion-item>
       <!--</ng-template>
     </swiper>-->
