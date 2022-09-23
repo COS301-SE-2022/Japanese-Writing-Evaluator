@@ -252,10 +252,6 @@ export class LoadingInterceptor implements HttpInterceptor{
                     this.loadingController.dismiss();
                     //show error
                 }
-                else{
-                    this.loadingController.dismiss();
-                    // show error
-                }
                 return EMPTY;
             }),
             retryWhen(err => {
