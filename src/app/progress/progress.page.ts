@@ -51,6 +51,7 @@ export class ProgressPage implements OnInit {
     this.service.getProgress().subscribe(data => {
       this.progressArray = data.body.response;
       console.log(data);
+      this.manipulateScores();
     });
 
     //testPurposes
@@ -81,7 +82,7 @@ export class ProgressPage implements OnInit {
     // ];
 
 
-    this.manipulateScores();
+
   }
 
   //calculating the averages from the score
@@ -93,13 +94,13 @@ export class ProgressPage implements OnInit {
       //let scores: { score: string; date: string }[];
       let keyString = '';
       keyString += this.progressArray[i].character + '_';
-      keyString += this.progressArray[i].writing_Style;
+      keyString += this.progressArray[i].writingStyle;
 
       if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
 
         const object = {
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         };
         this.progressHiragana.get(keyString).push(object);
       }
@@ -107,7 +108,7 @@ export class ProgressPage implements OnInit {
       {
         const object = [{
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         }];
 
       }
@@ -115,14 +116,14 @@ export class ProgressPage implements OnInit {
 
         const object = {
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         };
         this.progressKatakana.get(keyString).push(object);
       }
       else if(keyString.includes('katakana')){
         const object = [{
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         }];
 
         this.progressKatakana.set(keyString, object);
@@ -131,7 +132,7 @@ export class ProgressPage implements OnInit {
 
         const object = {
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         };
         this.progressKanji.get(keyString).push(object);
       }
@@ -139,13 +140,14 @@ export class ProgressPage implements OnInit {
       {
         const object = [{
           score: this.progressArray[i].score,
-          date: this.progressArray[i].upload_Date,
+          date: this.progressArray[i].uploadDate,
         }];
 
         this.progressKanji.set(keyString, object);
       }
 
     }
+  }
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
     setDisplay(char: string, percent: number){
@@ -199,6 +201,15 @@ export class ProgressPage implements OnInit {
       return Math.round(totalPercent/objArray.length);
   }
 
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return true;
+      }
+    }
 
+    return false;
   }
+
+}
 

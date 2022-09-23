@@ -201,4 +201,14 @@ export class ProgressResultPage implements OnInit {
     this.router.navigate(['/progress']);
   }
 
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }

@@ -142,4 +142,14 @@ export class AlphabetCategoryPage implements OnInit {
 
   }
 
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
 }
