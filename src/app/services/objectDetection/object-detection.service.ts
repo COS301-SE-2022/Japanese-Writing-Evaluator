@@ -12,7 +12,7 @@ import { Odpicture, Odresponse, OdresponseElements } from 'src/app/shared/interf
   providedIn: 'root'
 })
 export class ObjectDetectionService {
-
+  photo: string;
   responseData: OdresponseElements[] = null;
   baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   constructor(private httpClient: HttpClient) { }
@@ -26,7 +26,7 @@ export class ObjectDetectionService {
       quality: 100
     });
 
-
+    this.photo = picture.webPath;
     if(picture != null){
       const base64Result = await this.readAsBase64(picture);
 
