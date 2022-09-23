@@ -63,9 +63,9 @@ class detect:
                     chars = list(j['hira'])
 
                     words.append({
-                        "Object": i,
-                        "Characters": chars,
-                        "Pronunciation": j['hepburn']
+                        "object": i,
+                        "characters": chars,
+                        "pronunciation": j['hepburn']
                     })
 
 

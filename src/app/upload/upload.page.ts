@@ -14,6 +14,7 @@ export class UploadPage implements OnInit {
 
   characterImage: CharacterImage;
   uploadedImage: File;
+  userImage: any;
   uploadImageName: string;
   private score: Score;
   private base64Result: any;
@@ -65,18 +66,25 @@ export class UploadPage implements OnInit {
     }
     else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
       scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString();
+      const charImageUrl = '../assets/upload/' + this.characterImage.characterName + '.jpg';
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Character Accuracy',
-        message: `<h1>${this.characterImage.url}</h1>${scoreMessage}<div>
+        message: `
+        <h1>${this.characterImage.url}</h1>${scoreMessage}
+        <h4>Your character</h4>
+        <ion-img src="${this.userImage}"></ion-img>
+        <h4>Accurate character</h4>
+        <ion-img src="${charImageUrl}"></ion-img>
+        <div>
           <ion-item>
-            <ion-img src="../assets/images/a_strokes/a_stroke1.png" alt="Stroke 1"></ion-img> <p>Stroke 1: ${Math.round(score.data.stroke1)}</p> 
+          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(score.data.stroke1)}</p> 
           </ion-item>
           <ion-item>
-            <ion-img src="../assets/images/a_strokes/a_stroke2.png" alt="Stroke 2"></ion-img> <p>Stroke 2: ${Math.round(score.data.stroke2)}</p> 
+          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(score.data.stroke2)}</p> 
           </ion-item>
           <ion-item>
-            <ion-img src="../assets/images/a_strokes/a_stroke3.png" alt="Stroke 3"></ion-img> <p>Stroke 3: ${Math.round(score.data.stroke3)}</p> 
+          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(score.data.stroke3)}</p> 
           </ion-item>
         </div>`,
         buttons: [
@@ -89,7 +97,11 @@ export class UploadPage implements OnInit {
         ]
       });
     }
-
+    /*images for the strokes
+      <ion-img src="../assets/images/a_strokes/a_stroke1.png" alt="Stroke 1"></ion-img>
+      <ion-img src="../assets/images/a_strokes/a_stroke2.png" alt="Stroke 2">
+      <ion-img src="../assets/images/a_strokes/a_stroke3.png" alt="Stroke 3"></ion-img>
+    */
 
   await alert.present();
 
@@ -109,6 +121,7 @@ export class UploadPage implements OnInit {
     const fileReader = new FileReader();
     fileReader.onloadend = (e)=>{
       this.base64Result = e.target.result;
+      this.userImage = fileReader.result;
       //console.log(this.base64Result);
     };
     fileReader.readAsDataURL(file);

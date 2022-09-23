@@ -20,27 +20,4 @@
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-tab-bar>
-    <ion-tabs>
-      <ion-row>
-        <ion-col size="6">
-          <a (click)="setHome()">
-            <ion-tab-button >
-              <ion-icon name="language"></ion-icon>
-              <ion-label>Characters</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-        <ion-col size="4">
-          <a (click)="setProgress()">
-            <ion-tab-button >
-              <ion-icon name="analytics"></ion-icon>
-              <ion-label>Progress</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-      </ion-row>
-    </ion-tabs>
-  </ion-tab-bar>
-</ion-footer>
+<app-navbar *ngIf="!ifGuest()"></app-navbar>
