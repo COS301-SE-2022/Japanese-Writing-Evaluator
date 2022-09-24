@@ -123,15 +123,15 @@ export class ProgressPage implements OnInit {
   }
 
 
-    // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-//     setDisplay(character: string, percent: number){
-//       this.char = character;
-//       this.percent = percent;
-//     }
-    // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
-//     setHome(){
-//       this.router.navigate(['/home']);
-//     }
+    //TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
+    setDisplay(character: string, percent: number){
+      this.char = character;
+      this.percent = percent;
+    }
+    //TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
+    setHome(){
+      this.router.navigate(['/home']);
+    }
 
 //   getLetter(letter: string){
 //     let letterString = '';
