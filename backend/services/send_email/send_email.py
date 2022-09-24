@@ -1,7 +1,6 @@
 from functools import wraps
 import jwt
 import json
-from urllib import response
 from sendgrid import sendgrid
 import os
 from sendgrid.helpers.mail import *
@@ -10,7 +9,6 @@ from flask import jsonify
 from secrets import token_urlsafe
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -45,7 +43,6 @@ return:
     json response
 """
 @app.route("/forgot-password", methods=["POST"])
-@token_required
 def forgotPasswordEmail():
     try:
         email = request.json["email"]
@@ -74,7 +71,6 @@ return:
     string response
 """
 @app.route("/send-email", methods=["POST"])
-@token_required
 def send_email():
 
     try:
