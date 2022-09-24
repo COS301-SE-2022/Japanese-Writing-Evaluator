@@ -138,9 +138,9 @@ export class ProgressPage implements OnInit {
 //       this.percent = percent;
 //     }
     // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
-    setHome(){
-      this.router.navigate(['/home']);
-    }
+//     setHome(){
+//       this.router.navigate(['/home']);
+//     }
 
   getLetter(letter: string){
     let letterString = '';
