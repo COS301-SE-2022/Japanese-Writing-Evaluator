@@ -66,7 +66,6 @@ export class ProgressPage implements OnInit {
      ];
 
   }
-  
   manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
 //       this.progressArray.forEach(progress => {
