@@ -73,14 +73,14 @@ export class ProgressPage implements OnInit {
         keyString += progress.character + '_';
         keyString += progress.writing_style;
 
-        if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
+//         if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
 
-          const object = {
-            score: progress.score,
-            date: progress.uploadDate,
-          };
-          this.progressHiragana.get(keyString).push(object);
-        }
+//           const object = {
+//             score: progress.score,
+//             date: progress.uploadDate,
+//           };
+//           this.progressHiragana.get(keyString).push(object);
+//         }
 //         else if(keyString.includes('hiragana'))
 //         {
 //           const object = [{
