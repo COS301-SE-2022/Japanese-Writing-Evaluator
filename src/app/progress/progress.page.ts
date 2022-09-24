@@ -133,21 +133,21 @@ export class ProgressPage implements OnInit {
       this.router.navigate(['/home']);
     }
 
-//   getLetter(letter: string){
-//     let letterString = '';
-//     let index = letter.indexOf('_');
+  getLetter(letter: string){
+    let letterString = '';
+    let index = letter.indexOf('_');
 
-//     if(index !== -1)
-//     {
-//       index -= 1;
-//       while(index!== -1){
+    if(index !== -1)
+    {
+      index -= 1;
+      while(index!== -1){
 
-//         letterString += letter[index];
-//         index -= 1;
-//       }
-//     }
-//     return letterString.split('').reverse().join('');
-//   }
+        letterString += letter[index];
+        index -= 1;
+      }
+    }
+    return letterString.split('').reverse().join('');
+  }
 
   getStyle(writingStyle: string){
 
