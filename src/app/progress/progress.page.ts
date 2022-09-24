@@ -51,8 +51,8 @@ export class ProgressPage implements OnInit {
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
-    this.char = localStorage.getItem('char');
-    this.percent = +localStorage.getItem('percentage');
+//     this.char = localStorage.getItem('char');
+//     this.percent = +localStorage.getItem('percentage');
 
     this.service.getProgress().subscribe(data => {
       this.progressArray = data.body.response;
@@ -133,7 +133,7 @@ export class ProgressPage implements OnInit {
   }
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-    setDisplay(character: string , percent: number){
+    setDisplay(character: string, percent: number){
       this.char = character;
       this.percent = percent;
     }
