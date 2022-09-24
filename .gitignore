@@ -12,7 +12,7 @@
 Thumbs.db
 UserInterfaceState.xcuserstate
 $RECYCLE.BIN/
-
+docker-compose.yml
 *.log
 log.txt
 npm-debug.log*
@@ -51,3 +51,4 @@ datasetU
 datasetU_test
 resized
 resized_kanji
+*.pyc
