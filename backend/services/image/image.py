@@ -1,13 +1,10 @@
 from functools import wraps
 import jwt
-from flask import jsonify
 import base64
-from flask import jsonify
 import pyrebase
 from dotenv import load_dotenv
 import os
 import json
-
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
 
@@ -66,8 +63,10 @@ def token_required(function):
 @token_required
 def uploadImage():
     try:
+        image = request.json["image"].partition(",")[2]
+        with open("imageToSave.png", "wb") as fh:
+            fh.write(base64.b64decode(image))
         id = request.json["id"]
-        image = request.json["image"]
         file = request.json["file"]
 
         res = storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
