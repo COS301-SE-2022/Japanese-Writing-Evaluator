@@ -14,7 +14,6 @@ import { UserProgress } from '../shared/interfaces/progress';
 
 export class ProgressPage implements OnInit {
 
-  //Data for progress
    //Data for progress
    progressArray: UserProgress[];
    object: { char: string; score: string; date: string };
@@ -23,6 +22,13 @@ export class ProgressPage implements OnInit {
    progressKanji =  new Map<string, {score: number; date: string }[]> ();
    writingStylesArray: string[];
 
+  progressArray: UserProgress[];
+ // object: { char: string; score: string; date: string };
+
+  progressHiragana =  new Map<string, {score: number; date: string }[]> ();
+  progressKatakana =  new Map<string, {score: number; date: string }[]> ();
+  progressKanji =  new Map<string, {score: number; date: string }[]> ();
+  writingStylesArray: string[];
 
   alphabetCategory = [
     {character: 'あ', category: 'Hiragana'},
@@ -58,6 +64,7 @@ export class ProgressPage implements OnInit {
     this.writingStylesArray = [
     'hiragana', 'katakana', 'kanji'
     ];
+
   }
   manipulateScores() {
       // eslint-disable-next-line @typescript-eslint/prefer-for-of
@@ -123,6 +130,7 @@ export class ProgressPage implements OnInit {
       this.service.setProgressKatakana(this.progressKatakana);
       this.service.setProgressKanji(this.progressKanji);
     }
+  }
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
     setDisplay(char: string, percent: number){
@@ -176,6 +184,15 @@ export class ProgressPage implements OnInit {
       return Math.round(totalPercent/objArray.length);
   }
 
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return true;
+      }
+    }
 
+    return false;
   }
+
+}
 

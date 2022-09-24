@@ -16,7 +16,7 @@ import { Models, ModelsArray } from 'src/app/shared/interfaces/models';
 })
 export class AppServiceService {
 
-  baseURL = 'http://localhost:5000/';
+  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   private characterImage: CharacterImage = {
     characterName: ' ',
     group: ' ',

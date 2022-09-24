@@ -28,6 +28,15 @@
 //importing button color
 @import "./theme/variables.scss";
 
+//slider
+@import '~swiper/scss';
+@import '~swiper/scss/autoplay';
+@import '~swiper/scss/keyboard';
+@import '~swiper/scss/pagination';
+@import '~swiper/scss/scrollbar';
+@import '~swiper/scss/zoom';
+@import '~@ionic/angular/css/ionic-swiper';
+
 ion-toast .toast {
   // --background: white;
   // --width: 300px;
@@ -167,6 +176,26 @@ h1, h4{
     height: 30%;
   }
   font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma', Sans-serif;
-}
+
+  
+  }
+  
+  .my-custom-class{
+    .stroke1{
+      color: blue;
+    }
+
+    .stroke2{
+      color: red;
+    }
+
+    .stroke3{
+      color: green;
+    }
+
+    .stroke4{
+      color: yellow;
+    }
+  }
 
 
