@@ -109,8 +109,11 @@ def strokesModel(strokes_model):
 @token_required
 def loadAndPredict():
     hiragana_model = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    testhiragana(hiragana_model)
-    
+    resp = testhiragana(hiragana_model)
+    if(resp != None):
+        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
+    else:
+        return jsonify({'response': "evalutor Failed" }), 401
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 5007)
