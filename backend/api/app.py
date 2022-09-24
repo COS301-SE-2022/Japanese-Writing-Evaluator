@@ -12,7 +12,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
 
 
 def token_required(function):
