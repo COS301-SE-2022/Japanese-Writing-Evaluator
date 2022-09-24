@@ -133,8 +133,8 @@ export class ProgressPage implements OnInit {
   }
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-    setDisplay(char: string, percent: number){
-      this.char = char;
+    setDisplay(character: string, percent: number){
+      this.char = character;
       this.percent = percent;
     }
     // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
