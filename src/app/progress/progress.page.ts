@@ -2,7 +2,6 @@ import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } fro
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { UserProgress } from '../shared/interfaces/progress';
-import { AppServiceService } from '../services/app-service.service';
 
 
 @Component({
@@ -15,13 +14,6 @@ import { AppServiceService } from '../services/app-service.service';
 export class ProgressPage implements OnInit {
 
    //Data for progress
-   progressArray: UserProgress[];
-   object: { char: string; score: string; date: string };
-   progressHiragana =  new Map<string, {score: number; date: string }[]> ();
-   progressKatakana =  new Map<string, {score: number; date: string }[]> ();
-   progressKanji =  new Map<string, {score: number; date: string }[]> ();
-   writingStylesArray: string[];
-
   progressArray: UserProgress[];
  // object: { char: string; score: string; date: string };
 
@@ -128,8 +120,8 @@ export class ProgressPage implements OnInit {
       this.service.setProgressHiragana(this.progressHiragana);
       this.service.setProgressKatakana(this.progressKatakana);
       this.service.setProgressKanji(this.progressKanji);
-    }
-   }
+  }
+
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
 //     setDisplay(character: string, percent: number){
