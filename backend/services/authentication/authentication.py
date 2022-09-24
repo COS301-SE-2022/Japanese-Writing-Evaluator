@@ -1,7 +1,6 @@
 from functools import wraps
 import jwt
 import hashlib
-from ensurepip import version
 import uuid
 from flask import jsonify
 import os
@@ -51,7 +50,6 @@ def token_required(function):
         json response
 """
 @app.route("/reset-password", methods=["PUT"])
-@token_required
 def resetPassword():
     token = request.json["token"]
     password = request.json["password"]
@@ -130,14 +128,13 @@ def listUsers():
         json response
 """
 @app.route("/findUser", methods=["POST"])
-@token_required
 def findUser():
     email = request.json["email"]
     query = " SELECT username FROM users WHERE email = %s"
     curr.execute(query, (email,))
     name = curr.fetchone()
     if(name != None):
-        send = requests.post("http://127.0.0.1:5002/forgot-password", json = {"email": email})
+        send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
         res = send.json()
         token = addToken(email, res["token"])
         if(token == False):
@@ -175,7 +172,6 @@ def addToken(email, token):
         username and userid
 """
 @app.route("/getUserByID", methods=["POST"])
-@token_required
 def getUserByID():
     id = request.json["id"]
     query = " SELECT * FROM users WHERE userid = %s"
