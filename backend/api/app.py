@@ -1,26 +1,18 @@
 import base64
-from email import header
 from functools import wraps
-import json
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, session, redirect
+from flask import Flask, jsonify, request, session
 import jwt
 import os
 from flask_cors import CORS;
-from schedule import every, repeat, run_pending
+from schedule import every, repeat
 import requests
-import sys
-# sys.path.insert(0, '../services')
-# sys.path.insert(1, '../eventBus')
-# from send_email import Send_Email
-# import event_bus
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-# send = Send_Email()
-CORS(app, resources = r'/')
+CORS(app)
 
 
 def token_required(function):
@@ -52,13 +44,13 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    send = requests.post("http://127.0.0.1:5005/findUser", json = {"email": request.json["email"]})
+    send = requests.post(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
     return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-    send = requests.put("http://127.0.0.1:5005/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
+    send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
     return send.json()
     # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
 
@@ -74,7 +66,7 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    send = requests.post("http://127.0.0.1:5005/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
+    send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
     return send.json()
     # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
@@ -111,10 +103,10 @@ def callUploadImage():
     else:
         # exitcode = eventUploadImage(id, imageChar, image, file)
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        exitcode = requests.post("http://127.0.0.1:5004/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+        exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
         if(exitcode.status_code == 200):
             # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
-            storeToDB = requests.post("http://127.0.0.1:5003/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+            storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
             print(storeToDB)
             if(storeToDB == "upload successful"):
                 # strokes = feedback[0]
@@ -138,7 +130,7 @@ def callUploadImage():
 @token_required
 def callViewImages():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    send = requests.post("http://127.0.0.1:5003/getImages", headers = headers, json = {"id": request.json["id"]})
+    send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
     return send.json()
     # return event_bus.eventViewImages(int(request.json["id"]))
 
@@ -153,7 +145,7 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = requests.post("http://127.0.0.1:5005/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
     print(user)
     if user == None: 
         return jsonify({'response': "user not found."}), 401
@@ -207,7 +199,7 @@ def home():
 @repeat(every().sunday)
 def email_users():
 
-    imgs = requests.get("http://127.0.0.1:5003/getImageUsers")
+    imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
     users = imgs.json()["response"]
     keep = []
     c = 0
@@ -245,7 +237,7 @@ def email_users():
     for i in store:
         # thisUser = event_bus.eventGetUser(i[0])
         print(i)
-        user = requests.post("http://127.0.0.1:5005/getUserByID", json = {"id": i[0]})
+        user = requests.post(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
         thisUser = user.json()["response"]
         # print(thisUser["email"])
         if(thisUser != None):
@@ -254,7 +246,7 @@ def email_users():
             valid = response.json()['status']
 
             if(valid == "valid"):
-                send = requests.post("http://127.0.0.1:5002/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
+                send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
                 print(send)
                 contain.append(send.json()["response"])
             else:
@@ -276,8 +268,23 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return None
+    # return None
     # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
+    image = image.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+        
+    # e = Evaluator(style, imagechar)
+    # feedback = e.testCharacter() # call AI
+    # score = feedback[1]
+    score = 1
+    if score == 0:
+        return jsonify({'response': "image evaluation Failed."}), 401
+    else:
+        # strokes = feedback[0]
+        strokes = [0, 1, 2]
+        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+
 
 """
     callEditUserPrivileges function:
@@ -294,7 +301,7 @@ def callEditUserPrivileges():
     id = request.json['id']
     admin = request.json['admin']
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post("http://127.0.0.1:5005/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
+    return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
 
 """
     callEditUserPrivileges function:
@@ -309,7 +316,7 @@ def callEditUserPrivileges():
 @token_required
 def callListModelData():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.get("http://127.0.0.1:5005/admin/models", headers = headers).json()
+    return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
 
 """
     callViewModel function:
@@ -324,7 +331,7 @@ def callListModelData():
 def callViewModel():
     version = request.json['version']
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post("http://127.0.0.1:5005/admin/view-model", headers = headers, json = {"version": version}).json()
+    return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
 
 """
     ListUsers function:
@@ -339,7 +346,7 @@ def callViewModel():
 def callListUsers():
     id = request.json['id']
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post("http://127.0.0.1:5005/admin/users", headers = headers, json = {"id": id}).json()
+    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
 
 """
     getAnalytics function:
@@ -355,14 +362,14 @@ def callGetAnalytics():
     # return None
     # return event_bus.eventGetAnalytics()
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    data = requests.get("http://127.0.0.1:5003/getUserAnalytics", headers = headers)
+    data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
     return data.json()
 
 @app.route('/admin/getFrequency', methods=["GET"])
 @token_required
 def callGetFrequency():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.get("http://127.0.0.1:5003/getFrequency", headers = headers).json()
+    return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
 
 """
     callObjectDetection function:
@@ -377,10 +384,10 @@ def callGetFrequency():
 def callObjectDetection():
     image = request.json["image"]
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    data = requests.post('http://127.0.0.1:5001/detect', headers = headers, json = {'image': image})
+    data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {'image': image})
     res = data.json()["response"]
     # print(res)
-    return jsonify({"response": res}), 200
+    return data.json()
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
