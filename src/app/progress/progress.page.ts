@@ -149,21 +149,21 @@ export class ProgressPage implements OnInit {
 //     return letterString.split('').reverse().join('');
 //   }
 
-//   getStyle(writingStyle: string){
+  getStyle(writingStyle: string){
 
-//     if(writingStyle.includes('hiragana'))
-//     {
-//       return 'hiragana';
-//     }
-//     else if(writingStyle.includes('katakana'))
-//     {
-//       return 'katakana';
-//     }
-//     else
-//     {
-//       return 'kanji';
-//     }
-//   }
+    if(writingStyle.includes('hiragana'))
+    {
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      return 'katakana';
+    }
+    else
+    {
+      return 'kanji';
+    }
+  }
 
   getPercent(objArray: {score: string; date: string }[]){
 
