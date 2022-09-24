@@ -14,7 +14,7 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app", "http://127.0.0.1:5005", "https://jwe-auth-cplmvcuylq-uc.a.run.app"]}})
 
 def token_required(function):
     @wraps(function)
