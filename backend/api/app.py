@@ -270,7 +270,7 @@ def email_users():
 def callGuestUploadImage():
     # return None
     # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
-    image = image.partition(",")[2]
+    image = request.json["image"].partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
         
