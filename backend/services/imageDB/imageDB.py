@@ -93,7 +93,7 @@ def getImages():
         for i in images:
             imgs.append((i[0], i[1], i[2], i[3], i[4], i[5].strftime("%Y-%m-%d")))
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        call = requests.post("http://127.0.0.1:5004/viewImages", headers = headers, json = {"images": imgs})
+        call = requests.post(os.getenv("image") + "/viewImages", headers = headers, json = {"images": imgs})
         return call.json()
     else:
         return jsonify({'response': "no user images"}), 400    
