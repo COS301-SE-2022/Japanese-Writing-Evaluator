@@ -56,17 +56,18 @@ export class ProgressPage implements OnInit {
 
        this.service.getProgress().subscribe(data => {
        this.progressArray = data.body.response;
-//       this.manipulateScores();
+       this.manipulateScores();
      });
 
 //     //testPurposes
 //     //also note the naming conventions are incorrect from the API so they need be changed
-//     this.writingStylesArray = [
-//     'hiragana', 'katakana', 'kanji'
-//     ];
+     this.writingStylesArray = [
+     'hiragana', 'katakana', 'kanji'
+     ];
 
   }
-//   manipulateScores() {
+  
+  manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
 //       this.progressArray.forEach(progress => {
 //         let keyString = '';
@@ -130,59 +131,59 @@ export class ProgressPage implements OnInit {
 //       this.service.setProgressKatakana(this.progressKatakana);
 //       this.service.setProgressKanji(this.progressKanji);
 //     }
-//   }
+   }
 
-//     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-//     setDisplay(character: string, percent: number){
-//       this.char = character;
-//       this.percent = percent;
-//     }
-//     // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
-//     setHome(){
-//       this.router.navigate(['/home']);
-//     }
+    // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
+    setDisplay(character: string, percent: number){
+      this.char = character;
+      this.percent = percent;
+    }
+    // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
+    setHome(){
+      this.router.navigate(['/home']);
+    }
 
-//   getLetter(letter: string){
-//     let letterString = '';
-//     let index = letter.indexOf('_');
+  getLetter(letter: string){
+    let letterString = '';
+    let index = letter.indexOf('_');
 
-//     if(index !== -1)
-//     {
-//       index -= 1;
-//       while(index!== -1){
+    if(index !== -1)
+    {
+      index -= 1;
+      while(index!== -1){
 
-//         letterString += letter[index];
-//         index -= 1;
-//       }
-//     }
-//     return letterString.split('').reverse().join('');
-//   }
+        letterString += letter[index];
+        index -= 1;
+      }
+    }
+    return letterString.split('').reverse().join('');
+  }
 
-//   getStyle(writingStyle: string){
+  getStyle(writingStyle: string){
 
-//     if(writingStyle.includes('hiragana'))
-//     {
-//       return 'hiragana';
-//     }
-//     else if(writingStyle.includes('katakana'))
-//     {
-//       return 'katakana';
-//     }
-//     else
-//     {
-//       return 'kanji';
-//     }
-//   }
+    if(writingStyle.includes('hiragana'))
+    {
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      return 'katakana';
+    }
+    else
+    {
+      return 'kanji';
+    }
+  }
 
-//   getPercent(objArray: {score: string; date: string }[]){
+  getPercent(objArray: {score: string; date: string }[]){
 
-//     let totalPercent = 0;
-//     // eslint-disable-next-line @typescript-eslint/prefer-for-of
-//     for (let i = 0; i < objArray.length; i++) {
-//       totalPercent+=Number(objArray[i].score);
-//     }
-//       return Math.round(totalPercent/objArray.length);
-//   }
+    let totalPercent = 0;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < objArray.length; i++) {
+      totalPercent+=Number(objArray[i].score);
+    }
+      return Math.round(totalPercent/objArray.length);
+  }
 
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
