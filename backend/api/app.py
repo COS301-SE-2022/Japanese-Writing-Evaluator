@@ -74,44 +74,39 @@ def callRegister():
     callUploadImage function:
         calls uploadImage function from image.py
     request body: 
-        email
-        password
+        writing style
     return:
         json response
 """
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    # return None
-    # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
     image = request.json["image"].partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
-
-        #############################################
-        #           EVALUATOR
-        #############################################
-    # e = Evaluator(writingStyle, imageChar)
-    # feedback = e.testCharacter() # call AI
-
-    ###################################
-    #       MAKE PROPER
-    ###################################
+    style = request.json['style']
+    evalutor = None
+    if style == "hiragana":
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('hiragana') + '/hiragana').json()
+    elif style == "katakana":
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('katakana') + '/katakana').json()
+    else:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('kanji') + '/kanji').json()
+    
     score = 1
-    if(score == 0):
+    if(evalutor.status_code == 401):
         return jsonify({'response': "image evaluation failed."}), 401
     else:
-        # exitcode = eventUploadImage(id, imageChar, image, file)
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
         if(exitcode.status_code == 200):
-            # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
             storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
             print(storeToDB)
             if(storeToDB == "upload successful"):
-                # strokes = feedback[0]
-                strokes = [0, 1, 2]
-                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+                return evalutor
             else:
                 return jsonify({'response': "Database storage failed"}), 401
         else:
