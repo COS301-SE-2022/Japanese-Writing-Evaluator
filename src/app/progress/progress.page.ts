@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } fro
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { UserProgress } from '../shared/interfaces/progress';
-//import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/app-service.service';
 
 
 @Component({
@@ -73,63 +73,62 @@ export class ProgressPage implements OnInit {
         keyString += progress.character + '_';
         keyString += progress.writing_style;
 
-//         if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
+         if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
+           const object = {
+             score: progress.score,
+             date: progress.uploadDate,
+           };
+           this.progressHiragana.get(keyString).push(object);
+         }
+         else if(keyString.includes('hiragana'))
+         {
+           const object = [{
+             score: progress.score,
+            date: progress.uploadDate,
+          }];
 
-//           const object = {
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           };
-//           this.progressHiragana.get(keyString).push(object);
-//         }
-//         else if(keyString.includes('hiragana'))
-//         {
-//           const object = [{
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           }];
+          this.progressHiragana.set(keyString, object);
+        }
+        else if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
 
-//           this.progressHiragana.set(keyString, object);
-//         }
-//         else if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
+          const object = {
+            score: progress.score,
+            date: progress.uploadDate,
+          };
+          this.progressKatakana.get(keyString).push(object);
+        }
+        else if(keyString.includes('katakana')){
+          const object = [{
+            score: progress.score,
+            date: progress.uploadDate,
+          }];
 
-//           const object = {
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           };
-//           this.progressKatakana.get(keyString).push(object);
-//         }
-//         else if(keyString.includes('katakana')){
-//           const object = [{
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           }];
+          this.progressKatakana.set(keyString, object);
+        }
+        else if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
 
-//           this.progressKatakana.set(keyString, object);
-//         }
-//         else if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
+          const object = {
+            score: progress.score,
+            date: progress.uploadDate,
+          };
+          this.progressKanji.get(keyString).push(object);
+        }
+        else if(keyString.includes('kanji'))
+        {
+          const object = [{
+            score: progress.score,
+            date: progress.uploadDate,
+          }];
 
-//           const object = {
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           };
-//           this.progressKanji.get(keyString).push(object);
-//         }
-//         else if(keyString.includes('kanji'))
-//         {
-//           const object = [{
-//             score: progress.score,
-//             date: progress.uploadDate,
-//           }];
+          this.progressKanji.set(keyString, object);
+        }
 
-//           this.progressKanji.set(keyString, object);
-//         }
+      });
 
-//       });
-
-//       this.service.setProgressHiragana(this.progressHiragana);
-//       this.service.setProgressKatakana(this.progressKatakana);
-//       this.service.setProgressKanji(this.progressKanji);
-//     }
+      this.service.setProgressHiragana(this.progressHiragana);
+      this.service.setProgressKatakana(this.progressKatakana);
+      this.service.setProgressKanji(this.progressKanji);
+    }
    }
 
     // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
@@ -142,37 +141,37 @@ export class ProgressPage implements OnInit {
 //       this.router.navigate(['/home']);
 //     }
 
-  getLetter(letter: string){
-    let letterString = '';
-    let index = letter.indexOf('_');
+//   getLetter(letter: string){
+//     let letterString = '';
+//     let index = letter.indexOf('_');
 
-    if(index !== -1)
-    {
-      index -= 1;
-      while(index!== -1){
+//     if(index !== -1)
+//     {
+//       index -= 1;
+//       while(index!== -1){
 
-        letterString += letter[index];
-        index -= 1;
-      }
-    }
-    return letterString.split('').reverse().join('');
-  }
+//         letterString += letter[index];
+//         index -= 1;
+//       }
+//     }
+//     return letterString.split('').reverse().join('');
+//   }
 
-  getStyle(writingStyle: string){
+//   getStyle(writingStyle: string){
 
-    if(writingStyle.includes('hiragana'))
-    {
-      return 'hiragana';
-    }
-    else if(writingStyle.includes('katakana'))
-    {
-      return 'katakana';
-    }
-    else
-    {
-      return 'kanji';
-    }
-  }
+//     if(writingStyle.includes('hiragana'))
+//     {
+//       return 'hiragana';
+//     }
+//     else if(writingStyle.includes('katakana'))
+//     {
+//       return 'katakana';
+//     }
+//     else
+//     {
+//       return 'kanji';
+//     }
+//   }
 
   getPercent(objArray: {score: string; date: string }[]){
 
