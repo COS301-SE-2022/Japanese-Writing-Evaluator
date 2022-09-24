@@ -23,8 +23,37 @@ export class AppServiceService {
     url: ' '
   };
 
+  //progressMap needed to track progress
+  private progressHiragana:  Map<string, {score: number; date: string }[]>;
+  private progressKatakana:  Map<string, {score: number; date: string }[]>;
+  private progressKanji:  Map<string, {score: number; date: string }[]>;
+
 
   constructor(private httpclient: HttpClient) { }//
+
+  setProgressHiragana(map: Map<string, {score: number; date: string }[]>){
+      this.progressHiragana = map;
+  }
+
+  setProgressKatakana(map: Map<string, {score: number; date: string }[]>){
+    this.progressKatakana = map;
+  }
+
+  setProgressKanji(map: Map<string, {score: number; date: string }[]>){
+  this.progressKanji = map;
+  }
+
+  getProgressHiragana(){
+    return this.progressHiragana;
+  }
+
+  getProgressKatakana(){
+    return this.progressKatakana;
+  }
+
+  getProgressKanji(){
+    return this.progressKanji;
+  }
 
   setTryImage(img: CharacterImage){
     //this function takes in an image to be set to the class' image attr
