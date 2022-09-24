@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, ElementRef, ViewChild, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild, Component, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 
 
@@ -55,7 +55,6 @@ export class GraphModalPage implements AfterViewInit {
       this.allScores.push(Number(this.scores[i].score));
       this.allDates.push(this.scores[i].date);
     }
-    console.log(this.allScores);
   }
 
   //TODO: form the chart using chartjs, #183, Maryam Mohamad Al Mahdi

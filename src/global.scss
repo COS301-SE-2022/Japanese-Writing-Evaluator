@@ -38,7 +38,7 @@ ion-toast .toast {
     --border-color:#000000;
     --border-radius:3px;
     --border-style:solid;
-    --border-width:3px;    
+    --border-width:3px;
     --background:#1833FF;
     --button-color:#ffffff;
 }
@@ -168,5 +168,16 @@ h1, h4{
   }
   font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma', Sans-serif;
 }
+
+  .my-modal{
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    &::part(content){
+      width: 400px;
+      height: 500px;
+    }
+    font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma', Sans-serif;
+  }
 
 
