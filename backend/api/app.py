@@ -88,13 +88,13 @@ def callUploadImage():
     evalutor = None
     if style == "hiragana":
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        evalutor = requests.get(os.gotenv('hiragana') + '/hiragana').json()
+        evalutor = requests.get(os.gotenv('hiragana') + '/hiragana', headers = headers).json()
     elif style == "katakana":
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        evalutor = requests.get(os.gotenv('katakana') + '/katakana').json()
+        evalutor = requests.get(os.gotenv('katakana') + '/katakana', headers = headers).json()
     else:
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        evalutor = requests.get(os.gotenv('kanji') + '/kanji').json()
+        evalutor = requests.get(os.gotenv('kanji') + '/kanji', headers = headers).json()
     
     score = 1
     if(evalutor.status_code == 401):
@@ -127,7 +127,6 @@ def callViewImages():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
     return send.json()
-    # return event_bus.eventViewImages(int(request.json["id"]))
 
 """
     login function:
@@ -180,7 +179,6 @@ def logout():
 @app.route('/home', methods=['GET'])
 def home():
     return None
-    # return event_bus.eventGetCharacters()
 
 """
     email function:
@@ -230,11 +228,9 @@ def email_users():
 
     contain = []
     for i in store:
-        # thisUser = event_bus.eventGetUser(i[0])
         print(i)
         user = requests.post(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
         thisUser = user.json()["response"]
-        # print(thisUser["email"])
         if(thisUser != None):
             response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
 
@@ -263,22 +259,25 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    # return None
-    # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
     image = request.json["image"].partition(",")[2]
     with open("imageToSave.png", "wb") as fh:
         fh.write(base64.b64decode(image))
-        
-    # e = Evaluator(style, imagechar)
-    # feedback = e.testCharacter() # call AI
-    # score = feedback[1]
+    style = request.json['style']
+    evalutor = None
+    if style == "hiragana":
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('hiragana') + '/hiragana', headers = headers).json()
+    elif style == "katakana":
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('katakana') + '/katakana', headers = headers).json()
+    else:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        evalutor = requests.get(os.gotenv('kanji') + '/kanji', headers = headers).json()  
     score = 1
     if score == 0:
         return jsonify({'response': "image evaluation Failed."}), 401
     else:
-        # strokes = feedback[0]
-        strokes = [0, 1, 2]
-        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+        return evalutor
 
 
 """
@@ -354,8 +353,6 @@ def callListUsers():
 @app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    # return None
-    # return event_bus.eventGetAnalytics()
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
     return data.json()
@@ -381,7 +378,6 @@ def callObjectDetection():
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {'image': image})
     res = data.json()["response"]
-    # print(res)
     return data.json()
 
 if __name__ == '__main__':
