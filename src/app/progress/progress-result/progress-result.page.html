@@ -1,0 +1,23 @@
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+
+    <p>
+      <strong>Progress</strong><br>
+      <em>Track your progress below for {{heading}}</em><br>
+    </p>
+  </div>
+
+  <div>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of (currentStyle) | keyvalue" size="col-auto">
+          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<app-navbar *ngIf="!ifGuest()"></app-navbar>

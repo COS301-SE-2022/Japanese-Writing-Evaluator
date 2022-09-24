@@ -11,6 +11,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './Interceptor/loader.interceptor';
 import { UploadPage } from './upload/upload.page';
 import { ToastComponent } from './shared/components/toast/toast.component';
+import { ObdModalModule } from './shared/components/obd-modal/obd-modal.module';
+
 
 
 
@@ -31,6 +33,7 @@ import { ToastComponent } from './shared/components/toast/toast.component';
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     UploadPage,
     ToastComponent,
+    ObdModalModule
   ],
   bootstrap: [AppComponent],
 })

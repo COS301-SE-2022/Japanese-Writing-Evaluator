@@ -45,14 +45,4 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {}
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
-  }
-
 }

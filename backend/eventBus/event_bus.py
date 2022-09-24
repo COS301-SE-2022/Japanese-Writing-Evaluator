@@ -327,3 +327,16 @@ def eventObjectDetection(image):
     eventBus.append(partial(detect.detect, image))
     eventNumber = len(eventBus) - 1
     return executeBus(eventNumber)
+
+"""
+eventGetAnalytics function:
+    calls the getUserAnalytics function
+parameters: 
+    id
+return:
+    json response
+"""
+def eventGetAnalytics():
+    eventBus.append(partial(imagedb.getUserAnalytics))
+    eventNumber = len(eventBus) - 1
+    return executeBus(eventNumber)
