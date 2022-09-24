@@ -54,10 +54,10 @@ export class ProgressPage implements OnInit {
 //     this.char = localStorage.getItem('char');
 //     this.percent = +localStorage.getItem('percentage');
 
-//     this.service.getProgress().subscribe(data => {
-//       this.progressArray = data.body.response;
+       this.service.getProgress().subscribe(data => {
+       this.progressArray = data.body.response;
 //       this.manipulateScores();
-//     });
+     });
 
 //     //testPurposes
 //     //also note the naming conventions are incorrect from the API so they need be changed
