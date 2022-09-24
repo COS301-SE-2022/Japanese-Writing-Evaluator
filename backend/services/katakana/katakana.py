@@ -89,7 +89,11 @@ def testKatakana(katakana_model):
 @token_required
 def loadAndPredict():
     kana = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    testKatakana(kana)
+    resp = testKatakana(kana)
+    if(resp != None):
+        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
+    else:
+        return jsonify({'response': "evalutor Failed" }), 401
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 5009)
