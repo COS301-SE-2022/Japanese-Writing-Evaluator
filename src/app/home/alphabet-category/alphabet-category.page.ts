@@ -21,7 +21,7 @@ export class AlphabetCategoryPage implements OnInit {
 
     this.currentJSON = '';
 
-    this.category = this.route.snapshot.queryParamMap.get('category');//'Hiragana - Vowel';
+    this.category = this.route.snapshot.queryParamMap.get('category');
     this.heading = this.category;
 
     const splitted = this.category.split(' ');
@@ -140,6 +140,16 @@ export class AlphabetCategoryPage implements OnInit {
     }
     this.router.navigate(['/login']);
 
+  }
+
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

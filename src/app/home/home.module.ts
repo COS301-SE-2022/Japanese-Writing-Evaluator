@@ -8,6 +8,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { ProgressPage } from '../progress/progress.page';
 import { NavbarModule } from '../shared/components/navbar/navbar.module';
+import { LogoutModule } from '../shared/components/logout/logout.module';
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { NavbarModule } from '../shared/components/navbar/navbar.module';
     HomePageRoutingModule,
     OptionsModule,
     ReactiveFormsModule,
-    NavbarModule
+    NavbarModule,
+    LogoutModule
   ],
   declarations: [HomePage],
   providers: [ProgressPage]

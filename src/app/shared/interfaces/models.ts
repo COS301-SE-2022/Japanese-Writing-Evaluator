@@ -5,12 +5,12 @@ export interface ModelsArray{
         strokes: Models[];
         };
 
-        katakana: {
+        kanji: {
             characterRecognition: Models[];
             strokes: Models[];
         };
 
-        kanji: {
+        katakana: {
             characterRecognition: Models[];
             strokes: Models[];
         };

@@ -8,13 +8,15 @@ import { AlphabetCategoryPageRoutingModule } from './alphabet-category-routing.m
 
 import { AlphabetCategoryPage } from './alphabet-category.page';
 import { BlockTryCharComponent } from '.././block-try-char/block-try-char.component';
+import { NavbarModule } from 'src/app/shared/components/navbar/navbar.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    AlphabetCategoryPageRoutingModule
+    AlphabetCategoryPageRoutingModule,
+    NavbarModule
   ],
   declarations: [AlphabetCategoryPage, BlockTryCharComponent]
 })
