@@ -9,14 +9,15 @@
     </p>
 </div>
 
-<ion-grid class="my-grid">
-  <ion-row class="parent-row">
-      <ion-col *ngFor="let item of jsonAlphabet">
-          <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
-      </ion-col>
+<section >
+  <ion-grid class="my-grid">
+    <ion-row class="parent-row">
+        <ion-col *ngFor="let item of jsonAlphabet" size="col-auto">
+            <app-block-try-char [letter]='item.character' [translate]='item.translation' [group]='style'></app-block-try-char>
+        </ion-col>
     </ion-row>
   </ion-grid>
+</section>
 
 </ion-content>
-
 <app-navbar *ngIf="!ifGuest()"></app-navbar>
