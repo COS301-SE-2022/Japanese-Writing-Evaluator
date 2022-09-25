@@ -241,7 +241,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
         username and userId
 """
 # @app.errorhandler(CSRFError)
-@csrf.exempt
+# @csrf.exempt
 @app.route("/login", methods=["POST"])
 def login():
     email = request.json['email']
