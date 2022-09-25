@@ -104,7 +104,7 @@ def viewImages():
                 "uploadDate": imgs[5]
             })
 
-        return jsonify({'response': response}), 200
+        return jsonify({'response': response,}), 200
     else:
         return jsonify({'response': "view image failed."}), 401
 

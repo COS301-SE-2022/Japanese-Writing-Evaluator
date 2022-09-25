@@ -127,7 +127,7 @@ def listUsers():
     return:
         json response
 """
-@app.route("/findUser", methods=["POST"])
+@app.route("/findUser", methods=["GET"])
 def findUser():
     email = request.json["email"]
     query = " SELECT username FROM users WHERE email = %s"
@@ -171,7 +171,7 @@ def addToken(email, token):
     return:
         username and userid
 """
-@app.route("/getUserByID", methods=["POST"])
+@app.route("/getUserByID", methods=["GET"])
 def getUserByID():
     id = request.json["id"]
     query = " SELECT * FROM users WHERE userid = %s"
@@ -251,7 +251,7 @@ def fetchSalt(email):
     return salt
 
 def getUser(password,email):
-    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    q = "SELECT username , userid, admin FROM users WHERE password = %s AND email = %s;"
     curr.execute(q, (password,email))
     user = curr.fetchone()
     return user
