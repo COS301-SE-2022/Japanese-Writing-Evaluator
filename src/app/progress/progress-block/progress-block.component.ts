@@ -13,7 +13,7 @@ export class ProgressBlockComponent implements OnInit {
   @Input() percent: number;
   @Input() letter: string;
   @Input() alphabetType: string;
-  @Input() myScores: {score: string; date: string }[];
+  @Input() myScores: {score: number; date: string }[];
 
 
   japaneseLetter: string;
@@ -116,7 +116,8 @@ export class ProgressBlockComponent implements OnInit {
     {character: '十', translation:'ten'},
   ];
 
-  constructor(public modalController: ModalController) {}
+  constructor(public modalController: ModalController) {
+  }
 
   ngOnInit() {}
 

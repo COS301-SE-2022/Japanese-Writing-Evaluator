@@ -53,9 +53,19 @@ export class GraphModalPage implements AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < limit ; i++) {
       this.allScores.push(Number(this.scores[i].score));
-      this.allDates.push(this.scores[i].date);
+      const newDate = this.fixDateForma(this.scores[i].date);
+      this.allDates.push(newDate);
     }
-    console.log(this.allScores);
+  }
+
+  fixDateForma(date: string){
+    const indexEnd = date.indexOf(',') + 1;
+    let newDateFormat = date.replace(' 00:00:00 GMT', '');
+
+    const subDate = date.substring(0,indexEnd);
+    newDateFormat = newDateFormat.replace(subDate, '');
+
+    return newDateFormat;
   }
 
   //TODO: form the chart using chartjs, #183, Maryam Mohamad Al Mahdi
