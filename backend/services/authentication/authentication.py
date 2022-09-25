@@ -14,9 +14,9 @@ from flask_wtf.csrf import CSRFProtect, CSRFError
 load_dotenv()
 
 app = Flask(__name__)
-csrf = CSRFProtect(app)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:
@@ -240,17 +240,24 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
     return:
         username and userId
 """
-@app.errorhandler(CSRFError)
+# @app.errorhandler(CSRFError)
+@csrf.exempt
 @app.route("/login", methods=["POST"])
 def login():
     email = request.json['email']
     password = request.json['password']
     salt = fetchSalt(email)
+    print(salt)
     if(salt == None):
-        return None
+        print('We are at none')
+        return jsonify({'response': 'user not found'}), 400
     else:
+        print('We are success')
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
+        if(user == None):
+            return jsonify({"response": "incorrect password"}), 401
+        
         return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
 
 def fetchSalt(email):
