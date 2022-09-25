@@ -8,9 +8,13 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
+  list: string[];
+
   constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.list = ['logout', 'delete'];
+  }
 
   onLogout(){
     // this function logs the user out of the system

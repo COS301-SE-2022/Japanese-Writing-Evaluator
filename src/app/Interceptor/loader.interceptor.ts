@@ -102,9 +102,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
+                            strokes: [0],
                             score: 0
                         }
                     };
@@ -115,10 +113,8 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
-                            score: -1
+                          strokes: [0],
+                          score: -1
                         }
                     };
                     this.uploadPage.showScore(score);
@@ -150,10 +146,8 @@ export class LoadingInterceptor implements HttpInterceptor{
                         let score = new Object() as Score;
                         score = {
                             data: {
-                                stroke1: 0,
-                                stroke2: 0,
-                                stroke3: 0,
-                                score: 0
+                              strokes: [0],
+                              score: 0
                             }
                         };
                         this.uploadPage.showScore(score);
