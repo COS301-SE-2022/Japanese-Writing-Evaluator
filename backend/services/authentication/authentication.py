@@ -240,12 +240,12 @@ def login():
     if(salt == None):
         return None
     else:
-        token = jwt.encode({
-            'username' : user['username'],
-            'id': user['id'],
-        }, app.config['SECRET_KEY'], "HS256")
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
+        token = jwt.encode({
+            'username' : user[0],
+            'id': user[1],
+        }, app.config['SECRET_KEY'], "HS256")
         return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
 
 def fetchSalt(email):
