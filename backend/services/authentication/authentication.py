@@ -9,10 +9,13 @@ import requests
 import psycopg2
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
+csrf = CSRFProtect(app)
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
@@ -49,6 +52,7 @@ def token_required(function):
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/reset-password", methods=["PUT"])
 def resetPassword():
     token = request.json["token"]
@@ -99,6 +103,7 @@ def updatePassword(token, password):
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/admin/users", methods = ['POST'])
 @token_required
 def listUsers():
@@ -127,6 +132,7 @@ def listUsers():
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/findUser", methods=["POST"])
 def findUser():
     email = request.json["email"]
@@ -171,6 +177,7 @@ def addToken(email, token):
     return:
         username and userid
 """
+@app.errorhandler(CSRFError)
 @app.route("/getUserByID", methods=["POST"])
 def getUserByID():
     id = request.json["id"]
@@ -192,6 +199,7 @@ def getUserByID():
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/register", methods=["POST"])
 def register():
     try:
@@ -232,6 +240,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
     return:
         username and userId
 """
+@app.errorhandler(CSRFError)
 @app.route("/login", methods=["POST"])
 def login():
     email = request.json['email']
@@ -265,6 +274,7 @@ def getUser(password,email):
     return:
         json response
 """    
+@app.errorhandler(CSRFError)
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def editUserPrivileges():
@@ -284,6 +294,7 @@ def editUserPrivileges():
     return:
         json response
 """    
+@app.errorhandler(CSRFError)
 @app.route("/admin/models", methods=["GET"]) 
 @token_required
 def listModelData():
@@ -368,6 +379,7 @@ def listModelData():
     return:
         json response
 """  
+@app.errorhandler(CSRFError)
 @app.route("/admin/view-model", methods=["POST"])  
 @token_required
 def viewModelData():
