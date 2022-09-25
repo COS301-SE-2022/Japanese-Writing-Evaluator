@@ -44,16 +44,11 @@ def token_required(function):
         the test image
 """  
 def prepare():
-    #view image
     cv_image = cv2.imread('IdrianA.png',cv2.IMREAD_GRAYSCALE)
-    
     cv_image = cv2.bitwise_not(cv_image)
     cv_image = cv2.resize(cv_image, (224, 224))
     test_img = np.array([np.array(cv_image).flatten()],'f')
     test_img = test_img.reshape(test_img.shape[0], 224, 224, 1)
-    #cv2.imshow("image", test_img)
-    PIL_image = Image.fromarray(test_img.astype('uint8'), 'RGB')
-    PIL_image.show()
     return test_img
 
 """
