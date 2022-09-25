@@ -17,7 +17,7 @@ import event_bus
 app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 send = Send_Email()
-CORS(app)
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
 
 
 def token_required(function):
@@ -116,8 +116,9 @@ def login():
         token = jwt.encode({
             'username' : user[0],
             'id': user[1],
+            'admin': user[2]
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user,}), 200
 
 """
     logout function
