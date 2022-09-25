@@ -10,11 +10,14 @@ from googletrans import Translator
 import pykakasi
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 def token_required(function):
@@ -43,6 +46,7 @@ def token_required(function):
     return:
         the objects detected in the image
 """
+@app.errorhandler(CSRFError)
 @app.route('/detect', methods=['POST'])
 @token_required
 def detect():
