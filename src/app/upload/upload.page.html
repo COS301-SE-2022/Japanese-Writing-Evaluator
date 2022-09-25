@@ -20,9 +20,14 @@
     </ion-item>
   </div>
 
-  <div class="horizontalflexbox">
+  <div class="horizontalbuttonflexbox">
     <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
   </div>
+
+  <div class="horizontalbuttonflexbox" *ngIf="ifObjectsDetected()">
+    <ion-button fill="outline" (click)="showModal()">Show detected items</ion-button>
+  </div>
+  
 </ion-content>
 
 <app-navbar *ngIf="!ifGuest()"></app-navbar>

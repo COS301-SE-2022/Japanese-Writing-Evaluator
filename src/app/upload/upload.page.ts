@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { AppServiceService } from '../services/appService/app-service.service';
+import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
 
@@ -20,7 +21,7 @@ export class UploadPage implements OnInit {
   private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
-  constructor(private service: AppServiceService,public alertController: AlertController) { }
+  constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService) { }
 
   //TODO: get the character image to be practiced, #71, Phumu
   ngOnInit() {
@@ -167,6 +168,24 @@ export class UploadPage implements OnInit {
 
       }
     }
+  }
+
+  //open the object detection modal agin incase they want to try another image
+  async showModal(){
+    try {
+      console.log(this.obdService.getModal());
+      return await this.obdService.getModal().present();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //checks if modal is set, if it is show button
+  ifObjectsDetected(): boolean{
+    if (this.obdService.getModal()) {
+      return true;
+    }
+    return false;
   }
 
   ifGuest(): boolean{

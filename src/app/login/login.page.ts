@@ -53,6 +53,7 @@ export class LoginPage implements OnInit {
 
       this.appService.isUser(username,password )
       .subscribe(data =>{
+        console.log(data);
         if(data.status === 200){
           console.log(data);
           if (!localStorage.getItem('id')) {
