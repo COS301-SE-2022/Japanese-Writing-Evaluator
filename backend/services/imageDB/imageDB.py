@@ -10,11 +10,14 @@ import psycopg2
 import requests
 from datetime import date
 from dotenv import load_dotenv
+from flask_wtf import CSRFProtect
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect()
+csrf.init_app(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:

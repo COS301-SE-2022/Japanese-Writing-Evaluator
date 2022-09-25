@@ -1,4 +1,5 @@
 from functools import wraps
+from wsgiref import validate
 import jwt
 import hashlib
 import uuid
@@ -9,11 +10,14 @@ import requests
 import psycopg2
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from flask_wtf.csrf import CSRFProtect
+from flask_wtf.csrf import generate_csrf, validate_csrf, _get_config
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:
@@ -22,12 +26,16 @@ try:
 except Exception as e:
     print("Could not connect to database", e)
 
+@app.before_request
+def create_session():
+    session['csrf_token'] = generate_csrf()
+
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         token = None
         print(request.headers)
-        if 'user-token' in request.headers:
+        if 'csrftoken' in request.headers:
             print("we have token")
             token = request.headers['user-token']
         if not token:
@@ -100,8 +108,10 @@ def updatePassword(token, password):
         json response
 """
 @app.route("/admin/users", methods = ['POST'])
-@token_required
+# @token_required
+# @csrf.exempt
 def listUsers():
+    print(session['csrf_token'])
     id = request.json['id']
     users = getAllUsers()
     response = [] 
@@ -233,6 +243,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
         username and userId
 """
 @app.route("/login", methods=["POST"])
+@csrf.exempt
 def login():
     email = request.json['email']
     password = request.json['password']
@@ -242,11 +253,7 @@ def login():
     else:
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
-        token = jwt.encode({
-            'username' : user[0],
-            'id': user[1],
-        }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
+        return jsonify({"response": {'username': user[0], 'id': user[1], 'csrf_token': session['csrf_token']}}), 200 
 
 def fetchSalt(email):
     query = "SELECT password_salt FROM users WHERE email = %s;"

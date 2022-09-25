@@ -1,5 +1,6 @@
 import base64
 from functools import wraps
+from wsgiref.headers import Headers
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session
 import jwt
@@ -7,13 +8,18 @@ import os
 from flask_cors import CORS;
 from schedule import every, repeat
 import requests
+from flask_wtf.csrf import generate_csrf
+from flask_session import Session
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config.update(SESSION_COOKIE_NAME='csrf_token')
+Session(app)
 
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
 
 def token_required(function):
     @wraps(function)
@@ -44,12 +50,14 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
+
     send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
     return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
+
     send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
     return send.json()
     # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
@@ -66,6 +74,7 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
+
     send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
     return send.json()
     # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
@@ -82,6 +91,7 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
+
     # return None
     # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
     image = request.json["image"].partition(",")[2]
@@ -129,6 +139,7 @@ def callUploadImage():
 @app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
+
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
     return send.json()
@@ -145,7 +156,10 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
+    session['csrf_token'] = generate_csrf()
+    print(session['csrf_token'])
+    headers = {'content-type': 'application/json', 'csrf_token': generate_csrf()}
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -298,6 +312,7 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
+
     id = request.json['id']
     admin = request.json['admin']
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
@@ -315,6 +330,7 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
+
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
 
@@ -329,6 +345,7 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
+
     version = request.json['version']
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
@@ -345,8 +362,8 @@ def callViewModel():
 @token_required
 def callListUsers():
     id = request.json['id']
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token'], "csrf_token": "IjA0YTY5OGM3Y2YzOGI2NjUzNjM1N2NjOTYxM2VmMjc0MGIwZjMxYTYi.YzDVww.klrM8pptaBFrQ9Mb6t-bBYamuMA"}
+    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id, "csrf_token": "IjA0YTY5OGM3Y2YzOGI2NjUzNjM1N2NjOTYxM2VmMjc0MGIwZjMxYTYi.YzDVww.klrM8pptaBFrQ9Mb6t-bBYamuMA"}).json()
 
 """
     getAnalytics function:
