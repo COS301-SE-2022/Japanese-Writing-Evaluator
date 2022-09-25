@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, ElementRef, ViewChild, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild, Component, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 
 
