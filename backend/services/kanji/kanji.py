@@ -87,6 +87,7 @@ def testKanji(kanji_model):
         None
 """   
  
+@app.errorhandler(CSRFError)
 @app.route("/kanji", methods=["POST"]) 
 @token_required
 def loadAndPredict():
