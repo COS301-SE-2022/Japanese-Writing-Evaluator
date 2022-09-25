@@ -15,7 +15,7 @@ import { Odpicture, Odresponse, OdresponseElements } from 'src/app/shared/interf
 export class ObjectDetectionService {
   photo: string;
   responseData: OdresponseElements[] = null;
-  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  baseURL = 'https://flask-api-1-cplmvcuylq-uc.a.run.app/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   constructor(private httpClient: HttpClient) { }
 
   //TODO: Take a picture to send to backend for object detection, #216, Phumu

@@ -160,6 +160,7 @@ def login():
         print(ses.cookies)
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user, 'csrf-token': ses.cookies['csrf-token']}), 200
 
+
 """
     logout function
         kills the session and token
