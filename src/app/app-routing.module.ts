@@ -6,7 +6,7 @@ const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
-    //canActivate: [RouteGuard] //checks if the user is authenticated, if not the user will be redirected to login
+    canActivate: [RouteGuard] //checks if the user is authenticated, if not the user will be redirected to login
   },
   {
     path: '',

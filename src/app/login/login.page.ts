@@ -62,8 +62,8 @@ export class LoginPage implements OnInit {
           }
 
           // if role is set to true then it is admin if role == false then its a normal user
-          // environment.admin = data.body['data'][2].toString();
-          // environment.superAdmin = data.body['data'][3].toString();
+          environment.admin = data.body['data'][2];
+          environment.superAdmin = data.body['data'][3];
 
           if (!localStorage.getItem('token')) {
             localStorage.setItem('token',data.body['user-token'].toString());
