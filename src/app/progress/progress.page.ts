@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } fro
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { UserProgress } from '../shared/interfaces/progress';
-
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-progress',
@@ -175,14 +175,19 @@ export class ProgressPage implements OnInit {
       return Math.round(totalPercent/objArray.length);
   }
 
-  ifGuest(): boolean{
+  ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        return true;
+        //console.log(localStorage.getItem('id'));
+        return false;
       }
     }
 
-    return false;
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }
