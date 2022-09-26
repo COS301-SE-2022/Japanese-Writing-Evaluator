@@ -102,7 +102,7 @@ class Database:
 
 #function to find user with their email and return their username
     def getUser(self,password,email):
-        q = "SELECT username , userid, admin FROM users WHERE password = %s AND email = %s;"
+        q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
         return user

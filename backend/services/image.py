@@ -4,6 +4,9 @@ from flask import jsonify
 import pyrebase
 import os
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 class Image:
     def __init__(self):
