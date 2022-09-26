@@ -1,5 +1,10 @@
+import base64
 from functools import wraps
 from dotenv import load_dotenv
+import hashlib
+import re
+import uuid
+# from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
@@ -7,6 +12,14 @@ from flask_cors import CORS;
 from schedule import every, repeat, run_pending
 import requests
 import sys
+import psycopg2
+import sendgrid
+from sendgrid.helpers.mail import *
+from secrets import token_urlsafe
+import pyrebase
+import torch
+from googletrans import Translator
+import pykakasi
 sys.path.insert(0, '../services')
 sys.path.insert(1, '../eventBus')
 from send_email import Send_Email
@@ -18,7 +31,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
 send = Send_Email()
 CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
-
 
 def token_required(function):
     @wraps(function)
@@ -35,67 +47,35 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
-    return decorated 
 
-"""
-    callResetPassword function:
-        calls update password to change the password
-    request body: 
-        email: the email of a registed user
-        password: their new password
-    return:
-        json response from resetPassword
-"""
-@app.route('/forgot-password-email', methods = ['POST'])
-def callResetPassword():
-    return event_bus.eventResetPassword(str(request.json["email"]))
+    return decorated
 
-@app.route('/forgot-password-password', methods = ['PUT'])
-def resetPassword():
-    return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
+#####################################################
+#login
+try:
+    conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
+    conn2 = psycopg2.connect(host = os.getenv('Image_host'), database = os.getenv('Image_db'), user = os.getenv('Image_user'), password = os.getenv('Image_pass'))
+    curr = conn.cursor()
+    curr2 = conn2.cursor()
 
-"""
-    call Register function:
-        calls the register function from authentication.py
-    request body: 
-        email: the email of a new user
-        password: their password
-        username: and their username
-    return:
-        json response from resetPassword
-"""
-@app.route('/register', methods = ['POST'])
-def callRegister():
-    return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    config = {
+            'apiKey': os.getenv('FB_APIKEY'),
+            'authDomain': os.getenv('FB_authDomain'),
+            'projectId': os.getenv('FB_projectId'),
+            'storageBucket': os.getenv('FB_storageBucket'),
+            'messagingSenderId': os.getenv('FB_messagingSenderId'),
+            'appId': os.getenv('FB_appId'),
+            "measurementId": os.getenv("FB_measurementId"),
+            'serviceAccount' : "service.json",
+            'databaseURL': os.getenv('FB_DBURL')
+        }
+    firebase = pyrebase.initialize_app(config)
+    storage = firebase.storage()
+    auth = firebase.auth()
+    user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
 
-"""
-    callUploadImage function:
-        calls uploadImage function from image.py
-    request body: 
-        email
-        password
-    return:
-        json response
-"""
-@app.route('/upload', methods = ['POST'])
-@token_required
-def callUploadImage():
-    return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
-
-"""
-    callViewImages function:
-        calls view image function from image.py
-    request body: 
-        id: the user's id
-    return:
-        json response
-"""
-
-@app.route('/progress', methods = ['GET', 'POST'])
-@token_required
-def callViewImages():
-    return event_bus.eventViewImages(int(request.json["id"]))
+except Exception as e:
+    print("Could not connect to database", e)
 
 """
     login function:
@@ -120,6 +100,196 @@ def login():
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user,}), 200
 
+def fetchSalt(email):
+    query = "SELECT password_salt FROM users WHERE email = %s;"
+    curr.execute(query, (email,))
+    salt = curr.fetchone()
+    return salt
+
+def getUser(password,email):
+    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    curr.execute(q, (password,email))
+    user = curr.fetchone()
+    return user
+
+###################################################################
+
+###################################################################
+#forgot password email
+
+"""
+    callResetPassword function:
+        calls update password to change the password
+    request body:
+        email: the email of a registed user
+        password: their new password
+    return:
+        json response from resetPassword
+"""
+@app.route('/forgot-password-email', methods = ['POST'])
+def callResetPassword():
+    # return event_bus.eventResetPassword(str(request.json["email"]))
+    user = getUserByEmail(str(request.json["email"]))
+    if(user != None):
+        return forgotPasswordEmail(str(request.json["email"]))
+    else:
+        return jsonify({'response': "user does not exist"}), 401
+
+def forgotPasswordEmail(email):
+    sg = sendgrid.SendGridAPIClient(api_key = os.getenv('SENDGRID_API_KEY'))
+    from_email = Email(os.environ.get('SENDGRID_EMAIL'))
+    to_email = To(email)
+    subject = "Forgot Password"
+    site = "http://localhost:8100/forgot-password-password"
+    rand = token_urlsafe(8)
+    content = Content("text/html", '<div align="center" style="color: rgb(210, 4, 45); background-size: 100% 100%; background-repeat: no-repeat; background-image: url(\'https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2Femail_Background.png?alt=media&token=f72405e1-5607-47b6-957c-81cda3c94af5\');"><div><td style="font-size:6px; line-height:10px; padding:0px 0px 0px 0px;" valign="top" align="center"><img class="max-width" border="0" style="display:block; color:#000000; text-decoration:none; font-family:Helvetica, arial, sans-serif; font-size:16px; max-width:12% !important; width:12%; height:auto !important;" width="84" alt="" data-proportionally-constrained="true" data-responsive="true" src="https://firebasestorage.googleapis.com/v0/b/bug-slayers-jwe.appspot.com/o/email%2FJWE-logos_black.png?alt=media&token=4f64c15a-a0b6-4fbb-8dda-be74e7a45739"></td></div> <p>Token is: {}<p> <br><a href="{}""><button> Reset Password </button></a></div>'.format(rand, site))
+    mail = Mail(from_email, to_email, subject, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
+    if(response.status_code == 202):
+            send = {'response': "email successfully sent", 'token': rand}
+            return send
+    else:
+            return jsonify({'response': "email unsuccessfully sent"}), 401
+
+def getUserByEmail(self, email):
+    query = " SELECT username FROM users WHERE email = %s"
+    self.curr.execute(query, (email,))
+    name = self.curr.fetchone()
+    return name
+
+##################################################################
+#forgot password password    
+
+@app.route('/forgot-password-password', methods = ['PUT'])
+def resetPassword():
+        salt = fetchSaltByToken(str(requests.json["token"]))
+        new_password = hashlib.sha512((str(request.json["password"]) + salt[0]).encode()).hexdigest()
+        
+        editedRow = updatePassword(str(requests.json["token"]), new_password)
+        if editedRow == 1:
+            return jsonify({'response': "password reset successful."}), 200
+        else:
+            return jsonify({'response': "password reset failed."}), 401
+
+def fetchSaltByToken(self, token):
+    query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+    self.curr.execute(query, (token,))
+    salt = self.curr.fetchone()
+    return salt
+
+def updatePassword(self, token, password):
+    update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
+    try:
+        print(token)
+        self.curr.execute(update_query, (password, token))
+        self.conn.commit()
+        setTokenNull = "UPDATE users SET forgot_password_token = NULL WHERE forgot_password_token = %s"
+        self.curr.execute(setTokenNull, (token,))
+        self.conn.commit()
+        return self.curr.rowcount    
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        return 0
+
+####################################################################
+
+
+####################################################################
+#Register
+"""
+    call Register function:
+        calls the register function from authentication.py
+    request body:
+        email: the email of a new user
+        password: their password
+        username: and their username
+    return:
+        json response from resetPassword
+"""
+@app.route('/register', methods = ['POST'])
+def callRegister():
+    try:
+        Finduser = getUserByEmail(str(request.json["email"]))
+        if Finduser != None:
+            res = "User already exists"
+            return jsonify({"response": res}), 409
+        else:
+            salt = uuid.uuid4().hex
+            passwordSalt = hashlib.sha512((str(request.json["password"]) + salt).encode()).hexdigest()
+            addUser(str(request.json["username"]), passwordSalt, email, False, salt, 0)
+            res = "Registration Successful"
+            return jsonify({'response': res}), 200
+
+    except Exception as e:
+        return jsonify({'response': str(e)}), 401
+
+def addUser(self, username, password, email, admin, passwordSalt, avgScore):
+    q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+    self.curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+    self.conn.commit()
+
+###################################################################
+
+##################################################################
+#upload
+"""
+    callUploadImage function:
+        calls uploadImage function from image.py
+    request body:
+        email
+        password
+    return:
+        json response
+"""
+@app.route('/upload', methods = ['POST'])
+@token_required
+def callUploadImage():
+    return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
+
+##################################################################
+#progress
+"""
+    callViewImages function:
+        calls view image function from image.py
+    request body:
+        id: the user's id
+    return:
+        json response
+"""
+@app.route('/progress', methods = ['GET', 'POST'])
+@token_required
+def callViewImages():
+    # return event_bus.eventViewImages(int(request.json["id"]))
+    images = getImage(str(request.json["id"]))
+    if (images != None):
+        response = []
+        i = 0
+        for imgs in images:
+            style = imgs[4]
+            response.append({
+                "writing_style": style.lower(),
+                "url": storage.child(imgs[1]).get_url(user['idToken']),
+                "character": imgs[2],
+                "score": imgs[3],
+                "uploadDate": imgs[5]
+            })
+            i = i + 1
+        return jsonify({'response': response}), 200
+    else:
+        return jsonify({'response': "view image failed."}), 401
+
+#################################################################
+
+def getImage(self, id):
+    view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
+    self.curr2.execute(view_query, ([id]))
+    images_url = self.curr2.fetchall()
+    return images_url    
+
+##########################################################
+#viewUsers
+
+
 """
     logout function
         kills the session and token
@@ -136,7 +306,7 @@ def logout():
         return jsonify({"response": 'logged out'}), 200
     except:
         return jsonify({"response": 'Error'}), 401
-        
+
 """
     home function:
         calls getCharacters to send character url's to front-end for the homepage
@@ -155,7 +325,7 @@ def home():
     request body:
 
     return:
-        
+
 """
 @repeat(every().sunday)
 def email_users():
@@ -180,12 +350,12 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                    
+
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
             jCount += 1
 
-        
+
         iCount += 1
         divBy = 0
         average = 0
@@ -203,7 +373,7 @@ def email_users():
                 contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
             else:
                 contain.append("Failed")
-    
+
     if(contain.count("Failed") > 0):
         return jsonify({'response': "Failed"}), 401
     else:
@@ -212,7 +382,7 @@ def email_users():
 """
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -222,6 +392,8 @@ def email_users():
 def callGuestUploadImage():
     return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
 
+##################################################
+#admin edit
 """
     callEditUserPrivileges function:
         calls editUserPrivileges frunction from admin.py
@@ -234,7 +406,26 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+    edited = editUser(int(request.json['id']), str(request.json['admin']))
+    print('edited: ', edited)
+    if(edited):
+        return jsonify({'response': 'Privileges updated successfully'}), 200
+    else:
+        print("Failed at admin")
+        return jsonify({'response': 'Privileges update failed'}), 401
+
+def editUser(self, id, admin):
+    try:
+        query = "UPDATE users SET admin = %s WHERE userid = %s;";
+        self.curr.execute(query, (admin, id))
+        self.conn.commit()
+        print("Edited")
+        return True
+    except Exception as e:
+        print(e)
+        return False   
+
+###################################################################
 
 """
     callEditUserPrivileges function:
@@ -263,6 +454,8 @@ def callListModelData():
 def callViewModel():
     return event_bus.eventViewModelData(str(request.json['version']))
 
+###########################################################
+#object detection
 """
     ListUsers function:
         calls event_bus.py listUsers function
@@ -292,16 +485,73 @@ def callGetAnalytics():
 """
     callObjectDetection function:
         calls the object detection which detects objects in image
-    request body: 
+    request body:
         image
     return:
         json response
 """
 @app.route('/object-detection', methods = ['POST'])
-@token_required
+# @token_required
 def callObjectDetection():
-    return event_bus.eventObjectDetection(str(request.json["image"]))
+    # return event_bus.eventObjectDetection(str(request.json["image"]))
+    try:
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5x')
+
+        img = str(request.json["image"]).partition(",")[2]
+
+        with open("objectImage.jpeg", "wb") as fh:
+            fh.write(base64.b64decode(img))
+
+        im = "objectImage.jpeg"
+
+        results = model(im)
+        res = str(results.pandas().xyxy[0])
+        splitted = res.split('name')
+        
+        # print(results.print())
+
+        classes = re.findall(r'[a-zA-Z]+', splitted[1])
+        # print(classes)
+        # print(len(classes))
+
+        store = []
+        for i in classes:
+            if i in store: 
+                continue
+            else:
+                store.append(i)
+
+        translator = Translator()
+        convert = pykakasi.kakasi()
+        # store = translator.translate(text1, "ja", "en")
+
+        words = []
+        for i in store:
+
+            trans = translator.translate(i, "ja", "en")
+            translation = str(trans).split(",")
+            text = translation[2].split("text=")
+            characters = list(text[1])
+
+            word = text[1]
+            res = convert.convert(word)
+
+            for j in res:
+    
+                chars = list(j['hira'])
+
+                words.append({
+                    "Object": i,
+                    "Characters": chars,
+                    "Pronunciation": j['hepburn']
+                })
+
+
+        return jsonify({'response': words}), 200
+    except Exception as e:
+        return jsonify({'response': e}), 400
+
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = True, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
