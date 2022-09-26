@@ -12,10 +12,7 @@ import { UserProgress } from '../shared/interfaces/progress';
 
 
 export class ProgressPage implements OnInit {
-
-   //Data for progress
   progressArray: UserProgress[];
- // object: { char: string; score: string; date: string };
 
   progressHiragana =  new Map<string, {score: number; date: string }[]> ();
   progressKatakana =  new Map<string, {score: number; date: string }[]> ();
@@ -43,21 +40,20 @@ export class ProgressPage implements OnInit {
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
-//     this.char = localStorage.getItem('char');
-//     this.percent = +localStorage.getItem('percentage');
 
        this.service.getProgress().subscribe(data => {
        this.progressArray = data.body.response;
        this.manipulateScores();
      });
 
-//     //testPurposes
-//     //also note the naming conventions are incorrect from the API so they need be changed
      this.writingStylesArray = [
      'hiragana', 'katakana', 'kanji'
      ];
 
   }
+
+  //TODO: manipulates the response from post request in order to get the score & date per writing style,
+  // #177, Maryam Mohamad Al Mahdi
   manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       this.progressArray.forEach(progress => {
@@ -149,6 +145,7 @@ export class ProgressPage implements OnInit {
     return letterString.split('').reverse().join('');
   }
 
+  //TODO: returns the writing style, #73, Maryam Mohamad Al Mahdi
   getStyle(writingStyle: string){
 
     if(writingStyle.includes('hiragana'))
@@ -165,8 +162,8 @@ export class ProgressPage implements OnInit {
     }
   }
 
+  //TODO: calculates the average from the scores, #73, Maryam Mohamad Al Mahdi
   getPercent(objArray: {score: string; date: string }[]){
-
     let totalPercent = 0;
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < objArray.length; i++) {
@@ -175,6 +172,7 @@ export class ProgressPage implements OnInit {
       return Math.round(totalPercent/objArray.length);
   }
 
+  //TODO: Phumu
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
