@@ -43,6 +43,12 @@ export class HomePage implements OnInit {
     return false;
   }
 
+  // ifAdmin(){
+  //   if(){
+
+  //   }
+  // }
+
   ngOnInit(): void {}
 
 }

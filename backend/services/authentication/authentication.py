@@ -1,4 +1,5 @@
 from functools import wraps
+from wsgiref import validate
 import jwt
 import hashlib
 import uuid
@@ -9,14 +10,11 @@ import requests
 import psycopg2
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:
@@ -28,20 +26,19 @@ except Exception as e:
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        auth_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            auth_token = request.headers['user-token']
+        if not auth_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(auth_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
 
 """
     resetPassword function:
@@ -52,7 +49,6 @@ def token_required(function):
     return:
         json response
 """
-@app.errorhandler(CSRFError)
 @app.route("/reset-password", methods=["PUT"])
 def resetPassword():
     token = request.json["token"]
@@ -103,7 +99,6 @@ def updatePassword(token, password):
     return:
         json response
 """
-@app.errorhandler(CSRFError)
 @app.route("/admin/users", methods = ['POST'])
 @token_required
 def listUsers():
@@ -132,8 +127,7 @@ def listUsers():
     return:
         json response
 """
-@app.errorhandler(CSRFError)
-@app.route("/findUser", methods=["POST"])
+@app.route("/findUser", methods=["GET"])
 def findUser():
     email = request.json["email"]
     query = " SELECT username FROM users WHERE email = %s"
@@ -177,8 +171,7 @@ def addToken(email, token):
     return:
         username and userid
 """
-@app.errorhandler(CSRFError)
-@app.route("/getUserByID", methods=["POST"])
+@app.route("/getUserByID", methods=["GET"])
 def getUserByID():
     id = request.json["id"]
     query = " SELECT * FROM users WHERE userid = %s"
@@ -199,7 +192,6 @@ def getUserByID():
     return:
         json response
 """
-@app.errorhandler(CSRFError)
 @app.route("/register", methods=["POST"])
 def register():
     try:
@@ -211,11 +203,15 @@ def register():
             res = "User already exists"
             return jsonify({"response": res}), 409
         else:
-            salt = uuid.uuid4().hex
-            passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-            addUser(username, passwordSalt, email, False, salt, 0)
-            res = "Registration Successful"
-            return jsonify({'response': res}), 200
+            verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            if(verify_email.status_code == 200):
+                salt = uuid.uuid4().hex
+                passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
+                addUser(username, passwordSalt, email, False, salt, 0)
+                res = "Registration Successful"
+                return jsonify({'response': res}), 200
+            else:
+                return jsonify({"response": "invalid password"}), 401
 
     except Exception as e:
         return jsonify({'response': str(e)}), 401
@@ -240,25 +236,21 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
     return:
         username and userId
 """
-# @app.errorhandler(CSRFError)
-# @csrf.exempt
 @app.route("/login", methods=["POST"])
 def login():
     email = request.json['email']
     password = request.json['password']
     salt = fetchSalt(email)
-    print(salt)
     if(salt == None):
-        print('We are at none')
-        return jsonify({'response': 'user not found'}), 400
+        return None
     else:
-        print('We are success')
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
-        if(user == None):
+        if(user != None):
+            session['logged_in'] = True
+            return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
+        else:
             return jsonify({"response": "incorrect password"}), 401
-        
-        return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
 
 def fetchSalt(email):
     query = "SELECT password_salt FROM users WHERE email = %s;"
@@ -267,7 +259,7 @@ def fetchSalt(email):
     return salt
 
 def getUser(password,email):
-    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
     curr.execute(q, (password,email))
     user = curr.fetchone()
     return user
@@ -281,7 +273,6 @@ def getUser(password,email):
     return:
         json response
 """    
-@app.errorhandler(CSRFError)
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def editUserPrivileges():
@@ -301,9 +292,8 @@ def editUserPrivileges():
     return:
         json response
 """    
-@app.errorhandler(CSRFError)
 @app.route("/admin/models", methods=["GET"]) 
-@token_required
+# @token_required
 def listModelData():
     res = getModels()
     if res != None:
@@ -386,7 +376,6 @@ def listModelData():
     return:
         json response
 """  
-@app.errorhandler(CSRFError)
 @app.route("/admin/view-model", methods=["POST"])  
 @token_required
 def viewModelData():

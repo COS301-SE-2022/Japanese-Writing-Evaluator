@@ -125,6 +125,7 @@ export class ProgressBlockComponent implements OnInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: GraphModalPage,
+      cssClass: 'my-modal',
       componentProps: {
         scores: this.myScores,
         letter : this.letter,

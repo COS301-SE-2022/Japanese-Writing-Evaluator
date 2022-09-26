@@ -23,20 +23,19 @@ CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-a
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        detect_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            detect_token = request.headers['user-token']
+        if not detect_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(detect_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
-    return decorated 
+   
 
 """
     detect function:

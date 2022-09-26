@@ -3,7 +3,6 @@ import jwt
 from PIL import Image
 import tensorflow as tf
 import numpy as np
-
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
@@ -21,20 +20,19 @@ dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se',
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        hira_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            hira_token = request.headers['user-token']
+        if not hira_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(hira_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
 
 """
     Prepare function:
