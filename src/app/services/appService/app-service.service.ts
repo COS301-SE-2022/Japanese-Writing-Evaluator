@@ -16,7 +16,7 @@ import { Models, ModelsArray } from 'src/app/shared/interfaces/models';
 })
 export class AppServiceService {
 
-  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  baseURL = 'https://flask-api-1-cplmvcuylq-uc.a.run.app/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   //https://flask-api-1-cplmvcuylq-uc.a.run.app/
   private characterImage: CharacterImage = {
     characterName: ' ',

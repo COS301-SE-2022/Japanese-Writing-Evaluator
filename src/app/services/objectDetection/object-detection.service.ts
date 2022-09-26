@@ -16,7 +16,7 @@ export class ObjectDetectionService {
   currentModal;
   photo: string;
   responseData: OdresponseElements[] = null;
-  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website),
+  baseURL = 'https://flask-api-1-cplmvcuylq-uc.a.run.app/';//localhost is 10.0.2.2 for android studios (change to localhost for website),
   // link for deployed api: https://flask-api-1-cplmvcuylq-uc.a.run.app/
   constructor(private httpClient: HttpClient) { }
 
