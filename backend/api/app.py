@@ -1,8 +1,7 @@
 import base64
 from functools import wraps
-from wsgiref.headers import Headers
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request, session
+from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
 from flask_cors import CORS;

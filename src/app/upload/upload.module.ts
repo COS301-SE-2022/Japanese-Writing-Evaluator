@@ -8,6 +8,7 @@ import { UploadPageRoutingModule } from './upload-routing.module';
 
 import { UploadPage } from './upload.page';
 import { NavbarModule } from '../shared/components/navbar/navbar.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import { NavbarModule } from '../shared/components/navbar/navbar.module';
     FormsModule,
     IonicModule,
     UploadPageRoutingModule,
-    NavbarModule
+    NavbarModule,
+    AdminNavBarModule
   ],
   declarations: [UploadPage]
 })

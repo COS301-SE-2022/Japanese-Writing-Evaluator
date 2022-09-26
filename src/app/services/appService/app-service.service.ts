@@ -16,7 +16,8 @@ import { Models, ModelsArray } from 'src/app/shared/interfaces/models';
 })
 export class AppServiceService {
 
-  baseURL = 'https://flask-api-1-cplmvcuylq-uc.a.run.app/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  //https://flask-api-1-cplmvcuylq-uc.a.run.app/
   private characterImage: CharacterImage = {
     characterName: ' ',
     group: ' ',
@@ -64,11 +65,6 @@ export class AppServiceService {
     //this function returns the class' image attr
     return this.characterImage;
   }
-
-  // getHomeImages(): Observable<CharacterStyle[]>{
-  //   const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
-  //   return this.httpclient.get<CharacterStyle[]>(this.baseURL + '/home', {headers});
-  // }
 
   addUser(name: string, mail: string, pass: string)
   {
@@ -154,6 +150,5 @@ export class AppServiceService {
     const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
     return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/models',{ headers: myheaders, observe: 'response'});
   }
-
 }
 

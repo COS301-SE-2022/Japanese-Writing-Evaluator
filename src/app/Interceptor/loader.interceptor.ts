@@ -7,12 +7,13 @@ import { UploadPage } from '../upload/upload.page';
 import { Score } from '../shared/interfaces/score';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 import { ObdModalComponent } from '../shared/components/obd-modal/obd-modal.component';
+import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
     //private animeBuilder: AnimationBuilder,
     constructor(private loadingController: LoadingController, private uploadPage: UploadPage, private toast: ToastComponent,
-        public modalController: ModalController){
+        public modalController: ModalController, private obdService: ObjectDetectionService){
 
     }
 
@@ -288,6 +289,8 @@ export class LoadingInterceptor implements HttpInterceptor{
         const modal = await this.modalController.create({
           component: ObdModalComponent
         });
+        this.obdService.setModal(modal);
+        console.log(modal);
         return await modal.present();
       }
 
