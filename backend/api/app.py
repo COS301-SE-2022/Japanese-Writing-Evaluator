@@ -151,7 +151,7 @@ def callViewImages():
 @app.route('/login', methods=['POST'])
 def login():
     headers = {'content-type': 'application/json'}
-    user = ses.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -325,7 +325,7 @@ def callEditUserPrivileges():
 def callListModelData():
 
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return ses.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
+    return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
 
 """
     callViewModel function:
