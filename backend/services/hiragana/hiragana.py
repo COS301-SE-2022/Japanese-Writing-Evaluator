@@ -35,14 +35,14 @@ def token_required(function):
   
 
 """
-    Prepare function:
+    prepare_hiragana function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare():
+def prepare_hiragana():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -60,7 +60,7 @@ def prepare():
 
 """  
 def testhiragana(hiragana_model):
-    pre = hiragana_model.predict([prepare()]).flatten()
+    pre = hiragana_model.predict([prepare_hiragana()]).flatten()
 
     temp = 0
     val = 0
@@ -92,7 +92,7 @@ def testhiragana(hiragana_model):
 """  
 def strokesModel(strokes_model):
     try:
-        pre_stroke = strokes_model.predict([prepare()]).flatten()
+        pre_stroke = strokes_model.predict([prepare_hiragana()]).flatten()
         return pre_stroke
     except Exception as e:
         print(e)

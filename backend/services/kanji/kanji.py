@@ -35,14 +35,14 @@ def token_required(function):
   
 
 """
-    Prepare function:
+    prepare_kanji function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare():
+def prepare_kanji():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -59,7 +59,7 @@ def prepare():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKanji(kanji_model):
-    pre = kanji_model.predict([prepare()]).flatten()
+    pre = kanji_model.predict([prepare_kanji()]).flatten()
     temp = 0
     val = 0
     final = 0

@@ -35,14 +35,14 @@ def token_required(function):
   
 
 """
-    Prepare function:
+    prepare_katakana function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare():
+def prepare_katakana():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -59,7 +59,7 @@ def prepare():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKatakana(katakana_model):
-    pre = katakana_model.predict([prepare()]).flatten()
+    pre = katakana_model.predict([prepare_katakana()]).flatten()
     temp = 0
     val = 0
     final = 0
