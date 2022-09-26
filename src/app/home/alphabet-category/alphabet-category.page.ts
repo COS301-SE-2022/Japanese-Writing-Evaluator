@@ -23,9 +23,14 @@ export class AlphabetCategoryPage implements OnInit {
 
     this.category = this.route.snapshot.queryParamMap.get('category');
     this.heading = this.category;
+    let splitted = [];
 
-    const splitted = this.category.split(' ');
-    console.log(splitted);
+    if(this.category !== null && !this.category.includes(' ')){
+      splitted = this.category.split(' ');
+    }
+    else{
+      return;
+    }
 
     this.currentJSON += splitted[0];
     this.currentJSON = this.currentJSON.toLowerCase();
@@ -131,15 +136,6 @@ export class AlphabetCategoryPage implements OnInit {
       {
         this.jsonAlphabet = character_sets.hiraganaGroupP;
       }
-  }
-
-  onLogout(){
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
   }
 
   ifGuest(): boolean{
