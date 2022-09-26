@@ -138,9 +138,17 @@ export class AlphabetCategoryPage implements OnInit {
         this.jsonAlphabet = character_sets.hiraganaGroupP;
       }
   }
+  
+  onLogout(){
+    localStorage.removeItem('id');
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+    }
+    this.router.navigate(['/login']);
 
-  ifGuest(): boolean{
+  }
 
+  ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
         //console.log(localStorage.getItem('id'));
