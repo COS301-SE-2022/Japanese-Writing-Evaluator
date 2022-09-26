@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import character_sets from '../../shared/character_data/character_sets.json';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-alphabet-category',
@@ -139,13 +140,19 @@ export class AlphabetCategoryPage implements OnInit {
   }
 
   ifGuest(): boolean{
+
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        return true;
+        //console.log(localStorage.getItem('id'));
+        return false;
       }
     }
 
-    return false;
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }

@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -100,5 +101,20 @@ export class DashboardPage implements OnInit {
         }
     }
     });
+  }
+
+  ifNormalNavbar(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        //console.log(localStorage.getItem('id'));
+        return false;
+      }
+    }
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 }

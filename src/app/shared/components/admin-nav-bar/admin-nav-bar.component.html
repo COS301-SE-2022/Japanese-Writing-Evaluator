@@ -20,7 +20,7 @@
           </a>
         </ion-col>
 
-        <ion-col>
+        <ion-col *ngIf="ifSuperAdmin()">
           <a [routerLink]="['/profile']">
             <ion-tab-button>
               <ion-icon name="people-circle-outline"></ion-icon>

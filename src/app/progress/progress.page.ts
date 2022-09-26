@@ -2,7 +2,7 @@ import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } fro
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { UserProgress } from '../shared/interfaces/progress';
-
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-progress',
@@ -122,15 +122,62 @@ export class ProgressPage implements OnInit {
       this.router.navigate(['/home']);
     }
 
-  //TODO: Phumu
-  ifGuest(): boolean{
+
+  getLetter(letter: string){
+    let letterString = '';
+    let index = letter.indexOf('_');
+
+    if(index !== -1)
+    {
+      index -= 1;
+      while(index!== -1){
+
+        letterString += letter[index];
+        index -= 1;
+      }
+    }
+    return letterString.split('').reverse().join('');
+  }
+
+  getStyle(writingStyle: string){
+
+    if(writingStyle.includes('hiragana'))
+    {
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      return 'katakana';
+    }
+    else
+    {
+      return 'kanji';
+    }
+  }
+
+  getPercent(objArray: {score: string; date: string }[]){
+
+    let totalPercent = 0;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < objArray.length; i++) {
+      totalPercent+=Number(objArray[i].score);
+    }
+      return Math.round(totalPercent/objArray.length);
+  }
+
+  ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        return true;
+        //console.log(localStorage.getItem('id'));
+        return false;
       }
     }
 
-    return false;
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }

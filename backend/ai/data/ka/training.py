@@ -1,4 +1,5 @@
 import io
+import os
 from PIL import Image , ImageFilter 
 import tensorflow as tf
 import numpy as np
@@ -100,7 +101,7 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave('../../dataset/train/ka/picture_'+str(counter) + '.png')
+                plt.imsave('../../dataset/train/ka/picture_'+str(counter) + '.png', sheared_img)
                 counter = counter + 1
         return counter
     """
@@ -139,6 +140,7 @@ class training:
         return counter
         
 if __name__ == '__main__':
+    
     training = training()
   
     counter = 0
