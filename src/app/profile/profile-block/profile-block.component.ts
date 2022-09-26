@@ -39,12 +39,10 @@ export class ProfileBlockComponent implements OnInit {
         if (data) {
           if( data.data !== undefined){
             this.selectedRole = data.data.data;
-            console.log(this.selectedRole + ' from component');
             this.roleEvent();
           }
           else{
             this.selectedRole = undefined;
-            console.log(this.selectedRole + ' from component');
             this.roleEvent();
           }
         }

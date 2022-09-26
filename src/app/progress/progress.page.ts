@@ -12,10 +12,7 @@ import { environment as env } from 'src/environments/environment';
 
 
 export class ProgressPage implements OnInit {
-
-   //Data for progress
   progressArray: UserProgress[];
- // object: { char: string; score: string; date: string };
 
   progressHiragana =  new Map<string, {score: number; date: string }[]> ();
   progressKatakana =  new Map<string, {score: number; date: string }[]> ();
@@ -43,21 +40,20 @@ export class ProgressPage implements OnInit {
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
-//     this.char = localStorage.getItem('char');
-//     this.percent = +localStorage.getItem('percentage');
 
        this.service.getProgress().subscribe(data => {
        this.progressArray = data.body.response;
        this.manipulateScores();
      });
 
-//     //testPurposes
-//     //also note the naming conventions are incorrect from the API so they need be changed
      this.writingStylesArray = [
      'hiragana', 'katakana', 'kanji'
      ];
 
   }
+
+  //TODO: manipulates the response from post request in order to get the score & date per writing style,
+  // #177, Maryam Mohamad Al Mahdi
   manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
       this.progressArray.forEach(progress => {
@@ -121,17 +117,11 @@ export class ProgressPage implements OnInit {
       this.service.setProgressKatakana(this.progressKatakana);
       this.service.setProgressKanji(this.progressKanji);
   }
-
-
-    //TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-    setDisplay(character: string, percent: number){
-      this.char = character;
-      this.percent = percent;
-    }
     //TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
     setHome(){
       this.router.navigate(['/home']);
     }
+
 
   getLetter(letter: string){
     let letterString = '';

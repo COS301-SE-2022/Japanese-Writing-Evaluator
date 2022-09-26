@@ -44,6 +44,7 @@ export class HomePage implements OnInit {
     return false;
   }
 
+
   ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {

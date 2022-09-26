@@ -47,6 +47,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
+
   ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
