@@ -25,11 +25,11 @@ class testing:
 """ 
     def blur(self,blurr,counter): 
         #blur
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for font_blur_a in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(font_blur_a) + '.png')
             
             gaussImage = manipulated.filter(ImageFilter.GaussianBlur(blurr))
-            for j in range (0,5):
+            for blur_test_a in range (0,50):
                 gaussImage.save('../../dataset/test/a/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
@@ -44,10 +44,10 @@ class testing:
 """ 
     def rotate_image_(self,angle,counter):
         
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for font_rotate_a in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(font) + '.png')
             manipulated = manipulated.rotate(angle)
-            for j in range (0,50):
+            for rotate_test_a in range (0,50):
                 manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
@@ -62,8 +62,8 @@ class testing:
     """
     def zoom_image(self,counter): 
        
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for zoom in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(zoom) + '.png')
             img_buf = io.BytesIO()
             datagen = ImageDataGenerator()
             data = img_to_array(manipulated)
@@ -74,7 +74,7 @@ class testing:
             batch = it.next()
             image = batch[0].astype('uint8')
             manipulated = Image.fromarray(image)
-            for j in range (0,50):
+            for zoom_test_a in range (0,50):
                 manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
@@ -88,8 +88,8 @@ class testing:
         counter
 """ 
     def shear(self,counter):
-        for i in range (0,38):
-            img = cv2.imread("./pictures/test_"+str(i)+".png")
+        for shear in range (0,38):
+            img = cv2.imread("./pictures/test_"+str(shear)+".png")
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             plt.axis('off')
         
@@ -99,7 +99,7 @@ class testing:
             	[0, 0  , 1]])
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
-            for j in range (0,50):
+            for shear_test_a in range (0,50):
                 plt.imsave('../../dataset/test/a/picture_'+str(counter) + '.png', sheared_img)
                 counter = counter + 1
         return counter
@@ -113,8 +113,8 @@ class testing:
         counter
 """ 
     def transpose_90(self,counter): 
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for trans in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(trans) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_90)
             for j in range (0,50):
                 manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
@@ -130,10 +130,10 @@ class testing:
         counter
 """ 
     def transpose_270(self,counter):
-        for i in range (0,38):
-            manipulated =Image.open('./pictures/test_'+ str(i) + '.png')
+        for trans in range (0,38):
+            manipulated =Image.open('./pictures/test_'+ str(trans) + '.png')
             manipulated = manipulated.transpose(Image.ROTATE_270)
-            for j in range (0,50):
+            for trans in range (0,50):
                 manipulated.save('../../dataset/test/a/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
