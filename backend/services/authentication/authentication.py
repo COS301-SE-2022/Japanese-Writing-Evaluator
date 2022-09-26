@@ -26,9 +26,11 @@ try:
 except Exception as e:
     print("Could not connect to database", e)
 
-@app.before_request
-def create_session():
-    session['csrf_token'] = generate_csrf()
+# @app.before_request
+# def create_session():
+#     print(session.values())
+#     if 'logged_in' not in session:
+#         print("here")
 
 def token_required(function):
     @wraps(function)
@@ -58,6 +60,7 @@ def token_required(function):
         json response
 """
 @app.route("/reset-password", methods=["PUT"])
+@csrf.exempt
 def resetPassword():
     token = request.json["token"]
     password = request.json["password"]
@@ -109,7 +112,7 @@ def updatePassword(token, password):
 """
 @app.route("/admin/users", methods = ['POST'])
 # @token_required
-# @csrf.exempt
+@csrf.exempt
 def listUsers():
     print(session['csrf_token'])
     id = request.json['id']
@@ -203,6 +206,7 @@ def getUserByID():
         json response
 """
 @app.route("/register", methods=["POST"])
+@csrf.exempt
 def register():
     try:
         email = request.json["email"]
@@ -245,6 +249,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
 @app.route("/login", methods=["POST"])
 @csrf.exempt
 def login():
+    session['csrf_token'] = generate_csrf()
     email = request.json['email']
     password = request.json['password']
     salt = fetchSalt(email)
@@ -253,7 +258,12 @@ def login():
     else:
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
-        return jsonify({"response": {'username': user[0], 'id': user[1], 'csrf_token': session['csrf_token']}}), 200 
+        if(user != None):
+            session['logged_in'] = True
+            return jsonify({"response": {'username': user[0], 'id': user[1], 'csrf_token': session['csrf_token']}}), 200 
+        else:
+            session['csrf_token'] = None
+            return jsonify({"response": "incorrect password"}), 401
 
 def fetchSalt(email):
     query = "SELECT password_salt FROM users WHERE email = %s;"
@@ -277,6 +287,7 @@ def getUser(password,email):
         json response
 """    
 @app.route('/admin/edit', methods = ['POST'])
+@csrf.exempt
 @token_required
 def editUserPrivileges():
     edited = editUser(request.json['id'], request.json['admin'])
@@ -296,8 +307,9 @@ def editUserPrivileges():
         json response
 """    
 @app.route("/admin/models", methods=["GET"]) 
-@token_required
+# @token_required
 def listModelData():
+    print(session['csrf_token'])
     res = getModels()
     if res != None:
         data_Hiragana =  []
@@ -380,6 +392,7 @@ def listModelData():
         json response
 """  
 @app.route("/admin/view-model", methods=["POST"])  
+@csrf.exempt
 @token_required
 def viewModelData():
     try:
