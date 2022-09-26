@@ -66,11 +66,6 @@ export class AppServiceService {
     return this.characterImage;
   }
 
-  // getHomeImages(): Observable<CharacterStyle[]>{
-  //   const headers = { 'content-type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`};
-  //   return this.httpclient.get<CharacterStyle[]>(this.baseURL + '/home', {headers});
-  // }
-
   addUser(name: string, mail: string, pass: string)
   {
     const myheaders = { 'content-type': 'application/json'};
@@ -155,6 +150,5 @@ export class AppServiceService {
     const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
     return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/models',{ headers: myheaders, observe: 'response'});
   }
-
 }
 
