@@ -17,7 +17,7 @@ dataset = []
 
 def token_required(function):
     @wraps(function)
-    def kanji_decorated(*args, **kwargs):
+    def decorated(*args, **kwargs):
         kanji_token = None
         print(request.headers)
         if 'user-token' in request.headers:

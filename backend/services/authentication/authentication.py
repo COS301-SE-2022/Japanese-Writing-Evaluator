@@ -25,7 +25,7 @@ except Exception as e:
 
 def token_required(function):
     @wraps(function)
-    def auth_decorated(*args, **kwargs):
+    def decorated(*args, **kwargs):
         auth_token = None
         print(request.headers)
         if 'user-token' in request.headers:
@@ -203,11 +203,15 @@ def register():
             res = "User already exists"
             return jsonify({"response": res}), 409
         else:
-            salt = uuid.uuid4().hex
-            passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-            addUser(username, passwordSalt, email, False, salt, 0)
-            res = "Registration Successful"
-            return jsonify({'response': res}), 200
+            verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            if(verify_email.status_code == 200):
+                salt = uuid.uuid4().hex
+                passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
+                addUser(username, passwordSalt, email, False, salt, 0)
+                res = "Registration Successful"
+                return jsonify({'response': res}), 200
+            else:
+                return jsonify({"response": "invalid password"}), 401
 
     except Exception as e:
         return jsonify({'response': str(e)}), 401

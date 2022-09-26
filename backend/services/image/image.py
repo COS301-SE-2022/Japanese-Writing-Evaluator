@@ -32,7 +32,7 @@ user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("
 
 def token_required(function):
     @wraps(function)
-    def img_decorated(*args, **kwargs):
+    def decorated(*args, **kwargs):
         img_token = None
         print(request.headers)
         if 'user-token' in request.headers:

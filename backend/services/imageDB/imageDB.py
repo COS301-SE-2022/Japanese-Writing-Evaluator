@@ -25,7 +25,7 @@ except Exception as e:
     
 def token_required(function):
     @wraps(function)
-    def imgdb_decorated(*args, **kwargs):
+    def decorated(*args, **kwargs):
         imgdb_token = None
         print(request.headers)
         if 'user-token' in request.headers:

@@ -17,7 +17,7 @@ dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se',
 
 def token_required(function):
     @wraps(function)
-    def hira_decorated(*args, **kwargs):
+    def decorated(*args, **kwargs):
         hira_token = None
         print(request.headers)
         if 'user-token' in request.headers:
