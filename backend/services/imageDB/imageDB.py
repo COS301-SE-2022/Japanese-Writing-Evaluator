@@ -26,20 +26,19 @@ except Exception as e:
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        imgdb_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            imgdb_token = request.headers['user-token']
+        if not imgdb_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(imgdb_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
 
 """
 saveToDB function:
