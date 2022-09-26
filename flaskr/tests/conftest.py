@@ -1,9 +1,13 @@
 import os
 import tempfile
 import pytest
-from flaskr import create_app
+# from flaskr import create_app
+import sys
+sys.path.insert(0, 'flaskr')
 from flaskr.db import get_db, init_db
-
+sys.path.insert(1, "backend/services/authentication")
+from authentication import app as auth
+from kanji import app as kanji
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
@@ -11,16 +15,25 @@ with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
 def app():
     db_fd, db_path = tempfile.mkstemp()
 
-    app = create_app({
-        'TESTING': True,
-        'DATABASE': db_path
+    auth.config.update({
+      'TESTING': True,
+      'DATABASE': db_path  
     })
-
-    with app.app_context():
+   
+    with auth.app_context():
         init_db()
         get_db().executescript(_data_sql)
+    
+    kanji.config.update({
+      'TESTING': True,
+      'DATABASE': db_path  
+    })
 
-    yield app
+    with kanji.app_context():
+        init_db()
+        get_db().executescript(_data_sql)
+        
+    yield auth, kanji
 
     os.close(db_fd)
     os.unlink(db_path)
