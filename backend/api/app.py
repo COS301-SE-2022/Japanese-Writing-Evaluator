@@ -1,24 +1,18 @@
+import base64
 from functools import wraps
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
 from flask_cors import CORS;
-from schedule import every, repeat, run_pending
+from schedule import every, repeat
 import requests
-import sys
-sys.path.insert(0, '../services')
-sys.path.insert(1, '../eventBus')
-from send_email import Send_Email
-import event_bus
 
 load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY']= os.getenv('SECRET_KEY')
-send = Send_Email()
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
-
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://633168369b681d4d5be0b5ed--musical-taiyaki-627c6d.netlify.app/"]}})
 
 def token_required(function):
     @wraps(function)
@@ -49,11 +43,17 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    return event_bus.eventResetPassword(str(request.json["email"]))
+
+    send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
+    return send.json()
+    # return event_bus.eventResetPassword(str(request.json["email"]))
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-    return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
+
+    send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
+    return send.json()
+    # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
 
 """
     call Register function:
@@ -67,7 +67,10 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-    return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+
+    send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
+    return send.json()
+    # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
@@ -81,7 +84,41 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
-    return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
+
+    # return None
+    # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
+    image = request.json["image"].partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+
+        #############################################
+        #           EVALUATOR
+        #############################################
+    # e = Evaluator(writingStyle, imageChar)
+    # feedback = e.testCharacter() # call AI
+
+    ###################################
+    #       MAKE PROPER
+    ###################################
+    score = 1
+    if(score == 0):
+        return jsonify({'response': "image evaluation failed."}), 401
+    else:
+        # exitcode = eventUploadImage(id, imageChar, image, file)
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+        if(exitcode.status_code == 200):
+            # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
+            storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+            print(storeToDB)
+            if(storeToDB == "upload successful"):
+                # strokes = feedback[0]
+                strokes = [0, 1, 2]
+                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+            else:
+                return jsonify({'response': "Database storage failed"}), 401
+        else:
+            return jsonify({'response': "Storage to cloud service failed"}), 401
 
 """
     callViewImages function:
@@ -92,10 +129,14 @@ def callUploadImage():
         json response
 """
 
-@app.route('/progress', methods = ['GET', 'POST'])
+@app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
-    return event_bus.eventViewImages(int(request.json["id"]))
+
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
+    return send.json()
+    # return event_bus.eventViewImages(int(request.json["id"]))
 
 """
     login function:
@@ -106,19 +147,20 @@ def callViewImages():
     return:
         json response
 """
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    user = event_bus.eventLogin(str(request.json["email"]), str(request.json["password"]))
+    headers = {'content-type': 'application/json'}
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
         session["logged_in"] = True
         token = jwt.encode({
-            'username' : user[0],
-            'id': user[1],
-            'admin': user[2]
+            'username' : user['username'],
+            'id': user['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user,}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+
 
 """
     logout function
@@ -133,6 +175,7 @@ def login():
 def logout():
     try:
         session["logged_in"] = False
+        session.clear()
         return jsonify({"response": 'logged out'}), 200
     except:
         return jsonify({"response": 'Error'}), 401
@@ -147,7 +190,8 @@ def logout():
 """
 @app.route('/home', methods=['GET'])
 def home():
-    return event_bus.eventGetCharacters()
+    return None
+    # return event_bus.eventGetCharacters()
 
 """
     email function:
@@ -157,10 +201,14 @@ def home():
     return:
         
 """
+@app.route("/email", methods=["GET"])
 @repeat(every().sunday)
 def email_users():
-    users = event_bus.eventGetImageUsers()
+
+    imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
+    users = imgs.json()["response"]
     keep = []
+    c = 0
     for i in users:
         if(keep.count(i[0]) == 0):
             keep.append(i[0])
@@ -193,14 +241,20 @@ def email_users():
 
     contain = []
     for i in store:
-        thisUser = event_bus.eventGetUser(i[0])
+        # thisUser = event_bus.eventGetUser(i[0])
+        print(i)
+        user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
+        thisUser = user.json()["response"]
+        # print(thisUser["email"])
         if(thisUser != None):
-            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser[1]}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
 
             valid = response.json()['status']
 
             if(valid == "valid"):
-                contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
+                send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
+                print(send)
+                contain.append(send.json()["response"])
             else:
                 contain.append("Failed")
     
@@ -220,7 +274,23 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
+    # return None
+    # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
+    image = request.json["image"].partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+        
+    # e = Evaluator(style, imagechar)
+    # feedback = e.testCharacter() # call AI
+    # score = feedback[1]
+    score = 1
+    if score == 0:
+        return jsonify({'response': "image evaluation Failed."}), 401
+    else:
+        # strokes = feedback[0]
+        strokes = [0, 1, 2]
+        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+
 
 """
     callEditUserPrivileges function:
@@ -234,7 +304,11 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-    return event_bus.event_editUserPrivileges(int(request.json['id']), str(request.json['admin']))
+
+    id = request.json['id']
+    admin = request.json['admin']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
 
 """
     callEditUserPrivileges function:
@@ -248,7 +322,9 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
-    return event_bus.event_listModelData()
+
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
 
 """
     callViewModel function:
@@ -261,7 +337,10 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
-    return event_bus.eventViewModelData(str(request.json['version']))
+
+    version = request.json['version']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
 
 """
     ListUsers function:
@@ -274,7 +353,9 @@ def callViewModel():
 @app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
-    return event_bus.eventListUsers(int(request.json["id"]))
+    id = request.json['id']
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
 
 """
     getAnalytics function:
@@ -287,7 +368,17 @@ def callListUsers():
 @app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    return event_bus.eventGetAnalytics()
+    # return None
+    # return event_bus.eventGetAnalytics()
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
+    return data.json()
+
+@app.route('/admin/getFrequency', methods=["GET"])
+@token_required
+def callGetFrequency():
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
 
 """
     callObjectDetection function:
@@ -300,8 +391,13 @@ def callGetAnalytics():
 @app.route('/object-detection', methods = ['POST'])
 @token_required
 def callObjectDetection():
-    return event_bus.eventObjectDetection(str(request.json["image"]))
-
+    image = request.json["image"]
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {'image': image})
+    res = data.json()["response"]
+    # print(res)
+    return data.json()
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
