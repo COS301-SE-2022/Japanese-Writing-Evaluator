@@ -10,14 +10,11 @@ import requests
 import psycopg2
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect
-from flask_wtf.csrf import generate_csrf, validate_csrf, _get_config
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:
@@ -26,20 +23,11 @@ try:
 except Exception as e:
     print("Could not connect to database", e)
 
-# @app.before_request
-# def create_session():
-#     print(session.values())
-#     if 'logged_in' not in session:
-#         print("here")
-
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         token = None
         print(request.headers)
-        if 'csrftoken' in request.headers:
-            print("we have token")
-            token = request.headers['user-token']
         if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
@@ -60,7 +48,6 @@ def token_required(function):
         json response
 """
 @app.route("/reset-password", methods=["PUT"])
-@csrf.exempt
 def resetPassword():
     token = request.json["token"]
     password = request.json["password"]
@@ -111,10 +98,8 @@ def updatePassword(token, password):
         json response
 """
 @app.route("/admin/users", methods = ['POST'])
-# @token_required
-@csrf.exempt
+@token_required
 def listUsers():
-    print(session['csrf_token'])
     id = request.json['id']
     users = getAllUsers()
     response = [] 
@@ -206,7 +191,6 @@ def getUserByID():
         json response
 """
 @app.route("/register", methods=["POST"])
-@csrf.exempt
 def register():
     try:
         email = request.json["email"]
@@ -247,9 +231,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
         username and userId
 """
 @app.route("/login", methods=["POST"])
-@csrf.exempt
 def login():
-    session['csrf_token'] = generate_csrf()
     email = request.json['email']
     password = request.json['password']
     salt = fetchSalt(email)
@@ -260,9 +242,8 @@ def login():
         user = getUser(new_password, email)
         if(user != None):
             session['logged_in'] = True
-            return jsonify({"response": {'username': user[0], 'id': user[1], 'csrf_token': session['csrf_token']}}), 200 
+            return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
         else:
-            session['csrf_token'] = None
             return jsonify({"response": "incorrect password"}), 401
 
 def fetchSalt(email):
@@ -287,7 +268,6 @@ def getUser(password,email):
         json response
 """    
 @app.route('/admin/edit', methods = ['POST'])
-@csrf.exempt
 @token_required
 def editUserPrivileges():
     edited = editUser(request.json['id'], request.json['admin'])
@@ -309,7 +289,6 @@ def editUserPrivileges():
 @app.route("/admin/models", methods=["GET"]) 
 # @token_required
 def listModelData():
-    print(session['csrf_token'])
     res = getModels()
     if res != None:
         data_Hiragana =  []
@@ -392,7 +371,6 @@ def listModelData():
         json response
 """  
 @app.route("/admin/view-model", methods=["POST"])  
-@csrf.exempt
 @token_required
 def viewModelData():
     try:

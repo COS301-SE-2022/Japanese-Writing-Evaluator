@@ -3,7 +3,6 @@ import jwt
 from PIL import Image
 import tensorflow as tf
 import numpy as np
-
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect

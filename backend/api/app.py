@@ -8,18 +8,12 @@ import os
 from flask_cors import CORS;
 from schedule import every, repeat
 import requests
-from flask_wtf.csrf import generate_csrf
-from flask_session import Session
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SESSION_TYPE'] = 'filesystem'
-app.config.update(SESSION_COOKIE_NAME='csrf_token')
-Session(app)
-
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://633168369b681d4d5be0b5ed--musical-taiyaki-627c6d.netlify.app/"]}})
 
 def token_required(function):
     @wraps(function)
@@ -154,12 +148,10 @@ def callViewImages():
     return:
         json response
 """
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
-    session['csrf_token'] = generate_csrf()
-    print(session['csrf_token'])
-    headers = {'content-type': 'application/json', 'csrf_token': generate_csrf()}
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
+    headers = {'content-type': 'application/json'}
+    user = ses.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
     if user == None: 
         return jsonify({'response': "user not found."}), 401
     else: 
@@ -184,6 +176,7 @@ def login():
 def logout():
     try:
         session["logged_in"] = False
+        session.clear()
         return jsonify({"response": 'logged out'}), 200
     except:
         return jsonify({"response": 'Error'}), 401
@@ -332,7 +325,7 @@ def callEditUserPrivileges():
 def callListModelData():
 
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
+    return ses.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
 
 """
     callViewModel function:
@@ -362,8 +355,8 @@ def callViewModel():
 @token_required
 def callListUsers():
     id = request.json['id']
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token'], "csrf_token": "IjA0YTY5OGM3Y2YzOGI2NjUzNjM1N2NjOTYxM2VmMjc0MGIwZjMxYTYi.YzDVww.klrM8pptaBFrQ9Mb6t-bBYamuMA"}
-    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id, "csrf_token": "IjA0YTY5OGM3Y2YzOGI2NjUzNjM1N2NjOTYxM2VmMjc0MGIwZjMxYTYi.YzDVww.klrM8pptaBFrQ9Mb6t-bBYamuMA"}).json()
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
 
 """
     getAnalytics function:
