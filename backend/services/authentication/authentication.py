@@ -25,7 +25,7 @@ except Exception as e:
 
 def token_required(function):
     @wraps(function)
-    def decorated(*args, **kwargs):
+    def auth_decorated(*args, **kwargs):
         auth_token = None
         print(request.headers)
         if 'user-token' in request.headers:

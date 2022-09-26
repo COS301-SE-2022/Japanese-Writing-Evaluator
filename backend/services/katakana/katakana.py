@@ -17,7 +17,7 @@ dataset = ['a', 'e', 'i', 'ka', 'ke', 'ki', 'ko', 'ku', 'o', 'u']
 
 def token_required(function):
     @wraps(function)
-    def decorated(*args, **kwargs):
+    def kata_decorated(*args, **kwargs):
         kata_token = None
         print(request.headers)
         if 'user-token' in request.headers:

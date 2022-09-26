@@ -19,7 +19,7 @@ CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-a
 
 def token_required(function):
     @wraps(function)
-    def decorated(*args, **kwargs):
+    def detect_decorated(*args, **kwargs):
         detect_token = None
         print(request.headers)
         if 'user-token' in request.headers:
