@@ -117,60 +117,10 @@ export class ProgressPage implements OnInit {
       this.service.setProgressKatakana(this.progressKatakana);
       this.service.setProgressKanji(this.progressKanji);
   }
-
-
-    //TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-    setDisplay(character: string, percent: number){
-      this.char = character;
-      this.percent = percent;
-    }
     //TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
     setHome(){
       this.router.navigate(['/home']);
     }
-
-  getLetter(letter: string){
-    let letterString = '';
-    let index = letter.indexOf('_');
-
-    if(index !== -1)
-    {
-      index -= 1;
-      while(index!== -1){
-
-        letterString += letter[index];
-        index -= 1;
-      }
-    }
-    return letterString.split('').reverse().join('');
-  }
-
-  //TODO: returns the writing style, #73, Maryam Mohamad Al Mahdi
-  getStyle(writingStyle: string){
-
-    if(writingStyle.includes('hiragana'))
-    {
-      return 'hiragana';
-    }
-    else if(writingStyle.includes('katakana'))
-    {
-      return 'katakana';
-    }
-    else
-    {
-      return 'kanji';
-    }
-  }
-
-  //TODO: calculates the average from the scores, #73, Maryam Mohamad Al Mahdi
-  getPercent(objArray: {score: string; date: string }[]){
-    let totalPercent = 0;
-    // eslint-disable-next-line @typescript-eslint/prefer-for-of
-    for (let i = 0; i < objArray.length; i++) {
-      totalPercent+=Number(objArray[i].score);
-    }
-      return Math.round(totalPercent/objArray.length);
-  }
 
   //TODO: Phumu
   ifGuest(): boolean{

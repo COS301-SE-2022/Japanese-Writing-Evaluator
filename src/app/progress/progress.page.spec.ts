@@ -1,5 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 import { ProgressBlockComponent } from './progress-block/progress-block.component';
@@ -25,5 +26,15 @@ describe('ProgressPage', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have the correct title ', () => {
+    const title = fixture.debugElement.query(By.css('strong')).nativeElement;
+    expect(title.innerHTML).toBe('Progress');
+  });
+
+  it('should have the correct quote ', () => {
+    const title = fixture.debugElement.query(By.css('em')).nativeElement;
+    expect(title.innerHTML).toBe('\"You don\'t have to be extreme, just consistent\"');
   });
 });

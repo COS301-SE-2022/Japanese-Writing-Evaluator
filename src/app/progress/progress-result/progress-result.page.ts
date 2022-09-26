@@ -36,17 +36,6 @@ export class ProgressResultPage implements OnInit {
   }
 
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
-  }
-
-
   //TODO: get the singely typed character based on the string feed in, #183, Maryam Mohamad Al Mahdi
   getLetter(letter: string){
     let letterString = '';
@@ -78,14 +67,6 @@ export class ProgressResultPage implements OnInit {
       totalPercent+=Number(obj.score);
     }
       return Math.round(totalPercent/objArray.length);
-  }
-
-  setHome(){
-    this.router.navigate(['/home']);
-  }
-
-  setProgress(){
-    this.router.navigate(['/progress']);
   }
 
   ifGuest(): boolean{
