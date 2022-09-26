@@ -2,6 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 import { AppServiceService } from '../services/appService/app-service.service';
 
@@ -59,10 +60,11 @@ export class LoginPage implements OnInit {
           if (!localStorage.getItem('id')) {
             localStorage.setItem('id',data.body['data'][1].toString());
           }
-          // if (!localStorage.getItem('role')) {
-          //   localStorage.setItem('role',data.body['data'][2].toString());
-          //   // if role is set to true then it is admin if role == false then its a normal user
-          // }
+
+          // if role is set to true then it is admin if role == false then its a normal user
+          // environment.admin = data.body['data'][2].toString();
+          // environment.superAdmin = data.body['data'][3].toString();
+
           if (!localStorage.getItem('token')) {
             localStorage.setItem('token',data.body['user-token'].toString());
           }

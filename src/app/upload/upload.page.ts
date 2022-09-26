@@ -5,6 +5,7 @@ import { AppServiceService } from '../services/appService/app-service.service';
 import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-upload',
@@ -188,15 +189,19 @@ export class UploadPage implements OnInit {
     return false;
   }
 
-  ifGuest(): boolean{
+  ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
         //console.log(localStorage.getItem('id'));
-        return true;
+        return false;
       }
     }
 
-    return false;
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }

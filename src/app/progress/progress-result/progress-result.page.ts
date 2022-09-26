@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppServiceService } from 'src/app/services/appService/app-service.service';
+import { environment as env } from 'src/environments/environment';
 @Component({
   selector: 'app-progress-result',
   templateUrl: './progress-result.page.html',
@@ -88,14 +89,19 @@ export class ProgressResultPage implements OnInit {
     this.router.navigate(['/progress']);
   }
 
-  ifGuest(): boolean{
+  ifNormalNavbar(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        return true;
+        //console.log(localStorage.getItem('id'));
+        return false;
       }
     }
 
-    return false;
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }
