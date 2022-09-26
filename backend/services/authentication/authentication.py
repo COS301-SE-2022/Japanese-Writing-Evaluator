@@ -253,7 +253,7 @@ def fetchSalt(email):
     return salt
 
 def getUser(password,email):
-    q = "SELECT username , userid, admin FROM users WHERE password = %s AND email = %s;"
+    q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
     curr.execute(q, (password,email))
     user = curr.fetchone()
     return user
