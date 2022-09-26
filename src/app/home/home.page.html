@@ -24,5 +24,6 @@
   </div>
 </ion-content>
 
-<app-navbar *ngIf="!ifGuest()"></app-navbar>
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
 

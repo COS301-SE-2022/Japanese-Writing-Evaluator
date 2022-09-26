@@ -7,11 +7,13 @@ import os
 import json
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app", "http://127.0.0.1:5003", "https://jwe-imagedb-cplmvcuylq-uc.a.run.app"]}})
 
 config = {
@@ -33,20 +35,19 @@ user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        img_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            img_token = request.headers['user-token']
+        if not img_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(img_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
 
 """
     upload Image function:
@@ -59,6 +60,7 @@ def token_required(function):
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/uploadImage", methods=["POST"])
 @token_required
 def uploadImage():
@@ -88,6 +90,7 @@ def uploadImage():
     return:
         json response
 """
+@app.errorhandler(CSRFError)
 @app.route("/viewImages", methods=["POST"])
 @token_required
 def viewImages():

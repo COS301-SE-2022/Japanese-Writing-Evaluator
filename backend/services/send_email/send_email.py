@@ -9,30 +9,31 @@ from flask import jsonify
 from secrets import token_urlsafe
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app", "http://127.0.0.1:5005", "https://jwe-auth-cplmvcuylq-uc.a.run.app"]}})
 
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        email_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            email_token = request.headers['user-token']
+        if not email_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(email_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
 
 """
 forgotPasswordEmail function:

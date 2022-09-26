@@ -12,12 +12,14 @@
   <div>
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
-        <ion-col *ngFor="let item of (currentStyle) | keyvalue" size="col-auto">
-          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
+        <ion-col *ngFor="let item of (currentMap) | keyvalue" size="col-auto">
+          <app-progress-block [alphabetType]="getStyle()"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
 </ion-content>
 
-<app-navbar *ngIf="!ifGuest()"></app-navbar>
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+
