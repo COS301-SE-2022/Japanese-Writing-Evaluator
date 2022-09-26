@@ -24,12 +24,12 @@ const routes: Routes = [
   {
     path: 'progress',
     loadChildren: () => import('./progress/progress.module').then( m => m.ProgressPageModule),
-    //canActivate: [RouteGuard]
+    canActivate: [RouteGuard]
   },
   {
     path: 'upload',
     loadChildren: () => import('./upload/upload.module').then( m => m.UploadPageModule),
-    //canActivate: [RouteGuard]
+    canActivate: [RouteGuard]
   },
   {
     path: 'forgot-password-email',
@@ -43,16 +43,17 @@ const routes: Routes = [
   {
     path: 'models',
     loadChildren: () => import('./models/models.module').then( m => m.ModelsPageModule),
-    //canActivate: [RouteGuard]
+    canActivate: [RouteGuard]
   },
    {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
-    //canActivate: [RouteGuard]
+    canActivate: [RouteGuard]
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule),
+    canActivate: [RouteGuard]
   },
 ];
 
