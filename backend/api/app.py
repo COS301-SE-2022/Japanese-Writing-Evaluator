@@ -44,7 +44,7 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    send = requests.post(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
+    send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
     return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))
 
@@ -145,7 +145,8 @@ def callViewImages():
 """
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
+    ses = requests.Session()
+    user = ses.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}).json()["response"]
     print(user)
     if user == None: 
         return jsonify({'response': "user not found."}), 401
@@ -155,7 +156,9 @@ def login():
             'username' : user['username'],
             'id': user['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+        ses.cookies['csrf-token'] = token
+        print(ses.cookies)
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user, 'csrf-token': ses.cookies['csrf-token']}), 200
 
 """
     logout function
@@ -237,7 +240,7 @@ def email_users():
     for i in store:
         # thisUser = event_bus.eventGetUser(i[0])
         print(i)
-        user = requests.post(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
+        user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
         thisUser = user.json()["response"]
         # print(thisUser["email"])
         if(thisUser != None):
