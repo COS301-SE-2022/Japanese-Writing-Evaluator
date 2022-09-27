@@ -34,6 +34,7 @@ def token_required(function):
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
    
+    return decorated
 
 """
     detect function:
