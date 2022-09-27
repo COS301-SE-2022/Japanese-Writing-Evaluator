@@ -1,6 +1,6 @@
 {
 	"appId": "io.ionic.starter",
-	"appName": "Japanese-Writing-Evaluator",
+	"appName": "japanese-writing-evaluator",
 	"webDir": "www",
 	"bundledWebRuntime": false
 }

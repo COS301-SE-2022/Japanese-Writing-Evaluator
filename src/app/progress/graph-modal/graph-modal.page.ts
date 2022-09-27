@@ -1,5 +1,5 @@
 import { ModalController } from '@ionic/angular';
-import { AfterViewInit, ElementRef, ViewChild, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, ElementRef, ViewChild, Component, Input } from '@angular/core';
 import { Chart } from 'chart.js';
 
 
@@ -28,6 +28,7 @@ export class GraphModalPage implements AfterViewInit {
     this.lineChartMethod();
   }
 
+  //TODO: get the particular scores and dates within an array to plug as data for the chart, #183, Maryam Mohamad Al Mahdi
   getDateScores(){
     this.allScores = [];
     this.allDates = [];
@@ -52,11 +53,22 @@ export class GraphModalPage implements AfterViewInit {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < limit ; i++) {
       this.allScores.push(Number(this.scores[i].score));
-      this.allDates.push(this.scores[i].date);
+      const newDate = this.fixDateForma(this.scores[i].date);
+      this.allDates.push(newDate);
     }
-    console.log(this.allScores);
   }
 
+  fixDateForma(date: string){
+    const indexEnd = date.indexOf(',') + 1;
+    let newDateFormat = date.replace(' 00:00:00 GMT', '');
+
+    const subDate = date.substring(0,indexEnd);
+    newDateFormat = newDateFormat.replace(subDate, '');
+
+    return newDateFormat;
+  }
+
+  //TODO: form the chart using chartjs, #183, Maryam Mohamad Al Mahdi
   lineChartMethod() {
     this.lineChart = new Chart(this.lineCanvas.nativeElement, {
       type: 'line',
@@ -64,7 +76,7 @@ export class GraphModalPage implements AfterViewInit {
         labels: this.allDates,
         datasets: [
           {
-            label: 'Progress of ' + this.alphabetType[0].toUpperCase() + this.alphabetType.slice(1) + ' ' +  this.letter,
+            label: 'Accuracy of '+  this.letter,
             fill: false,
             lineTension: 0.1,
             backgroundColor: 'rgba(75,192,192,0.4)',
@@ -73,14 +85,15 @@ export class GraphModalPage implements AfterViewInit {
             borderDash: [],
             borderDashOffset: 0.0,
             borderJoinStyle: 'miter',
+            pointStyle: 'rect',
             pointBorderColor: 'rgba(75,192,192,1)',
             pointBackgroundColor: '#fff',
             pointBorderWidth: 1,
-            pointHoverRadius: 5,
+            pointHoverRadius: 8,
             pointHoverBackgroundColor: 'rgba(75,192,192,1)',
             pointHoverBorderColor: 'rgba(220,220,220,1)',
             pointHoverBorderWidth: 2,
-            pointRadius: 1,
+            pointRadius: 6,
             pointHitRadius: 10,
             data: this.allScores,
             spanGaps: false,
@@ -95,13 +108,22 @@ export class GraphModalPage implements AfterViewInit {
                     max: 100,
                     stepSize: 10,
                 }
+            }],
+            xAxes: [{
+              ticks: {
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Last <= 10 Uploads'
+            }
+
             }]
         }
     }
     });
   }
 
-
+//TODO: closes the modal, #183, Maryam Mohamad Al Mahdi
   close() {
     this.modalController.dismiss();
   }

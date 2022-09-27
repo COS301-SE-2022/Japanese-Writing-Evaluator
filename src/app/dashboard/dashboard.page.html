@@ -1,0 +1,30 @@
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+    <p>
+      <strong>Dashboard</strong><br>
+      View analytics of the application below.
+    </p>
+  </div>
+
+  <div class="topnav">
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col class="navCol"><div class="user" (click)="frequencyOfVisits()">Frequency</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageHiragana()">Average - Hiragana</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageKatakana()">Average - Katakana</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="averageKanji()">Average - Kanji</div></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="graph">
+    <canvas #lineCanvas style="position: relative; height: 20vh; width:20vw"></canvas>
+  </div>
+
+ 
+
+  </ion-content>
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>

@@ -17,7 +17,7 @@ class CharacterRecognition():
         parameters:
             file name: the file with the dataset
         return:
-            nothing
+            none
         sets varaibles:
             train_data
             test_data
@@ -59,14 +59,14 @@ class CharacterRecognition():
         print("Classes: ", self.data_classes)
         
         print('\nTrain Batches: %d' % tf.data.experimental.cardinality(train_data))
-        # print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
+        print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
         print('Val Batches: %d' % tf.data.experimental.cardinality(val_data))
 
         
         auto = tf.data.AUTOTUNE
 
         self.train_data = train_data.prefetch(buffer_size=auto)
-        # self.test_data = test_data.prefetch(buffer_size=auto)
+        self.test_data = test_data.prefetch(buffer_size=auto)
         self.val_data = val_data.prefetch(buffer_size=auto)
         return None
     
@@ -81,7 +81,7 @@ class CharacterRecognition():
         parameters:
             None
         returns:
-            Nothing
+            None
         Set varable model
     """  
     def createModel(self):  
@@ -120,7 +120,7 @@ class CharacterRecognition():
         parameters:
             val: for when we train again
         returns:
-            Nothing
+            None
         Set varable model
             histroy to help we train again
     """ 
@@ -145,7 +145,7 @@ class CharacterRecognition():
         parameters:
             none
         returns:
-            Nothing
+            None
         Set varable model
             histroy to help we train again
             updates the model varables
@@ -158,7 +158,7 @@ class CharacterRecognition():
         parameter:
             None
         returns:
-            Nothing
+            None
     """
     def storeData(self):
         print('\nStoring the data......')
@@ -166,14 +166,14 @@ class CharacterRecognition():
         with open("models_data.json", "r+") as file:
             data= json.load(file)
         record = {"version" : self.version, "date" : str(date), 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
-        data["data"].append(record)
+        data["katakana"]["characterRecognition"].append(record)
         with open("models_data.json", "w") as w_file:
             json.dump(data, w_file, indent = 4)
     
 if __name__ == '__main__':
     version = input('model version: ')
     cr = CharacterRecognition(version, 0)
-    cr.createDatasets('../../../dataset', 57000, 19950)
+    cr.createDatasets('katakana', 38950, 19950)
     cr.createModel()
     cr.trainModel()
     cr.storeData()

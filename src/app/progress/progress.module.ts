@@ -8,8 +8,9 @@ import { IonicModule } from '@ionic/angular';
 import { ProgressPageRoutingModule } from './progress-routing.module';
 
 import { ProgressPage } from './progress.page';
-import { ProgressBlockComponent } from './progress-block/progress-block.component';
+import { LogoutModule } from './../shared/components/logout/logout.module';
 import { NavbarModule } from '../shared/components/navbar/navbar.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 
 @NgModule({
   imports: [
@@ -18,8 +19,10 @@ import { NavbarModule } from '../shared/components/navbar/navbar.module';
     IonicModule,
     OptionsModule,
     ProgressPageRoutingModule,
-    NavbarModule
+    NavbarModule,
+    LogoutModule,
+    AdminNavBarModule
   ],
-  declarations: [ProgressPage, ProgressBlockComponent]
+  declarations: [ProgressPage]
 })
 export class ProgressPageModule {}

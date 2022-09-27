@@ -1,10 +1,3 @@
-<!-- <ion-toolbar>
-  <p class="padding">
-    <ion-button color="light" href="home">
-      <p class="position"><i class="backButton"></i></p>
-    </ion-button>
-  </p>
-</ion-toolbar> -->
 <ion-content>
   <div class="horizontalflexbox">
     <div lines="none" id="backgroundDiv" >
@@ -12,7 +5,7 @@
         <div lines="none" class="character">
           <h1>{{characterImage.url}}</h1>
           <!--characterImage.url -->
-          <p>{{characterImage.characterName}}</p> 
+          <p>{{characterImage.characterName}}</p>
         </div>
       </div>
     </div>
@@ -27,10 +20,14 @@
     </ion-item>
   </div>
 
-  <div class="horizontalflexbox">
+  <div class="horizontalbuttonflexbox">
     <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
   </div>
+
+  <div class="horizontalbuttonflexbox" *ngIf="ifObjectsDetected()">
+    <ion-button fill="outline" (click)="showModal()">Show detected items</ion-button>
+  </div>
+  
 </ion-content>
-
-<app-navbar *ngIf="!ifGuest()"></app-navbar>
-
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import character_sets from '../../shared/character_data/character_sets.json';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-alphabet-category',
@@ -21,11 +22,16 @@ export class AlphabetCategoryPage implements OnInit {
 
     this.currentJSON = '';
 
-    this.category = this.route.snapshot.queryParamMap.get('category');//'Hiragana - Vowel';
+    this.category = this.route.snapshot.queryParamMap.get('category');
     this.heading = this.category;
+    let splitted = [];
 
-    const splitted = this.category.split(' ');
-    console.log(splitted);
+    if(this.category !== null && !this.category.includes(' ')){
+      splitted = this.category.split(' ');
+    }
+    else{
+      return;
+    }
 
     this.currentJSON += splitted[0];
     this.currentJSON = this.currentJSON.toLowerCase();
@@ -140,6 +146,21 @@ export class AlphabetCategoryPage implements OnInit {
     }
     this.router.navigate(['/login']);
 
+  }
+
+  ifNormalNavbar(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        //console.log(localStorage.getItem('id'));
+        return false;
+      }
+    }
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }

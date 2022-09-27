@@ -42,9 +42,21 @@ const routes: Routes = [
 
   {
     path: 'models',
-    loadChildren: () => import('./models/models.module').then( m => m.ModelsPageModule)
+    loadChildren: () => import('./models/models.module').then( m => m.ModelsPageModule),
+    canActivate: [RouteGuard]
+  },
+   {
+    path: 'profile',
+    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule),
+    canActivate: [RouteGuard]
+  },
+  {
+    path: 'dashboard',
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule),
+    canActivate: [RouteGuard]
   },
 ];
+
 
 @NgModule({
   imports: [

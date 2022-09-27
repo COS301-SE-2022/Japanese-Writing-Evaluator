@@ -1,12 +1,11 @@
 <ion-content [fullscreen]="true">
   <div class="head" >
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
-
+    <app-logout></app-logout>
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
-      Track your progress below.
+      Select which writing style progress results you would like to view below.
     </p>
   </div>
 
@@ -14,22 +13,12 @@
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
         <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
-          <app-options [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
+          <app-options  [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
         </ion-col>
       </ion-row>
     </ion-grid>
   </div>
-
-  <!-- <div>
-    <h1>Hiragana</h1>
-    <ion-grid >
-      <ion-row>
-        <ion-col *ngFor="let item of (progressHiragana) | keyvalue" size="auto">
-          <app-progress-block [alphabetType]="getStyle(item.key)"  [letter]='getLetter(item.key)' [percent]='getPercent(item.value)' [myScores]='item.value'></app-progress-block>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div> -->
 </ion-content>
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
 
-<app-navbar ></app-navbar>

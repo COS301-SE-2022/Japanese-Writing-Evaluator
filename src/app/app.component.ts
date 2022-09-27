@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+    defineCustomElements(window);
+  }
 
   /*https://stackblitz.com/edit/angular-browser-or-tab-close-event?file=src%2Fapp%2Fapp.component.ts,src%2Fapp%2Fapp.component.html*/
   //event listener for when window is closing
@@ -20,4 +23,5 @@ export class AppComponent {
   //   localStorage.removeItem('token');
   //   localStorage.removeItem('id');
   // }
+
 }

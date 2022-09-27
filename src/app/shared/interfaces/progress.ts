@@ -6,7 +6,7 @@ export interface Progress {
 export interface UserProgress { // interface for response from backend
     character: string;
     score: number;
-    upload_Date: string;
+    uploadDate: string;
     url: string;
-    writing_Style: string;
+    writing_style: string;
 }

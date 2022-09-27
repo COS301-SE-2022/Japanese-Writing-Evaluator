@@ -1,17 +1,18 @@
 <ion-content>
   <div class="head" >
       <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-      <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+      <app-logout></app-logout>
 
       <h1></h1>
       <p>
         <strong>Welcome</strong><br> <span>ようこそ</span><br>
         Did you know Japanese has 3 different alphabets?<br>
-        Select which alphabet we shall explore below.
+        Select which alphabet we shall explore below.<br><br>
+        Note: Hiragana has 15 groups
       </p>
   </div>
 
-  <!-- SUGGESTIONS -->
+
   <div >
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
@@ -23,5 +24,6 @@
   </div>
 </ion-content>
 
-<app-navbar *ngIf="!ifGuest()"></app-navbar>
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
 
