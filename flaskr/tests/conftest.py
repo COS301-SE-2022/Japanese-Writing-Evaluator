@@ -7,7 +7,7 @@ sys.path.insert(0, 'flaskr')
 from flaskr.db import get_db, init_db
 sys.path.insert(1, "backend/services/authentication")
 from authentication import app as auth
-from kanji import app as kanji
+# from kanji import app as kanji
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')
 
@@ -19,21 +19,12 @@ def app():
       'TESTING': True,
       'DATABASE': db_path  
     })
-   
+
     with auth.app_context():
         init_db()
         get_db().executescript(_data_sql)
-    
-    kanji.config.update({
-      'TESTING': True,
-      'DATABASE': db_path  
-    })
 
-    with kanji.app_context():
-        init_db()
-        get_db().executescript(_data_sql)
-        
-    yield auth, kanji
+    yield auth
 
     os.close(db_fd)
     os.unlink(db_path)

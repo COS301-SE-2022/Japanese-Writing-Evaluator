@@ -5,13 +5,13 @@ def test_config():
     assert not create_app().testing
     assert create_app({'TESTING': True}).testing
 
-def testlistusers(client):
-    user = client.post("/admin/users", json = {"id": 1})
-    assert user.status_code == 401
+# def testlistusers(client):
+#     user = client.post("/admin/users", json = {"id": 1})
+#     assert user.status_code == 401
     
-def testlistusers_invaild_user(client):
-    user = client.post("/admin/users", json = {"id": 2})
-    assert user.status_code == 401
+# def testlistusers_invaild_user(client):
+#     user = client.post("/admin/users", json = {"id": 2})
+#     assert user.status_code == 401
     
 def test_edit(client):
     edited = client.post("/admin/edit", json = {"id": 1, 'admin': 'f'})
