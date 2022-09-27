@@ -9,7 +9,6 @@ from flask import jsonify
 from secrets import token_urlsafe
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
