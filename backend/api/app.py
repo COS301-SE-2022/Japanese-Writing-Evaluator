@@ -43,7 +43,6 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-
     send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
     return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))

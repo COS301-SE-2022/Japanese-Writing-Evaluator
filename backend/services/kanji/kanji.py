@@ -7,13 +7,11 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 dataset = []
 
@@ -87,8 +85,7 @@ def testKanji(kanji_model):
     return:
         None
 """   
- 
-@app.errorhandler(CSRFError)
+
 @app.route("/kanji", methods=["POST"]) 
 @token_required
 def loadAndPredict():
