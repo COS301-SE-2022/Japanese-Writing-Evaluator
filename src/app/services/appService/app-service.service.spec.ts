@@ -1,19 +1,25 @@
-import { fakeAsync, inject, TestBed } from '@angular/core/testing';
+import { Progress, UserProgress } from './../../shared/interfaces/progress';
+import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { AppServiceService } from './app-service.service';
 import { UploadedImage } from '../../shared/interfaces/image';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
+import { stringify } from 'querystring';
+import { Id } from 'src/app/shared/interfaces/user';
 
 describe('AppServiceService', () => {
   let service: AppServiceService;
   let mockhttpRequest: HttpTestingController;
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AppServiceService],
-      imports: [HttpClientTestingModule],//, HttpTestingController
+      imports: [HttpClientTestingModule],
     });
     service = TestBed.inject(AppServiceService);
     mockhttpRequest = TestBed.inject(HttpTestingController);
+
+
   });
   it('check for invalid image', inject(
     [HttpTestingController, AppServiceService],
