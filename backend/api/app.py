@@ -158,9 +158,7 @@ def login():
             'username' : user['username'],
             'id': user['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        ses.cookies['csrf-token'] = token
-        print(ses.cookies)
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user, 'csrf-token': ses.cookies['csrf-token']}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
 
 
 """

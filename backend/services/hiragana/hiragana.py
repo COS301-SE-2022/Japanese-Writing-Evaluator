@@ -7,13 +7,11 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se','so','ta','chi','tsu','te','to','na','ni','nu','ne','no','ha','hi','fu','he','ho','ma','mi','mu','me','mo','ya','yu','yo','ra','ri','ru','re','ro','wa','wo','wi' ,'we','n']
 
@@ -105,7 +103,6 @@ def strokesModel(strokes_model):
     return:
         None
 """    
-@app.errorhandler(CSRFError)
 @app.route("/hiragana", methods=["POST"]) 
 @token_required
 def loadAndPredict():

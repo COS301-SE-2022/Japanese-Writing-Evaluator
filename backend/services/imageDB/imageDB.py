@@ -10,13 +10,11 @@ import psycopg2
 import requests
 from datetime import date
 from dotenv import load_dotenv
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 try:
@@ -50,7 +48,6 @@ parameters:
 return:
     response from db
 """
-@app.errorhandler(CSRFError)
 @app.route("/saveToDB", methods=["POST"])
 @token_required
 def saveToDB():
@@ -81,7 +78,6 @@ parameters:
 return:
     response from db
 """
-@app.errorhandler(CSRFError)
 @app.route("/getImages", methods=["POST"])
 @token_required
 def getImages():
@@ -109,7 +105,6 @@ parameters:
 return:
     response from db
 """
-@app.errorhandler(CSRFError)
 @app.route("/getImageUsers", methods=["GET"])
 def getImage():
     users = getImageUsers()
@@ -118,7 +113,6 @@ def getImage():
         res.append(i)
     return jsonify({"response": res}), 200
 
-@app.errorhandler(CSRFError)
 @app.route("/getUserAnalytics", methods=["GET"])
 def getUserAnalytics():
     store = getImageUsers()
@@ -184,7 +178,6 @@ def getUserAnalytics():
 
     return jsonify({'response': analytics}), 200    
 
-@app.errorhandler(CSRFError)
 @app.route("/getFrequency", methods=["GET"])
 @token_required
 def getFrequency():
