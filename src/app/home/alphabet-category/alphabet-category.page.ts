@@ -50,6 +50,7 @@ export class AlphabetCategoryPage implements OnInit {
     }
     console.log(this.currentJSON);
     this.getJSON();
+    console.log(this.jsonAlphabet);
   }
 
   getJSON(){

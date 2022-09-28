@@ -40,10 +40,13 @@ export class SignUpPage implements OnInit {
   {
     this.apiService.addUser(this.username, this.email, this.password)
       .subscribe(data => {
-        if(data.status === 200){
-          this.toast.showToast('Registered', 200);
-          this.router.navigate(['/login']);
+        if(data.status === 409){
+          this.toast.showToast('You already have a profile', 200);
         }
+        else if(data.status === 200){
+          this.toast.showToast('Registered', 200);
+        }
+        this.router.navigate(['/login']);
       });
   }
 

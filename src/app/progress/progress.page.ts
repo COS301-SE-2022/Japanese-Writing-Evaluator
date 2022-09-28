@@ -56,7 +56,8 @@ export class ProgressPage implements OnInit {
   // #177, Maryam Mohamad Al Mahdi
   manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      this.progressArray.forEach(progress => {
+  //check if the user has progress
+  this.progressArray.forEach(progress => {
         let keyString = '';
         keyString += progress.character + '_';
         keyString += progress.writing_style;

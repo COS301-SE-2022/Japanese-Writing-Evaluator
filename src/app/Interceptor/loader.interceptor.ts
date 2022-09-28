@@ -281,9 +281,9 @@ export class LoadingInterceptor implements HttpInterceptor{
                     this.loadingController.dismiss();
                     this.toast.showToast('Something went wrong on our side, Try again', 0);
                 }
-                else if (err.status === 409) {
+                else if (err.status === 500) {
                     this.loadingController.dismiss();
-                    this.toast.showToast('Profile already exists', 401);
+                    this.toast.showToast('Something went wrong on our side, Try again', 500);
                 }
                 //show that there is an error in the upload page
                 return EMPTY;
