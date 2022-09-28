@@ -14,34 +14,7 @@ export class DashboardPage implements OnInit {
   n: any;
   dataForAvg: any;
 
-  constructor(private router: Router) {
-    //   this.dataForAvg = {
-    //     response: [
-    //         {
-    //             2022: {
-    //                 '07': {
-    //                     hiragana: {
-    //                         averageScore: 49.142857142857146
-    //                     }
-    //                 },
-    //                 '08': {
-    //                     hiragana: {
-    //                         averageScore: 33.25
-    //                     }
-    //                 },
-    //                 '09': {
-    //                     hiragana: {
-    //                         averageScore: 51.0
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     ]
-    //  };
-
-    // this.n = this.dataForAvg.response[0][2022]['10'];
-    // console.log(this.n);
-  }
+  constructor(private router: Router) {}
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit(): void {

@@ -7,13 +7,11 @@ import os
 import json
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
-from flask_wtf.csrf import CSRFProtect, CSRFError
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-csrf = CSRFProtect(app)
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app", "http://127.0.0.1:5003", "https://jwe-imagedb-cplmvcuylq-uc.a.run.app"]}})
 
 config = {
@@ -47,8 +45,9 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
 
+    return decorated
+    
 """
     upload Image function:
         uploads teh given image to firebase and sends it to the evaluator
@@ -60,7 +59,6 @@ def token_required(function):
     return:
         json response
 """
-@app.errorhandler(CSRFError)
 @app.route("/uploadImage", methods=["POST"])
 @token_required
 def uploadImage():
@@ -90,7 +88,6 @@ def uploadImage():
     return:
         json response
 """
-@app.errorhandler(CSRFError)
 @app.route("/viewImages", methods=["POST"])
 @token_required
 def viewImages():
@@ -107,7 +104,7 @@ def viewImages():
                 "uploadDate": imgs[5]
             })
 
-        return jsonify({'response': response}), 200
+        return jsonify({'response': response,}), 200
     else:
         return jsonify({'response': "view image failed."}), 401
 
