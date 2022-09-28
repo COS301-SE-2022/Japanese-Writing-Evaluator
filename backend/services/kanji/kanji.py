@@ -20,15 +20,15 @@ dataset = []
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        kanji_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            kanji_token = request.headers['user-token']
+        if not kanji_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(kanji_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
@@ -43,7 +43,7 @@ def token_required(function):
     return:
         the test image
 """  
-def prepare():
+def kanji_prepare():
     cv_kanji_image_1 = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
     cv_kanji_image_2  = cv2.bitwise_not(cv_kanji_image_1)
     cv_kanji_image_3  = cv2.resize(cv_kanji_image_2 , (224, 224))
@@ -60,7 +60,7 @@ def prepare():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKanji(kanji_model):
-    pre = kanji_model.predict([prepare()]).flatten()
+    pre = kanji_model.predict([kanji_prepare()]).flatten()
     temp = 0
     val = 0
     final = 0
@@ -96,8 +96,5 @@ def loadAndPredict():
     testKanji(Kanji)
     
 if __name__ == '__main__':
-    #    app.run(debug = True, port = 5008)
-    # take image and do processing 
-    
     app.run(port=int(os.environ.get("PORT", 5008)),host='0.0.0.0',debug=True)
-    prepare()
+    kanji_prepare()
