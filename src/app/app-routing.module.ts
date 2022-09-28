@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { RouteguardService as RouteGuard } from '../app/services/routeGaurd/routeguard.service';
 
+
 const routes: Routes = [
   {
     path: 'home',
@@ -52,8 +53,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule),
-    canActivate: [RouteGuard]
+    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
   },
 ];
 

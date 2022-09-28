@@ -18,30 +18,30 @@ dataset = []
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        kanji_token = None
+        token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            kanji_token = request.headers['user-token']
-        if not kanji_token:
+            token = request.headers['user-token']
+        if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(kanji_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated
-    
+    return decorated 
+
 """
-    prepare_kanji function:
+    Prepare function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare_kanji():
+def prepare():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -58,7 +58,7 @@ def prepare_kanji():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKanji(kanji_model):
-    pre = kanji_model.predict([prepare_kanji()]).flatten()
+    pre = kanji_model.predict([prepare()]).flatten()
     temp = 0
     val = 0
     final = 0
@@ -86,16 +86,12 @@ def testKanji(kanji_model):
     return:
         None
 """   
-
+ 
 @app.route("/kanji", methods=["POST"]) 
 @token_required
 def loadAndPredict():
     Kanji = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    resp = testKanji(Kanji)
-    if(resp != None):
-        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
-    else:
-        return jsonify({'response': "evalutor Failed" }), 401
+    testKanji(Kanji)
     
 if __name__ == '__main__':
     #    app.run(debug = True, port = 5008)

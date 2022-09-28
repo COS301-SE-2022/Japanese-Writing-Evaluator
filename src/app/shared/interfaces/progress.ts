@@ -8,5 +8,5 @@ export interface UserProgress { // interface for response from backend
     score: number;
     uploadDate: string;
     url: string;
-    writing_style: string;
+    writingStyle: string;
 }

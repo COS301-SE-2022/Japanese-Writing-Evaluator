@@ -1,6 +1,7 @@
 import { PopoverComponent } from './../popover/popover.component';
 import { Component, Input, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
+import { ChangeDetectorRef } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 
 
@@ -15,7 +16,7 @@ export class ProfileBlockComponent implements OnInit {
   @Input() role: string;
   selectedRole: string;
 
-  constructor(private popCtrl: PopoverController) {
+  constructor(private popCtrl: PopoverController, private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {}
@@ -39,10 +40,12 @@ export class ProfileBlockComponent implements OnInit {
         if (data) {
           if( data.data !== undefined){
             this.selectedRole = data.data.data;
+            console.log(this.selectedRole + ' from component');
             this.roleEvent();
           }
           else{
             this.selectedRole = undefined;
+            console.log(this.selectedRole + ' from component');
             this.roleEvent();
           }
         }

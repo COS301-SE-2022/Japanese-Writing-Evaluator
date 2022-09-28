@@ -14,27 +14,26 @@ from flask_cors import CORS;
 load_dotenv()
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        detect_token = None
+        token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            detect_token = request.headers['user-token']
-        if not detect_token:
+            token = request.headers['user-token']
+        if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(detect_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-   
-    return decorated
+  
+    return decorated 
 
 """
     detect function:

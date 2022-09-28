@@ -1,7 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Chart } from 'chart.js';
-import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +13,34 @@ export class DashboardPage implements OnInit {
   n: any;
   dataForAvg: any;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    //   this.dataForAvg = {
+    //     response: [
+    //         {
+    //             2022: {
+    //                 '07': {
+    //                     hiragana: {
+    //                         averageScore: 49.142857142857146
+    //                     }
+    //                 },
+    //                 '08': {
+    //                     hiragana: {
+    //                         averageScore: 33.25
+    //                     }
+    //                 },
+    //                 '09': {
+    //                     hiragana: {
+    //                         averageScore: 51.0
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     ]
+    //  };
+
+    // this.n = this.dataForAvg.response[0][2022]['10'];
+    // console.log(this.n);
+  }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterViewInit(): void {
@@ -101,20 +127,5 @@ export class DashboardPage implements OnInit {
         }
     }
     });
-  }
-
-  ifNormalNavbar(): boolean{
-    if (localStorage.getItem('id')) {
-      if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
-        return false;
-      }
-    }
-
-    if (env.admin === true || env.superAdmin === true) {
-      return false;
-    }
-
-    return true;
   }
 }

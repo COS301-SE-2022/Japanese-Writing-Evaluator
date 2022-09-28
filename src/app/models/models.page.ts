@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import Chart from 'chart.js';
 import { AppServiceService } from '../services/appService/app-service.service';
 import {  ModelsArray } from '../shared/interfaces/models';
-import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-models',
@@ -189,21 +188,6 @@ export class ModelsPage implements OnInit {
     });
 
     this.chartCreator(charchartLabels,characcuracy,charloss,this.kanjiStrokeCanvas);
-  }
-
-  ifNormalNavbar(): boolean{
-    if (localStorage.getItem('id')) {
-      if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
-        return false;
-      }
-    }
-
-    if (env.admin === true || env.superAdmin === true) {
-      return false;
-    }
-
-    return true;
   }
 
 

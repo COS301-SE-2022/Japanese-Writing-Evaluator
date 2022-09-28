@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-admin-nav-bar',
@@ -11,12 +10,5 @@ export class AdminNavBarComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
-
-  ifSuperAdmin(){
-    if (env.superAdmin === true) {
-      return true;
-    }
-    return false;
-  }
 
 }

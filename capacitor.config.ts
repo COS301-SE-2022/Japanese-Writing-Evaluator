@@ -1,7 +1,7 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter.jwe',
+  appId: 'io.ionic.starter',
   appName: 'japanese-writing-evaluator',
   webDir: 'www',
   bundledWebRuntime: false

@@ -3,6 +3,7 @@ import jwt
 from PIL import Image
 import tensorflow as tf
 import numpy as np
+
 import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
@@ -18,30 +19,30 @@ dataset = ['a','i', 'u', 'e', 'o','ka','ki','ku','ke','ko','sa','shi','su','se',
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        hira_token = None
+        token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            hira_token = request.headers['user-token']
-        if not hira_token:
+            token = request.headers['user-token']
+        if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(hira_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-    
-    return decorated
+  
+    return decorated 
 
 """
-    prepare_hiragana function:
+    Prepare function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare_hiragana():
+def prepare():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -59,7 +60,7 @@ def prepare_hiragana():
 
 """  
 def testhiragana(hiragana_model):
-    pre = hiragana_model.predict([prepare_hiragana()]).flatten()
+    pre = hiragana_model.predict([prepare()]).flatten()
 
     temp = 0
     val = 0
@@ -91,7 +92,7 @@ def testhiragana(hiragana_model):
 """  
 def strokesModel(strokes_model):
     try:
-        pre_stroke = strokes_model.predict([prepare_hiragana()]).flatten()
+        pre_stroke = strokes_model.predict([prepare()]).flatten()
         return pre_stroke
     except Exception as e:
         print(e)
@@ -108,11 +109,8 @@ def strokesModel(strokes_model):
 @token_required
 def loadAndPredict():
     hiragana_model = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    resp = testhiragana(hiragana_model)
-    if(resp != None):
-        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
-    else:
-        return jsonify({'response': "evalutor Failed" }), 401
+    testhiragana(hiragana_model)
+    
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 5007)

@@ -10,7 +10,6 @@ from tensorflow.keras.preprocessing.image import load_img
 from tensorflow.keras.preprocessing.image import img_to_array
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot
-import os
 import cv2
 class training: 
 
@@ -101,7 +100,7 @@ class training:
             sheared_img = cv2.warpPerspective(img,M,(int(cols*1.2),int(rows*1.2)))
             plt.axis('off')
             for j in range (0,100):
-                plt.imsave('../../dataset/train/he/picture_'+str(counter) + '.png', sheared_img)
+                plt.imsave('../../dataset/train/he/picture_'+str(counter) + '.png')
                 counter = counter + 1
         return counter
     """

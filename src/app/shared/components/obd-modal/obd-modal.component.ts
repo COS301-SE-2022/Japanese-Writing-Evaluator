@@ -35,7 +35,7 @@ export class ObdModalComponent implements OnInit {
     //send image to the upload page and redirect to upload page
     const image: CharacterImage ={
       characterName: '',
-      group: 'Hiragana',
+      group: '',
       url: character
     };
     this.service.setTryImage(image);

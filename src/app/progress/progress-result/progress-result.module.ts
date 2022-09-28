@@ -9,7 +9,6 @@ import { LogoutModule } from 'src/app/shared/components/logout/logout.module';
 import { ProgressResultPage } from './progress-result.page';
 import { ProgressBlockComponent } from '../progress-block/progress-block.component';
 import { NavbarModule } from 'src/app/shared/components/navbar/navbar.module';
-import { AdminNavBarModule } from 'src/app/shared/components/admin-nav-bar/admin-nav-bar.module';
 
 @NgModule({
   imports: [
@@ -17,9 +16,7 @@ import { AdminNavBarModule } from 'src/app/shared/components/admin-nav-bar/admin
     FormsModule,
     IonicModule,
     ProgressResultPageRoutingModule,
-    LogoutModule,
-    NavbarModule,
-    AdminNavBarModule
+    LogoutModule, NavbarModule
   ],
   declarations: [ProgressResultPage, ProgressBlockComponent]
 })

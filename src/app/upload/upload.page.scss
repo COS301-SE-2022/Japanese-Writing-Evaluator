@@ -51,12 +51,6 @@
     margin-bottom: 5%;
     margin-top: 5%;
   }
-
-  .horizontalbuttonflexbox{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
 }
 
 @media screen and (min-width: 641px) and (max-width: 1007px) {
@@ -67,12 +61,6 @@
     margin-bottom: 10%;
     margin-top: 10%;
   }
-
-  .horizontalbuttonflexbox{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
 }
 
 @media screen and (max-width: 640px) and (min-width: 360px) {
@@ -82,12 +70,6 @@
     justify-content: center;
     margin-bottom: 20%;
     margin-top: 20%;
-  }
-
-  .horizontalbuttonflexbox{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
   }
 }
 
@@ -106,12 +88,6 @@
 
   ion-card{
     size: 6;
-  }
-
-  .horizontalbuttonflexbox{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
   }
  
 }

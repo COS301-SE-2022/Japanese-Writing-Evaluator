@@ -1,6 +1,5 @@
 from cgi import test
 import io
-import os
 from PIL import Image , ImageFilter 
 import tensorflow as tf
 import numpy as np

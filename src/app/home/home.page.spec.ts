@@ -7,7 +7,6 @@ import { ProgressPage } from '../progress/progress.page';
 import { BlockTryCharComponent } from './block-try-char/block-try-char.component';
 import { OptionsComponent } from '../shared/components/options/options.component';
 import { HomePage } from './home.page';
-import { By } from '@angular/platform-browser';
 
 describe('HomePage', () => {
   let component: HomePage;
@@ -57,10 +56,6 @@ describe('HomePage', () => {
   });
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-  it('should have the correct title ', () => {
-    const title = fixture.debugElement.query(By.css('strong')).nativeElement;
-    expect(title.innerHTML).toBe('Welcome');
   });
 
 });

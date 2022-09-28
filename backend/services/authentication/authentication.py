@@ -1,5 +1,4 @@
 from functools import wraps
-from wsgiref import validate
 import jwt
 import hashlib
 import uuid
@@ -26,21 +25,21 @@ except Exception as e:
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        auth_token = None
+        token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            auth_token = request.headers['user-token']
-        if not auth_token:
+            token = request.headers['user-token']
+        if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(auth_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated
-    
+    return decorated 
+
 """
     resetPassword function:
         calls update password to change the password
@@ -112,7 +111,7 @@ def listUsers():
                 continue
             else:
                 response.append({
-                    "id": user[0],
+                    "user_id": user[0],
                     "username": user[5],
                     "admin": user[2]
                 })
@@ -128,7 +127,7 @@ def listUsers():
     return:
         json response
 """
-@app.route("/findUser", methods=["GET"])
+@app.route("/findUser", methods=["POST"])
 def findUser():
     email = request.json["email"]
     query = " SELECT username FROM users WHERE email = %s"
@@ -172,7 +171,7 @@ def addToken(email, token):
     return:
         username and userid
 """
-@app.route("/getUserByID", methods=["GET"])
+@app.route("/getUserByID", methods=["POST"])
 def getUserByID():
     id = request.json["id"]
     query = " SELECT * FROM users WHERE userid = %s"
@@ -204,15 +203,11 @@ def register():
             res = "User already exists"
             return jsonify({"response": res}), 409
         else:
-            verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-            if(verify_email.status_code == 200):
-                salt = uuid.uuid4().hex
-                passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-                addUser(username, passwordSalt, email, False, salt, 0)
-                res = "Registration Successful"
-                return jsonify({'response': res}), 200
-            else:
-                return jsonify({"response": "invalid password"}), 401
+            salt = uuid.uuid4().hex
+            passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
+            addUser(username, passwordSalt, email, False, salt, 0)
+            res = "Registration Successful"
+            return jsonify({'response': res}), 200
 
     except Exception as e:
         return jsonify({'response': str(e)}), 401
@@ -247,11 +242,7 @@ def login():
     else:
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         user = getUser(new_password, email)
-        if(user != None):
-            session['logged_in'] = True
-            return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
-        else:
-            return jsonify({"response": "incorrect password"}), 401
+        return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
 
 def fetchSalt(email):
     query = "SELECT password_salt FROM users WHERE email = %s;"
@@ -260,7 +251,7 @@ def fetchSalt(email):
     return salt
 
 def getUser(password,email):
-    q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
+    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
     curr.execute(q, (password,email))
     user = curr.fetchone()
     return user
@@ -294,7 +285,7 @@ def editUserPrivileges():
         json response
 """    
 @app.route("/admin/models", methods=["GET"]) 
-# @token_required
+@token_required
 def listModelData():
     res = getModels()
     if res != None:

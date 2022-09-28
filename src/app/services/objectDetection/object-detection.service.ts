@@ -13,21 +13,10 @@ import { Odpicture, Odresponse, OdresponseElements } from 'src/app/shared/interf
   providedIn: 'root'
 })
 export class ObjectDetectionService {
-  currentModal;
   photo: string;
   responseData: OdresponseElements[] = null;
-  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website),
-  // link for deployed api: https://flask-api-1-cplmvcuylq-uc.a.run.app/
+  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   constructor(private httpClient: HttpClient) { }
-
-  //getter and setter for object detection modal
-  public getModal() {
-    return this.currentModal;
-  }
-
-  public setModal(modal) {
-    this.currentModal = modal;
-  }
 
   //TODO: Take a picture to send to backend for object detection, #216, Phumu
   public async getPicture() {
@@ -58,7 +47,7 @@ export class ObjectDetectionService {
   // send the base64 string to backend for object detection
   sendODPicture(image: Odpicture): Observable<HttpResponse<Odresponse>> {
     const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
-    return this.httpClient.post<Odresponse>(this.baseURL + 'object-detection', image, { headers: myheaders, observe: 'response'});
+    return this.httpClient.post<Odresponse>(this.baseURL + '/object-detection', image, { headers: myheaders, observe: 'response'});
   }
 
   // convertToBase64(blob: Blob){

@@ -1,179 +1,151 @@
-# Source: TensorFlowhub links:
-# - https://www.tensorflow.org/tutorials/images/transfer_learning_with_hub
-
 import os
+from tensorflow import keras
+import matplotlib.pyplot as plt
 import tensorflow as tf
-import tensorflow_hub as hub
+import numpy as np
+from random import shuffle
+from PIL import Image
+from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split
+import pandas as pd
+from keras.losses import categorical_crossentropy
+from keras.metrics import categorical_accuracy
 from datetime import datetime
 import json
 
 class CharacterRecognition():
-    def __init__(self, name, num):
+    def __init__(self, name):
         self.version = name
-        self.e = 10
-        self.num_classes = num
-    """
-        createDataset: Creates the training, test and validation dataset.
-        parameters:
-            file name: the file with the dataset
-        return:
-            none
-        sets varaibles:
-            train_data
-            test_data
-            test_data
-    """             
-    def createDatasets(self, path, train_size, test_size):
-        print("\nCreating Data.....")
-        train = os.path.join(path, 'train')
-        test = os.path.join(path, 'test')
-        self.img_size = (224, 224)
+        self.e = 50
         
-        train_data = tf.keras.utils.image_dataset_from_directory(
-            train, 
-            shuffle = True, 
-            batch_size = train_size, 
-            image_size = self.img_size,
-            validation_split = 0.3,
-            subset = "training",
-            seed = 369
-            )
-        test_data = tf.keras.utils.image_dataset_from_directory(
-            test, 
-            shuffle = True, 
-            batch_size = test_size, 
-            image_size = self.img_size,
-        )   
-        val_data = tf.keras.utils.image_dataset_from_directory(
-            test, 
-            shuffle = True, 
-            batch_size = train_size, 
-            image_size = self.img_size,
-            validation_split = 0.3,
-            subset = "validation",
-            seed = 369
-        ) 
+    def one_hot_encoding(self,y):
+        y_res = np.zeros((len(y), 49))
+        for i in range(len(y)):
+            y_res[i][y[i]] = 1
+        return y_res    
+    
+    def getData(self):
 
-        self.data_classes = train_data.class_names
+        self.train_imgs = np.load('data/input/k49-train-imgs.npz')['arr_0']
+        self.train_labels = np.load('data/input/k49-train-labels.npz')['arr_0']
+        self.test_imgs = np.load('data/input/k49-test-imgs.npz')['arr_0']
+        self.test_labels = np.load('data/input/k49-test-labels.npz')['arr_0']
         
-        print("Classes: ", self.data_classes)
+        self.train_imgs = np.expand_dims(self.train_imgs, axis=-1)
+        self.test_imgs = np.expand_dims(self.test_imgs, axis=-1)
         
-        print('\nTrain Batches: %d' % tf.data.experimental.cardinality(train_data))
-        print('Test Batches: %d' % tf.data.experimental.cardinality(test_data))
-        print('Val Batches: %d' % tf.data.experimental.cardinality(val_data))
+        self.x_train, self.x_val, self.y_train, self.y_val = train_test_split(self.train_imgs, self.train_labels, test_size=0.10)
+        self.y_train = self.one_hot_encoding(self.y_train)
+        self.y_val = self.one_hot_encoding(self.y_val)
+        
+    def creatingImages(self):
+        print('\nCreating Imges Array....')
+        my_dir = os.listdir('data/kanji')
+        resized_img_list = os.listdir('resized')
+        lengths = []
+        for file in my_dir:
+            lengths.append(len(os.listdir('data/kanji'+'/'+file)))
+            for img in os.listdir('data/kanji'+'/'+file):
+                i = Image.open('data/kanji'+'/'+file+'/'+ img)
+                image = i.resize((28,28))
+                gray_img = image.convert('L')
+                gray_img.save('resized_kanji' +'/' + img, "jpeg")
+                resized_img_list = os.listdir('resized_kanji')
+            print(file)
+            print(lengths[len(lengths)-1])
 
-        
-        auto = tf.data.AUTOTUNE
+        self.img_matrix = np.array([np.array(Image.open('resized_kanji'+ '/' + im2)).flatten()
+                    for im2 in resized_img_list],'f')
+    def createLabels(self):
+        self.labels = np.ones((len(self.img_matrix),), dtype = int)
+        kanji = os.listdir('data/kanji')
+        bound = 0
+        val = 0
+        for files in kanji:
+            size = len(os.listdir('data/kanji/' + files))
+            self.labels[bound:bound + size] = val
+            val+= 1
+            bound += size
+       
+    def createDatasets(self):
+        data, labels = shuffle(self.img_matrix, self.labels, random_state = 2)
+        our_data = [self.img_matrix, self.labels,]
 
-        self.train_data = train_data.prefetch(buffer_size=auto)
-        self.test_data = test_data.prefetch(buffer_size=auto)
-        self.val_data = val_data.prefetch(buffer_size=auto)
-        return None
+        (x,y) = (our_data[0], our_data[1])
+        train_img, test_img, self.y_train, self.y_val = train_test_split(x, y, test_size = 0.10, random_state = 2)
+
+        train_img /= 255
+        test_img /= 255
+
+        test_images = test_img.reshape(test_img.shape[0], 28, 28, 1)
+        train_image = train_img.reshape(train_img.shape[0], 28, 28, 1)
+
+        self.x_train =train_image.astype('float32')
+        self.x_val = test_images.astype('float32')
+
+        print('\nself.train_images.shape: {}, of {}'.format(self.x_train.shape, self.x_train.dtype))
+        print('self.test_images.shape: {}, of {}'.format(self.x_val.shape, self.x_val.dtype))
     
     """
-        createModel: 
-            Downloads our model (ResNet V2)
-            Freeze the model
-            Add top-layers to the model:
-                Added GlobalAvaragePooling2D
-                Add a dense layer
-            compile the model
-        parameters:
-            None
-        returns:
-            None
-        Set varable model
+        Creates our convolutional Neural Network 
+        Description:
+            leyers:
+            3 Convolution layers
+            3 Pool layers
+            2 Dense layers on top to perform classification with flatten layer that flattens the input tensor from 3D to 1D
+            model type:
+                Sequantial
+            Activation Function:
+                reLU (more reliable and accelarates the convergence)
     """  
     def createModel(self):  
-        print('\nCreating the model......')  
-      
-        rescale = tf.keras.layers.Rescaling(1./127.5, offset=-1)
-        self.train_data = self.train_data.map(lambda x, y: (rescale(x), y))
-        self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
-        # self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
+        print('\nCreating the model......')   
+        self.rr_model = keras.Sequential()
+        self.rr_model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
+        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
+
+        self.rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
+        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
+
+        self.rr_model.add(keras.layers.Conv2D(64, (3, 3), activation='relu'))
+        self.rr_model.add(keras.layers.MaxPooling2D((2, 2)))
+
+        self.rr_model.add(keras.layers.Flatten())
+        self.rr_model.add(keras.layers.Dense(64, activation='relu'))
+        self.rr_model.add(keras.layers.Dense(49, activation = "softmax")) # the number of labels will replace the ten    
         
-        url = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
-        resnet = url
-        img_shape = self.img_size + (3,)
-        base_model = hub.KerasLayer(
-            resnet,
-            input_shape = img_shape,
-            trainable = False
-        )
-        
-        self.model = tf.keras.Sequential([
-            base_model,
-            tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
-        ])        
-        self.model.summary()
-                 
-        #compile the model
-        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-                           #    optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-              metrics=['accuracy'])
-        self.model.summary()
-        
-    """
-        tarinModel: 
-            Trains the model
-        parameters:
-            val: for when we train again
-        returns:
-            None
-        Set varable model
-            histroy to help we train again
-    """ 
+
+
     def trainModel(self):
         print('\nTraining the model......')
-        history = self.model.fit(
-            self.train_data,
-            validation_data=self.val_data,
-            epochs = self.e
-        )
+        self.rr_model.compile(optimizer='adam',
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+              metrics=['accuracy'])
         
-        print('\nTesing the model.....')
-        self.test_loss, self.test_acc = self.model.evaluate(self.val_data, verbose=2)
+        self.rr_model.fit(self.x_train, self.y_train, epochs=self.e, validation_data=(self.x_val, self.y_val))
+        self.rr_model.summary()
+        self.test_loss, self.test_acc = self.rr_model.evaluate(self.x_val, self.y_val, verbose=2)
         
-        print('\nAccuraccy: ' + str(self.test_acc))
+        print('Accuraccy: ' + str(self.test_acc))
         print('Loss: ' + str(self.test_loss))
-        
+        self.rr_model.save("kanji_model.h5")
     
-    """
-        modelFitune: 
-            Finetune the model
-        parameters:
-            none
-        returns:
-            None
-        Set varable model
-            histroy to help we train again
-            updates the model varables
-    """ 
-    def modelFinetune(self):
-        return None
-    
-    """StoreData:
-            Saves the accuracy, loss and name of the model to a .json file
-        parameter:
-            None
-        returns:
-            None
-    """
     def storeData(self):
         print('\nStoring the data......')
         date = datetime.now()
         with open("models_data.json", "r+") as file:
             data= json.load(file)
         record = {"version" : self.version, "date" : str(date), 'accuracy': str(self.test_acc) +'%', 'loss': str(self.test_loss) + '%'}
-        data["katakana"]["characterRecognition"].append(record)
+        data["data"].append(record)
         with open("models_data.json", "w") as w_file:
             json.dump(data, w_file, indent = 4)
     
 if __name__ == '__main__':
     version = input('model version: ')
-    cr = CharacterRecognition(version, 0)
-    cr.createDatasets('katakana', 38950, 19950)
-    cr.createModel()
-    cr.trainModel()
-    cr.storeData()
+    obj = CharacterRecognition(version)
+    obj.creatingImages()
+    obj.createLabels()
+    obj.createDatasets()
+    obj.createModel()
+    obj.trainModel()
+    obj.storeData()

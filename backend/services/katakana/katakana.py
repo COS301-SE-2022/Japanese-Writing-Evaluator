@@ -18,30 +18,30 @@ dataset = ['a', 'e', 'i', 'ka', 'ke', 'ki', 'ko', 'ku', 'o', 'u']
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        kata_token = None
+        token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            kata_token = request.headers['user-token']
-        if not kata_token:
+            token = request.headers['user-token']
+        if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(kata_token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated
-    
+    return decorated 
+
 """
-    prepare_katakana function:
+    Prepare function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare_katakana():
+def prepare():
     i = Image.open('imageToSave.png')
     img = i.resize((224,224))
     gray_img = img.convert('L')
@@ -58,7 +58,7 @@ def prepare_katakana():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKatakana(katakana_model):
-    pre = katakana_model.predict([prepare_katakana()]).flatten()
+    pre = katakana_model.predict([prepare()]).flatten()
     temp = 0
     val = 0
     final = 0
@@ -85,15 +85,11 @@ def testKatakana(katakana_model):
     return:
         None
 """   
-@app.route("/katakana", methods=["GET"]) 
+@app.route("/katakana", methods=["POST"]) 
 @token_required
 def loadAndPredict():
     kana = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    resp = testKatakana(kana)
-    if(resp != None):
-        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
-    else:
-        return jsonify({'response': "evalutor Failed" }), 401
+    testKatakana(kana)
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 5009)
