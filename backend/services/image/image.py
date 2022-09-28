@@ -46,7 +46,8 @@ def token_required(function):
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-
+    return decorated
+    
 """
     upload Image function:
         uploads teh given image to firebase and sends it to the evaluator
