@@ -4,6 +4,8 @@ from PIL import Image
 import tensorflow as tf
 import numpy as np
 import os
+import cv2 
+import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
@@ -31,23 +33,23 @@ def token_required(function):
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated
+    return decorated 
 
 """
-    prepare_kanji function:
+    Prepare function:
         reshapes and load the image into an array with the dimessions the model expect
     parameters: 
         None
     return:
         the test image
 """  
-def prepare_kanji():
-    i = Image.open('imageToSave.png')
-    img = i.resize((224,224))
-    gray_img = img.convert('L')
-    test_img = np.array([np.array(gray_img).flatten()],'f')
-    test_img = test_img.reshape(test_img.shape[0], 224, 224, 1)
-    return test_img
+def kanji_prepare():
+    cv_kanji_image_1 = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
+    cv_kanji_image_2  = cv2.bitwise_not(cv_kanji_image_1)
+    cv_kanji_image_3  = cv2.resize(cv_kanji_image_2 , (224, 224))
+    test_img_1 = np.array([np.array(cv_kanji_image_3 ).flatten()],'f')
+    test_img_2 = test_img_1.reshape(test_img_1.shape[0], 224, 224, 1)
+    return test_img_2
 
 """
     test Kanji function:
@@ -58,7 +60,7 @@ def prepare_kanji():
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
 def testKanji(kanji_model):
-    pre = kanji_model.predict([prepare_kanji()]).flatten()
+    pre = kanji_model.predict([kanji_prepare()]).flatten()
     temp = 0
     val = 0
     final = 0
@@ -86,17 +88,13 @@ def testKanji(kanji_model):
     return:
         None
 """   
-
+ 
 @app.route("/kanji", methods=["POST"]) 
 @token_required
 def loadAndPredict():
     Kanji = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
-    resp = testKanji(Kanji)
-    if(resp != None):
-        return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
-    else:
-        return jsonify({'response': "evalutor Failed" }), 401
+    testKanji(Kanji)
     
 if __name__ == '__main__':
-    #    app.run(debug = True, port = 5008)
     app.run(port=int(os.environ.get("PORT", 5008)),host='0.0.0.0',debug=True)
+    kanji_prepare()

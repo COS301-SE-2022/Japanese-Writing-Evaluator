@@ -10,13 +10,15 @@ import { Id, User } from '../../shared/interfaces/user';
 import { Progress } from '../../shared/interfaces/progress';
 import { ForgotPasswordEmail, ForgotPasswordPassword } from '../../shared/interfaces/forgotpassword';
 import { Models, ModelsArray } from 'src/app/shared/interfaces/models';
+import { Role, UserRoles } from 'src/app/shared/interfaces/role';
+import { RoleInfo} from 'src/app/shared/interfaces/roleInfo';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppServiceService {
 
-  baseURL = 'http://localhost:5000/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  baseURL = 'http://localhost:8080/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
   //https://flask-api-1-cplmvcuylq-uc.a.run.app/
   private characterImage: CharacterImage = {
     characterName: ' ',
@@ -150,5 +152,41 @@ export class AppServiceService {
     const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
     return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/models',{ headers: myheaders, observe: 'response'});
   }
+
+  getRoles(): Observable<HttpResponse<UserRoles>>{
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}` };
+    let userId = new Object() as Role;
+    userId = {id: localStorage.getItem('id')};
+    return this.httpclient.post<UserRoles>(this.baseURL+'admin/view-users', userId, {headers: myheaders, observe: 'response'});
+  }
+
+  editRole(info: RoleInfo){ //post
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}` };
+    return this.httpclient.post(this.baseURL+'admin/edit', info, {headers: myheaders, observe: 'response'});
+  }
+
+  getFrequency(): Observable<HttpResponse<ModelsArray>>{
+    // get users progress, feedback for each character practiced
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
+    return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/getFrequency',{ headers: myheaders, observe: 'response'});
+  }
+
+  getAverages(): Observable<HttpResponse<ModelsArray>>{
+    // get users progress, feedback for each character practiced
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
+    return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/edit',{ headers: myheaders, observe: 'response'});
+  }
+
+
+  // getProgress(): Observable<HttpResponse<Progress>>{
+  //   // get users progress, feedback for each character practiced
+  //   const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
+  //   let body = new Object() as Id;
+  //   body = {
+  //     id: localStorage.getItem('id')
+  //   };
+  //   return this.httpclient.post<Progress>(this.baseURL + 'progress',body,{ headers: myheaders, observe: 'response'});
+  // }
+
 }
 

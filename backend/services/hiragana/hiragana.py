@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 from flask_cors import CORS;
+import cv2
 
 load_dotenv()
 
@@ -30,10 +31,9 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-
+    
     return decorated
-  
-
+    
 """
     prepare_hiragana function:
         reshapes and load the image into an array with the dimessions the model expect
@@ -43,10 +43,10 @@ def token_required(function):
         the test image
 """  
 def prepare_hiragana():
-    i = Image.open('imageToSave.png')
-    img = i.resize((224,224))
-    gray_img = img.convert('L')
-    test_img = np.array([np.array(gray_img).flatten()],'f')
+    cv_hiragana_image = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
+    cv_hiragana_image = cv2.bitwise_not(cv_hiragana_image)
+    cv_hiragana_image = cv2.resize(cv_hiragana_image, (224, 224))
+    test_img = np.array([np.array(cv_hiragana_image).flatten()],'f')
     test_img = test_img.reshape(test_img.shape[0], 224, 224, 1)
     return test_img
 

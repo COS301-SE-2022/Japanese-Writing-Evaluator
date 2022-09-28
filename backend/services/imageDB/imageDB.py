@@ -38,9 +38,9 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-    
+  
     return decorated
-
+    
 """
 saveToDB function:
     Saves users uploaded image information to database
