@@ -118,38 +118,38 @@ def getImage():
 def getUserAnalytics():
     store = getImageUsers()
     analytics = []
-    analytics_sum = 0
-    analytics_count = 0
 
     analytics_months = []
     styles = []
+    analytics_sum = 0
+    analytics_count = 0
 
     for i in store:
         year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         character = i[4].lower()
+        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         current = int(year) - 2022
 
         if len(analytics) == 0 or current > len(analytics):
 
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    analytics_sum += j[3]
                     analytics_count += 1
+                    analytics_sum += j[3]
             analytics.append({
                 "year": year,
                 "months": [{
                     "month": month,
                     "writingStyles": [{
-                        "averageScore": analytics_sum/analytics_count,
-                        "writingStyle": character
+                        "writingStyle": character,
+                        "averageScore": analytics_sum/analytics_count
                     }]
                 }]
             })
             styles.append(character)
+            analytics_count = 0
             analytics_months.append(month)
             analytics_sum = 0
-            analytics_count = 0
 
         elif year in analytics[current]["year"]:
             if(month not in analytics_months):
@@ -160,8 +160,8 @@ def getUserAnalytics():
                         analytics_count += 1
                 analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": analytics_sum/analytics_count, "writingStyle": character}]})
                 analytics_months.append(month)
-                styles.append(character)
                 analytics_sum = 0
+                styles.append(character)
                 analytics_count = 0
 
             else:
@@ -171,8 +171,8 @@ def getUserAnalytics():
                             analytics_sum += j[3]
                             analytics_count += 1
                     analytics[current]["months"][analytics_months.index(month)]["writingStyles"].append({"averageScore": analytics_sum/analytics_count, "writingStyle": character})
-                    styles.append(character)
                     analytics_sum = 0
+                    styles.append(character)
                     analytics_count = 0
 
         else:
@@ -180,20 +180,20 @@ def getUserAnalytics():
             styles.clear()
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    analytics_sum += j[3]
                     analytics_count += 1
+                    analytics_sum += j[3]
+            analytics_sum = 0
+            analytics_count = 0
             analytics.append({
-                "year": year,
                 "months": [{
-                    "month": month,
                     "writingStyles": [{
                         "averageScore": analytics_sum/analytics_count,
                         "writingStyle": character
-                    }]
-                }]
+                    }],
+                    "month": month
+                }],
+                "year": year
             })
-            analytics_sum = 0
-            analytics_count = 0
             analytics_months.append(month)
             styles.append(character)
 
@@ -211,8 +211,8 @@ def getFrequency():
 
     for i in store:
         year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         character = i[4].lower()
+        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         current = int(year) - 2022
 
         if len(analytics) == 0 or current > len(analytics):
@@ -223,8 +223,8 @@ def getFrequency():
             analytics.append({
                     "year": year,
                     "months":[{
-                        "month": month,
-                        "frequency": count
+                        "frequency": count,
+                        "month": month
                     }]
             })
             months.append(month)
@@ -237,10 +237,10 @@ def getFrequency():
                     if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
                         sum += j[3]
                         count += 1
-                analytics[current]["months"].append({"month": month, "frequency": count})
                 months.append(month)
-                sum = 0
+                analytics[current]["months"].append({"month": month, "frequency": count})
                 count = 0
+                sum = 0
         else:
             months.clear()
             for j in store:

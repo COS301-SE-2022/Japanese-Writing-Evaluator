@@ -47,8 +47,6 @@ def token_required(function):
         return  function(*args, **kwargs)
 
     return decorated
-  
-    return decorated
     
 """
     upload Image function:
