@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppServiceService } from '../services/appService/app-service.service';
-import { SignUp } from './sign-up';
+import { SignUp } from '../shared/interfaces/sign-up';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 
 @Component({

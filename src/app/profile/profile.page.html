@@ -21,9 +21,9 @@
   <div class>
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
-      <ng-container *ngFor="let item of users">
-        <ion-col *ngIf="item.role === selectedView" size="col-auto">
-            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.name' [role]='item.role' ></app-profile-block>
+      <ng-container *ngFor="let item of userRoles">
+        <ion-col *ngIf="isAdmin(item) === selectedView" size="col-auto">
+            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.username' [role]='isAdmin(item)' ></app-profile-block>
         </ion-col>
       </ng-container>
       </ion-row>
@@ -31,4 +31,5 @@
   </div>
 </ion-content>
 
-<app-admin-nav-bar></app-admin-nav-bar>
+<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>

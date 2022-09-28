@@ -27,4 +27,9 @@ describe('ForgotPasswordPasswordPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('check guest user details',() =>{
+    const forgotPasswordform = component.forgotpassword;
+    const newPassword = '';
+    expect(forgotPasswordform.controls.newPassword.value).toEqual(newPassword);
+  });
 });

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { Router } from '@angular/router';
+import { environment as env } from 'src/environments/environment';
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -41,6 +42,22 @@ export class HomePage implements OnInit {
     }
 
     return false;
+  }
+
+
+  ifNormalNavbar(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        //console.log(localStorage.getItem('id'));
+        return false;
+      }
+    }
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
   ngOnInit(): void {}

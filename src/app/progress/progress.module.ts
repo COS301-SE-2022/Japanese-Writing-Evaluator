@@ -10,6 +10,7 @@ import { ProgressPageRoutingModule } from './progress-routing.module';
 import { ProgressPage } from './progress.page';
 import { LogoutModule } from './../shared/components/logout/logout.module';
 import { NavbarModule } from '../shared/components/navbar/navbar.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { NavbarModule } from '../shared/components/navbar/navbar.module';
     OptionsModule,
     ProgressPageRoutingModule,
     NavbarModule,
-    LogoutModule
+    LogoutModule,
+    AdminNavBarModule
   ],
   declarations: [ProgressPage]
 })

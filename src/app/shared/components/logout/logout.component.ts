@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { PopoverSettingsComponent } from '../popover-settings/popover-settings.component';
+import { PopoverController } from '@ionic/angular';
 
 @Component({
   selector: 'app-logout',
@@ -8,17 +9,20 @@ import { Router } from '@angular/router';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  list: string[];
 
-  ngOnInit() {}
+  constructor(private popCtrl: PopoverController) { }
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
+  ngOnInit() {
+  }
+
+  //TODO: Opens the popover, #203, Maryam
+  async openPopover(ev: any){
+    const popover =  await this.popCtrl.create({
+      component: PopoverSettingsComponent,
+      event: ev,
+    });
+    return await popover.present();
   }
 
 }

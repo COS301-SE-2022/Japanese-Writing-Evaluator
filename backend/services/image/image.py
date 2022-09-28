@@ -33,21 +33,21 @@ user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
-        token = None
+        img_token = None
         print(request.headers)
         if 'user-token' in request.headers:
             print("we have token")
-            token = request.headers['user-token']
-        if not token:
+            img_token = request.headers['user-token']
+        if not img_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
-            data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+            data = jwt.decode(img_token, app.config['SECRET_KEY'], algorithms=["HS256"])
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
-    return decorated 
-
+    return decorated
+    
 """
     upload Image function:
         uploads teh given image to firebase and sends it to the evaluator
@@ -104,7 +104,7 @@ def viewImages():
                 "uploadDate": imgs[5]
             })
 
-        return jsonify({'response': response}), 200
+        return jsonify({'response': response,}), 200
     else:
         return jsonify({'response': "view image failed."}), 401
 

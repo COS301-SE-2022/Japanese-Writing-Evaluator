@@ -15,7 +15,6 @@ describe('AppServiceService', () => {
     service = TestBed.inject(AppServiceService);
     mockhttpRequest = TestBed.inject(HttpTestingController);
   });
-
   it('check for invalid image', inject(
     [HttpTestingController, AppServiceService],
     () => {

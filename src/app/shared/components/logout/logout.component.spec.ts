@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -21,5 +21,13 @@ describe('LogoutComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+  it('should', () => {
+    spyOn(component, 'openPopover');
+
+    const button = fixture.debugElement.nativeElement.querySelector('button');
+    spyOn(button, 'click').and.callThrough();
+    button.click();
+    expect(component.openPopover).toHaveBeenCalled();
   });
 });
