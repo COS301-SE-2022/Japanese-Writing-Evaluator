@@ -47,7 +47,7 @@ def prepare_katakana():
     cv_katakana_image_2 = cv2.bitwise_not(cv_katakana_image_1)
     cv_katakana_image_3 = cv2.resize(cv_katakana_image_2, (224, 224))
     test_img_1 = np.array([np.array(cv_katakana_image_3).flatten()],'f')
-    test_img_2 = test_img_2.reshape(test_img_2.shape[0], 224, 224, 1)
+    test_img_2 = test_img_1.reshape(test_img_1.shape[0], 224, 224, 1)
     return test_img_2
 
 """
