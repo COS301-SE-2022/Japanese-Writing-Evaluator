@@ -48,7 +48,8 @@ def token_required(function):
 
     return decorated
   
-
+    return decorated
+    
 """
     upload Image function:
         uploads teh given image to firebase and sends it to the evaluator

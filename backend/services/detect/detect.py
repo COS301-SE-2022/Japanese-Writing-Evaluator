@@ -36,6 +36,7 @@ def token_required(function):
 
     return decorated
    
+    return decorated
 
 """
     detect function:

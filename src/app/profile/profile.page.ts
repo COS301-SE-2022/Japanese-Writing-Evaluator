@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment as env } from 'src/environments/environment';
+import { Person } from '../shared/interfaces/role';
+import { RoleInfo } from '../shared/interfaces/roleInfo';
+import { AppServiceService } from '../services/appService/app-service.service';
 
 @Component({
   selector: 'app-profile',
@@ -11,19 +14,20 @@ export class ProfilePage implements OnInit {
   //Test Data
 
   selectedView: string;
-  users = [
-    {name: 'Maryam', role: 'admin'},
-    {name: 'Sihle', role: 'admin'},
-    {name: 'Phumu', role: 'admin'},
-    {name: 'Raymond', role: 'user'},
-    {name: 'Phil', role: 'user'},
-  ];
 
-  constructor(private router: Router) {
+  userRoles:  Person[];
+
+  constructor(private router: Router, private apiService: AppServiceService) {
     this.selectedView = 'admin';
   }
 
   ngOnInit() {
+    this.apiService.getRoles()
+    .subscribe(data => {
+      if(data.status === 200){
+        this.userRoles = data.body.response;
+      }
+    });
   }
   //TODO: View admins only, #203, Maryam
   getAdmins(){
@@ -35,15 +39,43 @@ export class ProfilePage implements OnInit {
     this.selectedView = 'user';
   }
 
+  //TODO: checking if current person is an admin or user, #203, Maryam
+  isAdmin(role: Person){
+    if(role.admin === true){
+      return 'admin';
+    }
+    else{
+      return 'user';
+    }
+  }
+
   //TODO: Sending to profile page the changed roles of the specific user/admin, #203, Maryam
-  roleEvent(details: string[]) {
-    console.log(details);
+  async roleEvent(details: string[]) {
     if(details[0] !== undefined){
-      this.users.forEach(element => {
-        if(element.name === details[1]){
-          element.role = details[0];
+      this.userRoles.forEach(element => {
+        if(element.username === details[1] && element.id !== undefined){
+          console.log(element.username);
+          let obj = new Object() as RoleInfo;
+          obj = {
+            id: element.id,
+            admin: this.getBoolOfRole(details[0])
+          };
+          this.apiService.editRole(obj).subscribe(data => {
+            if(data.status === 200){
+              window.location.reload();
+            }
+          });
         }
       });
+    }
+  }
+
+  getBoolOfRole(role: string){
+    if(role === 'admin'){
+      return true;
+    }
+    else{
+      return false;
     }
   }
 

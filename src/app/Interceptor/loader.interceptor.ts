@@ -50,8 +50,20 @@ export class LoadingInterceptor implements HttpInterceptor{
             return this.generalIntercept(req,next);
         }
 
-        if(req.url.endsWith('/object-detection')){
+        if(req.url.endsWith('object-detection')){
             return this.objDetectionIntercept(req,next);
+        }
+
+        if(req.url.endsWith('admin/view-users')){
+            return this.generalIntercept(req,next);
+        }
+
+        if(req.url.endsWith('admin/edit')){
+            return this.generalIntercept(req,next);
+        }
+
+        if(req.url.endsWith('admin/getFrequency')){
+            return this.generalIntercept(req,next);
         }
     }
 

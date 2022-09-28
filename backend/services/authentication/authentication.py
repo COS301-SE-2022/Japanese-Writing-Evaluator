@@ -41,7 +41,8 @@ def token_required(function):
 
     return decorated
   
-
+    return decorated
+    
 """
     resetPassword function:
         calls update password to change the password
@@ -113,7 +114,7 @@ def listUsers():
                 continue
             else:
                 response.append({
-                    "user_id": user[0],
+                    "id": user[0],
                     "username": user[5],
                     "admin": user[2]
                 })

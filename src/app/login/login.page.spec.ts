@@ -48,10 +48,6 @@ describe('LoginPage', () => {
     expect(htmlElements.querySelector('.ion-button')).not.toBeNull();
   });
 
-  //check if error message shows when there is no input when login button is clicked
-
-  //check if form builds?
-
   //test if form has submitted
   it('check if form has submitted when button is clicked is valid',async () => {
     const loginButton = fixture.debugElement.nativeElement.querySelector('.ion-button');// gets html tags, like a query selector
