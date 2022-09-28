@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 
 COPY ./app.py ./
 
-
 ENV PORT 8080
 ENV HOST 0.0.0.0
 
