@@ -3,9 +3,7 @@ import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { AppServiceService } from './app-service.service';
 import { UploadedImage } from '../../shared/interfaces/image';
-import { HttpHeaders, HttpClient, HttpResponse } from '@angular/common/http';
-import { stringify } from 'querystring';
-import { Id } from 'src/app/shared/interfaces/user';
+import { HttpHeaders } from '@angular/common/http';
 
 describe('AppServiceService', () => {
   let service: AppServiceService;
