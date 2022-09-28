@@ -1,6 +1,6 @@
 {
-    "hiragana":{
-        "characterRecognition":[
+    "hiragana": {
+        "characterRecognition": [
             {
                 "version": "beta model",
                 "date": "2022-07-18 21:02:36.402017",
@@ -20,7 +20,7 @@
                 "loss": "0.3602301776409149%"
             }
         ],
-        "strokes":[
+        "strokes": [
             {
                 "version": "a_strokes",
                 "date": "2022-07-27 20:45:26.991369",
@@ -41,18 +41,25 @@
             }
         ]
     },
-
-    "katakana":{
-        "characterRecognition":[
-            
+    "katakana": {
+        "characterRecognition": [
+            {
+                "version": "katakana",
+                "date": "2022-09-24 00:23:48.298708",
+                "accuracy": "0.5832216739654541%",
+                "loss": "13.832645416259766%"
+            },
+            {
+                "version": "katakana_MobileNet",
+                "date": "2022-09-24 18:19:52.554336",
+                "accuracy": "0.9472089409828186%",
+                "loss": "0.41295066475868225%"
+            }
         ],
-        "strokes":[
-            
-        ]
+        "strokes": []
     },
-
-    "kanji":{
-        "characterRecognition":[
+    "kanji": {
+        "characterRecognition": [
             {
                 "version": "kanji_V1",
                 "date": "2022-07-27 13:04:35.574611",
@@ -64,10 +71,14 @@
                 "date": "2022-07-27 13:17:14.670283",
                 "accuracy": "0.9820788502693176%",
                 "loss": "0.12006530165672302%"
+            },
+            {
+                "version": "kanji",
+                "date": "2022-09-25 06:07:13.436805",
+                "accuracy": "0.8787686824798584%",
+                "loss": "0.4237479269504547%"
             }
         ],
-        "strokes":[
-            
-        ]
+        "strokes": []
     }
 }
