@@ -12,12 +12,12 @@ describe('PopoverComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PopoverComponent ],
-      providers: [
-        {
-          // provide: PopoverController,
-          // useValue: modalCtrlSpy
-        }
-      ],
+      // providers: [
+      //   {
+      //     // provide: PopoverController,
+      //     // useValue: modalCtrlSpy
+      //   }
+      // ],
 
       imports: [IonicModule.forRoot()]
     }).compileComponents();
