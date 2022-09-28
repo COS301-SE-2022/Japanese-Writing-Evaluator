@@ -252,7 +252,6 @@ export class LoadingInterceptor implements HttpInterceptor{
             }),
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    // TODO: Check if the response is 200 ok
                     this.loadingController.dismiss();
                 }
                 return event;
@@ -306,7 +305,6 @@ export class LoadingInterceptor implements HttpInterceptor{
             }),
             map((event: HttpEvent<any>) => {
                 if (event instanceof HttpResponse) {
-                    // TODO: Check if the response is 200 ok
                     this.loadingController.dismiss();
                 }
                 return event;
