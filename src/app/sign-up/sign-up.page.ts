@@ -40,8 +40,9 @@ export class SignUpPage implements OnInit {
   {
     this.apiService.addUser(this.username, this.email, this.password)
       .subscribe(data => {
-        if(data.status === 409){
-          this.toast.showToast('You already have a profile', 200);
+        // eslint-disable-next-line @typescript-eslint/dot-notation
+        if(data.body['response'] === 'User already exists'){
+          this.toast.showToast('You already have a profile', 401);
         }
         else if(data.status === 200){
           this.toast.showToast('Registered', 200);

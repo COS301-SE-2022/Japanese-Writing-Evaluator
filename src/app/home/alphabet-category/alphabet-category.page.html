@@ -1,6 +1,7 @@
 <ion-content>
   <div class="head" >
-    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
+    <!-- <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button> -->
+    <app-logout></app-logout>
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
 
     <p>
@@ -21,5 +22,7 @@
 
 </ion-content>
 
-<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

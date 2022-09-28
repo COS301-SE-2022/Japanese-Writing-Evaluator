@@ -261,6 +261,7 @@ export class LoadingInterceptor implements HttpInterceptor{
     }
 
     registerIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        console.log('in');
         this.loadingController.getTop().then( isloading => {
             if (!isloading) {
                 this.loadingController.create({
