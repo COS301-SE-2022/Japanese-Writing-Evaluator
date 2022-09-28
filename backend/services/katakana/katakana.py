@@ -1,3 +1,4 @@
+import base64
 from functools import wraps
 import jwt
 from PIL import Image
@@ -42,13 +43,17 @@ def token_required(function):
     return:
         the test image
 """  
-def prepare_katakana():
-    cv_katakana_image_1 = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
-    cv_katakana_image_2 = cv2.bitwise_not(cv_katakana_image_1)
-    cv_katakana_image_3 = cv2.resize(cv_katakana_image_2, (224, 224))
-    test_img_1 = np.array([np.array(cv_katakana_image_3).flatten()],'f')
-    test_img_2 = test_img_1.reshape(test_img_1.shape[0], 224, 224, 1)
-    return test_img_2
+def prepare_katakana(imgBase64):
+    image = imgBase64.partition(",")[2]
+    with open("imageToSave.png", "wb") as fh:
+        fh.write(base64.b64decode(image))
+
+    img_path = 'imageToSave.png'
+    img = tf.keras.utils.load_img(img_path, target_size=(224, 224))
+    img_array = tf.keras.utils.img_to_array(img)
+    img_array_expanded_dims = np.expand_dims(img_array, axis=0)
+    return tf.keras.applications.mobilenet.preprocess_input(img_array_expanded_dims)
+
 
 """
     test Katakana function:
@@ -58,8 +63,9 @@ def prepare_katakana():
     return:
         the models confidence as a percentage as well as the defualt for stroke detaction
 """    
-def testKatakana(katakana_model):
-    pre = katakana_model.predict([prepare_katakana()]).flatten()
+def testKatakana(katakana_model, img):
+    pre = katakana_model.predict([prepare_katakana(img)]).flatten()
+    print(pre)
     temp = 0
     val = 0
     final = 0
@@ -76,7 +82,7 @@ def testKatakana(katakana_model):
         return ([0,0,0], p)
     except Exception as e:
         print(e)
-        return 0
+        return [0]
     
 """
     loadAndPredict function:
@@ -86,11 +92,11 @@ def testKatakana(katakana_model):
     return:
         None
 """   
-@app.route("/katakana", methods=["GET"]) 
-@token_required
+@app.route("/katakana", methods=["POST"]) 
 def loadAndPredict():
-    kana = tf.keras.models.load_model('katakana.h5') # to be changed to route from the cloud
-    resp = testKatakana(kana)
+    img = request.json["image"]
+    kana = tf.keras.models.load_model('katakana.h5', compile = False) # to be changed to route from the cloud
+    resp = testKatakana(kana, img)
     if(resp != None):
         return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
     else:
@@ -98,4 +104,4 @@ def loadAndPredict():
 
 if __name__ == '__main__':
     # app.run(debug = True, port = 5009)
-    app.run(port=int(os.environ.get("PORT", 5009)),host='0.0.0.0',debug=True)
+    app.run(port=int(os.environ.get("PORT", 5009)),host='0.0.0.0',debug=False)
