@@ -44,10 +44,10 @@ def token_required(function):
         the test image
 """  
 def prepare():
-    cv_image = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
-    cv_image = cv2.bitwise_not(cv_image)
-    cv_image = cv2.resize(cv_image, (224, 224))
-    test_img = np.array([np.array(cv_image).flatten()],'f')
+    cv_kanji_image = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
+    cv_kanji_image  = cv2.bitwise_not(cv_kanji_image)
+    cv_kanji_image  = cv2.resize(cv_kanji_image , (224, 224))
+    test_img = np.array([np.array(cv_kanji_image ).flatten()],'f')
     test_img = test_img.reshape(test_img.shape[0], 224, 224, 1)
     return test_img
 
