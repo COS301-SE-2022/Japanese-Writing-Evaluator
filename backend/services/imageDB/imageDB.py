@@ -118,64 +118,84 @@ def getImage():
 def getUserAnalytics():
     store = getImageUsers()
     analytics = []
-    sum = 0
-    count = 0
-    
+
+    analytics_months = []
+    styles = []
+    analytics_sum = 0
+    analytics_count = 0
+
     for i in store:
         year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         character = i[4].lower()
+        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         current = int(year) - 2022
 
         if len(analytics) == 0 or current > len(analytics):
 
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
+                    analytics_count += 1
+                    analytics_sum += j[3]
             analytics.append({
-                year:{
-                    "year": year,
-                    month:{
-                        "month": month,
-                        character: {
-                            "writingStyle": character,
-                            "averageScore": sum/count}
-                    }
-                }
+                "year": year,
+                "months": [{
+                    "month": month,
+                    "writingStyles": [{
+                        "writingStyle": character,
+                        "averageScore": analytics_sum/analytics_count
+                    }]
+                }]
             })
-            sum = 0
-            count = 0
+            styles.append(character)
+            analytics_count = 0
+            analytics_months.append(month)
+            analytics_sum = 0
 
-        elif year in analytics[current] and month in analytics[current][str(year)] and character not in analytics[current][str(year)][str(month)]:
+        elif year in analytics[current]["year"]:
+            if(month not in analytics_months):
+                styles.clear()
+                for j in store:
+                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        analytics_sum += j[3]
+                        analytics_count += 1
+                analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": analytics_sum/analytics_count, "writingStyle": character}]})
+                analytics_months.append(month)
+                analytics_sum = 0
+                styles.append(character)
+                analytics_count = 0
+
+            else:
+                if(character not in styles):
+                    for j in store:
+                        if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                            analytics_sum += j[3]
+                            analytics_count += 1
+                    analytics[current]["months"][analytics_months.index(month)]["writingStyles"].append({"averageScore": analytics_sum/analytics_count, "writingStyle": character})
+                    analytics_sum = 0
+                    styles.append(character)
+                    analytics_count = 0
+
+        else:
+            analytics_months.clear()
+            styles.clear()
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
-            
-            z = {
-                character: {
-                    "writingStyle": character,
-                    "averageScore": sum/count}
-            }
-            analytics[current][str(year)][str(month)].update(z)
-            sum = 0
-            count = 0
-        
-        else:
-            for j in store:
-                if j[4].lower() == character and year == str(j[5].strftime("%Y-%m-%d").split('-')[0]) and month == str(j[5].strftime("%Y-%m-%d").split('-')[1]):
-                    sum += j[3]
-                    count += 1
-
-            z = {month: {
-                "month": month,
-                character: { 
-                    "writingStyle": character,
-                    "averageScore": sum/count}}}
-            analytics[current][str(year)].update(z) 
-            sum = 0
-            count = 0
+                    analytics_count += 1
+                    analytics_sum += j[3]
+            analytics_sum = 0
+            analytics_count = 0
+            analytics.append({
+                "months": [{
+                    "writingStyles": [{
+                        "averageScore": analytics_sum/analytics_count,
+                        "writingStyle": character
+                    }],
+                    "month": month
+                }],
+                "year": year
+            })
+            analytics_months.append(month)
+            styles.append(character)
 
     return jsonify({'response': analytics}), 200    
 
@@ -187,10 +207,12 @@ def getFrequency():
     sum = 0
     count = 0
     
+    months = []
+
     for i in store:
         year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         character = i[4].lower()
+        month = i[5].strftime("%Y-%m-%d").split('-')[1]
         current = int(year) - 2022
 
         if len(analytics) == 0 or current > len(analytics):
@@ -199,34 +221,43 @@ def getFrequency():
                     sum += j[3]
                     count += 1
             analytics.append({
-                year:{
                     "year": year,
-                    month:{
-                        "month": month,
-                        "frequency": count
-                    }
-                }
+                    "months":[{
+                        "frequency": count,
+                        "month": month
+                    }]
             })
-
+            months.append(month)
             sum = 0
             count = 0
-
-        elif year in analytics[current] and month not in analytics[current][str(year)]:
+        
+        elif year in analytics[current]["year"]:
+            if(month not in months):
+                for j in store:
+                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        sum += j[3]
+                        count += 1
+                months.append(month)
+                analytics[current]["months"].append({"month": month, "frequency": count})
+                count = 0
+                sum = 0
+        else:
+            months.clear()
             for j in store:
                 if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
                     sum += j[3]
                     count += 1
-            
-            z = {
-                month:{
-                    "month": month,
-                    "frequency": count
-                }
-            }
-            analytics[current][str(year)].update(z)
+            analytics.append({
+                    "year": year,
+                    "months":[{
+                        "month": month,
+                        "frequency": count
+                    }]
+            })
+            months.append(month)
             sum = 0
             count = 0
-
+            
     return jsonify({'response': analytics}), 200    
 
 """

@@ -33,7 +33,7 @@ def token_required(function):
         return  function(*args, **kwargs)
     
     return decorated
-
+    
 """
     prepare_hiragana function:
         reshapes and load the image into an array with the dimessions the model expect
