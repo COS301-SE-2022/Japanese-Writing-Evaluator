@@ -200,6 +200,7 @@ def register():
         password = request.json["password"]
         username = request.json["username"]
         Finduser = getUserByEmail(email)
+        print(findUser)
         if Finduser != None:
             res = "User already exists"
             return jsonify({"response": res}), 409
@@ -249,7 +250,7 @@ def login():
         user = getUser(new_password, email)
         if(user != None):
             session['logged_in'] = True
-            return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
+            return jsonify({"response": {'username': user[0], 'id': user[1]}, "data": user}), 200 
         else:
             return jsonify({"response": "incorrect password"}), 401
 
