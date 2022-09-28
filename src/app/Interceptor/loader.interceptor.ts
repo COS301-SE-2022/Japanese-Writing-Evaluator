@@ -208,18 +208,7 @@ export class LoadingInterceptor implements HttpInterceptor{
     }
 
     loginIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        this.loadingController.getTop().then( isloading => {
-            if (!isloading) {
-                this.loadingController.create({
-                    spinner: 'crescent',
-                    message: 'Logging In...',
-                    animated: true,
-                    cssClass: 'loader'
-                    // enterAnimation: this.animeBuilder.build ,
-                    // leaveAnimation: animeBuilder
-                }).then(loader => loader.present());
-            }
-        });
+        this.startLoader('Logging In...');
 
         return next.handle(req).pipe(
             catchError(err => {
@@ -260,19 +249,7 @@ export class LoadingInterceptor implements HttpInterceptor{
     }
 
     registerIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        console.log('in');
-        this.loadingController.getTop().then( isloading => {
-            if (!isloading) {
-                this.loadingController.create({
-                    spinner: 'crescent',
-                    message: 'Your profile is being created',
-                    animated: true,
-                    cssClass: 'loader'
-                    // enterAnimation: this.animeBuilder.build ,
-                    // leaveAnimation: animeBuilder
-                }).then(loader => loader.present());
-            }
-        });
+        this.startLoader('Your profile is being created');
 
         return next.handle(req).pipe(
             catchError(err => {
@@ -315,18 +292,7 @@ export class LoadingInterceptor implements HttpInterceptor{
 
     objDetectionIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        this.loadingController.getTop().then( isloading => {
-            if (!isloading) {
-                this.loadingController.create({
-                    spinner: 'crescent',
-                    message: 'Detected items loading...',
-                    animated: true,
-                    cssClass: 'loader'
-                    // enterAnimation: this.animeBuilder.build ,
-                    // leaveAnimation: animeBuilder
-                }).then(loader => loader.present());
-            }
-        });
+        this.startLoader('Detected items loading...');
 
         return next.handle(req).pipe(
             catchError((err: HttpErrorResponse) => {
@@ -376,6 +342,19 @@ export class LoadingInterceptor implements HttpInterceptor{
         console.log(modal);
         return await modal.present();
       }
+
+    startLoader(msg: string){
+        this.loadingController.getTop().then( isloading => {
+            if (!isloading) {
+                this.loadingController.create({
+                    spinner: 'crescent',
+                    message: msg,
+                    animated: true,
+                    cssClass: 'loader'
+                }).then(loader => loader.present());
+            }
+        });
+    }
 
 }
 
