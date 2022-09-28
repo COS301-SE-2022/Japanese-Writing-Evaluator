@@ -44,7 +44,7 @@ def token_required(function):
         the test image
 """  
 def prepare():
-    cv_image = cv2.imread('IdrianA.png',cv2.IMREAD_GRAYSCALE)
+    cv_image = cv2.imread('imageToSave.png',cv2.IMREAD_GRAYSCALE)
     cv_image = cv2.bitwise_not(cv_image)
     cv_image = cv2.resize(cv_image, (224, 224))
     test_img = np.array([np.array(cv_image).flatten()],'f')
@@ -99,5 +99,5 @@ if __name__ == '__main__':
     #    app.run(debug = True, port = 5008)
     # take image and do processing 
     
-    #app.run(port=int(os.environ.get("PORT", 5008)),host='0.0.0.0',debug=True)
+    app.run(port=int(os.environ.get("PORT", 5008)),host='0.0.0.0',debug=True)
     prepare()
