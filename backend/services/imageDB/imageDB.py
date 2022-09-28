@@ -118,10 +118,10 @@ def getImage():
 def getUserAnalytics():
     store = getImageUsers()
     analytics = []
-    sum = 0
-    count = 0
+    analytics_sum = 0
+    analytics_count = 0
 
-    months = []
+    analytics_months = []
     styles = []
 
     for i in store:
@@ -134,67 +134,67 @@ def getUserAnalytics():
 
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
+                    analytics_sum += j[3]
+                    analytics_count += 1
             analytics.append({
                 "year": year,
                 "months": [{
                     "month": month,
                     "writingStyles": [{
-                        "averageScore": sum/count,
+                        "averageScore": analytics_sum/analytics_count,
                         "writingStyle": character
                     }]
                 }]
             })
             styles.append(character)
-            months.append(month)
-            sum = 0
-            count = 0
+            analytics_months.append(month)
+            analytics_sum = 0
+            analytics_count = 0
 
         elif year in analytics[current]["year"]:
-            if(month not in months):
+            if(month not in analytics_months):
                 styles.clear()
                 for j in store:
                     if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                        sum += j[3]
-                        count += 1
-                analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": sum/count, "writingStyle": character}]})
-                months.append(month)
+                        analytics_sum += j[3]
+                        analytics_count += 1
+                analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": analytics_sum/analytics_count, "writingStyle": character}]})
+                analytics_months.append(month)
                 styles.append(character)
-                sum = 0
-                count = 0
+                analytics_sum = 0
+                analytics_count = 0
 
             else:
                 if(character not in styles):
                     for j in store:
                         if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                            sum += j[3]
-                            count += 1
-                    analytics[current]["months"][months.index(month)]["writingStyles"].append({"averageScore": sum/count, "writingStyle": character})
+                            analytics_sum += j[3]
+                            analytics_count += 1
+                    analytics[current]["months"][analytics_months.index(month)]["writingStyles"].append({"averageScore": analytics_sum/analytics_count, "writingStyle": character})
                     styles.append(character)
-                    sum = 0
-                    count = 0
+                    analytics_sum = 0
+                    analytics_count = 0
 
         else:
-            months.clear()
+            analytics_months.clear()
             styles.clear()
             for j in store:
                 if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
+                    analytics_sum += j[3]
+                    analytics_count += 1
             analytics.append({
                 "year": year,
                 "months": [{
                     "month": month,
                     "writingStyles": [{
-                        "averageScore": sum/count,
+                        "averageScore": analytics_sum/analytics_count,
                         "writingStyle": character
                     }]
                 }]
             })
-            sum = 0
-            count = 0
-            months.append(month)
+            analytics_sum = 0
+            analytics_count = 0
+            analytics_months.append(month)
             styles.append(character)
 
     return jsonify({'response': analytics}), 200    
