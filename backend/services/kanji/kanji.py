@@ -92,7 +92,7 @@ def testKanji(kanji_model):
 @app.route("/kanji", methods=["POST"]) 
 @token_required
 def loadAndPredict():
-    Kanji = tf.keras.models.load_model('../ai/models/hiragana_model.h5') # to be changed to route from the cloud
+    Kanji = tf.keras.models.load_model('kanji.h5') # to be changed to route from the cloud
     resp = testKanji(Kanji)
     if(resp != None):
         return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1] }), 200
