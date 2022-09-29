@@ -57,7 +57,7 @@ def prepare_hiragana(imgBase64):
     test_img = test_img.reshape(test_img.shape[0], 28, 28, 1)
     return test_img
 
-def prepare_stroke(img):
+def prepare_stroke():
     img_path = 'imageToSave.png'
     img = tf.keras.utils.load_img(img_path, target_size=(224, 224))
     img_array = tf.keras.utils.img_to_array(img)
@@ -75,50 +75,26 @@ def prepare_stroke(img):
 """  
 def testhiragana(hiragana_model, img):
     pre = hiragana_model.predict([prepare_hiragana(img)]).flatten()
-
+    print(pre)
     temp = 0
     val = 0
     final = 0
     for n in pre:
-        if(n >temp and n > 0.4):
+        if(n >temp):
             temp = n
             final = val
         val+=1
+    print(final)
+    predicted_char = dataset[final]
+    if predicted_char == 'error':
+        return (0, 0)
     try:
-        print(final)
-        predicted_char = dataset[final]
-        if predicted_char == 'error':
-            return (0, 0)
         print('\nprediction:\n', predicted_char)
         print('accuracy: ' + str(temp * 100) + '%')
         p = temp * 100
-        if predicted_char == 'i':
-            model = tf.keras.models.load_model('models/i_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'u':
-            model = tf.keras.models.load_model('models/u_strokes.h5',  compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'te':
-            model = tf.keras.models.load_model('models/te_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)      
-        elif predicted_char == 'tsu':
-            model = tf.keras.models.load_model('models/tsu_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'he':
-            model = tf.keras.models.load_model('models/he_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'hi':
-            model = tf.keras.models.load_model('models/hi_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'ku':
-            model = tf.keras.models.load_model('models/ku_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'shi':
-            model = tf.keras.models.load_model('models/shi_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'ko':
-            model = tf.keras.models.load_model('models/ko_strokes.h5', compile=False)
-            strokes =  strokesModel(model, img, predicted_char)
+        if predicted_char in singleStroke or predicted_char in two_strokes:
+            model = tf.keras.models.load_model('models/'+predicted_char+'_strokes.h5', compile=False)
+            strokes =  strokesModel(model, predicted_char)
         else:
             strokes = [0]
         return (strokes, p)
@@ -133,9 +109,9 @@ def testhiragana(hiragana_model, img):
     return:
         the models confidence as a percentage
 """  
-def strokesModel(strokes_model, img, pre_char):
+def strokesModel(strokes_model, pre_char):
     try:
-        pre_stroke = strokes_model.predict([prepare_stroke(img)])
+        pre_stroke = strokes_model.predict([prepare_stroke()])
         if pre_char in singleStroke:
             return str(pre_stroke[0])
         elif pre_char in two_strokes:
