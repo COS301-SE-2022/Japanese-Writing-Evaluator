@@ -84,7 +84,6 @@ def testhiragana(hiragana_model, img):
             temp = n
             final = val
         val+=1
-    print(final)
     predicted_char = dataset[final]
     if predicted_char == 'error':
         return (0, 0)
