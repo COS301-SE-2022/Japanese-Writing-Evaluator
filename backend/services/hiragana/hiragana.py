@@ -161,7 +161,7 @@ def loadAndPredict():
     print("\nresp: ",resp)
     if(resp != None):
         return jsonify({'response': "evalutor successful", "strokes": resp[0], "score": resp[1]}), 200
-    elif resp is (0, 0):
+    elif resp == (0, 0):
         return jsonify({'response': "invalid input" }), 404
     else:
         return jsonify({'response': "evalutor Failed" }), 401
