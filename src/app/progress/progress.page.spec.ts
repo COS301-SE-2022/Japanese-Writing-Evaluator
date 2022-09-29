@@ -4,7 +4,6 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { IonicModule } from '@ionic/angular';
 import { ProgressBlockComponent } from './progress-block/progress-block.component';
-
 import { ProgressPage } from './progress.page';
 
 describe('ProgressPage', () => {

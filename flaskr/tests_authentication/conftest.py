@@ -7,6 +7,7 @@ sys.path.insert(0, 'flaskr')
 from flaskr.db import get_db, init_db
 sys.path.insert(1, "backend/services/authentication")
 from authentication import app as auth
+
 # from kanji import app as kanji
 with open(os.path.join(os.path.dirname(__file__), 'data.sql'), 'rb') as f:
     _data_sql = f.read().decode('utf8')

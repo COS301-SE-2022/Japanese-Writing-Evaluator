@@ -16,6 +16,7 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:8080", "https://jwe-api-gateway-cplmvcuylq-uc.a.run.app"]}})
 
 def token_required(function):
@@ -33,7 +34,7 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-   
+
     return decorated
 
 """
@@ -48,8 +49,6 @@ def token_required(function):
 @token_required
 def detect():
     try:
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
-
         image = request.json["image"]
         img = image.partition(",")[2]
 
@@ -106,4 +105,4 @@ def detect():
         
 if __name__ == '__main__':
     # app.run(debug = True, host='0.0.0.0', port=5001)
-    app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=True)
+    app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=False)

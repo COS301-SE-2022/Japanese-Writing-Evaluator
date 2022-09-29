@@ -38,7 +38,7 @@ def token_required(function):
         except:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
+
     return decorated
     
 """
@@ -128,7 +128,7 @@ def listUsers():
     return:
         json response
 """
-@app.route("/findUser", methods=["GET"])
+@app.route("/findUser", methods=["POST"])
 def findUser():
     email = request.json["email"]
     query = " SELECT username FROM users WHERE email = %s"
@@ -205,7 +205,7 @@ def register():
             return jsonify({"response": res}), 409
         else:
             verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-            if(verify_email.status_code == 200):
+            if(verify_email.json()['status'] != 'invalid'):
                 salt = uuid.uuid4().hex
                 passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
                 addUser(username, passwordSalt, email, False, salt, 0)
