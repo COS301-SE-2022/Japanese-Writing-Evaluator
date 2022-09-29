@@ -174,15 +174,21 @@ def addToken(email, token):
 """
 @app.route("/getUserByID", methods=["GET"])
 def getUserByID():
-    id = request.json["id"]
-    query = " SELECT * FROM users WHERE userid = %s"
-    curr.execute(query, (id,))
-    user = curr.fetchone()
-    res = {
-        "email": user[1],
-        "username": user[5]
-    }
-    return jsonify({"response": res}), 200
+    try:
+        id = request.json["id"]
+        query = "SELECT email, username FROM users WHERE userid = %s"
+        curr.execute(query, (id,))
+        user = curr.fetchone()
+        if(user != None):
+            res = {
+                "email": user[0],
+                "username": user[1]
+            }
+            return jsonify({"response": res}), 200
+        else:
+            return jsonify({"response": "user does not exist"}), 400 
+    except Exception as e:
+        return jsonify({"response": "user does not exist"}), 400
 
 """
 
@@ -200,6 +206,7 @@ def register():
         password = request.json["password"]
         username = request.json["username"]
         Finduser = getUserByEmail(email)
+        print(findUser)
         if Finduser != None:
             res = "User already exists"
             return jsonify({"response": res}), 409
@@ -249,7 +256,7 @@ def login():
         user = getUser(new_password, email)
         if(user != None):
             session['logged_in'] = True
-            return jsonify({"response": {'username': user[0], 'id': user[1]}}), 200 
+            return jsonify({"response": {'username': user[0], 'id': user[1]}, "data": user}), 200 
         else:
             return jsonify({"response": "incorrect password"}), 401
 
@@ -461,4 +468,4 @@ def getAllUsers():
     
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=True)
+    app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=False)

@@ -22,8 +22,11 @@
       </ion-row>
     </ion-grid>
   </div>
+
 </ion-content>
 
-<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>
 

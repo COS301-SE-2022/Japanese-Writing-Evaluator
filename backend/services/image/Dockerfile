@@ -4,6 +4,7 @@ WORKDIR /usr/src/app
 
 COPY ./image.py ./
 COPY ./service.json ./
+COPY ./imageToSave.png ./
 
 ENV PORT 5004
 ENV HOST 0.0.0.

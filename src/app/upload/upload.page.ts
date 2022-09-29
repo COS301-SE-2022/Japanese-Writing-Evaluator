@@ -67,35 +67,35 @@ export class UploadPage implements OnInit {
       });
     }
     else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
-      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString();
+      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString() + '%';
       const charImageUrl = '../assets/upload/' + this.characterImage.characterName + '.jpg';
-      // let strokes = '';
-      // let count = 1;
-      // this.score.data.strokes.forEach( stroke => {
-      //   strokes += `<ion-item>
-      //     <p class="stroke${count}">o </p><p>Stroke ${count}: ${Math.round(stroke)}</p>
-      //     </ion-item>`;
-      //   count++;
-      // });
+      let strokes = '';
+      let count = 1;
+      if(this.score.data.strokes.length === 1 && this.score.data.strokes[0] === 0 ){
+        strokes += `<ion-item>
+          <p>We don't provide strokes for this character</p>
+          <p>Strokes: ${Math.round(this.score.data.strokes[0])}</p>
+        </ion-item>`;
+      }
+      else {
+        this.score.data.strokes.forEach( stroke => {
+          strokes += `<ion-item>
+            <p class="stroke${count}">o </p><p>Stroke ${count}: ${Math.round(stroke)}</p>
+            </ion-item>`;
+          count++;
+        });
+      }
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: 'Character Accuracy',
         message: `
         <h1>${this.characterImage.url}</h1>${scoreMessage}
-        <h4>Your character</h4>
+        <h4>Your uploaded character</h4>
         <ion-img src="${this.userImage}"></ion-img>
-        <h4>Accurate character</h4>
+        <h4>Expected character</h4>
         <ion-img src="${charImageUrl}" alt="Correct ${this.characterImage.characterName} image"></ion-img>
         <div>
-          <ion-item>
-          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}</p> 
-          </ion-item>
-          <ion-item>
-          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}</p> 
-          </ion-item>
-          <ion-item>
-          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}</p> 
-          </ion-item>
+          ${strokes}
         </div>`,
         buttons: [
           {
@@ -111,6 +111,15 @@ export class UploadPage implements OnInit {
       <ion-img src="../assets/images/a_strokes/a_stroke1.png" alt="Stroke 1"></ion-img>
       <ion-img src="../assets/images/a_strokes/a_stroke2.png" alt="Stroke 2">
       <ion-img src="../assets/images/a_strokes/a_stroke3.png" alt="Stroke 3"></ion-img>
+      <ion-item>
+          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}%</p>
+          </ion-item>
+          <ion-item>
+          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}%</p>
+          </ion-item>
+          <ion-item>
+          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}%</p>
+          </ion-item>
     */
 
   await alert.present();
@@ -197,13 +206,17 @@ export class UploadPage implements OnInit {
     return false;
   }
 
-  ifNormalNavbar(): boolean{
+  ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return false;
       }
     }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
 
     if (env.admin === true || env.superAdmin === true) {
       return false;

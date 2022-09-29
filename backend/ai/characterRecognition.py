@@ -23,7 +23,7 @@ class CharacterRecognition():
             test_data
             test_data
     """             
-    def createDatasets(self, path, train_size, test_size):
+    def createDatasets(self, path):
         print("\nCreating Data.....")
         train = os.path.join(path, 'train')
         test = os.path.join(path, 'test')
@@ -32,7 +32,7 @@ class CharacterRecognition():
         train_data = tf.keras.utils.image_dataset_from_directory(
             train, 
             shuffle = True, 
-            batch_size = train_size, 
+            batch_size = 1, 
             image_size = self.img_size,
             validation_split = 0.3,
             subset = "training",
@@ -41,13 +41,13 @@ class CharacterRecognition():
         test_data = tf.keras.utils.image_dataset_from_directory(
             test, 
             shuffle = True, 
-            batch_size = test_size, 
+            batch_size = 1, 
             image_size = self.img_size,
         )   
         val_data = tf.keras.utils.image_dataset_from_directory(
-            test, 
+            train, 
             shuffle = True, 
-            batch_size = train_size, 
+            batch_size = 1, 
             image_size = self.img_size,
             validation_split = 0.3,
             subset = "validation",
@@ -87,29 +87,36 @@ class CharacterRecognition():
     def createModel(self):  
         print('\nCreating the model......')  
       
-        rescale = tf.keras.layers.Rescaling(1./127.5, offset=-1)
-        self.train_data = self.train_data.map(lambda x, y: (rescale(x), y))
-        self.val_data = self.val_data.map(lambda x, y: (rescale(x), y)) 
-        # self.test_data = self.test_data.map(lambda x, y: (rescale(x), y)) 
-        
-        url = 'https://tfhub.dev/google/imagenet/resnet_v2_50/classification/5'
-        resnet = url
         img_shape = self.img_size + (3,)
-        base_model = hub.KerasLayer(
-            resnet,
-            input_shape = img_shape,
-            trainable = False
+        self.base_model = tf.keras.applications.MobileNetV2(
+            input_shape=img_shape,
+            include_top=False,
+            weights='imagenet'
         )
+        self.base_model.trainable = False
+        self.base_model.summary()
         
-        self.model = tf.keras.Sequential([
-            base_model,
-            tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
-        ])        
-        self.model.summary()
+        image_batch, label_batch = next(iter(self.train_data))
+        feature_batch = self.base_model(image_batch)
+        print(feature_batch.shape)
+
+        global_average_layer = tf.keras.layers.GlobalAveragePooling2D()
+        feature_batch_average = global_average_layer(feature_batch)
+        print(feature_batch_average.shape)
+        
+        prediction_layer = tf.keras.layers.Dense(len(self.data_classes), activation="softmax")
+        prediction_batch = prediction_layer(feature_batch_average)
+        print(prediction_batch.shape)
+      
+      
+        inputs = tf.keras.Input(shape=(224, 224, 3))
+        x = self.base_model(inputs, training=False)
+        x = global_average_layer(x)
+        x = tf.keras.layers.Dropout(0.2)(x)
+        outputs = prediction_layer(x)
+        self.model = tf.keras.Model(inputs, outputs)
                  
-        #compile the model
         self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
-                           #    optimizer='adam',
               loss=tf.keras.losses.SparseCategoricalCrossentropy(),
               metrics=['accuracy'])
         self.model.summary()
@@ -151,7 +158,26 @@ class CharacterRecognition():
             updates the model varables
     """ 
     def modelFinetune(self):
-        return None
+        print('Fine tuning the model......')
+        self.base_model.trainable = True
+        print('Number of layer in the base model: ', len(self.model.layers))
+        
+        fta = 50
+
+        for l in self.model.layers[:fta]:
+            l.trainable = False
+        
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.001),
+              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+              metrics=['accuracy'])
+        
+        self.model.summary()
+        hi = self.model.fit(
+            self.train_data,
+            validation_data=self.val_data,
+            epochs = self.e,
+            initial_epoch = self.history.epoch[-1]
+        )
     
     """StoreData:
             Saves the accuracy, loss and name of the model to a .json file
@@ -169,11 +195,15 @@ class CharacterRecognition():
         data["katakana"]["characterRecognition"].append(record)
         with open("models_data.json", "w") as w_file:
             json.dump(data, w_file, indent = 4)
+        self.model.save('models/'+ self.version + '.h5')
+        
     
 if __name__ == '__main__':
     version = input('model version: ')
+    path = input('data path: ')
     cr = CharacterRecognition(version, 0)
-    cr.createDatasets('katakana', 38950, 19950)
+    cr.createDatasets(path)
     cr.createModel()
     cr.trainModel()
+    cr.modelFinetune()
     cr.storeData()

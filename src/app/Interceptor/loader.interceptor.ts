@@ -23,7 +23,7 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('register')){
-            return this.generalIntercept(req,next);
+            return this.registerIntercept(req,next);
         }
 
         if(req.url.endsWith('upload')){
@@ -39,10 +39,6 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('forgot-password-password')){
-            return this.generalIntercept(req,next);
-        }
-
-        if(req.url.endsWith('register')){
             return this.generalIntercept(req,next);
         }
 
@@ -63,6 +59,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         }
 
         if(req.url.endsWith('admin/getFrequency')){
+            return this.generalIntercept(req,next);
+        }
+
+        if(req.url.endsWith('deleteUser')){
             return this.generalIntercept(req,next);
         }
     }
@@ -115,9 +115,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
+                            strokes: [0],
                             score: 0
                         }
                     };
@@ -128,9 +126,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
+                            strokes: [0],
                             score: -1
                         }
                     };
@@ -163,9 +159,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                         let score = new Object() as Score;
                         score = {
                             data: {
-                                stroke1: 0,
-                                stroke2: 0,
-                                stroke3: 0,
+                                strokes: [0],
                                 score: 0
                             }
                         };
@@ -188,7 +182,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     this.toast.showToast('Something went wrong on our side, Try again', 500);
                 }
                 else if (err.status === 401) {
-                    this.toast.showToast('Incorrect token entered', 401);
+                    this.toast.showToast('Intruder (User not authorized)', 401);
                 }
                 //show that there is an error in the upload page
                 return EMPTY;
@@ -212,6 +206,8 @@ export class LoadingInterceptor implements HttpInterceptor{
     }
 
     loginIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        this.startLoader('Logging In...');
+
         return next.handle(req).pipe(
             catchError(err => {
                 console.log('error' + err.status);
@@ -222,6 +218,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
                 }
                 //show that there is an error in the upload page
+                this.loadingController.dismiss();
                 return EMPTY;
             }),
             retryWhen(err => {
@@ -238,24 +235,60 @@ export class LoadingInterceptor implements HttpInterceptor{
                         return error;
                     })
                 );
-            })
+            }),
+            map((event: HttpEvent<any>) => {
+                if (event instanceof HttpResponse) {
+                    this.loadingController.dismiss();
+                }
+                return event;
+              })
         );
     }
 
+    registerIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        this.startLoader('Your profile is being created');
+
+        return next.handle(req).pipe(
+            catchError(err => {
+                console.log('error' + err.status);
+                if (err.status === 0) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 0);
+                }
+                else if (err.status === 500) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 500);
+                }
+                //show that there is an error in the upload page
+                this.loadingController.dismiss();
+                return EMPTY;
+            }),
+            retryWhen(err => {
+                let retryRequestCount = 1;// remove later
+                return err.pipe(
+                    delay(1000),
+                    map(error => {
+                        if(retryRequestCount === 2){
+                            throw error;
+                        }
+                        else{
+                            retryRequestCount++;
+                        }
+                        return error;
+                    })
+                );
+            }),
+            map((event: HttpEvent<any>) => {
+                if (event instanceof HttpResponse) {
+                    this.loadingController.dismiss();
+                }
+                return event;
+              })
+        );
+    }
+
+
     objDetectionIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-        this.loadingController.getTop().then( isloading => {
-            if (!isloading) {
-                this.loadingController.create({
-                    spinner: 'crescent',
-                    message: 'Detected items loading...',
-                    animated: true,
-                    cssClass: 'loader'
-                    // enterAnimation: this.animeBuilder.build ,
-                    // leaveAnimation: animeBuilder
-                }).then(loader => loader.present());
-            }
-        });
+        this.startLoader('Detected items loading...');
 
         return next.handle(req).pipe(
             catchError((err: HttpErrorResponse) => {
@@ -305,6 +338,19 @@ export class LoadingInterceptor implements HttpInterceptor{
         console.log(modal);
         return await modal.present();
       }
+
+    startLoader(msg: string){
+        this.loadingController.getTop().then( isloading => {
+            if (!isloading) {
+                this.loadingController.create({
+                    spinner: 'crescent',
+                    message: msg,
+                    animated: true,
+                    cssClass: 'loader'
+                }).then(loader => loader.present());
+            }
+        });
+    }
 
 }
 

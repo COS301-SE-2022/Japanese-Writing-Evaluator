@@ -16,6 +16,7 @@ export class AlphabetCategoryPage implements OnInit {
   style: string;
   heading: string;
 
+
   constructor(private route: ActivatedRoute, private router: Router ) { }
 
   ngOnInit() {
@@ -26,7 +27,7 @@ export class AlphabetCategoryPage implements OnInit {
     this.heading = this.category;
     let splitted = [];
 
-    if(this.category !== null && !this.category.includes(' ')){
+    if(this.category !== null && this.category !== ''){
       splitted = this.category.split(' ');
     }
     else{
@@ -48,8 +49,8 @@ export class AlphabetCategoryPage implements OnInit {
         this.currentJSON += 'Vowels';
       }
     }
-    console.log(this.currentJSON);
     this.getJSON();
+    console.log(this.jsonAlphabet);
   }
 
   getJSON(){
@@ -148,13 +149,17 @@ export class AlphabetCategoryPage implements OnInit {
 
   }
 
-  ifNormalNavbar(): boolean{
+  ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return false;
       }
     }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
 
     if (env.admin === true || env.superAdmin === true) {
       return false;

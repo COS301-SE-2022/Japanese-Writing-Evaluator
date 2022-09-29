@@ -10,6 +10,7 @@ import { AlphabetCategoryPage } from './alphabet-category.page';
 import { BlockTryCharComponent } from '.././block-try-char/block-try-char.component';
 import { NavbarModule } from 'src/app/shared/components/navbar/navbar.module';
 import { AdminNavBarModule } from 'src/app/shared/components/admin-nav-bar/admin-nav-bar.module';
+import { LogoutModule } from 'src/app/shared/components/logout/logout.module';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { AdminNavBarModule } from 'src/app/shared/components/admin-nav-bar/admin
     IonicModule,
     AlphabetCategoryPageRoutingModule,
     NavbarModule,
-    AdminNavBarModule
+    AdminNavBarModule,
+    LogoutModule
   ],
   declarations: [AlphabetCategoryPage, BlockTryCharComponent]
 })

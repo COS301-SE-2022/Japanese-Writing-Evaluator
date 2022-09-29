@@ -1,4 +1,14 @@
 <ion-content>
+  <div class="head" >
+    <ion-img class="logo" src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+    <p>
+      <strong>Upload</strong><br>
+      <em>"consistency is the key"</em><br>
+      Practice on paper without any line.
+    </p>
+  </div>
+
   <div class="horizontalflexbox">
     <div lines="none" id="backgroundDiv" >
       <div class="flexbox">
@@ -29,5 +39,8 @@
   </div>
   
 </ion-content>
-<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { SignUpPageRoutingModule } from './sign-up-routing.module';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { SignUpPage } from './sign-up.page';
-import {  HttpClientModule  } from '@angular/common/http';
 import { PasswordModule } from '../shared/components/password/password.module';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 
@@ -17,7 +16,6 @@ import { ToastComponent } from '../shared/components/toast/toast.component';
     FormsModule,
     IonicModule,
     SignUpPageRoutingModule,
-    HttpClientModule,
     PasswordModule,
   ],
   declarations: [SignUpPage],
