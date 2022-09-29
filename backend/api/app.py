@@ -141,16 +141,17 @@ def callViewImages():
 @app.route('/login', methods=['POST'])
 def login():
     headers = {'content-type': 'application/json'}
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
-    if user == None: 
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
+    if user.status_code == 401: 
         return jsonify({'response': "user not found."}), 401
-    else: 
+    else:   
         session["logged_in"] = True
+        print(user)
         token = jwt.encode({
-            'username' : user['username'],
-            'id': user['id'],
+            'username' : user.json()['response']['username'],
+            'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
 
 
 """
