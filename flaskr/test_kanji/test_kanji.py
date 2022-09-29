@@ -6,4 +6,4 @@ def test_config():
 
 def test_predict(client):
     user = client.post("/kanji")
-    assert user.status_code == 200
+    assert user.status_code == 401
