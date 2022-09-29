@@ -1,14 +1,14 @@
-Cypress.Commands.add('login', (username, pass) => {
-    cy.request({
-        method: 'POST',
-        url: 'http://localhost:8080/login',
-        body: { email: username, password: pass },
-    }).then(({ body }) => {
-        cy.log('data:'+body)
-        window.localStorage.setItem('id', body['data'][1].toString())
-        window.localStorage.setItem('token',body['user-token'].toString())
-    })
-})
+// Cypress.Commands.add('login', (username, pass) => {
+//     cy.request({
+//         method: 'POST',
+//         url: 'http://localhost:8080/login',
+//         body: { email: username, password: pass },
+//     }).then(({ body }) => {
+//         cy.log('data:'+body)
+//         window.localStorage.setItem('id', body['data'][1].toString())
+//         window.localStorage.setItem('token',body['user-token'].toString())
+//     })
+// })
 
 
 describe('User upload', () => {
