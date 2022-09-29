@@ -115,9 +115,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
+                            strokes: [0],
                             score: 0
                         }
                     };
@@ -128,9 +126,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     let score = new Object() as Score;
                     score = {
                         data: {
-                            stroke1: 0,
-                            stroke2: 0,
-                            stroke3: 0,
+                            strokes: [0],
                             score: -1
                         }
                     };
@@ -163,9 +159,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                         let score = new Object() as Score;
                         score = {
                             data: {
-                                stroke1: 0,
-                                stroke2: 0,
-                                stroke3: 0,
+                                strokes: [0],
                                 score: 0
                             }
                         };
@@ -218,14 +212,13 @@ export class LoadingInterceptor implements HttpInterceptor{
             catchError(err => {
                 console.log('error' + err.status);
                 if (err.status === 0) {
-                    this.loadingController.dismiss();
                     this.toast.showToast('Something went wrong on our side, Try again', 0);
                 }
                 else if (err.status === 401) {
-                    this.loadingController.dismiss();
                     this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
                 }
                 //show that there is an error in the upload page
+                this.loadingController.dismiss();
                 return EMPTY;
             }),
             retryWhen(err => {
@@ -259,14 +252,13 @@ export class LoadingInterceptor implements HttpInterceptor{
             catchError(err => {
                 console.log('error' + err.status);
                 if (err.status === 0) {
-                    this.loadingController.dismiss();
                     this.toast.showToast('Something went wrong on our side, Try again', 0);
                 }
                 else if (err.status === 500) {
-                    this.loadingController.dismiss();
                     this.toast.showToast('Something went wrong on our side, Try again', 500);
                 }
                 //show that there is an error in the upload page
+                this.loadingController.dismiss();
                 return EMPTY;
             }),
             retryWhen(err => {
