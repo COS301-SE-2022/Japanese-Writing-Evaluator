@@ -12,9 +12,7 @@ import { AppServiceService } from 'src/app/services/appService/app-service.servi
 export class PopoverSettingsComponent implements OnInit {
 
   list: string[];
-  
-  constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent,
-    private appService: AppServiceService) { }
+  constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent, private appService: AppServiceService) {}
 
   ngOnInit() {
     //list of the popover options
