@@ -18,7 +18,8 @@ import { RoleInfo} from 'src/app/shared/interfaces/roleInfo';
 })
 export class AppServiceService {
 
-  baseURL = 'http://localhost:8080/';//localhost is 10.0.2.2 for android studios (change to localhost for website)
+  baseURL = 'https://jwe-api-gateway-cplmvcuylq-uc.a.run.app/';
+  //localhost is 10.0.2.2 for android studios http://localhost:8080/(change to localhost for website)
   //https://flask-api-1-cplmvcuylq-uc.a.run.app/
   private characterImage: CharacterImage = {
     characterName: ' ',
