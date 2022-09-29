@@ -43,7 +43,7 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
+    send = requests.post(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
     return send.json()
     # return event_bus.eventResetPassword(str(request.json["email"]))
 
@@ -393,7 +393,7 @@ def callObjectDetection():
     image = request.json["image"]
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {'image': image})
-    res = data.json()["response"]
+    # res = data.json()["response"]
     # print(res)
     return data.json()
 
