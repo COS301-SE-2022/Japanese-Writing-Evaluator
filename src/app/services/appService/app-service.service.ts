@@ -177,6 +177,12 @@ export class AppServiceService {
     return this.httpclient.get<ModelsArray>(this.baseURL + 'admin/edit',{ headers: myheaders, observe: 'response'});
   }
 
+  removeUser(){
+    const myheaders = { 'content-type': 'application/json', 'user-token': ` ${localStorage.getItem('token')}`};
+    let userId = new Object() as Role;
+    userId = {id: localStorage.getItem('id')};
+    return this.httpclient.post(this.baseURL + 'deleteUser',userId,{ headers: myheaders, observe: 'response'});
+  }
 
   // getProgress(): Observable<HttpResponse<Progress>>{
   //   // get users progress, feedback for each character practiced

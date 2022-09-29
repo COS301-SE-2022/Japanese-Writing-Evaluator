@@ -154,6 +154,7 @@ def login():
         return jsonify({'response': "user not found."}), 401
     else:   
         session["logged_in"] = True
+        print(user)
         token = jwt.encode({
             'username' : user.json()['response']['username'],
             'id': user.json()['response']['id'],

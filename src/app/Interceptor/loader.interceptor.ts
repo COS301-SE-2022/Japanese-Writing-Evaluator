@@ -61,6 +61,10 @@ export class LoadingInterceptor implements HttpInterceptor{
         if(req.url.endsWith('admin/getFrequency')){
             return this.generalIntercept(req,next);
         }
+
+        if(req.url.endsWith('deleteUser')){
+            return this.generalIntercept(req,next);
+        }
     }
 
     uploadIntercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
