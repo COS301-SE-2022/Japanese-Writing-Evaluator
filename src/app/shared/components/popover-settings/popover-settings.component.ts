@@ -13,7 +13,7 @@ export class PopoverSettingsComponent implements OnInit {
 
   list: string[];
   // eslint-disable-next-line max-len
-  constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent, private appService: AppServiceService) {}
+  constructor(public popOverCtrl: PopoverController, public router: Router, public toast: ToastComponent, private appService: AppServiceService) {}
 
   ngOnInit() {
     //list of the popover options
