@@ -37,16 +37,6 @@ export class ModelsPage implements OnInit {
 
   }
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
-  }
-
 
 // function to create chart
   chartCreator(chartlabels: string[], accuracy: number[], loss: number[], canvas: ElementRef ){

@@ -24,4 +24,9 @@ describe('UploadPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('test ngOnInit', () => {
+    spyOn(component.service, 'getTryImage');
+    component.ngOnInit();
+    expect(component.service.getTryImage).toHaveBeenCalled();
+  });
 });

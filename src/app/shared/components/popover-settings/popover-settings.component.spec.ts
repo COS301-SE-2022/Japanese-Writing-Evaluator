@@ -23,4 +23,51 @@ describe('PopoverSettingsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('test popoverOption delete profile', () => {
+    const item = 'delete profile';
+    fixture.detectChanges();
+    spyOn(component, 'deleteProfile');
+    component.popoverOption(item);
+    expect(component.deleteProfile).toHaveBeenCalled();
+
+  });
+  it('test popoverOption logout', () => {
+    localStorage.setItem('id', '12345');
+    localStorage.setItem('token', 'user');
+
+    const item = 'logout';
+    spyOn(component, 'logout');
+    component.popoverOption(item);
+    expect(component.logout).toHaveBeenCalled();
+  });
+  it('test logout', () => {
+    localStorage.setItem('id', '12345');
+    localStorage.setItem('token', 'user');
+
+    spyOn(localStorage, 'removeItem');
+    spyOn(component.router, 'navigate');
+    spyOn(component, 'close');
+
+    component.logout();
+
+    expect(localStorage.removeItem).toHaveBeenCalled();
+    expect(component.router.navigate).toHaveBeenCalled();
+    expect(component.close).toHaveBeenCalled();
+  });
+  it('test deleteProfile', () => {
+    spyOn(component.router, 'navigate');
+    spyOn(component, 'close');
+    spyOn(component.toast, 'showToast');
+
+    component.deleteProfile();
+
+    expect(component.router.navigate).toHaveBeenCalled();
+    expect(component.close).toHaveBeenCalled();
+    expect(component.toast.showToast).toHaveBeenCalled();
+  });
+  it('test close', () => {
+    spyOn(component.popOverCtrl, 'dismiss');
+    component.deleteProfile();
+    expect(component.popOverCtrl.dismiss).toHaveBeenCalled();
+  });
 });

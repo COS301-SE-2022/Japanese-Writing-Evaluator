@@ -1,3 +1,4 @@
+import { environment as env } from 'src/environments/environment';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -61,6 +62,24 @@ describe('HomePage', () => {
   it('should have the correct title ', () => {
     const title = fixture.debugElement.query(By.css('strong')).nativeElement;
     expect(title.innerHTML).toBe('Welcome');
+  });
+  it('test ifNormalNavbar ', () => {
+    localStorage.setItem('id', ' admin');
+    env.admin = true;
+    env.superAdmin = false;
+    fixture.detectChanges();
+    const call = component.ifNormalNavbar();
+    expect(call).toBeFalse();
+  });
+  it('test ifGuest ', () => {
+    localStorage.setItem('id', 'guest');
+    let call = component.ifGuest();
+    expect(call).toBeTrue();
+
+    localStorage.setItem('id', 'guest');
+    call = component.ifGuest();
+    fixture.detectChanges();
+    expect(call).toBeTrue();
   });
 
 });

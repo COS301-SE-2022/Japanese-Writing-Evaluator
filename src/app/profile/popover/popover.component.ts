@@ -13,7 +13,7 @@ export class PopoverComponent implements OnInit {
   list: string[];
 
 
-  constructor(public modalController: ModalController, private popOverCtrl: PopoverController) {
+  constructor(public modalController: ModalController, public popOverCtrl: PopoverController) {
   }
 
   ngOnInit() {

@@ -15,7 +15,7 @@ export class ProfileBlockComponent implements OnInit {
   @Input() role: string;
   selectedRole: string;
 
-  constructor(private popCtrl: PopoverController) {
+  constructor(public popCtrl: PopoverController) {
   }
 
   ngOnInit() {}

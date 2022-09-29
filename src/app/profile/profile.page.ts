@@ -54,7 +54,6 @@ export class ProfilePage implements OnInit {
     if(details[0] !== undefined){
       this.userRoles.forEach(element => {
         if(element.username === details[1] && element.id !== undefined){
-          console.log(element.username);
           let obj = new Object() as RoleInfo;
           obj = {
             id: element.id,
@@ -93,16 +92,6 @@ export class ProfilePage implements OnInit {
     }
 
     return true;
-  }
-
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
   }
 
 }

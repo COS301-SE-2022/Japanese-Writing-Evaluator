@@ -37,7 +37,7 @@ export class ProgressPage implements OnInit {
 
   map = new Map();
 
-  constructor(private router: Router, private service: AppServiceService) { }
+  constructor(public router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
 

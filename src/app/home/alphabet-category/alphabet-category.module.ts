@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
-
+import { LogoutModule } from 'src/app/shared/components/logout/logout.module';
 import { AlphabetCategoryPageRoutingModule } from './alphabet-category-routing.module';
 
 import { AlphabetCategoryPage } from './alphabet-category.page';
@@ -18,7 +18,8 @@ import { AdminNavBarModule } from 'src/app/shared/components/admin-nav-bar/admin
     IonicModule,
     AlphabetCategoryPageRoutingModule,
     NavbarModule,
-    AdminNavBarModule
+    AdminNavBarModule,
+    LogoutModule
   ],
   declarations: [AlphabetCategoryPage, BlockTryCharComponent]
 })

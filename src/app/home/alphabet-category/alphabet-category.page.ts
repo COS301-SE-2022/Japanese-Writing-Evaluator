@@ -95,7 +95,7 @@ export class AlphabetCategoryPage implements OnInit {
 
       if(this.currentJSON === 'hiraganaGroupM')
       {
-        this.jsonAlphabet = character_sets.hiraganaGroupK;
+        this.jsonAlphabet = character_sets.hiraganaGroupM;
       }
 
       if(this.currentJSON === 'hiraganaGroupY')
@@ -105,7 +105,7 @@ export class AlphabetCategoryPage implements OnInit {
 
       if(this.currentJSON === 'hiraganaGroupR')
       {
-        this.jsonAlphabet = character_sets.hiraganaGroupK;
+        this.jsonAlphabet = character_sets.hiraganaGroupR;
       }
 
       if(this.currentJSON === 'hiraganaGroupW')
@@ -137,15 +137,6 @@ export class AlphabetCategoryPage implements OnInit {
       {
         this.jsonAlphabet = character_sets.hiraganaGroupP;
       }
-  }
-
-  onLogout(){
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
-    }
-    this.router.navigate(['/login']);
-
   }
 
   ifNormalNavbar(): boolean{

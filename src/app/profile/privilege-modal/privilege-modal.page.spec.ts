@@ -21,4 +21,15 @@ describe('PrivilegeModalPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('test close', () => {
+    spyOn(component.modalController, 'dismiss');
+    component.close();
+    expect(component.modalController.dismiss).toHaveBeenCalled();
+  });
+  it('test updatePrivileges', () => {
+    component.selectedRole = undefined;
+    spyOn(component.modalController, 'dismiss');
+    component.updatePrivileges();
+    expect(component.modalController.dismiss).toHaveBeenCalled();
+  });
 });

@@ -8,7 +8,7 @@ import { AppServiceService } from '../appService/app-service.service';
 })
 export class RouteguardService implements CanActivate {
 
-  constructor(private service: AppServiceService, private router: Router) { }
+  constructor(public service: AppServiceService, private router: Router) { }
   canActivate(): boolean {
     if (!this.service.isAuthenticated()) {
       this.router.navigate(['/login']);

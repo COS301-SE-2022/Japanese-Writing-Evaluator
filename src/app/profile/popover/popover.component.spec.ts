@@ -31,4 +31,21 @@ describe('PopoverComponent', () => {
     expect(component.presentModal).toHaveBeenCalled();
 
   });
+  it('presentModal creates modal', () => {
+    spyOn(component.modalController, 'create');
+    component.presentModal();
+    expect(component.modalController.create).toHaveBeenCalled();
+  });
+  it('test close function', () => {
+    component.selectedRole = undefined;
+    spyOn(component.popOverCtrl, 'dismiss');
+    component.close();
+    expect(component.popOverCtrl.dismiss).toHaveBeenCalled();
+
+    component.selectedRole = 'admin';
+    fixture.detectChanges();
+    component.close();
+    expect(component.popOverCtrl.dismiss).toHaveBeenCalled();
+  });
+
 });

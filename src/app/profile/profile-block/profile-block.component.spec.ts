@@ -21,4 +21,15 @@ describe('ProfileBlockComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  it('test roleEvent', () => {
+    spyOn(component.changeRoleEvent, 'emit');
+    component.roleEvent();
+    expect(component.changeRoleEvent.emit).toHaveBeenCalled();
+  });
+  it('test roleEvent', () => {
+    spyOn(component.popCtrl, 'create');
+    const event = new Event('');
+    component.openPopover(event);
+    expect(component.popCtrl.create).toHaveBeenCalled();
+  });
 });

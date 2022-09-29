@@ -12,7 +12,7 @@ export class PopoverSettingsComponent implements OnInit {
 
   list: string[];
 
-  constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent) { }
+  constructor(public popOverCtrl: PopoverController, public router: Router, public toast: ToastComponent) { }
 
   ngOnInit() {
     //list of the popover options

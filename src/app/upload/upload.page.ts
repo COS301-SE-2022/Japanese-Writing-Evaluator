@@ -22,7 +22,7 @@ export class UploadPage implements OnInit {
   private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
-  constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService) { }
+  constructor(public service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService) { }
 
   //TODO: get the character image to be practiced, #71, Phumu
   ngOnInit() {
@@ -88,13 +88,13 @@ export class UploadPage implements OnInit {
         <ion-img src="${charImageUrl}" alt="Correct ${this.characterImage.characterName} image"></ion-img>
         <div>
           <ion-item>
-          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}</p> 
+          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}</p>
           </ion-item>
           <ion-item>
-          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}</p> 
+          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}</p>
           </ion-item>
           <ion-item>
-          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}</p> 
+          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}</p>
           </ion-item>
         </div>`,
         buttons: [

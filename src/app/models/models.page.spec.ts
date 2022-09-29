@@ -111,12 +111,6 @@ describe('ModelsPage', () => {
     expect(component).toBeTruthy();
   });
 
-  //test if local storage is set to empty when logout is called
-  it('logout Function', () => {
-    component.onLogout();
-    expect(localStorage.getItem('token')).toBeNull();
-  });
-
   //test if the bar graph is actually created
   it('created bar graph', () => {
     component.ngOnInit();
