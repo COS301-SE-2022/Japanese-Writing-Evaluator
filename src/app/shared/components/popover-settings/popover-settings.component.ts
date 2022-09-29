@@ -12,6 +12,7 @@ import { AppServiceService } from 'src/app/services/appService/app-service.servi
 export class PopoverSettingsComponent implements OnInit {
 
   list: string[];
+  // eslint-disable-next-line max-len
   constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent, private appService: AppServiceService) {}
 
   ngOnInit() {
