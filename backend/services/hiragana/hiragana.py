@@ -92,10 +92,7 @@ def testhiragana(hiragana_model, img):
         print('\nprediction:\n', predicted_char)
         print('accuracy: ' + str(temp * 100) + '%')
         p = temp * 100
-        if predicted_char == 'a':
-            model = tf.keras.models.load_model('models/a_strokes.h5', compile=False) # to be changed to route from the cloud
-            strokes =  strokesModel(model, img, predicted_char)
-        elif predicted_char == 'i':
+        if predicted_char == 'i':
             model = tf.keras.models.load_model('models/i_strokes.h5', compile=False)
             strokes =  strokesModel(model, img, predicted_char)
         elif predicted_char == 'u':
