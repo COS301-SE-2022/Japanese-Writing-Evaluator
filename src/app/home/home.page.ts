@@ -37,22 +37,15 @@ export class HomePage implements OnInit {
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-
-  ifNormalNavbar(): boolean{
-    if (localStorage.getItem('id')) {
-      if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return false;
       }
     }
 
+    return true;
+  }
+
+
+  ifNormalNavbar(): boolean{
     if (env.admin === true || env.superAdmin === true) {
       return false;
     }

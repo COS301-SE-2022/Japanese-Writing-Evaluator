@@ -50,6 +50,7 @@ export class AlphabetCategoryPage implements OnInit {
       }
     }
     this.getJSON();
+    console.log(this.jsonAlphabet);
   }
 
   getJSON(){
@@ -138,13 +139,26 @@ export class AlphabetCategoryPage implements OnInit {
         this.jsonAlphabet = character_sets.hiraganaGroupP;
       }
   }
+  onLogout(){
+    localStorage.removeItem('id');
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+    }
+    this.router.navigate(['/login']);
 
-  ifNormalNavbar(): boolean{
+  }
+
+  ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
         return false;
       }
     }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
 
     if (env.admin === true || env.superAdmin === true) {
       return false;

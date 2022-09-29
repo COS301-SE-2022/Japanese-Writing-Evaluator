@@ -56,7 +56,8 @@ export class ProgressPage implements OnInit {
   // #177, Maryam Mohamad Al Mahdi
   manipulateScores() {
 //       // eslint-disable-next-line @typescript-eslint/prefer-for-of
-      this.progressArray.forEach(progress => {
+  //check if the user has progress
+  this.progressArray.forEach(progress => {
         let keyString = '';
         keyString += progress.character + '_';
         keyString += progress.writing_style;
@@ -165,13 +166,17 @@ export class ProgressPage implements OnInit {
       return Math.round(totalPercent/objArray.length);
   }
 
-  ifNormalNavbar(): boolean{
+  ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return false;
       }
     }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
 
     if (env.admin === true || env.superAdmin === true) {
       return false;

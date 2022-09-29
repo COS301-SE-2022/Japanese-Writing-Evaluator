@@ -83,42 +83,34 @@ def callRegister():
 @app.route('/upload', methods = ['POST'])
 @token_required
 def callUploadImage():
+    image = request.json["image"]
 
-    # return None
-    # return event_bus.eventSendImage(int(request.json["id"]), str(request.json["imagechar"]), str(request.json["image"]), str(request.json["file"]), str(request.json["style"]))
-    image = request.json["image"].partition(",")[2]
-    with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(image))
-
-        #############################################
-        #           EVALUATOR
-        #############################################
-    # e = Evaluator(writingStyle, imageChar)
-    # feedback = e.testCharacter() # call AI
-
-    ###################################
-    #       MAKE PROPER
-    ###################################
-    score = 1
-    if(score == 0):
-        return jsonify({'response': "image evaluation failed."}), 401
+    eval = 0
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    if(request.json["style"].lower() == "hiragana"):
+        eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image}, headers = headers)
+    elif(request.json["style"].lower() == "katakana"):
+        eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image}, headers = headers)
     else:
-        # exitcode = eventUploadImage(id, imageChar, image, file)
-        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
-        if(exitcode.status_code == 200):
-            # storeToDB = eventSaveToDB(id, file, imageChar, score, writingStyle)
-            storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
-            print(storeToDB)
-            if(storeToDB == "upload successful"):
-                # strokes = feedback[0]
-                strokes = [0, 1, 2]
-                return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
-            else:
-                return jsonify({'response': "Database storage failed"}), 401
-        else:
-            return jsonify({'response': "Storage to cloud service failed"}), 401
+        eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image}, headers = headers)
 
+    if(eval.status_code == 200):
+        score = eval.json()["score"]
+        strokes = eval.json()["strokes"]
+        if(score == 0):
+            return jsonify({'response': "image evaluation failed."}), 401
+        else:
+            exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+            if(exitcode.status_code == 200):
+                storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+                if(storeToDB == "upload successful"):
+                    return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
+                else:
+                    return jsonify({'response': "Database storage failed"}), 401
+            else:
+                return jsonify({'response': "Storage to cloud service failed"}), 401
+    else:
+        return eval.json()
 """
     callViewImages function:
         calls view image function from image.py
@@ -149,16 +141,17 @@ def callViewImages():
 @app.route('/login', methods=['POST'])
 def login():
     headers = {'content-type': 'application/json'}
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers).json()["response"]
-    if user == None: 
+    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
+    if user.status_code == 401: 
         return jsonify({'response': "user not found."}), 401
-    else: 
+    else:   
         session["logged_in"] = True
+        print(user)
         token = jwt.encode({
-            'username' : user['username'],
-            'id': user['id'],
+            'username' : user.json()['response']['username'],
+            'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
 
 
 """
@@ -200,7 +193,6 @@ def home():
     return:
         
 """
-@app.route("/email", methods=["GET"])
 @repeat(every().sunday)
 def email_users():
 
@@ -243,19 +235,16 @@ def email_users():
         # thisUser = event_bus.eventGetUser(i[0])
         print(i)
         user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
-        thisUser = user.json()["response"]
-        # print(thisUser["email"])
-        if(thisUser != None):
-            response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-
-            valid = response.json()['status']
-
-            if(valid == "valid"):
-                send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
-                print(send)
-                contain.append(send.json()["response"])
-            else:
-                contain.append("Failed")
+        if(user.status_code != 400):
+            thisUser = user.json()["response"]
+            if(thisUser != None):
+                response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+                valid = response.json()['status']
+                if(valid == "valid"):
+                    send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
+                    contain.append(send.json()["response"])
+                else:
+                    contain.append("Failed")
     
     if(contain.count("Failed") > 0):
         return jsonify({'response': "Failed"}), 401
@@ -273,22 +262,24 @@ def email_users():
 """
 @app.route('/guest/upload', methods = ['POST'])
 def callGuestUploadImage():
-    # return None
-    # return event_bus.eventGuestUplaodImage(str(request.json["imagechar"]), str(request.json["image"]), str(request.json["style"]))
-    image = request.json["image"].partition(",")[2]
-    with open("imageToSave.png", "wb") as fh:
-        fh.write(base64.b64decode(image))
-        
-    # e = Evaluator(style, imagechar)
-    # feedback = e.testCharacter() # call AI
-    # score = feedback[1]
-    score = 1
-    if score == 0:
-        return jsonify({'response': "image evaluation Failed."}), 401
+    image = request.json["image"]
+    eval = 0
+    if(request.json["style"].lower() == "hiragana"):
+        eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image})
+    elif(request.json["style"].lower() == "katakana"):
+        eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image})
     else:
-        # strokes = feedback[0]
-        strokes = [0, 1, 2]
-        return jsonify({'response': "image upload successful", 'data': {'stroke1' : strokes[0], 'stroke2': strokes[1], 'stroke3': strokes[2],'score': score}}), 200
+        eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image})
+
+    if eval.status_code == 200:
+        score = eval.json()["score"]
+        strokes = eval.json()["strokes"]
+        if score == 0:
+            return jsonify({'response': "image evaluation Failed."}), 401
+        else:
+            return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
+    else:
+        return eval.json()
 
 
 """
@@ -392,11 +383,9 @@ def callGetFrequency():
 def callObjectDetection():
     image = request.json["image"]
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {'image': image})
-    res = data.json()["response"]
-    # print(res)
+    data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {"image": image})
     return data.json()
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=False)

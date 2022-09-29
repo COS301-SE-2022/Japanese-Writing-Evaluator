@@ -67,7 +67,7 @@ export class UploadPage implements OnInit {
       });
     }
     else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
-      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString();
+      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString() + '%';
       const charImageUrl = '../assets/upload/' + this.characterImage.characterName + '.jpg';
       // let strokes = '';
       // let count = 1;
@@ -82,19 +82,19 @@ export class UploadPage implements OnInit {
         header: 'Character Accuracy',
         message: `
         <h1>${this.characterImage.url}</h1>${scoreMessage}
-        <h4>Your character</h4>
+        <h4>Your uploaded character</h4>
         <ion-img src="${this.userImage}"></ion-img>
-        <h4>Accurate character</h4>
+        <h4>Expected character</h4>
         <ion-img src="${charImageUrl}" alt="Correct ${this.characterImage.characterName} image"></ion-img>
         <div>
           <ion-item>
-          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}</p>
+          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}%</p> 
           </ion-item>
           <ion-item>
-          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}</p>
+          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}%</p> 
           </ion-item>
           <ion-item>
-          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}</p>
+          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}%</p> 
           </ion-item>
         </div>`,
         buttons: [
@@ -197,13 +197,17 @@ export class UploadPage implements OnInit {
     return false;
   }
 
-  ifNormalNavbar(): boolean{
+  ifGuest(): boolean{
     if (localStorage.getItem('id')) {
       if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
         return false;
       }
     }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
 
     if (env.admin === true || env.superAdmin === true) {
       return false;

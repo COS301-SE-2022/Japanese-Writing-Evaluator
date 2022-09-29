@@ -1,10 +1,12 @@
 <ion-content>
   <div class="head" >
+
+    <app-logout></app-logout>
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
     <app-logout></app-logout>
     <p>
       <strong>{{heading}}</strong><br>
-      Select which character we you would like to upload below.
+      Select which character you would like to upload below.
     </p>
 </div>
 
@@ -20,5 +22,7 @@
 
 </ion-content>
 
-<app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-<app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

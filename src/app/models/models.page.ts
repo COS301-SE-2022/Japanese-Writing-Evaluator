@@ -182,15 +182,19 @@ export class ModelsPage implements OnInit {
   }
 
   ifNormalNavbar(): boolean{
-    if (localStorage.getItem('id')) {
-      if (localStorage.getItem('id') === 'guest') {
-        //console.log(localStorage.getItem('id'));
-        return false;
-      }
-    }
 
     if (env.admin === true || env.superAdmin === true) {
       return false;
+    }
+
+    return true;
+  }
+
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return false;
+      }
     }
 
     return true;

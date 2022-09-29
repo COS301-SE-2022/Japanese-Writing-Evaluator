@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PopoverController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { ToastComponent } from '../toast/toast.component';
+import { AppServiceService } from 'src/app/services/appService/app-service.service';
 
 @Component({
   selector: 'app-popover-settings',
@@ -11,15 +12,16 @@ import { ToastComponent } from '../toast/toast.component';
 export class PopoverSettingsComponent implements OnInit {
 
   list: string[];
-
-  constructor(public popOverCtrl: PopoverController, public router: Router, public toast: ToastComponent) { }
+  
+  constructor(private popOverCtrl: PopoverController, private router: Router, private toast: ToastComponent,
+    private appService: AppServiceService) { }
 
   ngOnInit() {
     //list of the popover options
     this.list = ['logout', 'delete profile'];
   }
 
-    //TODO: when options are clicked the appropriate functions will be executed, #226, Maryam Mohamad Al Mahdi
+    //when options are clicked the appropriate functions will be executed, #226, Maryam Mohamad Al Mahdi
     popoverOption(item: string){
 
       if(item === this.list[0]){
@@ -31,7 +33,7 @@ export class PopoverSettingsComponent implements OnInit {
 
     }
 
-    //TODO: logs user out the app, #226, Maryam Mohamad Al Mahdi
+    // logs user out the app, #226, Maryam Mohamad Al Mahdi
     logout(){
       // this function logs the user out of the system
       localStorage.removeItem('id');
@@ -43,15 +45,19 @@ export class PopoverSettingsComponent implements OnInit {
       this.close();
     }
 
-    //TODO: allows user to delete their profile using a post request in app services, #226, Maryam Mohamad Al Mahdi
+    //allows user to delete their profile using a post request in app services, #226, Maryam Mohamad Al Mahdi
     deleteProfile(){
       //logic for delete
-      this.router.navigate(['/login']);
+      this.appService.removeUser().subscribe(res =>{
+        if (res.status === 200) {
+          this.toast.showToast('Successfully deleted', 200);
+          this.router.navigate(['/login']);
+        }
+      });
       this.close();
-      this.toast.showToast('Successfully deleted', 200);
     }
 
-    //TODO: closes the popover, #226, Maryam Mohamad Al Mahdi
+    //closes the popover, #226, Maryam Mohamad Al Mahdi
   close() {
     this.popOverCtrl.dismiss();
   }

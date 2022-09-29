@@ -1,4 +1,5 @@
-import { inject, TestBed } from '@angular/core/testing';
+import { Progress, UserProgress } from './../../shared/interfaces/progress';
+import { fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import { AppServiceService } from './app-service.service';
 import { UploadedImage } from '../../shared/interfaces/image';
