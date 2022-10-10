@@ -16,9 +16,10 @@ export class ObjectDetectionService {
   currentModal;
   photo: string;
   responseData: OdresponseElements[] = null;
-  baseURL = 'https://jwe-api-gateway-cplmvcuylq-uc.a.run.app/';
+  baseURL = 'http://localhost:8080/';
   //localhost is 10.0.2.2 for android studios (change to localhost for website),
   // link for deployed api: https://flask-api-1-cplmvcuylq-uc.a.run.app/
+  //https://jwe-api-gateway-cplmvcuylq-uc.a.run.app/
   constructor(private httpClient: HttpClient) { }
 
   //getter and setter for object detection modal
