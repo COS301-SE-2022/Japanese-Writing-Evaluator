@@ -135,7 +135,11 @@ def findUser():
     curr.execute(query, (email,))
     name = curr.fetchone()
     if(name != None):
-        send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
+        try:
+            send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
+        except:
+            return jsonify({"response": "Connection to email service failed"}), 400
+        
         res = send.json()
         token = addToken(email, res["token"])
         if(token == False):
@@ -211,7 +215,11 @@ def register():
             res = "User already exists"
             return jsonify({"response": res}), 409
         else:
-            verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            try:
+                verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+            except:
+                return jsonify({"response": "Email validation failed"}), 400
+        
             if(verify_email.status_code == 200):
                 salt = uuid.uuid4().hex
                 passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
@@ -301,7 +309,7 @@ def editUserPrivileges():
         json response
 """    
 @app.route("/admin/models", methods=["GET"]) 
-# @token_required
+@token_required
 def listModelData():
     res = getModels()
     if res != None:
@@ -467,5 +475,4 @@ def getAllUsers():
     return users
     
 if __name__ == '__main__':
-    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=False)
