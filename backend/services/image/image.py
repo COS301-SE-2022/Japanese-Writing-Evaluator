@@ -42,7 +42,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(img_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except Exception as e:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -75,7 +75,7 @@ def uploadImage():
             return jsonify({'response': "cloud storgae successful"}), 200
         else:
             return jsonify({'reponse': "upload unsuccessful"}), 400    
-    except Exception as e:
+    except Exception:
         return jsonify({'reponse': "upload unsuccessful"}), 400
 
 """
@@ -106,7 +106,7 @@ def viewImages():
             return jsonify({'response': response,}), 200
         else:
             return jsonify({'response': "view image failed."}), 401
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Connection to firebase failed"}), 400
 
 """

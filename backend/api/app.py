@@ -26,12 +26,15 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except Exception as e:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
     return decorated 
 
+authFail = "Connection to authentication service failed"
+fail = "Connection to evaluation service failed"
+imgDBFail = "Connection to image database service failed"
 """
     callResetPassword function:
         calls update password to change the password
@@ -46,16 +49,16 @@ def callResetPassword():
     try:
         send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
         return send.json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
     try:
         send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
         return send.json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
 """
     call Register function:
@@ -72,8 +75,8 @@ def callRegister():
     try:
         send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
         return send.json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
 """
     callUploadImage function:
@@ -95,22 +98,22 @@ def callUploadImage():
 
         try:
             eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image}, headers = headers)
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
 
     elif(request.json["style"].lower() == "katakana"):
 
         try:
             eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image}, headers = headers)
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
 
     else:
 
         try:
             eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image}, headers = headers)
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
 
     if(eval.status_code == 200):
         score = eval.json()["score"]
@@ -121,15 +124,15 @@ def callUploadImage():
 
             try:
                 exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
-            except Exception as e:
+            except Exception:
                 return jsonify({"response": "Connection to image service failed"}), 400
 
             if(exitcode.status_code == 200):
 
                 try:
                     storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
-                except Exception as e:
-                    return jsonify({"response": "Connection to image database service failed"}), 400
+                except Exception:
+                    return jsonify({"response": imgDBFail}), 400
 
                 if(storeToDB == "upload successful"):
                     return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
@@ -155,8 +158,8 @@ def callViewImages():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
         return send.json()
-    except Exception as e:
-        return jsonify({"response": "Connection to image database service failed"}), 400
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
 """
     login function:
@@ -172,8 +175,8 @@ def login():
     headers = {'content-type': 'application/json'}
     try:
         user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
     print(user.json()["response"])
     if user.status_code == 200: 
@@ -204,7 +207,7 @@ def logout():
         session["logged_in"] = False
         session.clear()
         return jsonify({"response": 'logged out'}), 200
-    except Exception as e:
+    except Exception:
         return jsonify({"response": 'Error'}), 401
         
 """
@@ -231,8 +234,8 @@ def home():
 def email_users():
     try:
         imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
-    except Exception as e:
-        return jsonify({"response": "Connection to image database service failed"}), 400
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
     users = imgs.json()["response"]
     keep = []
@@ -271,15 +274,15 @@ def email_users():
     for i in store:
         try:
             user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
-        except Exception as e:
-            return jsonify({"response": "Connection to authentication service failed"}), 400
+        except Exception:
+            return jsonify({"response": authFail}), 400
         
         if(user.status_code != 400):
             thisUser = user.json()["response"]
             if(thisUser != None):
                 try:
                     response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-                except Exception as e:
+                except Exception:
                     continue
 
                 valid = response.json()['status']
@@ -287,7 +290,7 @@ def email_users():
                     try:
                         send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
                         contain.append(send.json()["response"])
-                    except Exception as e:
+                    except Exception:
                         return jsonify({"response": "Connection to email service failed"}), 400
 
                 else:
@@ -314,20 +317,20 @@ def callGuestUploadImage():
     if(request.json["style"].lower() == "hiragana"):
         try:
             eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image})
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
         
     elif(request.json["style"].lower() == "katakana"):
         try:
             eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image})
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
         
     else:
         try:
             eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image})
-        except Exception as e:
-            return jsonify({"response": "Connection to evaluation service failed"}), 400
+        except Exception:
+            return jsonify({"response": fail}), 400
 
     if eval.status_code == 200:
         score = eval.json()["score"]
@@ -357,8 +360,8 @@ def callEditUserPrivileges():
         admin = request.json['admin']
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
 """
     callEditUserPrivileges function:
@@ -375,8 +378,8 @@ def callListModelData():
     try:
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
         
 """
     callViewModel function:
@@ -393,8 +396,8 @@ def callViewModel():
         version = request.json['version']
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
         
 """
     ListUsers function:
@@ -411,8 +414,8 @@ def callListUsers():
         id = request.json['id']
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
-    except Exception as e:
-        return jsonify({"response": "Connection to authentication service failed"}), 400
+    except Exception:
+        return jsonify({"response": authFail}), 400
         
 """
     getAnalytics function:
@@ -429,8 +432,8 @@ def callGetAnalytics():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
         return data.json()
-    except Exception as e:
-        return jsonify({"response": "Connection to image database service failed"}), 400
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
 @app.route('/admin/getFrequency', methods=["GET"])
 @token_required
@@ -438,8 +441,8 @@ def callGetFrequency():
     try:
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
-    except Exception as e:
-        return jsonify({"response": "Connection to image database service failed"}), 400
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
         
 """
     callObjectDetection function:
@@ -457,7 +460,7 @@ def callObjectDetection():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {"image": image})
         return data.json()
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Connection to object detection service failed"}), 400
 
 if __name__ == '__main__':

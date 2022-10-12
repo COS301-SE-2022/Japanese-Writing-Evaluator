@@ -29,7 +29,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(kanji_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except Exception as e:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   

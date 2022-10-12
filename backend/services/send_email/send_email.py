@@ -59,7 +59,7 @@ def forgotPasswordEmail():
                 return jsonify({'response': "email successfully sent", 'token': rand}), 200
         else:
                 return jsonify({'response': "email unsuccessfully sent"}), 401
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Failed"}), 400 
 
 """
@@ -98,7 +98,7 @@ def send_email():
         print(response.headers)
 
         return jsonify({"response": "Email successfully sent"}), 200 
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Failed"}), 400 
 
 if __name__ == '__main__':

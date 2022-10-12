@@ -35,7 +35,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(auth_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except Exception as e:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -72,7 +72,7 @@ def fetchSaltByToken(token):
         curr.execute(query, (token,))
         salt = curr.fetchone()
         return salt
-    except Exception as e:
+    except Exception:
         return 0
 
 """
@@ -142,13 +142,13 @@ def findUser():
         query = " SELECT username FROM users WHERE email = %s"
         curr.execute(query, (email,))
         name = curr.fetchone()
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Database connection failed"}), 400
 
     if(name != None):
         try:
             send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
-        except Exception as e:
+        except Exception:
             return jsonify({"response": "Connection to email service failed"}), 400
         
         res = send.json()
@@ -176,7 +176,7 @@ def addToken(email, token):
         curr.execute(query, (token, email))
         conn.commit()
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 """
@@ -202,7 +202,7 @@ def getUserByID():
             return jsonify({"response": res}), 200
         else:
             return jsonify({"response": "user does not exist"}), 400 
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "user does not exist"}), 400
 
 """
@@ -231,7 +231,7 @@ def register():
             else:
                 try:
                     verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-                except Exception as e:
+                except Exception:
                     return jsonify({"response": "Email validation failed"}), 400
             
                 if(verify_email.status_code == 200):
@@ -256,7 +256,7 @@ def getUserByEmail(email):
         curr.execute(query, (email,))
         name = curr.fetchone()
         return name
-    except Exception as e:
+    except Exception:
         return 0
 
 def addUser(username, password, email, admin, passwordSalt, avgScore):
@@ -265,7 +265,7 @@ def addUser(username, password, email, admin, passwordSalt, avgScore):
         curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
         conn.commit()
         return True
-    except Exception as e:
+    except Exception:
         return False
         
 """
@@ -305,7 +305,7 @@ def fetchSalt(email):
         curr.execute(query, (email,))
         salt = curr.fetchone()
         return salt
-    except Exception as e:
+    except Exception:
         return 0
 
 def getUser(password,email):
@@ -314,7 +314,7 @@ def getUser(password,email):
         curr.execute(q, (password,email))
         user = curr.fetchone()
         return user
-    except Exception as e:
+    except Exception:
         return 0
 
 """
@@ -458,7 +458,7 @@ def getAModel():
         curr.execute(q,)
         model = curr.fetchall()
         return model
-    except Exception as e:
+    except Exception:
         return None
     
 """
@@ -475,7 +475,7 @@ def getModels():
         curr.execute(q,)
         models = curr.fetchall()
         return models
-    except Exception as e:
+    except Exception:
         return None
     
 """

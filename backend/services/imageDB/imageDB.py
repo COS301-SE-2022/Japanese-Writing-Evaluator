@@ -35,7 +35,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(imgdb_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except Exception as e:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
@@ -71,7 +71,7 @@ def saveImage(id, image_path, image_char, score, writing_style):
         curr2.execute(upload_query, (id, image_path, image_char, writing_style, score, date.today()))
         conn2.commit()
         return True
-    except Exception as e:
+    except Exception:
         return False
 
 """
@@ -90,7 +90,7 @@ def getImages():
         view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
         curr2.execute(view_query, ([id]))
         images = curr2.fetchall()
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Database connection failed"}), 400
 
     if(len(images) > 0):
@@ -101,7 +101,7 @@ def getImages():
         try:
             call = requests.post(os.getenv("image") + "/viewImages", headers = headers, json = {"images": imgs})
             return call.json()
-        except Exception as e:
+        except Exception:
             return jsonify({"response": "Connection to image service failed"}), 400
         
     else:
@@ -287,7 +287,7 @@ def getImageUsers():
         curr2.execute(getUsers)
         users = curr2.fetchall()
         return users
-    except Exception as e:
+    except Exception:
         return 0
 
 if __name__ == '__main__':
