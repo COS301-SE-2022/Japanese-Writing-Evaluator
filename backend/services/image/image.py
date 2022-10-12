@@ -42,7 +42,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(img_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception as e:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -75,7 +75,7 @@ def uploadImage():
             return jsonify({'response': "cloud storgae successful"}), 200
         else:
             return jsonify({'reponse': "upload unsuccessful"}), 400    
-    except:
+    except Exception as e:
         return jsonify({'reponse': "upload unsuccessful"}), 400
 
 """
@@ -89,22 +89,25 @@ def uploadImage():
 @app.route("/viewImages", methods=["POST"])
 @token_required
 def viewImages():
-    images = request.json["images"]
-    if len(images) > 0:
-        response = []
-        for imgs in images:
-            style = imgs[4]
-            response.append({
-                "writing_style": style.lower(),
-                "url": storage.child(imgs[1]).get_url(user['idToken']),
-                "character": imgs[2],
-                "score": imgs[3],
-                "uploadDate": imgs[5]
-            })
+    try:
+        images = request.json["images"]
+        if len(images) > 0:
+            response = []
+            for imgs in images:
+                style = imgs[4]
+                response.append({
+                    "writing_style": style.lower(),
+                    "url": storage.child(imgs[1]).get_url(user['idToken']),
+                    "character": imgs[2],
+                    "score": imgs[3],
+                    "uploadDate": imgs[5]
+                })
 
-        return jsonify({'response': response,}), 200
-    else:
-        return jsonify({'response': "view image failed."}), 401
+            return jsonify({'response': response,}), 200
+        else:
+            return jsonify({'response': "view image failed."}), 401
+    except Exception as e:
+        return jsonify({"response": "Connection to firebase failed"}), 400
 
 """
     getCharacters function:
