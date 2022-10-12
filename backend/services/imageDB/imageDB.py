@@ -35,7 +35,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(imgdb_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception as e:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
@@ -66,10 +66,13 @@ def saveToDB():
         return jsonify({"response": "upload unsuccessful"}), 400
 
 def saveImage(id, image_path, image_char, score, writing_style):
-    upload_query = "INSERT INTO image(id, image_path, character, writing_style, score, upload_date) VALUES(%s, %s, %s, %s, %s, %s);"
-    curr2.execute(upload_query, (id, image_path, image_char, writing_style, score, date.today()))
-    conn2.commit()
-    return True
+    try:
+        upload_query = "INSERT INTO image(id, image_path, character, writing_style, score, upload_date) VALUES(%s, %s, %s, %s, %s, %s);"
+        curr2.execute(upload_query, (id, image_path, image_char, writing_style, score, date.today()))
+        conn2.commit()
+        return True
+    except Exception as e:
+        return False
 
 """
 getImages function:
@@ -82,10 +85,13 @@ return:
 @app.route("/getImages", methods=["POST"])
 @token_required
 def getImages():
-    id = request.json["id"]
-    view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
-    curr2.execute(view_query, ([id]))
-    images = curr2.fetchall()
+    try:
+        id = request.json["id"]
+        view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
+        curr2.execute(view_query, ([id]))
+        images = curr2.fetchall()
+    except Exception as e:
+        return jsonify({"response": "Database connection failed"}), 400
 
     if(len(images) > 0):
         imgs = []
@@ -95,7 +101,7 @@ def getImages():
         try:
             call = requests.post(os.getenv("image") + "/viewImages", headers = headers, json = {"images": imgs})
             return call.json()
-        except:
+        except Exception as e:
             return jsonify({"response": "Connection to image service failed"}), 400
         
     else:
@@ -206,62 +212,66 @@ def getUserAnalytics():
 @token_required
 def getFrequency():
     store = getImageUsers()
-    analytics = []
-    sum = 0
-    count = 0
     
-    months = []
-
-    for i in store:
-        year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        character = i[4].lower()
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
-        current = int(year) - 2022
-
-        if len(analytics) == 0 or current > len(analytics):
-            for j in store:
-                if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
-            analytics.append({
-                    "year": year,
-                    "months":[{
-                        "frequency": count,
-                        "month": month
-                    }]
-            })
-            months.append(month)
-            sum = 0
-            count = 0
+    if(store == 0):
+        return jsonify({"response": "No analytics"}), 200
+    else:
+        analytics = []
+        sum = 0
+        count = 0
         
-        elif year in analytics[current]["year"]:
-            if(month not in months):
+        months = []
+
+        for i in store:
+            year = i[5].strftime("%Y-%m-%d").split('-')[0]
+            character = i[4].lower()
+            month = i[5].strftime("%Y-%m-%d").split('-')[1]
+            current = int(year) - 2022
+
+            if len(analytics) == 0 or current > len(analytics):
                 for j in store:
-                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                    if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
                         sum += j[3]
                         count += 1
+                analytics.append({
+                        "year": year,
+                        "months":[{
+                            "frequency": count,
+                            "month": month
+                        }]
+                })
                 months.append(month)
-                analytics[current]["months"].append({"month": month, "frequency": count})
-                count = 0
                 sum = 0
-        else:
-            months.clear()
-            for j in store:
-                if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    sum += j[3]
-                    count += 1
-            analytics.append({
-                    "year": year,
-                    "months":[{
-                        "month": month,
-                        "frequency": count
-                    }]
-            })
-            months.append(month)
-            sum = 0
-            count = 0
+                count = 0
             
-    return jsonify({'response': analytics}), 200    
+            elif year in analytics[current]["year"]:
+                if(month not in months):
+                    for j in store:
+                        if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                            sum += j[3]
+                            count += 1
+                    months.append(month)
+                    analytics[current]["months"].append({"month": month, "frequency": count})
+                    count = 0
+                    sum = 0
+            else:
+                months.clear()
+                for j in store:
+                    if year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        sum += j[3]
+                        count += 1
+                analytics.append({
+                        "year": year,
+                        "months":[{
+                            "month": month,
+                            "frequency": count
+                        }]
+                })
+                months.append(month)
+                sum = 0
+                count = 0
+                
+        return jsonify({'response': analytics}), 200    
 
 """
     getImageUsers function:
@@ -272,10 +282,13 @@ def getFrequency():
         array of all entries in image database
 """
 def getImageUsers():
-    getUsers = "SELECT * FROM image";
-    curr2.execute(getUsers)
-    users = curr2.fetchall()
-    return users
+    try:
+        getUsers = "SELECT * FROM image";
+        curr2.execute(getUsers)
+        users = curr2.fetchall()
+        return users
+    except Exception as e:
+        return 0
 
 if __name__ == '__main__':
     app.run(port=int(os.environ.get("PORT", 5003)),host='0.0.0.0',debug=False)
