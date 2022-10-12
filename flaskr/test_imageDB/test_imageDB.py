@@ -26,7 +26,7 @@ def test_getImages_pass(client):
 def test_getImages_no_images(client):
     headers = {'content-type': 'application/json', 'user-token': os.getenv("token")}
     res = client.post("/getImages", headers = headers, json = {"id": 52})
-    assert res.status_code == 400
+    assert res.status_code == 401
 
 def test_getImageUsers_pass(client):
     headers = {'content-type': 'application/json', 'user-token': os.getenv("token")}
