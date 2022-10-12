@@ -56,7 +56,7 @@ def resetPassword():
     password = request.json["password"]
     salt = fetchSaltByToken(token)
     if(salt == 0):
-        return jsonify({"response": "User password token not found"}), 400
+        return jsonify({"response": "User password token not found"}), 401
     else:
         new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
         
@@ -223,7 +223,7 @@ def register():
         Finduser = getUserByEmail(email)
         
         if(Finduser == 0):
-            return jsonify({"response": "Database connection failed"}), 400
+            return jsonify({"response": "Database connection failed"}), 401
         else:
             if Finduser != None:
                 res = "User already exists"
@@ -232,7 +232,7 @@ def register():
                 try:
                     verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
                 except Exception:
-                    return jsonify({"response": "Email validation failed"}), 400
+                    return jsonify({"response": "Email validation failed"}), 401
             
                 if(verify_email.status_code == 200):
                     salt = uuid.uuid4().hex

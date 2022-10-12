@@ -125,88 +125,92 @@ def getImage():
 
 @app.route("/getUserAnalytics", methods=["GET"])
 def getUserAnalytics():
+    
     store = getImageUsers()
-    analytics = []
+    if(store == 0):
+        return jsonify({"response": "Database Connection Failed"}), 400
+    else:
+        analytics = []
 
-    analytics_months = []
-    styles = []
-    analytics_sum = 0
-    analytics_count = 0
+        analytics_months = []
+        styles = []
+        analytics_sum = 0
+        analytics_count = 0
 
-    for i in store:
-        year = i[5].strftime("%Y-%m-%d").split('-')[0]
-        character = i[4].lower()
-        month = i[5].strftime("%Y-%m-%d").split('-')[1]
-        current = int(year) - 2022
+        for i in store:
+            year = i[5].strftime("%Y-%m-%d").split('-')[0]
+            character = i[4].lower()
+            month = i[5].strftime("%Y-%m-%d").split('-')[1]
+            current = int(year) - 2022
 
-        if len(analytics) == 0 or current > len(analytics):
+            if len(analytics) == 0 or current > len(analytics):
 
-            for j in store:
-                if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    analytics_count += 1
-                    analytics_sum += j[3]
-            analytics.append({
-                "year": year,
-                "months": [{
-                    "month": month,
-                    "writingStyles": [{
-                        "writingStyle": character,
-                        "averageScore": analytics_sum/analytics_count
-                    }]
-                }]
-            })
-            styles.append(character)
-            analytics_count = 0
-            analytics_months.append(month)
-            analytics_sum = 0
-
-        elif year in analytics[current]["year"]:
-            if(month not in analytics_months):
-                styles.clear()
                 for j in store:
                     if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                        analytics_sum += j[3]
                         analytics_count += 1
-                analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": analytics_sum/analytics_count, "writingStyle": character}]})
-                analytics_months.append(month)
-                analytics_sum = 0
+                        analytics_sum += j[3]
+                analytics.append({
+                    "year": year,
+                    "months": [{
+                        "month": month,
+                        "writingStyles": [{
+                            "writingStyle": character,
+                            "averageScore": analytics_sum/analytics_count
+                        }]
+                    }]
+                })
                 styles.append(character)
                 analytics_count = 0
+                analytics_months.append(month)
+                analytics_sum = 0
 
-            else:
-                if(character not in styles):
+            elif year in analytics[current]["year"]:
+                if(month not in analytics_months):
+                    styles.clear()
                     for j in store:
                         if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
                             analytics_sum += j[3]
                             analytics_count += 1
-                    analytics[current]["months"][analytics_months.index(month)]["writingStyles"].append({"averageScore": analytics_sum/analytics_count, "writingStyle": character})
+                    analytics[current]["months"].append({"month": month, "writingStyles": [{"averageScore": analytics_sum/analytics_count, "writingStyle": character}]})
+                    analytics_months.append(month)
                     analytics_sum = 0
                     styles.append(character)
                     analytics_count = 0
 
-        else:
-            analytics_months.clear()
-            styles.clear()
-            for j in store:
-                if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
-                    analytics_count += 1
-                    analytics_sum += j[3]
-            analytics_sum = 0
-            analytics_count = 0
-            analytics.append({
-                "months": [{
-                    "writingStyles": [{
-                        "averageScore": analytics_sum/analytics_count,
-                        "writingStyle": character
-                    }],
-                    "month": month
-                }],
-                "year": year
-            })
-            analytics_months.append(month)
-            styles.append(character)
+                else:
+                    if(character not in styles):
+                        for j in store:
+                            if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                                analytics_sum += j[3]
+                                analytics_count += 1
+                        analytics[current]["months"][analytics_months.index(month)]["writingStyles"].append({"averageScore": analytics_sum/analytics_count, "writingStyle": character})
+                        analytics_sum = 0
+                        styles.append(character)
+                        analytics_count = 0
 
-    return jsonify({'response': analytics}), 200    
+            else:
+                analytics_months.clear()
+                styles.clear()
+                for j in store:
+                    if j[4].lower() == character and year == j[5].strftime("%Y-%m-%d").split('-')[0] and month == j[5].strftime("%Y-%m-%d").split('-')[1]:
+                        analytics_count += 1
+                        analytics_sum += j[3]
+                analytics_sum = 0
+                analytics_count = 0
+                analytics.append({
+                    "months": [{
+                        "writingStyles": [{
+                            "averageScore": analytics_sum/analytics_count,
+                            "writingStyle": character
+                        }],
+                        "month": month
+                    }],
+                    "year": year
+                })
+                analytics_months.append(month)
+                styles.append(character)
+
+        return jsonify({'response': analytics}), 200    
 
 @app.route("/getFrequency", methods=["GET"])
 @token_required
@@ -214,7 +218,7 @@ def getFrequency():
     store = getImageUsers()
     
     if(store == 0):
-        return jsonify({"response": "No analytics"}), 200
+        return jsonify({"response": "Database connection failed"}), 400
     else:
         analytics = []
         sum = 0

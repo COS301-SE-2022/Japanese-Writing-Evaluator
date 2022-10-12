@@ -58,7 +58,7 @@ def resetPassword():
         send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
         return send.json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
 
 """
     call Register function:
@@ -76,7 +76,7 @@ def callRegister():
         send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
         return send.json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
 
 """
     callUploadImage function:
@@ -99,21 +99,21 @@ def callUploadImage():
         try:
             eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image}, headers = headers)
         except Exception:
-            return jsonify({"response": fail}), 400
+            return jsonify({"response": fail}), 401
 
     elif(request.json["style"].lower() == "katakana"):
 
         try:
             eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image}, headers = headers)
         except Exception:
-            return jsonify({"response": fail}), 400
+            return jsonify({"response": fail}), 401
 
     else:
 
         try:
             eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image}, headers = headers)
         except Exception:
-            return jsonify({"response": fail}), 400
+            return jsonify({"response": fail}), 401
 
     if(eval.status_code == 200):
         score = eval.json()["score"]
@@ -132,7 +132,7 @@ def callUploadImage():
                 try:
                     storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
                 except Exception:
-                    return jsonify({"response": imgDBFail}), 400
+                    return jsonify({"response": imgDBFail}), 401
 
                 if(storeToDB == "upload successful"):
                     return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
@@ -176,7 +176,7 @@ def login():
     try:
         user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
 
     print(user.json()["response"])
     if user.status_code == 200: 
@@ -361,7 +361,7 @@ def callEditUserPrivileges():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
 
 """
     callEditUserPrivileges function:
@@ -379,7 +379,7 @@ def callListModelData():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
         
 """
     callViewModel function:
@@ -397,7 +397,7 @@ def callViewModel():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
         
 """
     ListUsers function:
@@ -415,7 +415,7 @@ def callListUsers():
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
         return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
     except Exception:
-        return jsonify({"response": authFail}), 400
+        return jsonify({"response": authFail}), 401
         
 """
     getAnalytics function:
