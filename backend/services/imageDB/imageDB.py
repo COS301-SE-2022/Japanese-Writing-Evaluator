@@ -88,13 +88,16 @@ def getImages():
     images = curr2.fetchall()
 
     if(len(images) > 0):
-        # print(images)
         imgs = []
         for i in images:
             imgs.append((i[0], i[1], i[2], i[3], i[4], i[5].strftime("%Y-%m-%d")))
         headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-        call = requests.post(os.getenv("image") + "/viewImages", headers = headers, json = {"images": imgs})
-        return call.json()
+        try:
+            call = requests.post(os.getenv("image") + "/viewImages", headers = headers, json = {"images": imgs})
+            return call.json()
+        except:
+            return jsonify({"response": "Connection to image service failed"}), 400
+        
     else:
         return jsonify({'response': "no user images"}), 400    
 
@@ -275,6 +278,4 @@ def getImageUsers():
     return users
 
 if __name__ == '__main__':
-    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    # app.run(debug = True, port = 5003)
     app.run(port=int(os.environ.get("PORT", 5003)),host='0.0.0.0',debug=False)
