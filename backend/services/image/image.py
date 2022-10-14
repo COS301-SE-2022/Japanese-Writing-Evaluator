@@ -108,6 +108,30 @@ def viewImages():
     else:
         return jsonify({'response': "view image failed."}), 401
 
+@app.route("/delete", methods=["DELETE"])
+@token_required
+def firebaseDelete():
+    paths = request.json["paths"]
+    # print(paths)
+    
+    unable = []
+    for i in paths:
+        res = deleteFromStorage(i)
+        # print(json.load(res))
+        if(res[0] == False):
+            unable.append(res[1])
+    if(len(unable) > 0):
+        return jsonify({"response": "Successfully deleted from storage, the following images where not found", "images": unable}), 203
+    else:
+        return jsonify({"response": "Successfully deleted from storage"}), 200
+
+def deleteFromStorage(path):
+    try:
+        storage.delete(path)
+        return (True, path)
+    except Exception:
+        return (False, path)
+
 """
     getCharacters function:
         gets all the Hiragana charatcers from the firebase storage
