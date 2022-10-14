@@ -26,12 +26,15 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
     return decorated 
 
+authFail = "Connection to authentication service failed"
+fail = "Connection to evaluation service failed"
+imgDBFail = "Connection to image database service failed"
 """
     callResetPassword function:
         calls update password to change the password
@@ -43,16 +46,19 @@ def token_required(function):
 """
 @app.route('/forgot-password-email', methods = ['POST'])
 def callResetPassword():
-    send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
-    return send.json()
-    # return event_bus.eventResetPassword(str(request.json["email"]))
+    try:
+        send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
+        return send.json()
+    except Exception:
+        return jsonify({"response": authFail}), 400
 
 @app.route('/forgot-password-password', methods = ['PUT'])
 def resetPassword():
-
-    send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
-    return send.json()
-    # return event_bus.eventChangePassword(str(request.json["token"]), str(request.json["password"]))
+    try:
+        send = requests.put(os.getenv("authentication") + "/reset-password", json = {"token": request.json['token'], "password": request.json['password']})
+        return send.json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
 
 """
     call Register function:
@@ -66,10 +72,11 @@ def resetPassword():
 """
 @app.route('/register', methods = ['POST'])
 def callRegister():
-
-    send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
-    return send.json()
-    # return event_bus.eventRegister(str(request.json['email']), str(request.json['password']), str(request.json['username']))
+    try:
+        send = requests.post(os.getenv("authentication") + "/register", json = {"email": request.json['email'], "password": request.json['password'], "username": request.json['username']})
+        return send.json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
 
 """
     callUploadImage function:
@@ -88,11 +95,25 @@ def callUploadImage():
     eval = 0
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     if(request.json["style"].lower() == "hiragana"):
-        eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image}, headers = headers)
+
+        try:
+            eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image}, headers = headers)
+        except Exception:
+            return jsonify({"response": fail}), 401
+
     elif(request.json["style"].lower() == "katakana"):
-        eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image}, headers = headers)
+
+        try:
+            eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image}, headers = headers)
+        except Exception:
+            return jsonify({"response": fail}), 401
+
     else:
-        eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image}, headers = headers)
+
+        try:
+            eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image}, headers = headers)
+        except Exception:
+            return jsonify({"response": fail}), 401
 
     if(eval.status_code == 200):
         score = eval.json()["score"]
@@ -100,9 +121,19 @@ def callUploadImage():
         if(score == 0):
             return jsonify({'response': "image evaluation failed."}), 401
         else:
-            exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+
+            try:
+                exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+            except Exception:
+                return jsonify({"response": "Connection to image service failed"}), 400
+
             if(exitcode.status_code == 200):
-                storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+
+                try:
+                    storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+                except Exception:
+                    return jsonify({"response": imgDBFail}), 401
+
                 if(storeToDB == "upload successful"):
                     return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
                 else:
@@ -123,11 +154,12 @@ def callUploadImage():
 @app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
-
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
-    return send.json()
-    # return event_bus.eventViewImages(int(request.json["id"]))
+    try:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        send = requests.post(os.getenv("imageDB") + "/getImages", headers = headers, json = {"id": request.json["id"]})
+        return send.json()
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
 """
     login function:
@@ -141,17 +173,23 @@ def callViewImages():
 @app.route('/login', methods=['POST'])
 def login():
     headers = {'content-type': 'application/json'}
-    user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
-    if user.status_code == 401: 
-        return jsonify({'response': "user not found."}), 401
-    else:   
+    try:
+        user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
+    except Exception:
+        return jsonify({"response": authFail}), 401
+
+    print(user.json()["response"])
+    if user.status_code == 200: 
         session["logged_in"] = True
-        print(user)
         token = jwt.encode({
             'username' : user.json()['response']['username'],
             'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
+        
+    else:
+        return jsonify({'response': "user not found."}), 401   
+
 
 
 """
@@ -169,7 +207,7 @@ def logout():
         session["logged_in"] = False
         session.clear()
         return jsonify({"response": 'logged out'}), 200
-    except:
+    except Exception:
         return jsonify({"response": 'Error'}), 401
         
 """
@@ -183,7 +221,6 @@ def logout():
 @app.route('/home', methods=['GET'])
 def home():
     return None
-    # return event_bus.eventGetCharacters()
 
 """
     email function:
@@ -195,8 +232,11 @@ def home():
 """
 @repeat(every().sunday)
 def email_users():
+    try:
+        imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
-    imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
     users = imgs.json()["response"]
     keep = []
     c = 0
@@ -232,17 +272,27 @@ def email_users():
 
     contain = []
     for i in store:
-        # thisUser = event_bus.eventGetUser(i[0])
-        print(i)
-        user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
+        try:
+            user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
+        except Exception:
+            return jsonify({"response": authFail}), 400
+        
         if(user.status_code != 400):
             thisUser = user.json()["response"]
             if(thisUser != None):
-                response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+                try:
+                    response = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': thisUser['email']}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+                except Exception:
+                    continue
+
                 valid = response.json()['status']
                 if(valid == "valid"):
-                    send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
-                    contain.append(send.json()["response"])
+                    try:
+                        send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
+                        contain.append(send.json()["response"])
+                    except Exception:
+                        return jsonify({"response": "Connection to email service failed"}), 400
+
                 else:
                     contain.append("Failed")
     
@@ -265,11 +315,22 @@ def callGuestUploadImage():
     image = request.json["image"]
     eval = 0
     if(request.json["style"].lower() == "hiragana"):
-        eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image})
+        try:
+            eval = requests.post(os.getenv("hiragana") + "/hiragana", json = {"image": image})
+        except Exception:
+            return jsonify({"response": fail}), 400
+        
     elif(request.json["style"].lower() == "katakana"):
-        eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image})
+        try:
+            eval = requests.post(os.getenv("katakana") + "/katakana", json = {"image": image})
+        except Exception:
+            return jsonify({"response": fail}), 400
+        
     else:
-        eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image})
+        try:
+            eval = requests.post(os.getenv("kanji") + "/kanji", json = {"image": image})
+        except Exception:
+            return jsonify({"response": fail}), 400
 
     if eval.status_code == 200:
         score = eval.json()["score"]
@@ -294,11 +355,13 @@ def callGuestUploadImage():
 @app.route('/admin/edit', methods = ['POST'])
 @token_required
 def callEditUserPrivileges():
-
-    id = request.json['id']
-    admin = request.json['admin']
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
+    try:
+        id = request.json['id']
+        admin = request.json['admin']
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        return requests.post(os.getenv("authentication") + "/admin/edit", headers = headers, json = {"id": id, "admin": admin}).json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
 
 """
     callEditUserPrivileges function:
@@ -312,10 +375,12 @@ def callEditUserPrivileges():
 @app.route('/admin/models', methods = ['GET'])
 @token_required
 def callListModelData():
-
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
-
+    try:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        return requests.get(os.getenv("authentication") + "/admin/models", headers = headers).json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
+        
 """
     callViewModel function:
         calls viewModel frunction from admin.py
@@ -327,11 +392,13 @@ def callListModelData():
 @app.route('/admin/view-model', methods = ['POST'])
 @token_required
 def callViewModel():
-
-    version = request.json['version']
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
-
+    try:
+        version = request.json['version']
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        return requests.post(os.getenv("authentication") + "/admin/view-model", headers = headers, json = {"version": version}).json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
+        
 """
     ListUsers function:
         calls event_bus.py listUsers function
@@ -343,10 +410,13 @@ def callViewModel():
 @app.route('/admin/view-users', methods=['POST'])
 @token_required
 def callListUsers():
-    id = request.json['id']
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
-
+    try:
+        id = request.json['id']
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        return requests.post(os.getenv("authentication") + "/admin/users", headers = headers, json = {"id": id}).json()
+    except Exception:
+        return jsonify({"response": authFail}), 401
+        
 """
     getAnalytics function:
         calls event_bus.py getAnalytics function
@@ -358,18 +428,22 @@ def callListUsers():
 @app.route('/admin/analytics', methods=['GET'])
 @token_required
 def callGetAnalytics():
-    # return None
-    # return event_bus.eventGetAnalytics()
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
-    return data.json()
+    try:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        data = requests.get(os.getenv("imageDB") + "/getUserAnalytics", headers = headers)
+        return data.json()
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
 
 @app.route('/admin/getFrequency', methods=["GET"])
 @token_required
 def callGetFrequency():
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
-
+    try:
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
+    except Exception:
+        return jsonify({"response": imgDBFail}), 400
+        
 """
     callObjectDetection function:
         calls the object detection which detects objects in image
@@ -381,10 +455,13 @@ def callGetFrequency():
 @app.route('/object-detection', methods = ['POST'])
 @token_required
 def callObjectDetection():
-    image = request.json["image"]
-    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
-    data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {"image": image})
-    return data.json()
+    try:
+        image = request.json["image"]
+        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+        data = requests.post(os.getenv("detect") + '/detect', headers = headers, json = {"image": image})
+        return data.json()
+    except Exception:
+        return jsonify({"response": "Connection to object detection service failed"}), 400
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)

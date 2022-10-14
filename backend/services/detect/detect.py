@@ -30,7 +30,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(detect_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -61,12 +61,8 @@ def detect():
         results = model(im)
         res = str(results.pandas().xyxy[0])
         splitted = res.split('name')
-        
-        # print(results.print())
 
         classes = re.findall(r'[a-zA-Z]+', splitted[1])
-        # print(classes)
-        # print(len(classes))
 
         store = []
         for i in classes:
@@ -77,7 +73,6 @@ def detect():
 
         translator = Translator()
         convert = pykakasi.kakasi()
-        # store = translator.translate(text1, "ja", "en")
 
         words = []
         for i in store:
@@ -101,9 +96,8 @@ def detect():
                 })
 
         return jsonify({'response': words}), 200
-    except Exception as e:
-        return jsonify({'response': "please upload a valid image"}), 400
+    except Exception:
+        return jsonify({'response': "Object detection failed"}), 400
         
 if __name__ == '__main__':
-    # app.run(debug = True, host='0.0.0.0', port=5001)
     app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=False)
