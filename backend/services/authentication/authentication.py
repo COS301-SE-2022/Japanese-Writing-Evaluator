@@ -466,6 +466,25 @@ def getAllUsers():
     users = curr.fetchall()
     return users
     
+@app.route("/delete", methods=["DELETE"])
+@token_required
+def deleteUser():
+    delete = deleteUserCred(request.json["id"])
+    if(delete == True):
+        return jsonify({"response": "User successfully deleted"}), 200
+    else:
+        return jsonify({"response": "User deletion failed"}), 400
+
+def deleteUserCred(id):
+    try:
+        delete = "DELETE FROM users WHERE userid=%s"
+        curr.execute(delete, (id,))
+        conn.commit()
+        return True
+    except Exception:
+        return False
+
+
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=False)
