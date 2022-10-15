@@ -36,6 +36,7 @@
     "@ionic-native/core": "^5.36.0",
     "@ionic/angular": "^6.0.0",
     "@ionic/cordova-builders": "7.0.0",
+    "angular2-signaturepad": "^4.0.2",
     "angularfire2": "^5.4.2",
     "chart.js": "2.9.4",
     "cordova-base64-to-gallery": "^4.1.3",
