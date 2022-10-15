@@ -13,7 +13,7 @@ import { UploadPage } from './upload.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    UploadPageRoutingModule
+    UploadPageRoutingModule,
   ],
   declarations: [UploadPage]
 })
