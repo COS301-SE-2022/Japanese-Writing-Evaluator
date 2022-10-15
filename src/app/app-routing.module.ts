@@ -42,7 +42,11 @@ const routes: Routes = [
   {
     path: 'dashboard',
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },  {
+    path: 'draw-pad',
+    loadChildren: () => import('./draw-pad/draw-pad.module').then( m => m.DrawPadPageModule)
   },
+
 
 
 ];
