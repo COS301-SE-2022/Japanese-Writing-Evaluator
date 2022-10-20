@@ -1,8 +1,7 @@
 <ion-content [fullscreen]="true">
   <div class="head" >
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
-
+    <app-logout></app-logout>
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
@@ -21,27 +20,8 @@
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-tab-bar>
-    <ion-tabs>
-      <ion-row>
-        <ion-col size="6">
-          <a (click)="setHome()">
-            <ion-tab-button >
-              <ion-icon name="language"></ion-icon>
-              <ion-label>Characters</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-        <ion-col size="4">
-          <a>
-            <ion-tab-button >
-              <ion-icon name="analytics"></ion-icon>
-              <ion-label>Progress</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-      </ion-row>
-    </ion-tabs>
-  </ion-tab-bar>
-</ion-footer>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>
+

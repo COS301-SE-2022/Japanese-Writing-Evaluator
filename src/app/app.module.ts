@@ -7,9 +7,14 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { LoadingInterceptor } from './Interceptor/loader.interceptor';
 import { UploadPage } from './upload/upload.page';
+import { ToastComponent } from './shared/components/toast/toast.component';
+import { ObdModalModule } from './shared/components/obd-modal/obd-modal.module';
+
+
+
 
 
 @NgModule({
@@ -21,11 +26,14 @@ import { UploadPage } from './upload/upload.page';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule,],
+    HttpClientModule,
+    HttpClientXsrfModule],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
-    UploadPage
+    UploadPage,
+    ToastComponent,
+    ObdModalModule
   ],
   bootstrap: [AppComponent],
 })

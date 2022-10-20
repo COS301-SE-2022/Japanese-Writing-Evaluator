@@ -1,0 +1,103 @@
+
+
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+
+    <h1></h1>
+    <p>
+      <strong>Dashboard</strong><br> <span>ダッシュボード</span><br>
+      "In some narrow use cases, computer vision is more effective than human vision."<br>
+      -<a href="https://loupfunds.com/eight-fun-facts-about-computer-vision/">Doug Clinton</a>
+    </p>
+  </div>
+
+  <div > <!--graph will go here-->
+
+  </div>
+
+  <ion-accordion-group> <!--the drop down for the models for each of the writing styles-->
+    <ion-grid>
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header"  (click)="showHiraganaCharts()">
+            <ion-label>Hiragana</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Character Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #hiraganaCharacterCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Stroke Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #hiraganaStrokeCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" (click)="showKatakanaCharts()">
+            <ion-label>Katakana</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Character Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #katakanaCharacterCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Stroke Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #katakanaStrokeCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+
+
+      <ion-row>
+        <ion-accordion>
+          <ion-item slot="header" (click)="showKanjiCharts()">
+            <ion-label>Kanji</ion-label>
+          </ion-item>
+          <div class="ion-padding" slot="content"> <!--The content of the dropdown, the diferent dives with the models-->
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Character Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #kanjiCharacterCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+            <ion-col>
+              <ion-card  class="graph" ><!--for loop for the number of models-->
+                <h5>Stroke Recognition Model</h5>
+                <!--Pie chart loss and accuracy-->
+                <canvas #kanjiStrokeCanvas style="position: relative; height:20vh; width:40vw"></canvas>
+              </ion-card>
+            </ion-col>
+          </div>
+        </ion-accordion>
+      </ion-row>
+    </ion-grid>
+  </ion-accordion-group>
+
+</ion-content>
+
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

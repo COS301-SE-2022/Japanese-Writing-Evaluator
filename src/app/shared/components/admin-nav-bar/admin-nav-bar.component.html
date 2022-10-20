@@ -1,0 +1,52 @@
+<ion-footer>
+  <ion-tab-bar>
+    <ion-tabs>
+      <ion-row>
+        <ion-col>
+          <a [routerLink]="['/home']"><!--direct to suggestions-->
+            <ion-tab-button >
+              <ion-icon name="language"></ion-icon>
+              <ion-label>Characters</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/progress']">
+            <ion-tab-button >
+              <ion-icon name="analytics"></ion-icon>
+              <ion-label>Progress</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col *ngIf="ifSuperAdmin()">
+          <a [routerLink]="['/profile']">
+            <ion-tab-button>
+              <ion-icon name="people-circle-outline"></ion-icon>
+              <ion-label>Profile</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/dashboard']">
+            <ion-tab-button >
+              <ion-icon name="stats-chart-outline"></ion-icon>
+              <ion-label>Analytics</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/models']">
+            <ion-tab-button >
+              <ion-icon name="bar-chart-outline"></ion-icon>
+              <ion-label>Models</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ion-tabs>
+  </ion-tab-bar>
+</ion-footer>

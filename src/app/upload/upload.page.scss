@@ -33,12 +33,87 @@
 
 
 
-.horizontalflexbox{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  margin-bottom: 5%;
-  margin-top: 10%;
+// .horizontalflexbox{
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+//   margin-bottom: 5%;
+//   margin-top: 5%;
+// }
+
+
+
+@media screen and (min-width: 1008px)  {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+
+  .horizontalbuttonflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 641px) and (max-width: 1007px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+
+  .horizontalbuttonflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 640px) and (min-width: 360px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+
+  .horizontalbuttonflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .horizontalflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-bottom: 25px;
+    margin-top: 25px;
+  }
+
+  .input{
+    width: 230px;
+  }
+
+  ion-card{
+    size: 6;
+  }
+
+  .horizontalbuttonflexbox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+ 
 }
 
 .flexbox{
@@ -64,4 +139,32 @@
 .character p{
   padding-bottom: 150px;
   text-align: center;
+}
+
+.head{
+  background-color: #960722;
+  width: 100%;
+  height: 150px;
+  margin-top: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+.head strong{
+  font-size: 200%;
+}
+
+.head span{
+  font-size: 100%;
+}
+
+.logo{
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 75px;
+  height: 75px;
+  margin-top: -10px;
 }

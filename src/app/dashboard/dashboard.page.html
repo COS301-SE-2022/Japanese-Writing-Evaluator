@@ -1,8 +1,7 @@
 <ion-content>
   <div class="head" >
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
-
+    <app-logout></app-logout>
     <p>
       <strong>Dashboard</strong><br>
       View analytics of the application below.
@@ -24,60 +23,11 @@
     <canvas #lineCanvas style="position: relative; height: 20vh; width:20vw"></canvas>
   </div>
 
+ 
 
   </ion-content>
 
-  <ion-footer>
-    <ion-tab-bar>
-      <ion-tabs>
-        <ion-row>
-          <ion-col>
-            <a [routerLink]="['/home']"><!--direct to suggestions-->
-              <ion-tab-button >
-                <ion-icon name="language"></ion-icon>
-                <ion-label>Characters</ion-label>
-              </ion-tab-button>
-            </a>
-          </ion-col>
-
-          <ion-col>
-            <a [routerLink]="['/progress']">
-              <ion-tab-button >
-                <ion-icon name="analytics"></ion-icon>
-                <ion-label>Progress</ion-label>
-              </ion-tab-button>
-            </a>
-          </ion-col>
-
-          <ion-col>
-            <a [routerLink]="['/profile']">
-              <ion-tab-button>
-                <ion-icon name="people-circle-outline"></ion-icon>
-                <ion-label>Profile</ion-label>
-              </ion-tab-button>
-            </a>
-          </ion-col>
-
-          <ion-col>
-            <a [routerLink]="['/dashboard']">
-              <ion-tab-button >
-                <ion-icon name="stats-chart-outline"></ion-icon>
-                <ion-label>Analytics</ion-label>
-              </ion-tab-button>
-            </a>
-          </ion-col>
-
-          <ion-col>
-            <a >
-              <ion-tab-button >
-                <ion-icon name="bar-chart-outline"></ion-icon>
-                <ion-label>Models</ion-label>
-              </ion-tab-button>
-            </a>
-          </ion-col>
-
-
-        </ion-row>
-      </ion-tabs>
-    </ion-tab-bar>
-  </ion-footer>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

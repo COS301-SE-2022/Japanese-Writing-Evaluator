@@ -14,6 +14,73 @@
     justify-content: center;
 }
 
+// .flexboxReplica{
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: center;
+//     margin-top: 5%;
+// }
+
+
+
+@media screen and (min-width: 1008px)  {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 5%;
+    }
+
+    ion-card{
+        width: 700px;
+    }
+}
+
+@media screen and (min-width: 641px) and (max-width: 1007px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 10%;
+    }
+
+    ion-card{
+        width: 600px;
+    }
+}
+
+@media screen and (max-width: 640px) and (min-width: 361px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 15%;
+    }
+
+    ion-card{
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 360px) {
+    .flexboxReplica{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 18%;
+    }
+    
+    ion-card{
+        width: 300px;
+    }
+   
+}
+
 .horizontalflexbox{
     display: flex;
     flex-direction: row;
@@ -21,16 +88,32 @@
 }
 
 .ion-button{
-    width: 125px;
-    height: 40px;
+    width: 120px;
+    height: 35px;
 }
 
-ion-item{
-    border-radius: 20px;
-    border-width: 3em;
-    margin-bottom: 1px;
-    --background: rgb(170, 162, 162);
+// ion-card{
+
+//     width: 500px;
+// }
+
+.guestButton{
+    width: 100px;
+    height: 35px;
+}
+
+.input{
+    border-bottom: solid 1px lightgrey;
     --highlight-color-focused: none;
-    width: 250px;
-    height: 45px;
-  }
+}
+
+.loginBackground{
+    //background-color: white;
+    margin-top: 2%;
+    padding: 5%;
+    width: fit-content;
+    height: 380px;
+    //box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    // display: flex;
+    // justify-content: center;
+}

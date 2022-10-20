@@ -28,6 +28,30 @@
 //importing button color
 @import "./theme/variables.scss";
 
+//slider
+@import '~swiper/scss';
+@import '~swiper/scss/autoplay';
+@import '~swiper/scss/keyboard';
+@import '~swiper/scss/pagination';
+@import '~swiper/scss/scrollbar';
+@import '~swiper/scss/zoom';
+@import '~@ionic/angular/css/ionic-swiper';
+
+ion-toast .toast {
+  // --background: white;
+  // --width: 300px;
+  // --border-width: 1px ;
+  // --border-color: red;
+  // --border-radius: 5px;
+  --color:#ffffff;
+    --border-color:#000000;
+    --border-radius:3px;
+    --border-style:solid;
+    --border-width:3px;
+    --background:#1833FF;
+    --button-color:#ffffff;
+}
+
 body{
     font-family:'ZCOOL XiaoWei';
 }
@@ -151,7 +175,44 @@ h1, h4{
     width: 40%;
     height: 30%;
   }
-  font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma';
-}
+  font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma', Sans-serif;
+
+  
+  }
+  
+  .my-custom-class{
+    .stroke1{
+      color: red;
+    }
+
+    .stroke2{
+      color: blue;
+    }
+
+    .stroke3{
+      color: green;
+    }
+
+    .stroke4{
+      color: yellow;
+    }
+
+    
+  }
+
+  .my-modal{
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    &::part(content){
+      width: 350px;
+      height: 500px;
+    }
+    font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma', Sans-serif;
+  }
+
+  .modal {
+    display: flex !important;
+  }
 
 
