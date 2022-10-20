@@ -39,14 +39,6 @@ The system should allow the user to log into the system using their own credenti
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2">SRS Document Latest</a></li>
 </ul>
 
-# Demo4 
-<ul>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-4">SRS Document</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Architectural-Requirements-for-Demo-4">Architectural Requirements</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Technical-Installation-Manual">Technical Installation Manual</a></li>
-  <li><a href = "https://docs.google.com/document/d/1y9El1BeRrPgae6gCRIPZ73OOgiEG4ifWCuTRCya2pxk/edit?usp=sharing">Testing Policy</a></li>
-</ul>
-
 # Team Members
 
 |                    |Member Name       |Brief Description          | 

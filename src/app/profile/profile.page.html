@@ -1,7 +1,7 @@
 <ion-content>
   <div class="head" >
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-    <app-logout></app-logout>
+    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
 
     <p>
       <strong>Profile</strong><br>
@@ -21,17 +21,67 @@
   <div class>
     <ion-grid class="my-grid">
       <ion-row class="parent-row">
-      <ng-container *ngFor="let item of userRoles">
-        <ion-col *ngIf="isAdmin(item) === selectedView" size="col-auto">
-            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.username' [role]='isAdmin(item)' ></app-profile-block>
+      <ng-container *ngFor="let item of users">
+        <ion-col *ngIf="item.role === selectedView" size="col-auto">
+            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.name' [role]='item.role' ></app-profile-block>
         </ion-col>
       </ng-container>
       </ion-row>
     </ion-grid>
   </div>
+
+
 </ion-content>
 
-<div *ngIf="ifGuest()">
-  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
-</div>
+<ion-footer>
+  <ion-tab-bar>
+    <ion-tabs>
+      <ion-row>
+        <ion-col>
+          <a [routerLink]="['/home']"><!--direct to suggestions-->
+            <ion-tab-button >
+              <ion-icon name="language"></ion-icon>
+              <ion-label>Characters</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/progress']">
+            <ion-tab-button >
+              <ion-icon name="analytics"></ion-icon>
+              <ion-label>Progress</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/profile']">
+            <ion-tab-button>
+              <ion-icon name="people-circle-outline"></ion-icon>
+              <ion-label>Profile</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a [routerLink]="['/dashboard']">
+            <ion-tab-button >
+              <ion-icon name="stats-chart-outline"></ion-icon>
+              <ion-label>Analytics</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+
+        <ion-col>
+          <a >
+            <ion-tab-button >
+              <ion-icon name="bar-chart-outline"></ion-icon>
+              <ion-label>Models</ion-label>
+            </ion-tab-button>
+          </a>
+        </ion-col>
+      </ion-row>
+    </ion-tabs>
+  </ion-tab-bar>
+</ion-footer>

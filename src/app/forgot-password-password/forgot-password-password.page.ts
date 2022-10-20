@@ -3,8 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastController } from '@ionic/angular';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ForgotPasswordPassword } from '../shared/interfaces/forgotpassword';
-import { AppServiceService } from '../services/appService/app-service.service';
-import { ToastComponent } from '../shared/components/toast/toast.component';
+import { AppServiceService } from '../services/app-service.service';
 
 
 @Component({
@@ -17,7 +16,7 @@ export class ForgotPasswordPasswordPage implements OnInit {
   confirmedPassword: string;
   forgotpassword: FormGroup;
 
-  constructor(private router: Router, private toast: ToastComponent,private formbuilder: FormBuilder,
+  constructor(private router: Router, public toastController: ToastController,private formbuilder: FormBuilder,
     private service: AppServiceService){
 
     this.forgotpassword = this.formbuilder.group({
@@ -25,6 +24,30 @@ export class ForgotPasswordPasswordPage implements OnInit {
       confirmedPassword: new FormControl(''),
       token: new FormControl('')
     });
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+        message: 'Password changed.',
+        duration: 2000
+    });
+    toast.present();
+  }
+
+  async presentToastWithOptions() {
+    const toast = await this.toastController.create({
+      message: 'Passwords do not match, please try again',
+      position: 'bottom',
+      buttons: [
+        {
+          text: 'OK',
+          role: 'cancel',
+          handler: () => {
+          }
+        }
+      ]
+    });
+    toast.present();
   }
 
   ngOnInit() {
@@ -44,14 +67,17 @@ export class ForgotPasswordPasswordPage implements OnInit {
 
       this.service.forgotPasswordPassword(pass).subscribe(response => {
         if (response.status === 200) { //
-          this.toast.showToast('Password changed',200);
-          this.router.navigate(['/login']);
+          this.presentToast();
+          //this.router.navigate(['/login']);
+        }
+        else{
+          //
         }
       });
     }
     else
     {
-      this.toast.showToast('Passwords do not match, please try again',500);
+      this.presentToastWithOptions();
     }
   }
 

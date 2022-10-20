@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { ForgotPasswordPasswordPageRoutingModule } from './forgot-password-password-routing.module';
 
 import { ForgotPasswordPasswordPage } from './forgot-password-password.page';
-import { PasswordModule } from '../shared/components/password/password.module';
-import { ToastComponent } from '../shared/components/toast/toast.component';
 
 @NgModule({
   imports: [
@@ -16,10 +14,8 @@ import { ToastComponent } from '../shared/components/toast/toast.component';
     FormsModule,
     IonicModule,
     ForgotPasswordPasswordPageRoutingModule,
-    ReactiveFormsModule,
-    PasswordModule,
+    ReactiveFormsModule
   ],
-  declarations: [ForgotPasswordPasswordPage],
-  providers: [ToastComponent]
+  declarations: [ForgotPasswordPasswordPage]
 })
 export class ForgotPasswordPasswordPageModule {}

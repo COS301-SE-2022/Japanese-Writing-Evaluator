@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppServiceService } from 'src/app/services/appService/app-service.service';
+import { AppServiceService } from 'src/app/services/app-service.service';
 import { CharacterImage } from 'src/app/shared/interfaces/image';
 
 @Component({

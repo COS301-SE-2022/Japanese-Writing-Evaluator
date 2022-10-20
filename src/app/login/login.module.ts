@@ -9,7 +9,6 @@ import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
 
 import { ReactiveFormsModule } from '@angular/forms';
-import { PasswordModule } from '../shared/components/password/password.module';
 
 @NgModule({
   imports: [
@@ -17,8 +16,7 @@ import { PasswordModule } from '../shared/components/password/password.module';
     FormsModule,
     IonicModule,
     LoginPageRoutingModule,
-    ReactiveFormsModule,
-    PasswordModule,
+    ReactiveFormsModule
   ],
   declarations: [LoginPage]
 })

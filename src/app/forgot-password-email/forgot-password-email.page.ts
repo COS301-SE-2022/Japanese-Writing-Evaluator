@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { AppServiceService } from '../services/appService/app-service.service';
+import { AppServiceService } from '../services/app-service.service';
 import { ForgotPasswordEmail } from '../shared/interfaces/forgotpassword';
 
 @Component({
@@ -36,6 +36,19 @@ export class ForgotPasswordEmailPage implements OnInit {
           this.router.navigate(['/login']);
         }
         else{
+          //check what the problem is
+          // switch(data.status){
+          //   case 500:
+          //     //internal server error
+          //     break;
+          //   case 404:
+          //     //not found
+          //     break;
+          //   case 401:
+          //     //invalid email(unauthorised)
+          //     break;
+          //   default:
+          // }
           this.showToast(false);
         }
       }); // sends the email to backend so that the email can be sent

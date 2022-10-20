@@ -1,71 +1,7 @@
-#logo{
-  height: 220px;
-}
-
-
-@media screen and (min-width: 1008px)  {
-  .flexboxReplica{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      // margin-top: 5%;
-  }
-
-  ion-card{
-      width: 700px;
-  }
-}
-
-@media screen and (min-width: 641px) and (max-width: 1007px) {
-  .flexboxReplica{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2%;
-  }
-
-  ion-card{
-      width: 600px;
-  }
-}
-
-@media screen and (max-width: 640px) and (min-width: 360px) {
-  .flexboxReplica{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 5%;
-  }
-
-  ion-card{
-      width: 350px;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  .flexboxReplica{
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin-top: 10%;
-  }
-  
-  ion-card{
-      width: 300px;
-  }
- 
-}
-
-.horizontalflexbox{
+.flexbox{
   display: flex;
-  flex-direction: row;
   justify-content: center;
 }
-
 
 ion-button {
   text-transform: none;
@@ -75,11 +11,36 @@ ion-button {
   overflow: hidden;
 }
 
-.ion-button{
-  width: 120px;
-  height: 35px;
+form{
+  margin-top: 120px;
 }
 
+ion-item{
+  border-radius: 20px;
+  border-width: 3em;
+  margin-bottom: 10px;
+  --background: rgb(170, 162, 162);
+  --highlight-color-focused: none;
+  width: 250px;
+  height: 45px;
+}
+
+#logo{
+  width: 200px;
+  height: 200px;
+  z-index: -1;
+}
+
+.backButton
+{
+  border: solid black;
+  border-width: 0 3px 3px 0;
+  display: inline-block;
+  padding: 5px;
+
+  transform: rotate(135deg);
+  -webkit-transform: rotate(135deg);
+}
 
 .padding
 {
@@ -90,13 +51,4 @@ ion-button {
 {
   margin-top: 18px;
   margin-left: 5px;
-}
-
-.input{
-  border-bottom: solid 1px lightgrey;
-  --highlight-color-focused: none;
-}
-
-form{
-  margin-bottom: 3%;
 }

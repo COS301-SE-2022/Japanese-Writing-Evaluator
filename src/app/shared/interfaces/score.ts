@@ -1,6 +1,8 @@
 export interface Score {
     data: {
-        strokes: number[];
+        stroke1: number;
+        stroke2: number;
+        stroke3: number;
         score: number;
     };
 }

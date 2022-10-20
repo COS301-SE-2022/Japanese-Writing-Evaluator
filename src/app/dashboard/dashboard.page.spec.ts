@@ -22,24 +22,4 @@ describe('DashboardPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  it('should call lineChartMethod after frequencyOfVisits was called', () => {
-    spyOn(component, 'lineChartMethod').and.callThrough();
-    component.frequencyOfVisits();
-    expect(component.lineChartMethod).toHaveBeenCalled();
-  });
-  it('should call lineChartMethod after averageHiragana was called', () => {
-    spyOn(component, 'lineChartMethod').and.callThrough();
-    component.averageHiragana();
-    expect(component.lineChartMethod).toHaveBeenCalled();
-  });
-  it('should call lineChartMethod after averageKatakana was called', () => {
-    spyOn(component, 'lineChartMethod').and.callThrough();
-    component.averageKatakana();
-    expect(component.lineChartMethod).toHaveBeenCalled();
-  });
-  it('should call lineChartMethod after averageKanji was called', () => {
-    spyOn(component, 'lineChartMethod').and.callThrough();
-    component.averageKanji();
-    expect(component.lineChartMethod).toHaveBeenCalled();
-  });
 });

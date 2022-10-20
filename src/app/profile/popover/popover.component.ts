@@ -57,7 +57,8 @@ export class PopoverComponent implements OnInit {
 
   //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
   close() {
-    if(this.selectedRole !== undefined){
+    console.log(this.selectedRole + ' from popover');
+    if(this.selectedRole  !== undefined){
       this.popOverCtrl.dismiss({ data: this.selectedRole});
     }
     else{
