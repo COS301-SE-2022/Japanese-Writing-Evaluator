@@ -58,7 +58,7 @@ export class LoginPage implements OnInit {
         if(data.status === 200){
           console.log(data);
           if (!localStorage.getItem('id')) {
-            localStorage.setItem('id',data.body['data']['id'].toString());
+            localStorage.setItem('id',data.body['data'][1].toString());
           }
 
           // if role is set to true then it is admin if role == false then its a normal user

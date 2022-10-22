@@ -7,6 +7,7 @@ import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/int
 import { Score } from '../shared/interfaces/score';
 import { environment as env } from 'src/environments/environment';
 import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
+import { waitForAsync } from '@angular/core/testing';
 
 @Component({
   selector: 'app-upload',

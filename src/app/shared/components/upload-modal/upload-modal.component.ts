@@ -15,12 +15,17 @@ export class UploadModalComponent implements OnInit {
   userImage: any; // it is the image the user uploaded
   math: Math; // math library
 
-  constructor(public modalController: ModalController, private service: AppServiceService) { }
+  constructor(public modalController: ModalController, private service: AppServiceService) {
+
+  }
 
   ngOnInit() {
     this.score = this.service.getScore();
     this.characterImage = this.service.getTryImage();
     this.userImage = this.service.getUserImage();
+    console.log(this.score);
+    console.log(this.characterImage);
+    console.log(this.userImage);
   }
 
   cancel() {
@@ -29,6 +34,10 @@ export class UploadModalComponent implements OnInit {
 
   confirm() {
     return this.modalController.dismiss(null, 'confirm');
+  }
+
+  fetchEvent(){
+    return this.service.getScore();
   }
 
 }
