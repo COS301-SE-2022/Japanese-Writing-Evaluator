@@ -186,6 +186,8 @@ def login():
             'id': user['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user['data']}), 200
+    else:
+        return user.json()
 
 """
     logout function
