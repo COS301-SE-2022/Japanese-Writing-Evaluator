@@ -42,13 +42,13 @@ def token_required(function):
         except:
             return jsonify({'arlet' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
-    return decorated 
+
+    return decorated
 
 """
     callResetPassword function:
         calls update password to change the password
-    request body: 
+    request body:
         email: the email of a registed user
         password: their new password
     return:
@@ -65,21 +65,21 @@ def resetPassword():
 """
     call Register function:
         calls the register function from authentication.py
-    request body: 
+    request body:
         email: the email of a new user
         password: their password
         username: and their username
     return:
         json response from resetPassword
 """
-@app.route('/register', methods = ['POST', 'GET'])
+@app.route('/register', methods = ['POST'])
 def callRegister():
     return event_bus.event_register(str(request.json['email']), str(request.json['password']), str(request.json['username']))
 
 """
     callUploadImage function:
         calls uploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -93,13 +93,13 @@ def callUploadImage():
 """
     callViewImages function:
         calls view image function from image.py
-    request body: 
+    request body:
         id: the user's id
     return:
         json response
 """
 
-@app.route('/progress', methods = ['GET', 'POST'])
+@app.route('/progress', methods = ['POST'])
 @token_required
 def callViewImages():
     return event_bus.event_viewImages(int(request.json["id"]))
@@ -107,18 +107,18 @@ def callViewImages():
 """
     login function:
         return the user if they exist
-    request body: 
+    request body:
         email: the email of a registered user
         password: their password
     return:
         json response
 """
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['POST'])
 def login():
     user = event_bus.event_login(str(request.json["email"]), str(request.json["password"]))
-    if user == None: 
+    if user == None:
         return jsonify({'response': "user not found."}), 401
-    else: 
+    else:
         session["logged_in"] = True
         token = jwt.encode({
             'username' : user[0],
@@ -145,7 +145,7 @@ def home():
     request body:
 
     return:
-        
+
 """
 @repeat(every().sunday)
 def email_users():
@@ -170,12 +170,12 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                    
+
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
             jCount += 1
 
-        
+
         iCount += 1
         divBy = 0
         average = 0
@@ -193,7 +193,7 @@ def email_users():
                 contain.append(send.send_email(thisUser[1], round(float(i[1]), 2), thisUser[5]))
             else:
                 contain.append("Failed")
-    
+
     if(contain.count("Failed") > 0):
         return jsonify({'response': "Failed"}), 401
     else:
@@ -202,7 +202,7 @@ def email_users():
 """
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
