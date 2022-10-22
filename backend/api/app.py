@@ -14,6 +14,7 @@ import time
 import numpy as np
 import requests
 
+
 import sys
 sys.path.insert(0, '../email_user')
 from send_email import Send_Email
