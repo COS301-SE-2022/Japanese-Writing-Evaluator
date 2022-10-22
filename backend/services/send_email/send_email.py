@@ -28,7 +28,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(email_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception as e:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
   
@@ -59,7 +59,7 @@ def forgotPasswordEmail():
                 return jsonify({'response': "email successfully sent", 'token': rand}), 200
         else:
                 return jsonify({'response': "email unsuccessfully sent"}), 401
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Failed"}), 400 
 
 """
@@ -98,10 +98,8 @@ def send_email():
         print(response.headers)
 
         return jsonify({"response": "Email successfully sent"}), 200 
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "Failed"}), 400 
 
 if __name__ == '__main__':
-    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    # app.run(debug = True, port = 5002)
     app.run(port=int(os.environ.get("PORT", 5002)),host='0.0.0.0',debug=False)

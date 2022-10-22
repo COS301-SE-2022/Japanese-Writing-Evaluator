@@ -42,7 +42,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(img_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -71,13 +71,11 @@ def uploadImage():
 
         res = storage.child("/users/"+str(id)+"/"+file).put("imageToSave.png")
         store = jsonify(res)
-        # print(store.status_code)
-        # return json(store)
         if(store.status_code == 200):
             return jsonify({'response': "cloud storgae successful"}), 200
         else:
             return jsonify({'reponse': "upload unsuccessful"}), 400    
-    except:
+    except Exception:
         return jsonify({'reponse': "upload unsuccessful"}), 400
 
 """
@@ -91,22 +89,25 @@ def uploadImage():
 @app.route("/viewImages", methods=["POST"])
 @token_required
 def viewImages():
-    images = request.json["images"]
-    if len(images) > 0:
-        response = []
-        for imgs in images:
-            style = imgs[4]
-            response.append({
-                "writing_style": style.lower(),
-                "url": storage.child(imgs[1]).get_url(user['idToken']),
-                "character": imgs[2],
-                "score": imgs[3],
-                "uploadDate": imgs[5]
-            })
+    try:
+        images = request.json["images"]
+        if len(images) > 0:
+            response = []
+            for imgs in images:
+                style = imgs[4]
+                response.append({
+                    "writing_style": style.lower(),
+                    "url": storage.child(imgs[1]).get_url(user['idToken']),
+                    "character": imgs[2],
+                    "score": imgs[3],
+                    "uploadDate": imgs[5]
+                })
 
-        return jsonify({'response': response,}), 200
-    else:
-        return jsonify({'response': "view image failed."}), 401
+            return jsonify({'response': response,}), 200
+        else:
+            return jsonify({'response': "view image failed."}), 401
+    except Exception:
+        return jsonify({"response": "Connection to firebase failed"}), 400
 
 """
     getCharacters function:
@@ -140,13 +141,10 @@ def getCharacters():
         katakanaGroups = {"Group 1": {"characters": []},"Group 2": {"characters": []}, "Group 3": {"characters": []}, "Group 4": {"characters": []}, "Group 5": {"characters": []}, "Group 6": {"characters": []}, "Group 7": {"characters": []}, "Group 8": {"characters": []}, "Group 9": {"characters": []}, "Group 10": {"characters": []}}
 
         for files in allDirectories:
-            #////////////////////////////////
-            #HIRAGANA
-            #///////////////////////////////
             hiraganaFilter_1 = files.name.split(hiraganaG1)
             if(hiraganaFilter_1[0] == "" and hiraganaFilter_1[1] != ""):
-                hiraganaList_1.append(hiraganaFilter_1[1]) #file
-                hiraganaNames_1.append(hiraganaFilter_1[1].split(".")[0]) #name
+                hiraganaList_1.append(hiraganaFilter_1[1])
+                hiraganaNames_1.append(hiraganaFilter_1[1].split(".")[0])
                 image.append({
                     "Name": hiraganaFilter_1[1].split(".")[0],
                     "url": storage.child(hiraganaG1 + hiraganaFilter_1[1]).get_url(user['idToken']),
@@ -167,13 +165,10 @@ def getCharacters():
                 hiraganaGroups["Group 2"]["characters"].append(image[len(image) - 1])
                 data["Hiragana"] = hiraganaGroups
 
-            #////////////////////////////////
-            #Katakana
-            #///////////////////////////////
             katakanaFilter_1 = files.name.split(katakanaG1)
             if(katakanaFilter_1[0] == "" and katakanaFilter_1[1] != ""):
-                katakanaList_1.append(katakanaFilter_1[1]) #file
-                katakanaNames_1.append(katakanaFilter_1[1].split(".")[0]) #name
+                katakanaList_1.append(katakanaFilter_1[1])
+                katakanaNames_1.append(katakanaFilter_1[1].split(".")[0])
                 image.append({
                     "Name": katakanaFilter_1[1].split(".")[0],
                     "url": storage.child(katakanaG1 + katakanaFilter_1[1]).get_url(user['idToken']),
@@ -194,8 +189,6 @@ def getCharacters():
                 katakanaGroups["Group 2"]["characters"].append(image[len(image) - 1])
                 data["Katakana"] = katakanaGroups
 
-            # TODO: add functionality for Kanji
-
         response = json.dumps(data)
         return jsonify({'response': response}), 200
     
@@ -203,6 +196,4 @@ def getCharacters():
         return jsonify({'response': str(e)}), 401
 
 if __name__ == '__main__':
-    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    # app.run(debug = True, port = 5004)
     app.run(port=int(os.environ.get("PORT", 5004)),host='0.0.0.0',debug=False)

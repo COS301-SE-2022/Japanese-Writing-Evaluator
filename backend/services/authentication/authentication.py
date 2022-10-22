@@ -35,7 +35,7 @@ def token_required(function):
             return jsonify({'response' : 'Token is missing !!'}), 401
         try:
             data = jwt.decode(auth_token, app.config['SECRET_KEY'], algorithms=["HS256"])
-        except:
+        except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
 
@@ -55,19 +55,25 @@ def resetPassword():
     token = request.json["token"]
     password = request.json["password"]
     salt = fetchSaltByToken(token)
-    new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
-    
-    editedRow = updatePassword(token, new_password)
-    if editedRow == 1:
-        return jsonify({'response': "password reset successful."}), 200
+    if(salt == 0):
+        return jsonify({"response": "User password token not found"}), 401
     else:
-        return jsonify({'response': "password reset failed."}), 401
+        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        
+        editedRow = updatePassword(token, new_password)
+        if editedRow == 1:
+            return jsonify({'response': "password reset successful."}), 200
+        else:
+            return jsonify({'response': "password reset failed."}), 401
 
 def fetchSaltByToken(token):
-    query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
-    curr.execute(query, (token,))
-    salt = curr.fetchone()
-    return salt
+    try:
+        query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+        curr.execute(query, (token,))
+        salt = curr.fetchone()
+        return salt
+    except Exception:
+        return 0
 
 """
     update password function:
@@ -131,11 +137,20 @@ def listUsers():
 @app.route("/findUser", methods=["GET"])
 def findUser():
     email = request.json["email"]
-    query = " SELECT username FROM users WHERE email = %s"
-    curr.execute(query, (email,))
-    name = curr.fetchone()
+
+    try:
+        query = " SELECT username FROM users WHERE email = %s"
+        curr.execute(query, (email,))
+        name = curr.fetchone()
+    except Exception:
+        return jsonify({"response": "Database connection failed"}), 400
+
     if(name != None):
-        send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
+        try:
+            send = requests.post(os.getenv("send_email") + "/forgot-password", json = {"email": email})
+        except Exception:
+            return jsonify({"response": "Connection to email service failed"}), 400
+        
         res = send.json()
         token = addToken(email, res["token"])
         if(token == False):
@@ -161,7 +176,7 @@ def addToken(email, token):
         curr.execute(query, (token, email))
         conn.commit()
         return True
-    except:
+    except Exception:
         return False
 
 """
@@ -187,7 +202,7 @@ def getUserByID():
             return jsonify({"response": res}), 200
         else:
             return jsonify({"response": "user does not exist"}), 400 
-    except Exception as e:
+    except Exception:
         return jsonify({"response": "user does not exist"}), 400
 
 """
@@ -206,35 +221,53 @@ def register():
         password = request.json["password"]
         username = request.json["username"]
         Finduser = getUserByEmail(email)
-        print(findUser)
-        if Finduser != None:
-            res = "User already exists"
-            return jsonify({"response": res}), 409
+        
+        if(Finduser == 0):
+            return jsonify({"response": "Database connection failed"}), 401
         else:
-            verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
-            if(verify_email.status_code == 200):
-                salt = uuid.uuid4().hex
-                passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
-                addUser(username, passwordSalt, email, False, salt, 0)
-                res = "Registration Successful"
-                return jsonify({'response': res}), 200
+            if Finduser != None:
+                res = "User already exists"
+                return jsonify({"response": res}), 409
             else:
-                return jsonify({"response": "invalid password"}), 401
+                try:
+                    verify_email = requests.get("https://isitarealemail.com/api/email/validate", params = {'email': email}, headers = {'Authorization': "Bearer " + os.getenv('email_api_key')})
+                except Exception:
+                    return jsonify({"response": "Email validation failed"}), 401
+            
+                if(verify_email.status_code == 200):
+                    salt = uuid.uuid4().hex
+                    passwordSalt = hashlib.sha512((password + salt).encode()).hexdigest()
+                    user = addUser(username, passwordSalt, email, False, salt, 0)
+                    if(user == True):
+                        res = "Registration Successful"
+                        return jsonify({'response': res}), 200
+                    else:
+                        return jsonify({"response": "Registration failed"}), 400
+                else:
+                    return jsonify({"response": "invalid password"}), 401
 
     except Exception as e:
         return jsonify({'response': str(e)}), 401
 
 
 def getUserByEmail(email):
-    query = " SELECT username FROM users WHERE email = %s"
-    curr.execute(query, (email,))
-    name = curr.fetchone()
-    return name
+    try:
+        query = " SELECT username FROM users WHERE email = %s"
+        curr.execute(query, (email,))
+        name = curr.fetchone()
+        return name
+    except Exception:
+        return 0
 
 def addUser(username, password, email, admin, passwordSalt, avgScore):
-    q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
-    curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
-    conn.commit()
+    try:
+        q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
+        curr.execute(q, (email, admin, password, passwordSalt, username, avgScore))
+        conn.commit()
+        return True
+    except Exception:
+        return False
+        
 """
 
     login function:
@@ -249,28 +282,40 @@ def login():
     email = request.json['email']
     password = request.json['password']
     salt = fetchSalt(email)
-    if(salt == None):
-        return None
+    if(salt == 0):
+        return jsonify({"repsonse": "Database connection failed"}), 400
     else:
-        new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
-        user = getUser(new_password, email)
-        if(user != None):
-            session['logged_in'] = True
-            return jsonify({"response": {'username': user[0], 'id': user[1]}, "data": user}), 200 
+        if(salt == None):
+            return jsonify({"response": "user does not exist"}), 401
         else:
-            return jsonify({"response": "incorrect password"}), 401
+            new_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+            user = getUser(new_password, email)
+            if(user == 0):
+                return jsonify({"response": "Database connection failed"}), 400
+            else:
+                if(user != None):
+                    session['logged_in'] = True
+                    return jsonify({"response": {'username': user[0], 'id': user[1]}, "data": user}), 200 
+                else:
+                    return jsonify({"response": "incorrect password"}), 401
 
 def fetchSalt(email):
-    query = "SELECT password_salt FROM users WHERE email = %s;"
-    curr.execute(query, (email,))
-    salt = curr.fetchone()
-    return salt
+    try:
+        query = "SELECT password_salt FROM users WHERE email = %s;"
+        curr.execute(query, (email,))
+        salt = curr.fetchone()
+        return salt
+    except Exception:
+        return 0
 
 def getUser(password,email):
-    q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
-    curr.execute(q, (password,email))
-    user = curr.fetchone()
-    return user
+    try:
+        q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
+        curr.execute(q, (password,email))
+        user = curr.fetchone()
+        return user
+    except Exception:
+        return 0
 
 """
     edit user Privileges function:
@@ -285,11 +330,9 @@ def getUser(password,email):
 @token_required
 def editUserPrivileges():
     edited = editUser(request.json['id'], request.json['admin'])
-    print('edited: ', edited)
     if(edited):
         return jsonify({'response': 'Privileges updated successfully'}), 200
     else:
-        print("Failed at admin")
         return jsonify({'response': 'Privileges update failed'}), 401
     
 """
@@ -301,7 +344,7 @@ def editUserPrivileges():
         json response
 """    
 @app.route("/admin/models", methods=["GET"]) 
-# @token_required
+@token_required
 def listModelData():
     res = getModels()
     if res != None:
@@ -389,12 +432,14 @@ def listModelData():
 def viewModelData():
     try:
         resp = getAModel()
-        print(resp)
-        for i in resp:
-            print(str(i[1]))
-            if(str(i[1]) == request.json['version']):
-                return jsonify({'response': 'successfully retrieved model data', 'data' : i}), 200
-        return jsonify({'response': 'Failed to get model data'}), 401
+        if(resp != None):
+            for i in resp:
+                print(str(i[1]))
+                if(str(i[1]) == request.json['version']):
+                    return jsonify({'response': 'successfully retrieved model data', 'data' : i}), 200
+            return jsonify({'response': 'Failed to get model data'}), 401
+        else:
+            return jsonify({'response': 'Failed to get model data'}), 401
     except Exception as e:
         print(e)
         return jsonify({'response': 'Failed to get model data'}), 401
@@ -413,7 +458,7 @@ def getAModel():
         curr.execute(q,)
         model = curr.fetchall()
         return model
-    except:
+    except Exception:
         return None
     
 """
@@ -430,7 +475,7 @@ def getModels():
         curr.execute(q,)
         models = curr.fetchall()
         return models
-    except:
+    except Exception:
         return None
     
 """
@@ -461,10 +506,13 @@ def editUser( id, admin):
         users
 """
 def getAllUsers():
-    q = "SELECT * FROM users;"
-    curr.execute(q,)
-    users = curr.fetchall()
-    return users
+    try:
+        q = "SELECT * FROM users;"
+        curr.execute(q,)
+        users = curr.fetchall()
+        return users
+    except:
+        return 0
     
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
