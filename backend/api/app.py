@@ -463,6 +463,15 @@ def callObjectDetection():
     except Exception:
         return jsonify({"response": "Connection to object detection service failed"}), 400
 
+@app.route("/deleteUser", methods=["DELETE"])
+@token_required
+def deleteUser():
+    id = request.json["id"]
+    headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+    data = requests.delete(os.getenv("imageDB") + '/delete', headers = headers, json = {"id": id})
+    print(data.status_code)
+    return data.json()
+
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=False)
