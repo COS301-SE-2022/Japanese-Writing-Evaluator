@@ -13,7 +13,8 @@ export class UploadModalComponent implements OnInit {
   score: Score; // response from the api
   characterImage: CharacterImage; // the character chosen to practice
   userImage: any; // it is the image the user uploaded
-  math: Math; // math library
+  math: Math = Math; // math library
+  expectedImage: string;
 
   constructor(public modalController: ModalController, private service: AppServiceService) {
 

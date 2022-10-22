@@ -7,25 +7,20 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-item *ngIf="score.data.score === -1">
-    <!-- Header score message -->
-    <h1>Something went wrong...</h1>
-    <ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>
-    <h4>Try again</h4>
-  </ion-item>
-  <ion-item *ngIf="score.data.score === 0">
-    <h1>Image is invalid...</h1>
-    <ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>
-    <h4>Try upload another image</h4>
-  </ion-item>
-  <ion-item *ngIf="score.data.score !== -1 && score.data.score !== 0">
+  <div *ngIf="score.data.score !== -1 && score.data.score !== 0">
     <h1>Character Accuracy</h1>
-    <h1>{{this.characterImage.url}}</h1>
-    <h3>Your overall score is {{math.round(score.data.score)}}%</h3>
-    <h4>Your uploaded character</h4>
-    <ion-img src={{this.userImage}}></ion-img>
-    <h4>Expected character</h4>
-    <ion-img src="../assets/upload/{{this.characterImage.characterName}}.jpg" alt="Correct {{characterImage.characterName}} image"></ion-img>
+    <!-- <h1>{{this.characterImage.url}}</h1> -->
+    <h2>Your overall score is {{math.round(score.data.score)}}%</h2>
+    <ion-item lines="none">
+      <div>
+        <h4>Your uploaded character</h4>
+        <ion-img src="{{this.userImage}}" style="width: 150px; height: 150px;"></ion-img>
+      </div>
+      <div>
+        <h4>Expected character</h4>
+        <ion-img src="../assets/upload/{{this.characterImage.characterName.toUpperCase()}}.jpg" alt="Correct {{characterImage.characterName}} image"  style="width: 150px; height: 150px;"></ion-img>
+      </div>
+    </ion-item>
     <div>
       <ion-item *ngIf="this.score.data.strokes.length === 1 && this.score.data.strokes[0] === 0">
         <p>We don't provide strokes for this character</p>
@@ -38,5 +33,5 @@
       </div>
     </div>
     
-  </ion-item>
+  </div>
 </ion-content>
