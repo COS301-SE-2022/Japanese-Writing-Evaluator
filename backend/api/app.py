@@ -182,10 +182,10 @@ def login():
     if user.status_code == 200: 
         session["logged_in"] = True
         token = jwt.encode({
-            'username' : user['response']['username'],
-            'id': user['response']['id'],
+            'username' : user.json()['response']['username'],
+            'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user['data']}), 200
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
     else:
         return user.json()
 
