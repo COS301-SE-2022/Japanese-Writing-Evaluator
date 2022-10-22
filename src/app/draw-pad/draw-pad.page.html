@@ -1,21 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Ionic signature example 1
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <div class="head" >
+      <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+      <ion-button slot="end" id = "logout" (click)="onLogout()" color="dark">Logout</ion-button>
 
-<ion-content class="ion-padding" >
+      <h1></h1>
+      <p>
+        <strong>Draw</strong><br>
+        <em>"consistency is key"</em><br>
+        Draw your character within the box.
+      </p>
+  </div>
+
   <div>
     <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
     <ion-grid>
       <ion-row>
         <ion-col size="6">
-          <ion-button color="danger" (click)="clearPad()">Clear</ion-button>
+          <ion-button color="danger" id = "clear" (click)="clearPad()">Clear</ion-button>
         </ion-col>
         <ion-col size="4" offset="2">
-          <ion-button color="secondary" (click)="savePad()">Save</ion-button>
+          <ion-button color="secondary" id = "evaluate" (click)="savePad()">Save</ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

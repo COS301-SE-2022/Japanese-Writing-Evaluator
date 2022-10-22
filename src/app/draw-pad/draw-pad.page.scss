@@ -1,5 +1,51 @@
 canvas {
   display: block;
-  border: 1px solid rgb(187, 178, 178);
-  background-color: var(--ion-color-success);
+  border: 1px solid rgb(14, 13, 13);
+  background-color: rgb(255, 255, 255);
+  margin:0px auto;
+}
+
+ion-content h2{
+  font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma';
+}
+
+#logout{
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+#clear{
+  position: relative;
+  right: 5px;
+  top: 5px;
+}
+
+ion-img{
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  width: 100px;
+  height: 100px;
+  margin-top: -10px;
+}
+
+.head{
+  background-color: #960722;
+  width: 100%;
+  height: 150px;
+  margin-top: 100px;
+  margin-bottom: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+.head strong{
+  font-size: 200%;
+}
+
+.head span{
+  font-size: 100%;
 }

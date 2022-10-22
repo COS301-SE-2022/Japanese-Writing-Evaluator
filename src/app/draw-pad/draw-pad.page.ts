@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import SignaturePad from 'signature_pad';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-draw-pad',
   templateUrl: './draw-pad.page.html',
@@ -12,7 +12,7 @@ export class DrawPadPage implements AfterViewInit {
   signaturePad: SignaturePad;
   signatureImg: string;
 
-  constructor() { }
+  constructor(private router: Router) { }
   ngAfterViewInit(): void {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
   }
@@ -30,6 +30,16 @@ export class DrawPadPage implements AfterViewInit {
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
+  }
+
+  onLogout(){
+    // this function logs the user out of the system
+    localStorage.removeItem('id');
+    if (localStorage.getItem('token')) {
+      localStorage.removeItem('token');
+    }
+    this.router.navigate(['/login']);
+
   }
 
 }
