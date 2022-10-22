@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="medium" (click)="cancel()">Retry</ion-button>
+    </ion-buttons>
+    <ion-title>Upload Character Image</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()">Confirm</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-item *ngIf="score.data.score === -1">
+    <!-- Header score message -->
+    <h1>Something went wrong...</h1>
+    <ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>
+    <h4>Try again</h4>
+  </ion-item>
+  <ion-item *ngIf="score.data.score === 0">
+    <h1>Image is invalid...</h1>
+    <ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>
+    <h4>Try upload another image</h4>
+  </ion-item>
+  <ion-item *ngIf="score.data.score !== -1 && score.data.score !== 0">
+    <h1>Character Accuracy</h1>
+    <h1>{{this.characterImage.url}}</h1>
+    <h3>Your overall score is {{math.round(score.data.score)}}%</h3>
+    <h4>Your uploaded character</h4>
+    <ion-img src={{this.userImage}}></ion-img>
+    <h4>Expected character</h4>
+    <ion-img src="../assets/upload/{{this.characterImage.characterName}}.jpg" alt="Correct {{characterImage.characterName}} image"></ion-img>
+    <div>
+      <ion-item *ngIf="this.score.data.strokes.length === 1 && this.score.data.strokes[0] === 0">
+        <p>We don't provide strokes for this character</p>
+        <p>Strokes: {{this.score.data.strokes[0]}}%</p>
+      </ion-item>
+      <div *ngIf="this.score.data.strokes.length >= 1 && this.score.data.strokes[0] !== 0">
+        <ion-item *ngFor="let stroke of score.data.strokes, let count = index">
+          <p class="stroke{{count}}">o </p><p>Stroke {{count}}: {{math.round(stroke)}}%</p>
+        </ion-item>
+      </div>
+    </div>
+    
+  </ion-item>
+</ion-content>

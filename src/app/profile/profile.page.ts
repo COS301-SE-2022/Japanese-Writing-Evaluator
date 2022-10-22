@@ -27,6 +27,7 @@ export class ProfilePage implements OnInit {
         this.userRoles = data.body.response;
       }
     });
+    env.superAdmin = true;
   }
   //TODO: View admins only, #203, Maryam
   getAdmins() {
@@ -60,7 +61,6 @@ export class ProfilePage implements OnInit {
           this.apiService.editRole(obj).subscribe((data) => {
             if (data.status === 200) {
               window.location.reload();
-              env.superAdmin = true;
             }
           });
         }

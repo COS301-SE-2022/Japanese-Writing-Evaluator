@@ -1,11 +1,12 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { AppServiceService } from '../services/appService/app-service.service';
 import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
 import { environment as env } from 'src/environments/environment';
+import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
 
 @Component({
   selector: 'app-upload',
@@ -22,7 +23,8 @@ export class UploadPage implements OnInit {
   private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
-  constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService) { }
+  constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService,
+    public modalController: ModalController) { }
 
   //TODO: get the character image to be practiced, #71, Phumu
   ngOnInit() {
@@ -167,8 +169,9 @@ export class UploadPage implements OnInit {
           style: this.characterImage.group, // the writing style that the letter is from
         };
         this.service.uploadImage(img).subscribe( data =>{
-          this.score = data.body;
-          this.showScore(this.score);
+          this.service.setScore(data.body);
+          this.service.setUserImage(this.userImage);
+          this.showModal(UploadModalComponent);
         });
          // get the score
       }
@@ -180,8 +183,11 @@ export class UploadPage implements OnInit {
           style: this.characterImage.group
         };
         this.service.guestUploadImage(img).subscribe( data => {
-          this.score = data.body;
-          this.showScore(this.score);
+          this.service.setScore(data.body);
+          this.service.setUserImage(this.userImage);
+          this.showModal(UploadModalComponent);
+          // this.score = data.body;
+          // this.showScore(this.score);
         });
 
       }
@@ -189,13 +195,13 @@ export class UploadPage implements OnInit {
   }
 
   //open the object detection modal agin incase they want to try another image
-  async showModal(){
-    try {
-      console.log(this.obdService.getModal());
-      return await this.obdService.getModal().present();
-    } catch (error) {
-      console.log(error);
-    }
+  async showModal(modalComponent){//shows each of the modals ... depending on the component
+    const modal = await this.modalController.create({
+      component: modalComponent
+    });
+    // this.obdService.setModal(modal);
+    // console.log(modal);
+    return await modal.present();
   }
 
   //checks if modal is set, if it is show button

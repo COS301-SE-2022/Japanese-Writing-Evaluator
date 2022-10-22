@@ -142,17 +142,18 @@ def callViewImages():
 def login():
     headers = {'content-type': 'application/json'}
     user = requests.post(os.getenv("authentication") + "/login", json = {"email": request.json["email"], "password": request.json["password"]}, headers = headers)
+    print(user)
     if user.status_code == 401: 
         return jsonify({'response': "user not found."}), 401
     else:   
+        user = user.json()
         session["logged_in"] = True
         print(user)
         token = jwt.encode({
-            'username' : user.json()['response']['username'],
-            'id': user.json()['response']['id'],
+            'username' : user['response']['username'],
+            'id': user['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
-        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
-
+        return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user['data']}), 200
 
 """
     logout function
@@ -388,4 +389,4 @@ def callObjectDetection():
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=False)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
