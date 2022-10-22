@@ -48,7 +48,7 @@ def token_required(function):
 @token_required
 def detect():
     try:
-        model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
+        model = torch.hub.load('ultralytics/yolov5', 'yolov5s', _verbose=False, trust_repo=True)
 
         image = request.json["image"]
         img = image.partition(",")[2]
@@ -100,4 +100,4 @@ def detect():
         return jsonify({'response': "Object detection failed"}), 400
         
 if __name__ == '__main__':
-    app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=False)
+    app.run(port=int(os.environ.get("PORT", 5001)),host='0.0.0.0',debug=True)
