@@ -1,9 +1,0 @@
-Dockerfile
-service.json
-imageToSave.png
-__pycache__
-.pytest_cache
-*.pyc
-*.pyo
-*.pyd
-README.md
