@@ -1,62 +1,27 @@
 <ion-content [fullscreen]="true">
   <div class="head" >
     <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
-    <ion-button slot="end" (click)="onLogout()" color="dark">Logout</ion-button>
-
-    <h1></h1>
+    <app-logout></app-logout>
     <p>
       <strong>Progress</strong><br>
       <em>"You don't have to be extreme, just consistent"</em><br>
-      Track your progress below.
+      Select which writing style progress results you would like to view below.
     </p>
-</div>
+  </div>
 
-  <div class="container">
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana"  [letter]='getLetter("A")' [percent]=30></app-progress-block>
+  <div class>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col *ngFor="let item of alphabetCategory" size="col-auto">
+          <app-options  [letter]='item.character' [category]='item.category' [pageReq]='pageRequest'></app-options>
         </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="hiragana" [letter]='getLetter("I")' [percent]=50></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="katakana" [letter]='getLetter("E")' [percent]=60></app-progress-block>
-        </ion-col>
-
-        <ion-col>
-          <app-progress-block [alphabetType]="kanji" [letter]='getLetter("one")' [percent]=80></app-progress-block>
-        </ion-col>
-
       </ion-row>
     </ion-grid>
   </div>
 </ion-content>
 
-<ion-footer>
-  <ion-tab-bar>
-    <ion-tabs>
-      <ion-row>
-        <ion-col size="6">
-          <a (click)="setHome()">
-            <ion-tab-button >
-              <ion-icon name="language"></ion-icon>
-              <ion-label>Characters</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>
 
-        <ion-col size="4">
-          <a>
-            <ion-tab-button >
-              <ion-icon name="analytics"></ion-icon>
-              <ion-label>Progress</ion-label>
-            </ion-tab-button>
-          </a>
-        </ion-col>
-      </ion-row>
-    </ion-tabs>
-  </ion-tab-bar>
-</ion-footer>

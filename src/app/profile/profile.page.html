@@ -1,0 +1,37 @@
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+
+    <p>
+      <strong>Profile</strong><br>
+      View profiles of users/admin below.
+    </p>
+  </div>
+
+  <div class="topnav">
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+        <ion-col class="navCol"><div class="user" (click)="getAdmins()">Admin</div></ion-col>
+        <ion-col class="navCol"><div class="user" (click)="getUsers()">User</div></ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class>
+    <ion-grid class="my-grid">
+      <ion-row class="parent-row">
+      <ng-container *ngFor="let item of userRoles">
+        <ion-col *ngIf="isAdmin(item) === selectedView" size="col-auto">
+            <app-profile-block (changeRoleEvent) ='roleEvent($event)'  [name]='item.username' [role]='isAdmin(item)' ></app-profile-block>
+        </ion-col>
+      </ng-container>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>
+
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

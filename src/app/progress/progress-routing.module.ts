@@ -7,7 +7,16 @@ const routes: Routes = [
   {
     path: '',
     component: ProgressPage
+  },  {
+    path: 'graph-modal',
+    loadChildren: () => import('./graph-modal/graph-modal.module').then( m => m.GraphModalPageModule)
+  },
+  {
+    path: 'progress-result',
+    loadChildren: () => import('./progress-result/progress-result.module').then( m => m.ProgressResultPageModule)
   }
+
+
 ];
 
 @NgModule({

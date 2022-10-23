@@ -1,6 +1,8 @@
+import { Character } from './../../shared/interfaces/character';
 import { element } from 'protractor';
-import { Character } from '../../shared/interfaces/character';
 import { Component, Input, OnInit, AfterViewInit, AfterContentInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { GraphModalPage } from '../graph-modal/graph-modal.page';
 
 @Component({
   selector: 'app-progress-block',
@@ -11,6 +13,8 @@ export class ProgressBlockComponent implements OnInit {
   @Input() percent: number;
   @Input() letter: string;
   @Input() alphabetType: string;
+  @Input() myScores: {score: number; date: string }[];
+
 
   japaneseLetter: string;
   translation: string;
@@ -111,10 +115,25 @@ export class ProgressBlockComponent implements OnInit {
     {character: '九', translation:'nine'},
     {character: '十', translation:'ten'},
   ];
-  constructor() {
-   }
+
+  constructor(public modalController: ModalController) {
+  }
 
   ngOnInit() {}
+
+//TODO: open the modal as well as send the modal data, #183, Maryam Mohamad Al Mahdi
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: GraphModalPage,
+      cssClass: 'my-modal',
+      componentProps: {
+        scores: this.myScores,
+        letter : this.letter,
+        alphabetType : this.alphabetType
+      }
+    });
+    await modal.present();
+  }
 
   // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngAfterContentInit(): void {
@@ -122,6 +141,7 @@ export class ProgressBlockComponent implements OnInit {
   }
   // TODO: dynamically set the progress percentage, #69, Maryam Mohamad Al Mahdi
   setStyleCalc(){
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     this.styles = {'stroke-dashoffset': 'calc(440 - (440 *' + this.percent +') / 100)'};
     return this.styles;
   }
@@ -140,8 +160,17 @@ export class ProgressBlockComponent implements OnInit {
     if(alphabetType === 'kanji'){
       element = this.kanjiAlphabet.find((obj) => obj.translation === letter);
     }
+
+    if(element !== undefined)
+    {
       this.japaneseLetter= element.character;
       this.translation = element.translation;
+    }
+    else
+    {
+      this.japaneseLetter= 'あ';
+      this.translation = 'A';
+    }
 
   }
 

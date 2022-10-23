@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { ForgotPasswordEmail } from '../shared/interfaces/forgotpassword';
 
 @Component({
@@ -12,7 +13,7 @@ import { ForgotPasswordEmail } from '../shared/interfaces/forgotpassword';
 export class ForgotPasswordEmailPage implements OnInit {
   forgotpassword: FormGroup;
 
-  constructor(formBuilder: FormBuilder, private appService: AppServiceService, private toast: ToastController) {//
+  constructor(formBuilder: FormBuilder, private appService: AppServiceService, private toast: ToastController, private router: Router) {//
     this.forgotpassword = formBuilder.group({ // building a responsive form for the forgot email
       email: new FormControl('',[Validators.required]),
     });
@@ -32,21 +33,9 @@ export class ForgotPasswordEmailPage implements OnInit {
         //check if the response is okay so you can send a toast
         if(data.status === 200){
           this.showToast(true);
+          this.router.navigate(['/login']);
         }
         else{
-          //check what the problem is
-          // switch(data.status){
-          //   case 500:
-          //     //internal server error
-          //     break;
-          //   case 404:
-          //     //not found
-          //     break;
-          //   case 401:
-          //     //invalid email(unauthorised)
-          //     break;
-          //   default:
-          // }
           this.showToast(false);
         }
       }); // sends the email to backend so that the email can be sent

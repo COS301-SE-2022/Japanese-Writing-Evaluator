@@ -1,3 +1,6 @@
 export interface Score {
-    score: number;
+    data: {
+        strokes: number[];
+        score: number;
+    };
 }

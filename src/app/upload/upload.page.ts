@@ -1,7 +1,11 @@
+/* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
+import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
+import { Score } from '../shared/interfaces/score';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-upload',
@@ -12,12 +16,13 @@ export class UploadPage implements OnInit {
 
   characterImage: CharacterImage;
   uploadedImage: File;
+  userImage: any;
   uploadImageName: string;
-  private score: number;
+  private score: Score;
   private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
-  constructor(private service: AppServiceService,public alertController: AlertController) { }
+  constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService) { }
 
   //TODO: get the character image to be practiced, #71, Phumu
   ngOnInit() {
@@ -25,11 +30,11 @@ export class UploadPage implements OnInit {
   }
 // ${this.characterImage.url}
   //TODO: show popover when evaluate is clicked, #71, Phumu
-  async showScore(score: number) {
+  async showScore(score: Score) {
     //if score is negative 1 == error
     let scoreMessage: string;
     let alert;
-    if (score === -1) {
+    if (score.data.score === -1) {
       scoreMessage = 'Try again'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
@@ -45,15 +50,15 @@ export class UploadPage implements OnInit {
         ]
       });
     }
-    else{
-      scoreMessage = 'Your accuracy score is '+ score.toString();
+    else if (score.data.score === 0) {
+      scoreMessage = 'Try upload another image'; // todo: add error message, #68, Phumu
       alert = await this.alertController.create({
         cssClass: 'my-custom-class',
-        header: 'Score',
-        message: `<h1>${this.characterImage.url}</h1>${scoreMessage}`,
+        header: 'Image is invalid...',
+        message: `<ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>${scoreMessage}`,
         buttons: [
           {
-            text: 'Ok',
+            text: 'Retry',
             handler: () => {
               console.log('Confirm Okay');
             }
@@ -61,7 +66,61 @@ export class UploadPage implements OnInit {
         ]
       });
     }
-
+    else{ // link for image for stroke: https://www.nicepng.com/downpng/u2w7e6r5q8t4u2r5_hiragana-strokes-vowels-hiragana-stroke-order/
+      scoreMessage = 'Your overall score is '+ Math.round(score.data.score).toString() + '%';
+      const charImageUrl = '../assets/upload/' + this.characterImage.characterName + '.jpg';
+      let strokes = '';
+      let count = 1;
+      if(this.score.data.strokes.length === 1 && this.score.data.strokes[0] === 0 ){
+        strokes += `<ion-item>
+          <p>We don't provide strokes for this character</p>
+          <p>Strokes: ${Math.round(this.score.data.strokes[0])}</p>
+        </ion-item>`;
+      }
+      else {
+        this.score.data.strokes.forEach( stroke => {
+          strokes += `<ion-item>
+            <p class="stroke${count}">o </p><p>Stroke ${count}: ${Math.round(stroke)}</p>
+            </ion-item>`;
+          count++;
+        });
+      }
+      alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: 'Character Accuracy',
+        message: `
+        <h1>${this.characterImage.url}</h1>${scoreMessage}
+        <h4>Your uploaded character</h4>
+        <ion-img src="${this.userImage}"></ion-img>
+        <h4>Expected character</h4>
+        <ion-img src="${charImageUrl}" alt="Correct ${this.characterImage.characterName} image"></ion-img>
+        <div>
+          ${strokes}
+        </div>`,
+        buttons: [
+          {
+            text: 'Close',
+            handler: () => {
+              console.log('Confirm Okay');
+            }
+          }
+        ]
+      });
+    }
+    /*images for the strokes
+      <ion-img src="../assets/images/a_strokes/a_stroke1.png" alt="Stroke 1"></ion-img>
+      <ion-img src="../assets/images/a_strokes/a_stroke2.png" alt="Stroke 2">
+      <ion-img src="../assets/images/a_strokes/a_stroke3.png" alt="Stroke 3"></ion-img>
+      <ion-item>
+          <p class="stroke1">o </p><p>Stroke 1: ${Math.round(this.score.data.stroke1)}%</p>
+          </ion-item>
+          <ion-item>
+          <p class="stroke2">o </p><p>Stroke 2: ${Math.round(this.score.data.stroke2)}%</p>
+          </ion-item>
+          <ion-item>
+          <p class="stroke3">o </p><p>Stroke 3: ${Math.round(this.score.data.stroke3)}%</p>
+          </ion-item>
+    */
 
   await alert.present();
 
@@ -81,6 +140,7 @@ export class UploadPage implements OnInit {
     const fileReader = new FileReader();
     fileReader.onloadend = (e)=>{
       this.base64Result = e.target.result;
+      this.userImage = fileReader.result;
       //console.log(this.base64Result);
     };
     fileReader.readAsDataURL(file);
@@ -95,9 +155,9 @@ export class UploadPage implements OnInit {
       let base64String = '';
       base64String = this.base64Result;
 
-      console.log('in');
+      //console.log('in');
       if (localStorage.getItem('id') !== 'guest') {
-        console.log('in');
+        //console.log('in');
         let img = new Object() as UploadedImage;
         img = {
           id: localStorage.getItem('id'),
@@ -106,10 +166,9 @@ export class UploadPage implements OnInit {
           file: this.uploadImageName, // uploaded file name
           style: this.characterImage.group, // the writing style that the letter is from
         };
-        console.log(img);
         this.service.uploadImage(img).subscribe( data =>{
-          this.score = data.body.score;
-          this.showScore(Math.round(this.score));
+          this.score = data.body;
+          this.showScore(this.score);
         });
          // get the score
       }
@@ -118,14 +177,52 @@ export class UploadPage implements OnInit {
         img = {
           image: base64String,
           imagechar: this.characterImage.characterName,
+          style: this.characterImage.group
         };
         this.service.guestUploadImage(img).subscribe( data => {
-          this.score = data.body.score;
+          this.score = data.body;
           this.showScore(this.score);
         });
 
       }
     }
+  }
+
+  //open the object detection modal agin incase they want to try another image
+  async showModal(){
+    try {
+      console.log(this.obdService.getModal());
+      return await this.obdService.getModal().present();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //checks if modal is set, if it is show button
+  ifObjectsDetected(): boolean{
+    if (this.obdService.getModal()) {
+      return true;
+    }
+    return false;
+  }
+
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 
 }

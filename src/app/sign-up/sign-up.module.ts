@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { SignUpPageRoutingModule } from './sign-up-routing.module';
-import { AppServiceService } from '../services/app-service.service';
+import { AppServiceService } from '../services/appService/app-service.service';
 import { SignUpPage } from './sign-up.page';
-import {  HttpClientModule  } from '@angular/common/http';
+import { PasswordModule } from '../shared/components/password/password.module';
+import { ToastComponent } from '../shared/components/toast/toast.component';
 
 @NgModule({
   imports: [
@@ -15,9 +16,9 @@ import {  HttpClientModule  } from '@angular/common/http';
     FormsModule,
     IonicModule,
     SignUpPageRoutingModule,
-    HttpClientModule
+    PasswordModule,
   ],
   declarations: [SignUpPage],
-  providers: [AppServiceService]
+  providers: [AppServiceService, ToastComponent]
 })
 export class SignUpPageModule {}

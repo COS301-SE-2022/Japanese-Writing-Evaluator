@@ -1,10 +1,8 @@
-import { DOCUMENT } from '@angular/common';
 import { Component, ElementRef, Inject, OnInit, Pipe, Renderer2, ViewChild } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { AppServiceService } from '../services/app-service.service';
-//import { AppServiceService } from '../services/app-service.service';
-
+import { AppServiceService } from '../services/appService/app-service.service';
+import { UserProgress } from '../shared/interfaces/progress';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-progress',
@@ -14,14 +12,24 @@ import { AppServiceService } from '../services/app-service.service';
 
 
 export class ProgressPage implements OnInit {
-  data: SafeHtml;
+  progressArray: UserProgress[];
+
+  progressHiragana =  new Map<string, {score: number; date: string }[]> ();
+  progressKatakana =  new Map<string, {score: number; date: string }[]> ();
+  progressKanji =  new Map<string, {score: number; date: string }[]> ();
+  writingStylesArray: string[];
+
+  alphabetCategory = [
+    {character: 'あ', category: 'Hiragana'},
+    {character: 'ア', category: 'Katakana'},
+    {character: '一', category: 'Kanji'}
+  ];
+
+  pageRequest = 'progress';
 
   char = '';
   percent = 0;
-
   img: string;
-
-  htmlToAdd = '';
 
   hiragana = 'hiragana';
   katakana = 'katakana';
@@ -32,117 +40,150 @@ export class ProgressPage implements OnInit {
   constructor(private router: Router, private service: AppServiceService) { }
 
   ngOnInit() {
-    this.char = localStorage.getItem('char');
-    this.percent = +localStorage.getItem('percentage');
-    // console.log(this.service.getProgress().subscribe())
-    this.service.getProgress().subscribe(data => {
-      console.log(data.body.response);
-    });
 
-    this.map.set('A', 'A');
-    this.map.set('I','I');
-    this.map.set('U','U');
-    this.map.set('E','E');
-    this.map.set('O','O');
-    this.map.set('Ka','Ka');
-    this.map.set('Ki','Ki');
-    this.map.set('Ku','Ku');
-    this.map.set('Ke','Ke');
-    this.map.set('Ko','Ko');
-    this.map.set('Sa','Sa');
-    this.map.set('Si','Si');
-    this.map.set('Su','Su');
-    this.map.set('Se','Se');
-    this.map.set('So','So');
-    this.map.set('Ta','Ta');
-    this.map.set('Ti','Ti');
-    this.map.set('Tu','Tu');
-    this.map.set('Te','Te');
-    this.map.set('To','To');
-    this.map.set('Na','Na');
-    this.map.set('Ni','Ni');
-    this.map.set('Nu','Nu');
-    this.map.set('Ne','Ne');
-    this.map.set('No','No');
-    this.map.set('Ha','Ha');
-    this.map.set('Hi','Hi');
-    this.map.set('Hu','Hu');
-    this.map.set('He','He');
-    this.map.set('Ho','Ho');
-    this.map.set('Ma','Ma');
-    this.map.set('Mi','Mi');
-    this.map.set('Mu','Mu');
-    this.map.set('Me','Me');
-    this.map.set('Mo','Mo');
-    this.map.set('Ya','Ya');
-    this.map.set('Yu','Yu');
-    this.map.set('Yo','Yo');
-    this.map.set('Ra','Ra');
-    this.map.set('Ri','Ri');
-    this.map.set('Ru','Ru');
-    this.map.set('Re','Re');
-    this.map.set('Ro','Ro');
-    this.map.set('Wa','Wa');
-    this.map.set('Wi','Wi');
-    this.map.set('We','We');
-    this.map.set('Wo','Wo');
-    this.map.set('Ga','Ga');
-    this.map.set('Gi','Gi');
-    this.map.set('Gu','Gu');
-    this.map.set('Ge','Ge');
-    this.map.set('Go','Go');
-    this.map.set('Za','Za');
-    this.map.set('Zi','Zi');
-    this.map.set('Zu','Zu');
-    this.map.set('Ze', 'Ze');
-    this.map.set('Zo','Zo');
-    this.map.set('Da','Da');
-    this.map.set('Di','Di');
-    this.map.set('Du','Du');
-    this.map.set('De','De');
-    this.map.set('Do','Do');
-    this.map.set('Ba','Ba');
-    this.map.set('Bi','Bi');
-    this.map.set('Bu','Bu');
-    this.map.set('Be','Be');
-    this.map.set('Bo','Bo');
-    this.map.set('Pa','Pa');
-    this.map.set('Pi','Pi');
-    this.map.set('Pu','Pu');
-    this.map.set('Pe','Pe');
-    this.map.set('Po','Po');
-    this.map.set('one','one');
-    this.map.set('two','two');
-    this.map.set('three','three');
-    this.map.set('four','four');
-    this.map.set('five','five');
-    this.map.set('six','six');
-    this.map.set('seven','seven');
-    this.map.set('eight','eight');
-    this.map.set('nine','nine');
-    this.map.set('ten','ten');
+       this.service.getProgress().subscribe(data => {
+       this.progressArray = data.body.response;
+       this.manipulateScores();
+     });
+
+     this.writingStylesArray = [
+     'hiragana', 'katakana', 'kanji'
+     ];
+
   }
-  // TODO: set the character and percentage, #73, Maryam Mohamad Al Mahdi
-  setDisplay(char: string, percent: number){
-    this.char = char;
-    this.percent = percent;
+
+  //TODO: manipulates the response from post request in order to get the score & date per writing style,
+  // #177, Maryam Mohamad Al Mahdi
+  manipulateScores() {
+//       // eslint-disable-next-line @typescript-eslint/prefer-for-of
+  //check if the user has progress
+  this.progressArray.forEach(progress => {
+        let keyString = '';
+        keyString += progress.character + '_';
+        keyString += progress.writing_style;
+
+         if(this.progressHiragana.has(keyString)  && keyString.includes('hiragana')){
+           const object = {
+             score: progress.score,
+             date: progress.uploadDate,
+           };
+           this.progressHiragana.get(keyString).push(object);
+         }
+         else if(keyString.includes('hiragana'))
+         {
+           const object = [{
+             score: progress.score,
+            date: progress.uploadDate,
+          }];
+
+          this.progressHiragana.set(keyString, object);
+        }
+        else if(this.progressKatakana.has(keyString) && keyString.includes('katakana')){
+
+          const object = {
+            score: progress.score,
+            date: progress.uploadDate,
+          };
+          this.progressKatakana.get(keyString).push(object);
+        }
+        else if(keyString.includes('katakana')){
+          const object = [{
+            score: progress.score,
+            date: progress.uploadDate,
+          }];
+
+          this.progressKatakana.set(keyString, object);
+        }
+        else if(this.progressKanji.has(keyString) && keyString.includes('kanji')){
+
+          const object = {
+            score: progress.score,
+            date: progress.uploadDate,
+          };
+          this.progressKanji.get(keyString).push(object);
+        }
+        else if(keyString.includes('kanji'))
+        {
+          const object = [{
+            score: progress.score,
+            date: progress.uploadDate,
+          }];
+
+          this.progressKanji.set(keyString, object);
+        }
+
+      });
+
+      this.service.setProgressHiragana(this.progressHiragana);
+      this.service.setProgressKatakana(this.progressKatakana);
+      this.service.setProgressKanji(this.progressKanji);
   }
-  // TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
-  setHome(){
-    this.router.navigate(['/home']);
-  }
+    //TODO: navigates to home page, #73, Maryam Mohamad Al Mahdi
+    setHome(){
+      this.router.navigate(['/home']);
+    }
+
 
   getLetter(letter: string){
-    return this.map.get(letter);
-  }
+    let letterString = '';
+    let index = letter.indexOf('_');
 
-  onLogout(){
-    // this function logs the user out of the system
-    localStorage.removeItem('id');
-    if (localStorage.getItem('token')) {
-      localStorage.removeItem('token');
+    if(index !== -1)
+    {
+      index -= 1;
+      while(index!== -1){
+
+        letterString += letter[index];
+        index -= 1;
+      }
     }
-    this.router.navigate(['/login']);
-
+    return letterString.split('').reverse().join('');
   }
+
+  getStyle(writingStyle: string){
+
+    if(writingStyle.includes('hiragana'))
+    {
+      return 'hiragana';
+    }
+    else if(writingStyle.includes('katakana'))
+    {
+      return 'katakana';
+    }
+    else
+    {
+      return 'kanji';
+    }
+  }
+
+  getPercent(objArray: {score: string; date: string }[]){
+
+    let totalPercent = 0;
+    // eslint-disable-next-line @typescript-eslint/prefer-for-of
+    for (let i = 0; i < objArray.length; i++) {
+      totalPercent+=Number(objArray[i].score);
+    }
+      return Math.round(totalPercent/objArray.length);
+  }
+
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
+  }
+
 }
+

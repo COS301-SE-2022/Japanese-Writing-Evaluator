@@ -68,7 +68,6 @@ class Database:
         return:
             number of rows modified for bound checking
     """
-
     def updatePassword(self, token, password):
         update_query = "UPDATE users SET password = %s WHERE forgot_password_token = %s"
         try:
@@ -83,6 +82,18 @@ class Database:
             print(error)
             return 0
 
+    def fetchSalt(self, email):
+        query = "SELECT password_salt FROM users WHERE email = %s;"
+        self.curr.execute(query, (email,))
+        salt = self.curr.fetchone()
+        return salt
+
+    def fetchSaltByToken(self, token):
+        query = "SELECT password_salt FROM users WHERE forgot_password_token = %s;"
+        self.curr.execute(query, (token,))
+        salt = self.curr.fetchone()
+        return salt
+
 #function used to add a user to the database
     def addUser(self, username, password, email, admin, passwordSalt, avgScore):
         q = "INSERT INTO users(email, admin, password, password_salt, username, average_score) VALUES(%s, %s, %s, %s, %s, %s);"
@@ -91,12 +102,19 @@ class Database:
 
 #function to find user with their email and return their username
     def getUser(self,password,email):
-        q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+        q = "SELECT username , userid, admin, super_admin FROM users WHERE password = %s AND email = %s;"
         self.curr.execute(q, (password,email))
         user = self.curr.fetchone()
-        print(user)
         return user
         
+    """
+        getAllUsers function:
+            functionality: gets all users database
+        aguments: 
+            none
+        return:
+            users
+    """
     def getAllUsers(self):
         q = "SELECT * FROM users;"
         self.curr.execute(q,)
@@ -123,7 +141,7 @@ class Database:
         query = "DELETE FROM users WHERE email = %s;"
         self.curr.execute(query, (email,))
         self.conn.commit()
- 
+
     """
         getImage function:
             functionality: return images for the user
@@ -133,7 +151,7 @@ class Database:
             None
     """
     def getImage(self, id):
-        view_query = "SELECT * FROM image WHERE id=%s;"
+        view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
         self.curr2.execute(view_query, ([id]))
         images_url = self.curr2.fetchall()
         return images_url
@@ -172,4 +190,13 @@ class Database:
         except:
             return False
 
-        
+    def editUser(self, id, admin):
+        try:
+            query = "UPDATE users SET admin = %s WHERE userid = %s;";
+            self.curr.execute(query, (admin, id))
+            self.conn.commit()
+            print("Edited")
+            return True
+        except Exception as e:
+            print(e)
+            return False       

@@ -1,3 +1,4 @@
+import { OptionsModule } from './../shared/components/options/options.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -7,15 +8,21 @@ import { IonicModule } from '@ionic/angular';
 import { ProgressPageRoutingModule } from './progress-routing.module';
 
 import { ProgressPage } from './progress.page';
-import { ProgressBlockComponent } from './progress-block/progress-block.component';
+import { LogoutModule } from './../shared/components/logout/logout.module';
+import { NavbarModule } from '../shared/components/navbar/navbar.module';
+import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    OptionsModule,
     ProgressPageRoutingModule,
+    NavbarModule,
+    LogoutModule,
+    AdminNavBarModule
   ],
-  declarations: [ProgressPage, ProgressBlockComponent]
+  declarations: [ProgressPage]
 })
 export class ProgressPageModule {}

@@ -2,8 +2,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppServiceService } from '../services/app-service.service';
+import { environment } from 'src/environments/environment';
 
+import { AppServiceService } from '../services/appService/app-service.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginPage implements OnInit {
   //usernameInputColor = 'border-color: dark;';
   isPassword = false; // is there a username provided
   //passwordInputColor = 'border-color: dark;';
+  hide = true; // a variable used to show or hide a password
 
   constructor(formBuilder: FormBuilder, private router: Router, private appService: AppServiceService) {//
     this.login = formBuilder.group({ // building a responsive form with two inputs
@@ -52,17 +54,25 @@ export class LoginPage implements OnInit {
 
       this.appService.isUser(username,password )
       .subscribe(data =>{
+        console.log(data);
         if(data.status === 200){
+          console.log(data);
           if (!localStorage.getItem('id')) {
-            localStorage.setItem('id',data.body['data'][1].toString());
+            localStorage.setItem('id',data.body['data']['id'].toString());
           }
+
+          // if role is set to true then it is admin if role == false then its a normal user
+          // environment.admin = data.body['data'][2];
+          // environment.superAdmin = data.body['data'][3];
+
           if (!localStorage.getItem('token')) {
             localStorage.setItem('token',data.body['user-token'].toString());
           }
+
+          this.login.controls.username.reset();
+          this.login.controls.password.reset();
+
           this.router.navigate(['/home']);
-        }
-        else{
-          alert('Incorrect user information or user does not exist');
         }
       });
     }
@@ -72,5 +82,6 @@ export class LoginPage implements OnInit {
       localStorage.setItem('id','guest');
       this.router.navigate(['/home']);
   }
+
 
 }

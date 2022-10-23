@@ -1,13 +1,6 @@
 ion-content h2{
   font-family: 'sans-serif', 'Helvetica', 'Arial', 'Verdana', 'Tahoma';
 }
-
-ion-button{
-  position: absolute;
-  right: 5px;
-  top: 5px;
-}
-
 ion-img{
   position: absolute;
   left: 5px;
@@ -36,6 +29,11 @@ ion-img{
   font-size: 100%;
 }
 
-.suggestions{
-  margin: 20px;
+.my-grid {
+  height: 100% !important;
+}
+.parent-row {
+  height: 100% !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
