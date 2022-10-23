@@ -6,6 +6,7 @@ import { UploadModalComponent } from '../shared/components/upload-modal/upload-m
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
 import { environment as env } from 'src/environments/environment';
+import { UploadPage } from '../upload/upload.page';
 
 @Component({
   selector: 'app-drawing-pad',
@@ -20,7 +21,8 @@ export class DrawingPadPage implements AfterViewInit {
   uploadImageName = 'drawingCharacter.jpeg';
   score: Score;
 
-  constructor(public service: AppServiceService, private modalController: ModalController, private alertController: AlertController) { }
+  constructor(public service: AppServiceService, private modalController: ModalController, private alertController: AlertController,
+     private upload: UploadPage) { }
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
@@ -44,115 +46,9 @@ export class DrawingPadPage implements AfterViewInit {
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
-    this.evaluateImage();
+    this.upload.evaluateImage(this.signatureImg,this.signatureImg,this.uploadImageName,this.signatureImg,this.characterImage);
   }
 
-  evaluateImage() {
-    // add if user is a guest
-    if (this.signatureImg != null && localStorage.getItem('id') !== '') {
-      let base64String = '';
-      base64String = this.signatureImg;
-
-      //console.log('in');
-      if (localStorage.getItem('id') !== 'guest') {
-        //console.log('in');
-        let img = new Object() as UploadedImage;
-        img = {
-          id: localStorage.getItem('id'),
-          image: base64String,
-          imagechar: this.characterImage.characterName,//the name of the character eg i
-          file: this.uploadImageName, // uploaded file name
-          style: this.characterImage.group, // the writing style that the letter is from
-        };
-        this.service.uploadImage(img).subscribe( data =>{
-          console.log(data.body);
-          this.service.setScore(data.body);
-          this.service.setUserImage(this.signatureImg);
-          if(data.body.data.score === 0 || data.body.data.score === -1){
-            this.score = data.body;
-            this.showScore(data.body);
-          }
-          else{
-            this.showModal(UploadModalComponent);
-          }
-        });
-
-         // get the score
-      }
-      else{
-        let img = new Object() as GuestUploadedImage;
-        img = {
-          image: base64String,
-          imagechar: this.characterImage.characterName,
-          style: this.characterImage.group
-        };
-        this.service.guestUploadImage(img).subscribe( data => {
-          this.service.setScore(data.body);
-          this.service.setUserImage(this.signatureImg);
-          if(data.body.data.score === 0 || data.body.data.score === -1){
-            this.score = data.body;
-            this.showScore(data.body);
-          }
-          else{
-            this.showModal(UploadModalComponent);
-          }
-        });
-
-      }
-    }
-  }
-
-  async showModal(modalComponent){//shows each of the modals ... depending on the component
-    const modal = await this.modalController.create({
-      component: modalComponent
-    });
-    // this.obdService.setModal(modal);
-    // console.log(modal);
-    return await modal.present();
-  }
-
-  async showScore(score: Score) {
-    //if score is negative 1 == error
-    let scoreMessage: string;
-    let alert;
-    if (score.data.score === -1) {
-      scoreMessage = 'Try again'; // todo: add error message, #68, Phumu
-      alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Something went wrong...',
-        message: `<ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>${scoreMessage}`,
-        buttons: [
-          {
-            text: 'Ok',
-            handler: () => {
-              console.log('Confirm Okay');
-            }
-          }
-        ]
-      });
-    }
-    else if (score.data.score === 0) {
-      scoreMessage = 'Try upload another image'; // todo: add error message, #68, Phumu
-      alert = await this.alertController.create({
-        cssClass: 'my-custom-class',
-        header: 'Image is invalid...',
-        message: `<ion-img src="../../assets/icon/uploaderror.png" alt="Error Image" ></ion-img>${scoreMessage}`,
-        buttons: [
-          {
-            text: 'Retry',
-            handler: () => {
-              console.log('Confirm Okay');
-            }
-          }
-        ]
-      });
-    }
-
-  await alert.present();
-
-    // const { role } = await alert.onDidDismiss();
-    // console.log('onDidDismiss resolved with role', role);
-  }
 
   ifGuest(): boolean{
     if (localStorage.getItem('id')) {

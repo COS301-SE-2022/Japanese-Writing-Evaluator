@@ -21,8 +21,8 @@ export class UploadPage implements OnInit {
   uploadedImage: File;
   userImage: any;
   uploadImageName: string;
+  base64Result: any;
   private score: Score;
-  private base64Result: any;
 
   //TODO:add form parameters to constructor, #71, Phumu
   constructor(private service: AppServiceService,public alertController: AlertController, private obdService: ObjectDetectionService,
@@ -98,11 +98,11 @@ export class UploadPage implements OnInit {
   }
 
   //TODO: send image to backend to be evaluated by the AI, #71, Phumu
-  evaluateImage() {
+  evaluateImage(image,base64Result,uploadImageName,userImage,characterImage) {
     // add if user is a guest
-    if (this.uploadedImage != null && localStorage.getItem('id') !== '') {
+    if (image != null && localStorage.getItem('id') !== '') {
       let base64String = '';
-      base64String = this.base64Result;
+      base64String = base64Result;
 
       //console.log('in');
       if (localStorage.getItem('id') !== 'guest') {
@@ -111,13 +111,13 @@ export class UploadPage implements OnInit {
         img = {
           id: localStorage.getItem('id'),
           image: base64String,
-          imagechar: this.characterImage.characterName,//the name of the character eg i
-          file: this.uploadImageName, // uploaded file name
-          style: this.characterImage.group, // the writing style that the letter is from
+          imagechar: characterImage.characterName,//the name of the character eg i
+          file: uploadImageName, // uploaded file name
+          style: characterImage.group, // the writing style that the letter is from
         };
         this.service.uploadImage(img).subscribe( data =>{
           this.service.setScore(data.body);
-          this.service.setUserImage(this.userImage);
+          this.service.setUserImage(userImage);
           if(data.body.data.score === 0 || data.body.data.score === -1){
             this.score = data.body;
             this.showScore(data.body);
@@ -133,12 +133,12 @@ export class UploadPage implements OnInit {
         let img = new Object() as GuestUploadedImage;
         img = {
           image: base64String,
-          imagechar: this.characterImage.characterName,
-          style: this.characterImage.group
+          imagechar: characterImage.characterName,
+          style: characterImage.group
         };
         this.service.guestUploadImage(img).subscribe( data => {
           this.service.setScore(data.body);
-          this.service.setUserImage(this.userImage);
+          this.service.setUserImage(userImage);
           if(data.body.data.score === 0 || data.body.data.score === -1){
             this.score = data.body;
             this.showScore(data.body);
