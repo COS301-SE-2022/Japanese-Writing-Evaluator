@@ -5,6 +5,14 @@ canvas {
   margin: 0 auto;
 }
 
+.horizontalflexbox{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
 ion-content{
   display: flex;
   justify-content: center;
