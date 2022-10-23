@@ -13,7 +13,6 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://633168369b681d4d5be0b5ed--musical-taiyaki-627c6d.netlify.app/"]}})
-
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
@@ -29,8 +28,83 @@ def token_required(function):
         except Exception:
             return jsonify({'response' : 'The token is invaild!'}), 401
         return  function(*args, **kwargs)
-  
-    return decorated 
+
+    return decorated
+
+#####################################################
+#login
+try:
+    conn = psycopg2.connect(host = os.getenv('DB_HOST'), database = os.getenv('DB_NAME'), user = os.getenv('DB_USER'), password = os.getenv('DB_PASS'))
+    conn2 = psycopg2.connect(host = os.getenv('Image_host'), database = os.getenv('Image_db'), user = os.getenv('Image_user'), password = os.getenv('Image_pass'))
+    curr = conn.cursor()
+    curr2 = conn2.cursor()
+
+    config = {
+            'apiKey': os.getenv('FB_APIKEY'),
+            'authDomain': os.getenv('FB_authDomain'),
+            'projectId': os.getenv('FB_projectId'),
+            'storageBucket': os.getenv('FB_storageBucket'),
+            'messagingSenderId': os.getenv('FB_messagingSenderId'),
+            'appId': os.getenv('FB_appId'),
+            "measurementId": os.getenv("FB_measurementId"),
+            'serviceAccount' : "service.json",
+            'databaseURL': os.getenv('FB_DBURL')
+        }
+    firebase = pyrebase.initialize_app(config)
+    storage = firebase.storage()
+    auth = firebase.auth()
+    user = auth.sign_in_with_email_and_password(os.getenv("fire_email"), os.getenv("fire_password"))
+
+except Exception as e:
+    print("Could not connect to database", e)
+
+"""
+    login function:
+        return the user if they exist
+    request body:
+        email: the email of a registered user
+        password: their password
+    return:
+        json response
+"""
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    email = str(request.json["email"])
+    password = str(request.json["password"])
+    salt = fetchSalt(email)
+    if(salt == None):
+            return jsonify({'response': "user does not exist"})
+    else:
+        user_password = hashlib.sha512((password + salt[0]).encode()).hexdigest()
+        user = getUser(user_password, email)
+
+        if user == None:
+            return jsonify({'response': "user not found."}), 401
+        else:
+            session["logged_in"] = True
+            token = jwt.encode({
+                'username' : user[0],
+                'id': user[1],
+            }, app.config['SECRET_KEY'], "HS256")
+            return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user}), 200
+
+
+def fetchSalt(email):
+    query = "SELECT password_salt FROM users WHERE email = %s;"
+    curr.execute(query, (email,))
+    salt = curr.fetchone()
+    return salt
+
+def getUser(password,email):
+    q = "SELECT username , userid FROM users WHERE password = %s AND email = %s;"
+    curr.execute(q, (password,email))
+    user = curr.fetchone()
+    return user
+
+###################################################################
+
+###################################################################
+#forgot password email
 
 authFail = "Connection to authentication service failed"
 fail = "Connection to evaluation service failed"
@@ -38,7 +112,7 @@ imgDBFail = "Connection to image database service failed"
 """
     callResetPassword function:
         calls update password to change the password
-    request body: 
+    request body:
         email: the email of a registed user
         password: their new password
     return:
@@ -60,10 +134,13 @@ def resetPassword():
     except Exception:
         return jsonify({"response": authFail}), 401
 
+
+####################################################################
+#Register
 """
     call Register function:
         calls the register function from authentication.py
-    request body: 
+    request body:
         email: the email of a new user
         password: their password
         username: and their username
@@ -78,10 +155,12 @@ def callRegister():
     except Exception:
         return jsonify({"response": authFail}), 401
 
+##################################################################
+#upload
 """
     callUploadImage function:
         calls uploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -143,7 +222,7 @@ def callUploadImage():
 """
     callViewImages function:
         calls view image function from image.py
-    request body: 
+    request body:
         id: the user's id
     return:
         json response
@@ -204,7 +283,7 @@ def logout():
         return jsonify({"response": 'logged out'}), 200
     except Exception:
         return jsonify({"response": 'Error'}), 401
-        
+
 """
     home function:
         calls getCharacters to send character url's to front-end for the homepage
@@ -223,7 +302,7 @@ def home():
     request body:
 
     return:
-        
+
 """
 @repeat(every().sunday)
 def email_users():
@@ -254,12 +333,12 @@ def email_users():
                 if(j[0] == store[jCount][0]):
                     average += j[3]
                     divBy += 100
-                    
+
             score = (average/divBy) * 100
             store[jCount][1] = "{:.2f}".format(score)
             jCount += 1
 
-        
+
         iCount += 1
         divBy = 0
         average = 0
@@ -299,7 +378,7 @@ def email_users():
 """
     callGuestUploadImage function:
         calls guestUploadImage function from image.py
-    request body: 
+    request body:
         email
         password
     return:
@@ -338,6 +417,8 @@ def callGuestUploadImage():
         return eval.json()
 
 
+##################################################
+#admin edit
 """
     callEditUserPrivileges function:
         calls editUserPrivileges frunction from admin.py
@@ -438,17 +519,16 @@ def callGetFrequency():
         return requests.get(os.getenv("imageDB") + "/getFrequency", headers = headers).json()
     except Exception:
         return jsonify({"response": imgDBFail}), 400
-        
 """
     callObjectDetection function:
         calls the object detection which detects objects in image
-    request body: 
+    request body:
         image
     return:
         json response
 """
 @app.route('/object-detection', methods = ['POST'])
-@token_required
+# @token_required
 def callObjectDetection():
     try:
         image = request.json["image"]
