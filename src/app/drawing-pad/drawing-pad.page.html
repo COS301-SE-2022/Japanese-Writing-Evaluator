@@ -1,0 +1,35 @@
+<ion-content>
+  <div class="head" >
+    <ion-img src="assets/images/JWE-logos_black.png"></ion-img>
+    <app-logout></app-logout>
+    <p>
+      <strong>Draw</strong><br>
+      <em>"consistency is the key"</em><br>
+      Draw the character within the box.
+    </p>
+</div>
+
+<div class="horizontalflexbox">
+  <div lines="none" id="backgroundDiv" >
+    <div class="flexbox">
+      <div lines="none" class="character">
+        <h2>{{this.service.getTryImage().url}}</h2>
+        <p>{{this.service.getTryImage().characterName}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div id="canvasDiv">
+    <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+    <ion-button id="clear" color="tertiary" (click)="clearPad()">Clear</ion-button>
+    <ion-button id="evaluate" (click)="savePad()">Evaluate</ion-button>
+  </div>
+
+
+  
+</ion-content>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>

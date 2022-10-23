@@ -534,4 +534,5 @@ def deleteUserCred(id):
 
 
 if __name__ == '__main__':
-    app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=False)
+    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
+    app.run(port=int(os.environ.get("PORT", 5005)),host='0.0.0.0',debug=True)

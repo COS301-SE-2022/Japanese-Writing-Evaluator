@@ -118,28 +118,26 @@ def callUploadImage():
     if(eval.status_code == 200):
         score = eval.json()["score"]
         strokes = eval.json()["strokes"]
-        if(score == 0):
-            return jsonify({'response': "image evaluation failed."}), 401
-        else:
+        # print("==========================")
+        try:
+            exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+        except Exception:
+            return jsonify({"response": "Connection to image service failed"}), 400
+
+        if(exitcode.status_code == 200):
 
             try:
-                exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+                storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]})
             except Exception:
-                return jsonify({"response": "Connection to image service failed"}), 400
+                return jsonify({"response": imgDBFail}), 401
 
-            if(exitcode.status_code == 200):
-
-                try:
-                    storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
-                except Exception:
-                    return jsonify({"response": imgDBFail}), 401
-
-                if(storeToDB == "upload successful"):
-                    return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
-                else:
-                    return jsonify({'response': "Database storage failed"}), 401
+            # print(storeToDB)
+            if(storeToDB.status_code == 200):
+                return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
             else:
-                return jsonify({'response': "Storage to cloud service failed"}), 401
+                return jsonify({'response': "Database storage failed"}), 401
+        else:
+            return jsonify({'response': "Storage to cloud service failed"}), 401
     else:
         return eval.json()
 """
@@ -186,11 +184,8 @@ def login():
             'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
-        
     else:
-        return jsonify({'response': "user not found."}), 401   
-
-
+        return user.json()
 
 """
     logout function
@@ -474,4 +469,4 @@ def deleteUser():
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=False)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)

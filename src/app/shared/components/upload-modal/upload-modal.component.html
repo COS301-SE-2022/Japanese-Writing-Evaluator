@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">Close</ion-button>
+    </ion-buttons>
+    <ion-title>Upload Character Image</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div *ngIf="score.data.score !== -1 && score.data.score !== 0">
+    <h1>Character Accuracy</h1>
+    <!-- <h1>{{this.characterImage.url}}</h1> -->
+    <h2>Your overall score is {{math.round(score.data.score)}}%</h2>
+    <ion-item lines="none">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <h4>Your uploaded character</h4>
+            <ion-img src="{{this.userImage}}" style="width: 150px; height: 150px;"></ion-img>
+          </ion-col>
+          <ion-col>
+            <h4>Expected character</h4>
+            <ion-img src="../assets/upload/{{this.characterImage.characterName.toUpperCase()}}.jpg" alt="Correct {{characterImage.characterName}} image"  style="width: 150px; height: 150px;"></ion-img>
+          </ion-col>
+        </ion-row>
+      
+      <div>
+       
+      </div>
+      </ion-grid>
+    </ion-item>
+    <div>
+      <ion-item *ngIf="this.score.data.strokes.length === 1 && this.score.data.strokes[0] === 0">
+        <p>We don't provide strokes for this character</p>
+        <p>Strokes: {{this.score.data.strokes[0]}}%</p>
+      </ion-item>
+      <div *ngIf="this.score.data.strokes.length >= 1 && this.score.data.strokes[0] !== 0">
+        <ion-item *ngFor="let stroke of score.data.strokes, let count = index">
+          <p class="stroke{{count}}">o </p><p>Stroke {{count}}: {{math.round(stroke)}}%</p>
+        </ion-item>
+      </div>
+    </div>
+    
+  </div>
+</ion-content>

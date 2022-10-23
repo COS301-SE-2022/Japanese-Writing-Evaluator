@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { ObjectDetectionService } from 'src/app/services/objectDetection/object-detection.service';
 import { OdresponseElements } from '../../interfaces/odpicture';
-import SwiperCore, { Autoplay, Keyboard, Pagination, Scrollbar, SwiperOptions, Zoom } from 'swiper';
 import { CharacterImage } from '../../interfaces/image';
 import { AppServiceService } from 'src/app/services/appService/app-service.service';
 import { Router } from '@angular/router';
 
-SwiperCore.use([Autoplay, Keyboard, Pagination, Scrollbar, Zoom]);
 
 @Component({
   selector: 'app-obd-modal',

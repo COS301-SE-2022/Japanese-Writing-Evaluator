@@ -8,12 +8,14 @@ import { Score } from '../shared/interfaces/score';
 import { ToastComponent } from '../shared/components/toast/toast.component';
 import { ObdModalComponent } from '../shared/components/obd-modal/obd-modal.component';
 import { ObjectDetectionService } from '../services/objectDetection/object-detection.service';
+import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
+import { AppServiceService } from '../services/appService/app-service.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor{
     //private animeBuilder: AnimationBuilder,
     constructor(private loadingController: LoadingController, private uploadPage: UploadPage, private toast: ToastComponent,
-        public modalController: ModalController, private obdService: ObjectDetectionService){
+        public modalController: ModalController, private appService: AppServiceService){
 
     }
 
@@ -163,7 +165,8 @@ export class LoadingInterceptor implements HttpInterceptor{
                                 score: 0
                             }
                         };
-                        this.uploadPage.showScore(score);
+                        this.appService.setScore(score);
+                        this.showModal(UploadModalComponent);
                     }
                 }
                 return event;
@@ -216,6 +219,9 @@ export class LoadingInterceptor implements HttpInterceptor{
                 }
                 else if (err.status === 401) {
                     this.toast.showToast('Incorrect email or password. Signup to create a profile', 401);
+                }
+                else if (err.status === 500) {
+                    this.toast.showToast('Something went wrong on our side, Try again', 0);
                 }
                 //show that there is an error in the upload page
                 this.loadingController.dismiss();
@@ -322,7 +328,7 @@ export class LoadingInterceptor implements HttpInterceptor{
                     // TODO: Check if the response is 200 ok
                     this.loadingController.dismiss();
                     if(event.status === 200){
-                        this.showModal();
+                        this.showModal(ObdModalComponent);
                     }
                 }
                 return event;
@@ -330,12 +336,12 @@ export class LoadingInterceptor implements HttpInterceptor{
         );
     }
 
-    async showModal(){
+    async showModal(modalComponent){//shows each of the modals ... depending on the component
         const modal = await this.modalController.create({
-          component: ObdModalComponent
+          component: modalComponent
         });
-        this.obdService.setModal(modal);
-        console.log(modal);
+        // this.obdService.setModal(modal);
+        // console.log(modal);
         return await modal.present();
       }
 

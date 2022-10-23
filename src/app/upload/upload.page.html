@@ -31,11 +31,11 @@
   </div>
 
   <div class="horizontalbuttonflexbox">
-    <ion-button (click)="evaluateImage()" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
+    <ion-button (click)="evaluateImage(this.uploadedImage,this.base64Result,this.uploadImageName,this.userImage, this.characterImage)" style="box-shadow: 3px 6px -1px rgba(0,0,0,0.68);" >Evaluate</ion-button>
   </div>
 
   <div class="horizontalbuttonflexbox" *ngIf="ifObjectsDetected()">
-    <ion-button fill="outline" (click)="showModal()">Show detected items</ion-button>
+    <ion-button fill="outline" (click)="showOdbModal()">Show detected items</ion-button>
   </div>
   
 </ion-content>
