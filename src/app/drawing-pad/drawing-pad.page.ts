@@ -20,7 +20,7 @@ export class DrawingPadPage implements AfterViewInit {
   uploadImageName = 'drawingCharacter.jpeg';
   score: Score;
 
-  constructor(private service: AppServiceService, private modalController: ModalController, private alertController: AlertController) { }
+  constructor(public service: AppServiceService, private modalController: ModalController, private alertController: AlertController) { }
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);

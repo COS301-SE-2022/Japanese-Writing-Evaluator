@@ -13,8 +13,8 @@
   <div lines="none" id="backgroundDiv" >
     <div class="flexbox">
       <div lines="none" class="character">
-        <h1>{{characterImage.url}}</h1>
-        <p>{{characterImage.characterName}}</p>
+        <h2>{{this.service.getTryImage().url}}</h2>
+        <p>{{this.service.getTryImage().characterName}}</p>
       </div>
     </div>
   </div>
@@ -26,9 +26,10 @@
     <ion-button id="evaluate" (click)="savePad()">Evaluate</ion-button>
   </div>
 
-  <div *ngIf="ifGuest()">
-    <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
-    <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
-  </div>
+
   
 </ion-content>
+<div *ngIf="ifGuest()">
+  <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+  <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+</div>
