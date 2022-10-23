@@ -10,6 +10,7 @@ import { UploadPage } from './upload.page';
 import { NavbarModule } from '../shared/components/navbar/navbar.module';
 import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-bar.module';
 import { LogoutModule } from '../shared/components/logout/logout.module';
+import { UploadModalModule } from '../shared/components/upload-modal/upload-modal.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { LogoutModule } from '../shared/components/logout/logout.module';
     UploadPageRoutingModule,
     NavbarModule,
     AdminNavBarModule,
-    LogoutModule
+    LogoutModule,
+    UploadModalModule
   ],
   declarations: [UploadPage]
 })

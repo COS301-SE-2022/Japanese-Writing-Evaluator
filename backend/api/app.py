@@ -186,11 +186,8 @@ def login():
             'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
-        
     else:
-        return jsonify({'response': "user not found."}), 401   
-
-
+        return user.json()
 
 """
     logout function
@@ -465,4 +462,4 @@ def callObjectDetection():
 
 if __name__ == '__main__':
     # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
-    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=False)
+    app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
