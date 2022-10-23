@@ -55,6 +55,11 @@ const routes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule),
     canActivate: [RouteGuard]
   },
+  {
+    path: 'drawing-pad',
+    loadChildren: () => import('./drawing-pad/drawing-pad.module').then( m => m.DrawingPadPageModule)
+  },
+
 ];
 
 

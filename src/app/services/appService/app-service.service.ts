@@ -34,6 +34,7 @@ export class AppServiceService {
   private score: Score;
   private userImage;
 
+
   constructor(private httpclient: HttpClient) { }//
 
   setProgressHiragana(map: Map<string, {score: number; date: string }[]>){
