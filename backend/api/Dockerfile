@@ -7,6 +7,6 @@ COPY ./app.py ./
 ENV PORT 8080
 ENV HOST 0.0.0.0
 
-RUN pip install pybase64 python-dotenv flask PyJWT flask_cors schedule requests
+RUN pip install APScheduler pybase64 python-dotenv flask PyJWT flask_cors schedule requests
 
 CMD [ "python", "app.py" ]

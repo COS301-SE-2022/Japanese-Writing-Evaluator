@@ -23,9 +23,7 @@ def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         hira_token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             hira_token = request.headers['user-token']
         if not hira_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
