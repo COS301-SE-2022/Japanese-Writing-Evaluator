@@ -5,6 +5,7 @@ import { AppServiceService } from '../services/appService/app-service.service';
 import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
 import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
+import { environment as env } from 'src/environments/environment';
 
 @Component({
   selector: 'app-drawing-pad',
@@ -151,5 +152,24 @@ export class DrawingPadPage implements AfterViewInit {
 
     // const { role } = await alert.onDidDismiss();
     // console.log('onDidDismiss resolved with role', role);
+  }
+
+  ifGuest(): boolean{
+    if (localStorage.getItem('id')) {
+      if (localStorage.getItem('id') === 'guest') {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  ifNormalNavbar(): boolean{
+
+    if (env.admin === true || env.superAdmin === true) {
+      return false;
+    }
+
+    return true;
   }
 }

@@ -25,4 +25,10 @@
     <ion-button id="clear" color="tertiary" (click)="clearPad()">Clear</ion-button>
     <ion-button id="evaluate" (click)="savePad()">Evaluate</ion-button>
   </div>
+
+  <div *ngIf="ifGuest()">
+    <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
+    <app-admin-nav-bar *ngIf="!ifNormalNavbar()" ></app-admin-nav-bar>
+  </div>
+  
 </ion-content>
