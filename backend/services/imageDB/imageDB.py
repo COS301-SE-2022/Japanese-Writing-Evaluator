@@ -294,5 +294,68 @@ def getImageUsers():
     except Exception:
         return 0
 
+@app.route("/delete", methods=["DELETE"])
+@token_required
+def deleteUserImages():
+    images = getUserImages(request.json["id"])
+    if(images == 0):
+        return jsonify({"response": "Database connection failed"}), 400
+    else:
+        if(len(images) > 0):
+            paths = []
+            for i in images:
+                paths.append(i[1])
+            try:
+                headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+                firebaseDelete = requests.delete(os.getenv("image") + "/delete", json={"paths": paths}, headers=headers)
+            except Exception:
+                return jsonify({"response": "Connection to image service failed"}), 400
+            if(firebaseDelete.status_code == 200 or firebaseDelete.status_code == 203):
+                delete = deleteImages(request.json["id"])
+                if(delete == True):
+                    try:
+                        headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+                        userDelete = requests.delete(os.getenv("authentication") + "/delete", json={"id": request.json["id"]}, headers=headers)
+                    except Exception:
+                        return jsonify({"response": "Connection to authentication service failed"}), 400
+                    if(userDelete.status_code == 200 and firebaseDelete.status_code == 203):
+                        return jsonify({"response": "All user data successfully deleted, the following files could not be found", "paths": firebaseDelete.json()["images"]}), 200
+                    elif(userDelete.status_code == 200):
+                        return jsonify({"response": "All user data successfully deleted"}), 200
+                    else:
+                        return jsonify({"response": "Failed to delete user from database"}), 400
+                else:
+                    return jsonify({"response": "Image deletion from database failed"}), 400
+            else:
+                return jsonify({"response": "Deletion from storage failed"}), 400
+        else:
+            try:
+                headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
+                userDelete = requests.delete(os.getenv("authentication") + "/delete", json={"id": request.json["id"]}, headers=headers)
+            except Exception:
+                return jsonify({"response": "Connection to authentication service failed"}), 400
+            if(userDelete.status_code == 200):
+                return jsonify({"response": "All user data successfully deleted"}), 200
+            else:
+                return jsonify({"response": "Failed to delete user from database"}), 400
+
+def getUserImages(id):
+    try:
+        view_query = "SELECT * FROM image WHERE id=%s ORDER BY  upload_date DESC;"
+        curr2.execute(view_query, ([id]))
+        images = curr2.fetchall()
+        return images
+    except Exception:
+        return 0
+
+def deleteImages(id):
+    try:
+        delete_query = "DELETE FROM image WHERE id=%s"
+        curr2.execute(delete_query, (id,))
+        conn2.commit()
+        return True
+    except:
+        return False
+
 if __name__ == '__main__':
     app.run(port=int(os.environ.get("PORT", 5003)),host='0.0.0.0',debug=False)
