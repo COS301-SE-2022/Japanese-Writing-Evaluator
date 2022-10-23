@@ -38,7 +38,7 @@ The system should allow the user to log into the system using their own credenti
 # Download and install application
 <p></p>
 
-# How to participate in the development of th project
+# How to participate in the development of the project
 <p></p>
 
 # Team Members
