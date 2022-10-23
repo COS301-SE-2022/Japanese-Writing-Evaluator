@@ -41,7 +41,12 @@ The system should allow the user to log into the system using their own credenti
 <p></p>
 
 # How to participate in the development of the project
-<p></p>
+<ol>
+  <li>Clone the repository.</li>
+  <li>Create a branch related to the feature you would like to modify.</li>
+  <li>Once you are done coding create a pull request with a descriptive name.</li>
+  <li>Once the pull request has been approved your changes will be merge into develop.</li>
+</ol>
 
 # Team Members
 
