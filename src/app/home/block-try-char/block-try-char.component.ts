@@ -20,7 +20,7 @@ export class BlockTryCharComponent implements OnInit {
   ngOnInit() {}
 
     //TODO: add navigation to upload page, #, Phumu
-    showUploadPage(){
+    setCharacterImage(){
       //send image to the upload page and redirect to upload page
       const image: CharacterImage ={
         characterName: this.translate,
@@ -28,11 +28,11 @@ export class BlockTryCharComponent implements OnInit {
         url: this.letter
       };
       this.service.setTryImage(image);
-      this.router.navigate(['/upload']);
     }
 
     //TODO: Opens the popover, #203, Maryam
   async openPopover(ev: any){
+    this.setCharacterImage();
     const popover =  await this.popCtrl.create({
       component: PopOverUploadPage,
       event: ev,

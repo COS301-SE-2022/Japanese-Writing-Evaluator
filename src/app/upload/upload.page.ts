@@ -8,6 +8,7 @@ import { Score } from '../shared/interfaces/score';
 import { environment as env } from 'src/environments/environment';
 import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
 import { waitForAsync } from '@angular/core/testing';
+import { ObdModalComponent } from '../shared/components/obd-modal/obd-modal.component';
 
 @Component({
   selector: 'app-upload',
@@ -155,6 +156,15 @@ export class UploadPage implements OnInit {
   async showModal(modalComponent){//shows each of the modals ... depending on the component
     const modal = await this.modalController.create({
       component: modalComponent
+    });
+    // this.obdService.setModal(modal);
+    // console.log(modal);
+    return await modal.present();
+  }
+
+  async showOdbModal(){//shows each of the modals ... depending on the component
+    const modal = await this.modalController.create({
+      component: ObdModalComponent
     });
     // this.obdService.setModal(modal);
     // console.log(modal);

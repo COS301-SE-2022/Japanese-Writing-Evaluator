@@ -65,6 +65,7 @@ export class DrawingPadPage implements AfterViewInit {
           style: this.characterImage.group, // the writing style that the letter is from
         };
         this.service.uploadImage(img).subscribe( data =>{
+          console.log(data.body);
           this.service.setScore(data.body);
           this.service.setUserImage(this.signatureImg);
           if(data.body.data.score === 0 || data.body.data.score === -1){
