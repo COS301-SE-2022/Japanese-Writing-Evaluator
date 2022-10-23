@@ -1,7 +1,9 @@
+import { AlertController, ModalController } from '@ionic/angular';
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import SignaturePad from 'signature_pad';
 import { AppServiceService } from '../services/appService/app-service.service';
-import { CharacterImage, UploadedImage } from '../shared/interfaces/image';
+import { UploadModalComponent } from '../shared/components/upload-modal/upload-modal.component';
+import { CharacterImage, GuestUploadedImage, UploadedImage } from '../shared/interfaces/image';
 import { Score } from '../shared/interfaces/score';
 
 @Component({
@@ -17,7 +19,7 @@ export class DrawingPadPage implements AfterViewInit {
   uploadImageName = 'drawingCharacter.jpeg';
   score: Score;
 
-  constructor(private service: AppServiceService) { }
+  constructor(private service: AppServiceService, private modalController: ModalController, private alertController: AlertController) { }
 
   ngAfterViewInit() {
     this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
@@ -84,7 +86,7 @@ export class DrawingPadPage implements AfterViewInit {
         };
         this.service.guestUploadImage(img).subscribe( data => {
           this.service.setScore(data.body);
-          this.service.setUserImage(this.userImage);
+          this.service.setUserImage(this.signatureImg);
           if(data.body.data.score === 0 || data.body.data.score === -1){
             this.score = data.body;
             this.showScore(data.body);

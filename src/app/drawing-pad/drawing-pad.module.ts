@@ -7,6 +7,7 @@ import { AdminNavBarModule } from '../shared/components/admin-nav-bar/admin-nav-
 import { IonicModule } from '@ionic/angular';
 import { DrawingPadPageRoutingModule } from './drawing-pad-routing.module';
 import { DrawingPadPage } from './drawing-pad.page';
+import { UploadModalModule } from '../shared/components/upload-modal/upload-modal.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { DrawingPadPage } from './drawing-pad.page';
     DrawingPadPageRoutingModule,
     NavbarModule,
     AdminNavBarModule,
-    LogoutModule
+    LogoutModule,
+    UploadModalModule
   ],
   declarations: [DrawingPadPage]
 })
