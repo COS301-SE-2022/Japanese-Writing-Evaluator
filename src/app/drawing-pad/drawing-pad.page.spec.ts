@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
@@ -10,7 +11,7 @@ describe('DrawingPadPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ DrawingPadPage ],
-      imports: [IonicModule.forRoot()]
+      imports: [IonicModule.forRoot(), HttpClientTestingModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DrawingPadPage);
@@ -18,7 +19,7 @@ describe('DrawingPadPage', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', () => {
-    //expect(component).toBeTruthy();
-  });
+  // it('should create', () => {
+  //   //expect(component).toBeTruthy();
+  // });
 });
