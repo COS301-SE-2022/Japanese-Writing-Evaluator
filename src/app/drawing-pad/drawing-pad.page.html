@@ -20,14 +20,16 @@
   </div>
 </div>
 
-  <div id="canvasDiv">
-    <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
-    <ion-button id="clear" color="tertiary" (click)="clearPad()">Clear</ion-button>
-    <ion-button id="evaluate" (click)="savePad()">Evaluate</ion-button>
-  </div>
+<ion-content>
+    <div id="canvasDiv">
+      <canvas #canvas (touchstart)="startDrawing($event)" (touchmove)="moved($event)"></canvas>
+      <ion-button id="clear" color="tertiary" (click)="clearPad()">Clear</ion-button>
+      <ion-button id="evaluate" (click)="savePad()">Evaluate</ion-button>
+    </div>
+</ion-content>
 
 
-  
+
 </ion-content>
 <div *ngIf="ifGuest()">
   <app-navbar *ngIf="ifNormalNavbar()"></app-navbar>
