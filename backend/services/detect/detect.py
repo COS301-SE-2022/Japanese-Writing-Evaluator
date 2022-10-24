@@ -22,9 +22,7 @@ def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         detect_token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             detect_token = request.headers['user-token']
         if not detect_token:
             return jsonify({'response' : 'Token is missing !!'}), 401

@@ -21,9 +21,7 @@ def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         kanji_token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             kanji_token = request.headers['user-token']
         if not kanji_token:
             return jsonify({'response' : 'Token is missing !!'}), 401

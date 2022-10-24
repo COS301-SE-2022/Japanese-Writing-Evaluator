@@ -1,26 +1,25 @@
-import base64
+from datetime import date, datetime, timedelta
 from functools import wraps
 from dotenv import load_dotenv
 from flask import Flask, jsonify, request, session, redirect
 import jwt
 import os
 from flask_cors import CORS;
-from schedule import every, repeat
+from flask_apscheduler import APScheduler
 import requests
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://633168369b681d4d5be0b5ed--musical-taiyaki-627c6d.netlify.app/"]}})
+sched = APScheduler()
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://6355e94c3255bf74fc840d3b--exquisite-fox-8d2c7c.netlify.app/", "http://localhost"]}})
 
 def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             token = request.headers['user-token']
         if not token:
             return jsonify({'response' : 'Token is missing !!'}), 401
@@ -118,28 +117,30 @@ def callUploadImage():
     if(eval.status_code == 200):
         score = eval.json()["score"]
         strokes = eval.json()["strokes"]
-        # print("==========================")
-        try:
-            exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
-        except Exception:
-            return jsonify({"response": "Connection to image service failed"}), 400
-
-        if(exitcode.status_code == 200):
-
-            try:
-                storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]})
-            except Exception:
-                return jsonify({"response": imgDBFail}), 401
-
-            # print(storeToDB)
-            if(storeToDB.status_code == 200):
-                return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
-            else:
-                return jsonify({'response': "Database storage failed"}), 401
+        if(score == 0):
+            return jsonify({'response': "Invalid submission", 'data': {'strokes': strokes,'score': score}}), 200
         else:
-            return jsonify({'response': "Storage to cloud service failed"}), 401
+            try:
+                exitcode = requests.post(os.getenv("image") + "/uploadImage", json = {"id": request.json["id"], "image": request.json["image"], "file": request.json["file"]}, headers=headers)
+            except Exception:
+                return jsonify({"response": "Connection to image service failed"}), 400
+
+            if(exitcode.status_code == 200):
+
+                try:
+                    storeToDB = requests.post(os.getenv("imageDB") + "/saveToDB", headers=headers, json = {"id": request.json["id"], "style": request.json["style"], "score": score, "imagechar": request.json["imagechar"], "file": request.json["file"]}).json()['response']
+                except Exception:
+                    return jsonify({"response": imgDBFail}), 401
+
+                if(storeToDB == "upload successful"):
+                    return jsonify({'response': "image upload successful", 'data': {'strokes': strokes,'score': score}}), 200
+                else:
+                    return jsonify({'response': "Database storage failed"}), 401
+            else:
+                return jsonify({'response': "Storage to cloud service failed"}), 401
     else:
         return eval.json()
+        
 """
     callViewImages function:
         calls view image function from image.py
@@ -176,7 +177,6 @@ def login():
     except Exception:
         return jsonify({"response": authFail}), 401
 
-    print(user.json()["response"])
     if user.status_code == 200: 
         session["logged_in"] = True
         token = jwt.encode({
@@ -225,52 +225,43 @@ def home():
     return:
         
 """
-@repeat(every().sunday)
+@sched.task("cron", id="email_users", week="*", day_of_week="sun")
 def email_users():
     try:
-        imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
+        img = requests.get(os.getenv("imageDB") + "/getImageUsers")
     except Exception:
-        return jsonify({"response": imgDBFail}), 400
+        return imgDBFail
 
-    users = imgs.json()["response"]
+    users = img.json()["response"]
     keep = []
-    c = 0
+    
+    start = date.today() - timedelta(days=7)
+    end = date.today()
     for i in users:
-        if(keep.count(i[0]) == 0):
-            keep.append(i[0])
+        if(start <= datetime.strptime(i[5].split("00")[0], "%a, %d %b %Y ").date() <= end):
+            keep.append(i)
 
-    store = [[0] * 2 for i in range(len(keep))]
+    store = []
     stored = []
-    iCount = 0
-    jCount = 0
-    divBy = 0
-    average = 0
-    for i in users:
-        if(stored.count(i[0]) == 0):
+    uploads = 0
+    score = 0
+    for i in keep:
+        if(i[0] not in stored):
+            for j in keep:
+                if(j[0] == i[0]):
+                    score = score + j[3]
+                    uploads = uploads + 1
+            store.append([i[0], score/uploads])
             stored.append(i[0])
-            store[jCount][0] = i[0]
-
-            for j in users:
-                if(j[0] == store[jCount][0]):
-                    average += j[3]
-                    divBy += 100
-                    
-            score = (average/divBy) * 100
-            store[jCount][1] = "{:.2f}".format(score)
-            jCount += 1
-
-        
-        iCount += 1
-        divBy = 0
-        average = 0
-        score = 0
+            score = 0
+            uploads = 0
 
     contain = []
     for i in store:
         try:
             user = requests.get(os.getenv("authentication") + "/getUserByID", json = {"id": i[0]})
         except Exception:
-            return jsonify({"response": authFail}), 400
+            return authFail
         
         if(user.status_code != 400):
             thisUser = user.json()["response"]
@@ -286,15 +277,15 @@ def email_users():
                         send = requests.post(os.getenv("send_email") + "/send-email", json = {"email": thisUser["email"], "score": round(float(i[1]), 2), "username": thisUser["username"]})
                         contain.append(send.json()["response"])
                     except Exception:
-                        return jsonify({"response": "Connection to email service failed"}), 400
+                        return "Connection to email service failed"
 
                 else:
                     contain.append("Failed")
     
     if(contain.count("Failed") > 0):
-        return jsonify({'response': "Failed"}), 401
+        return "Failed"
     else:
-        return jsonify({'response': "Emails successfully sent"}), 200
+        return "Emails successfully sent"
 
 """
     callGuestUploadImage function:
@@ -464,9 +455,8 @@ def deleteUser():
     id = request.json["id"]
     headers = {'content-type': 'application/json', 'user-token': request.headers['user-token']}
     data = requests.delete(os.getenv("imageDB") + '/delete', headers = headers, json = {"id": id})
-    print(data.status_code)
     return data.json()
 
+sched.start()
 if __name__ == '__main__':
-    # run_simple('localhost', 5000, app, use_reloader=True, use_debugger=True, use_evalex=True)
     app.run(port=int(os.environ.get("PORT", 8080)),host='0.0.0.0',debug=True)
