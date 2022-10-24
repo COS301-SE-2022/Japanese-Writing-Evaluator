@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 sched = APScheduler()
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://633168369b681d4d5be0b5ed--musical-taiyaki-627c6d.netlify.app/"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://6355e94c3255bf74fc840d3b--exquisite-fox-8d2c7c.netlify.app/", "http://localhost"]}})
 
 def token_required(function):
     @wraps(function)
