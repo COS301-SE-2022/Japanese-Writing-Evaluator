@@ -50,7 +50,6 @@ export class ModelsPage implements OnInit {
 
 // function to create chart
   chartCreator(chartlabels: string[], accuracy: number[], loss: number[], canvas: ElementRef ){
-    console.log(accuracy);
     this.barGraph = new Chart(canvas.nativeElement,{
       type: 'bar',
       data:{
@@ -113,7 +112,7 @@ export class ModelsPage implements OnInit {
     let charloss: number[]= [];
     let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.data.hiragana.characterRecognition.forEach(model =>{
+    this.characterModel.data[0].hiragana.characterRecognition.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);
@@ -125,7 +124,7 @@ export class ModelsPage implements OnInit {
     charloss = [];
     charchartLabels = [];
     //stroke recognition
-    this.characterModel.data.hiragana.strokes.forEach(model =>{
+    this.characterModel.data[0].hiragana.strokes.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);
@@ -142,7 +141,7 @@ export class ModelsPage implements OnInit {
     let charloss: number[]= [];
     let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.data.katakana.characterRecognition.forEach(model =>{
+    this.characterModel.data[0].katakana.characterRecognition.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);
@@ -154,7 +153,7 @@ export class ModelsPage implements OnInit {
     charloss = [];
     charchartLabels = [];
     //stroke recognition
-    this.characterModel.data.katakana.strokes.forEach(model =>{
+    this.characterModel.data[0].katakana.strokes.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);
@@ -170,7 +169,7 @@ export class ModelsPage implements OnInit {
     let charloss: number[]= [];
     let charchartLabels: string[] = [];
     //character recognition
-    this.characterModel.data.kanji.characterRecognition.forEach(model =>{
+    this.characterModel.data[0].kanji.characterRecognition.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);
@@ -182,7 +181,7 @@ export class ModelsPage implements OnInit {
     charloss = [];
     charchartLabels = [];
     //stroke recognition
-    this.characterModel.data.kanji.strokes.forEach(model =>{
+    this.characterModel.data[0].kanji.strokes.forEach(model =>{
       characcuracy.push(Number(model.accuracy.substring(0,7)));
       charloss.push(Number(model.loss.substring(0,7)));
       charchartLabels.push(model.version);

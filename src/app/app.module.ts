@@ -13,11 +13,6 @@ import { UploadPage } from './upload/upload.page';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { ObdModalModule } from './shared/components/obd-modal/obd-modal.module';
 
-
-
-
-
-
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -28,7 +23,8 @@ import { ObdModalModule } from './shared/components/obd-modal/obd-modal.module';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    HttpClientXsrfModule],
+    HttpClientXsrfModule
+  ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},

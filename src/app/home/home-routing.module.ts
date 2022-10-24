@@ -9,6 +9,10 @@ const routes: Routes = [
   },  {
     path: 'alphabet-category',
     loadChildren: () => import('./alphabet-category/alphabet-category.module').then( m => m.AlphabetCategoryPageModule)
+  },
+  {
+    path: 'pop-over-upload',
+    loadChildren: () => import('./pop-over-upload/pop-over-upload.module').then( m => m.PopOverUploadPageModule)
   }
 
 ];
