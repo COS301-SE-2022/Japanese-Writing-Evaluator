@@ -19,13 +19,13 @@ The system should allow the user to log into the system using their own credenti
 
 # Project Video Links
 <ul>
-  <li><a href = "">Demo </a></li>
+  <li><a href = "https://drive.google.com/file/d/1Tegiw4NPC2admJlBITNJOjY-gKk1QB7e/view?usp=sharing">Demo </a></li>
   <li><a href = "">Advertisement</a></li>
   <li><a href = "">Tutorial</a></li>
 </ul>
 
 # Link to Deployed System
-<li><a href = "">JWE</a></li>
+<li><a href = "https://6355cc965b4a5e5882b2487b--clinquant-croquembouche-6e6162.netlify.app/">JWE</a></li>
 
 # Project Documentation Links 
 <ul>
