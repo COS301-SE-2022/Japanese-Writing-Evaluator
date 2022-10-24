@@ -21,9 +21,7 @@ def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         kata_token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             kata_token = request.headers['user-token']
         if not kata_token:
             return jsonify({'response' : 'Token is missing !!'}), 401

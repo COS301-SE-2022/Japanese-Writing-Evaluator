@@ -34,9 +34,7 @@ def token_required(function):
     @wraps(function)
     def decorated(*args, **kwargs):
         img_token = None
-        print(request.headers)
         if 'user-token' in request.headers:
-            print("we have token")
             img_token = request.headers['user-token']
         if not img_token:
             return jsonify({'response' : 'Token is missing !!'}), 401
@@ -113,12 +111,10 @@ def viewImages():
 @token_required
 def firebaseDelete():
     paths = request.json["paths"]
-    # print(paths)
     
     unable = []
     for i in paths:
         res = deleteFromStorage(i)
-        # print(json.load(res))
         if(res[0] == False):
             unable.append(res[1])
     if(len(unable) > 0):
