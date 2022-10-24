@@ -19,11 +19,18 @@ export class PopOverUploadPage implements OnInit {
 
     if(item === this.list[0]){
         this.router.navigate(['./upload']);
-        this.popOverCtrl.dismiss();
+        this.close();
     }
-    this.router.navigate(['./drawing-pad']);
-    this.popOverCtrl.dismiss();
-}
+    else{
+      this.router.navigate(['./drawing-pad']);
+      this.close();
+    }
+  }
+
+  //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
+  close() {
+      this.popOverCtrl.dismiss();
+  }
 
 
 }
