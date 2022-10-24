@@ -230,11 +230,11 @@ def home():
 @sched.task("cron", id="email_users", week="*", day_of_week="sun")
 def email_users():
     try:
-        imgs = requests.get(os.getenv("imageDB") + "/getImageUsers")
+        img = requests.get(os.getenv("imageDB") + "/getImageUsers")
     except Exception:
         return imgDBFail
 
-    users = imgs.json()["response"]
+    users = img.json()["response"]
     keep = []
     
     start = date.today() - timedelta(days=7)
