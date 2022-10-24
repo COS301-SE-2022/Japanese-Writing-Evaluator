@@ -140,6 +140,7 @@ def callUploadImage():
                 return jsonify({'response': "Storage to cloud service failed"}), 401
     else:
         return eval.json()
+        
 """
     callViewImages function:
         calls view image function from image.py
@@ -183,11 +184,8 @@ def login():
             'id': user.json()['response']['id'],
         }, app.config['SECRET_KEY'], "HS256")
         return jsonify({'response': 'user login succesful', 'user-token':token, 'data': user.json()['data']}), 200
-        
     else:
-        return jsonify({'response': "user not found."}), 401   
-
-
+        return user.json()
 
 """
     logout function

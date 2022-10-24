@@ -17,35 +17,37 @@
 # Project Discription
 The system should allow the user to log into the system using their own credentials and it should match the user to existing users in the database, if the user is not recognized it should allow them to register their profile. Once a user is logged in it should allow them to upload an image of a symbol/word/sentence that they have written and detect which symbol it is supposed to be, the writing style (Kanji, Katakana or Hiragana), compare strokes and give the user points of improvement on the symbol(s) with a score of how well their symbol(s) matches the actual one. The system should also allow users to log out or either remember their credentials and keep them logged in after they have stopped using the app.
 
-# Reference links
+# Project Video Links
 <ul>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/projects/3">Scrum Board</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3#user-manual">User Manual</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Coding-Standards">Coding Standard</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Technical-Installation-Manual">Technical Installation Manual</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3">SRS Demo 3</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Architectural-Requirements-for-Demo-3">Architectural Documentation</a></li>
+  <li><a href = "https://drive.google.com/file/d/1Tegiw4NPC2admJlBITNJOjY-gKk1QB7e/view?usp=sharing">Demo </a></li>
+  <li><a href = "">Advertisement</a></li>
+  <li><a href = "">Tutorial</a></li>
 </ul>
 
-# Demo Videos
-<ul>
-  <li><a href = "https://drive.google.com/file/d/1HvnR-lApMvKjlsnzwFKAhKhQfRLevnpX/view">Demo 1</a></li>
-</ul>
+# Link to Deployed System
+<li><a href = "https://6355e94c3255bf74fc840d3b--exquisite-fox-8d2c7c.netlify.app/">JWE</a></li>
 
-
-# SRS Document
-<ul>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS">SRS Document Demo 1</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-2">SRS Document Latest</a></li>
-</ul>
-
-# Demo4 
+# Project Documentation Links 
 <ul>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-4">SRS Document</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Architectural-Requirements-for-Demo-4">Architectural Requirements</a></li>
-  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/Technical-Installation-Manual">Technical Installation Manual</a></li>
   <li><a href = "https://docs.google.com/document/d/1y9El1BeRrPgae6gCRIPZ73OOgiEG4ifWCuTRCya2pxk/edit?usp=sharing">Testing Policy</a></li>
+  <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3#user-manual">User Manual</a></li>
+  <li><a href = "https://www.canva.com/design/DAFP4Paa37c/vIKXDb5pDRioOx0Kv1WonA/edit?utm_content=DAFP4Paa37c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">Slideshow</a></li>
+  <li><a href = "https://github.com/Philippa29/Hiragana-dataset/edit/main/README.md
+">Dataset Research Paper</a></li>
 </ul>
+
+# Download and install application
+<p></p>
+
+# How to participate in the development of the project
+<ol>
+  <li>Clone the repository.</li>
+  <li>Create a branch related to the feature you would like to modify.</li>
+  <li>Once you are done coding create a pull request with a descriptive name.</li>
+  <li>Once the pull request has been approved your changes will be merge into develop.</li>
+</ol>
 
 # Team Members
 

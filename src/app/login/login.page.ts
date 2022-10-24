@@ -58,12 +58,12 @@ export class LoginPage implements OnInit {
         if(data.status === 200){
           console.log(data);
           if (!localStorage.getItem('id')) {
-            localStorage.setItem('id',data.body['data']['id'].toString());
+            localStorage.setItem('id',data.body['data'][1].toString());
           }
 
           // if role is set to true then it is admin if role == false then its a normal user
-          // environment.admin = data.body['data'][2];
-          // environment.superAdmin = data.body['data'][3];
+          environment.admin = data.body['data'][2];
+          environment.superAdmin = data.body['data'][3];
 
           if (!localStorage.getItem('token')) {
             localStorage.setItem('token',data.body['user-token'].toString());

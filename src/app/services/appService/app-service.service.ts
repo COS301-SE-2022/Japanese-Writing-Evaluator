@@ -19,7 +19,8 @@ import { RoleInfo} from 'src/app/shared/interfaces/roleInfo';
 export class AppServiceService {
 
   baseURL = 'https://jwe-api-gateway-cplmvcuylq-uc.a.run.app/';
-  //localhost is 10.0.2.2 for android studios http://localhost:8080/(change to localhost for website)
+  //http://localhost:8080/
+  //localhost is 10.0.2.2 for android studios https://jwe-api-gateway-cplmvcuylq-uc.a.run.app/(change to localhost for website)
   //https://flask-api-1-cplmvcuylq-uc.a.run.app/
   private characterImage: CharacterImage = {
     characterName: ' ',
@@ -31,6 +32,8 @@ export class AppServiceService {
   private progressHiragana:  Map<string, {score: number; date: string }[]>;
   private progressKatakana:  Map<string, {score: number; date: string }[]>;
   private progressKanji:  Map<string, {score: number; date: string }[]>;
+  private score: Score;
+  private userImage;
 
 
   constructor(private httpclient: HttpClient) { }//
@@ -47,6 +50,21 @@ export class AppServiceService {
   this.progressKanji = map;
   }
 
+  setTryImage(img: CharacterImage){
+    //this function takes in an image to be set to the class' image attr
+    this.characterImage = img;
+  }
+
+  setUserImage(img){
+    //this function takes in an image to be set to the class' image attr
+    this.userImage = img;
+  }
+
+  setScore(score: Score) {
+    this.score = score;
+  }
+
+
   getProgressHiragana(){
     return this.progressHiragana;
   }
@@ -59,14 +77,18 @@ export class AppServiceService {
     return this.progressKanji;
   }
 
-  setTryImage(img: CharacterImage){
-    //this function takes in an image to be set to the class' image attr
-    this.characterImage = img;
-  }
-
   getTryImage(): CharacterImage{
     //this function returns the class' image attr
     return this.characterImage;
+  }
+
+  getUserImage(){
+    //this function returns the class' image attr
+    return this.userImage;
+  }
+
+  getScore(): Score {
+    return this.score;
   }
 
   addUser(name: string, mail: string, pass: string)
