@@ -34,7 +34,8 @@ The system should allow the user to log into the system using their own credenti
   <li><a href = "https://docs.google.com/document/d/1y9El1BeRrPgae6gCRIPZ73OOgiEG4ifWCuTRCya2pxk/edit?usp=sharing">Testing Policy</a></li>
   <li><a href = "https://github.com/COS301-SE-2022/Japanese-Writing-Evaluator/wiki/SRS-Demo-3#user-manual">User Manual</a></li>
   <li><a href = "https://www.canva.com/design/DAFP4Paa37c/vIKXDb5pDRioOx0Kv1WonA/edit?utm_content=DAFP4Paa37c&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton">Slideshow</a></li>
-  <li><a href = "">Dataset Research Paper</a></li>
+  <li><a href = "https://github.com/Philippa29/Hiragana-dataset/edit/main/README.md
+">Dataset Research Paper</a></li>
 </ul>
 
 # Download and install application
