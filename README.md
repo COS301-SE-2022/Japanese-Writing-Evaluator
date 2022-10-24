@@ -46,7 +46,7 @@ The system should allow the user to log into the system using their own credenti
     <a href="https://drive.google.com/file/d/1hQ1GIoWLjsrp24TwRBX1n_1zOVHebCek/view?usp=sharing">Click here to download android app</a>
     <h4>OR</h4>
     <img src="![Japanese_Writing_Evaluator](https://user-images.githubusercontent.com/49733146/197443922-2de00a81-806d-4e09-adc5-18423277eff3.png)
-" alt="App QR code"/>
+" alt="App QR code">
   </li>
   <li>Once downloaded, your mobile device will prompt you to install the app.</li>
   <li>Click install</li>
