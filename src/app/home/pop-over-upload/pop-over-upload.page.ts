@@ -30,7 +30,6 @@ export class PopOverUploadPage implements OnInit {
   //TODO: closes the popover, #183, Maryam Mohamad Al Mahdi
   close() {
       this.popOverCtrl.dismiss();
-      this.close();
   }
 
 
