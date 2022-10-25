@@ -149,14 +149,16 @@ def findUser():
         except Exception:
             return jsonify({"response": "Connection to email service failed"}), 400
         
-        res = send.json()
-        token = addToken(email, res["token"])
-        if(token == False):
-            return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
+        if(send.status_code == 200):
+            res = send.json()
+            token = addToken(email, res["token"])
+            if(token == False):
+                return jsonify({'response': "Forgot password token unsuccessfully set"}), 401
+            else:
+                r = {"email": email, "token": res["token"]}
+                return jsonify({"response": r}), 200
         else:
-            r = {"email": email, "token": res["token"]}
-            return jsonify({"response": r}), 200
-
+            return jsonify({"response": "Sending of forgot password email failed"}), 400
     else:
         return jsonify({"response": "user does not exist"}), 400
 

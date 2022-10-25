@@ -13,7 +13,7 @@ load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 sched = APScheduler()
-CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://6355e94c3255bf74fc840d3b--exquisite-fox-8d2c7c.netlify.app/", "http://localhost"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:8100", "http://localhost:80", "https://6355e94c3255bf74fc840d3b--exquisite-fox-8d2c7c.netlify.app", "http://localhost"]}})
 
 def token_required(function):
     @wraps(function)
@@ -47,6 +47,7 @@ imgDBFail = "Connection to image database service failed"
 def callResetPassword():
     try:
         send = requests.get(os.getenv("authentication") + "/findUser", json = {"email": request.json["email"]})
+        
         return send.json()
     except Exception:
         return jsonify({"response": authFail}), 400
