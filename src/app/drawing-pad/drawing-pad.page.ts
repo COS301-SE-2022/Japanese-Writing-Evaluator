@@ -50,7 +50,6 @@ export class DrawingPadPage implements AfterViewInit {
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
-    //console.log(this.signatureImg);
 
     this.upload.evaluateImage(this.signatureImg,this.signatureImg,this.uploadImageName,this.signatureImg,this.characterImage);
   }
