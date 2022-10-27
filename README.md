@@ -15,7 +15,8 @@
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/COS301-SE-2022/Japanese-Writing-Evaluator?color=orange&style=plastic"></div>
 
 # Project Discription
-The system should allow the user to log into the system using their own credentials and it should match the user to existing users in the database, if the user is not recognized it should allow them to register their profile. Once a user is logged in it should allow them to upload an image of a symbol/word/sentence that they have written and detect which symbol it is supposed to be, the writing style (Kanji, Katakana or Hiragana), compare strokes and give the user points of improvement on the symbol(s) with a score of how well their symbol(s) matches the actual one. The system should also allow users to log out or either remember their credentials and keep them logged in after they have stopped using the app.
+Japan is a country that heavily relies on paper to do day to day activities.The Japanese Language has three writing styles Hirgana , Katakna , Kanji . This application will be aiding users to practise and perfect their penmaniship for the Japanese charcters and give them personlised feedback. Dont take our word for it.Try it out! 
+
 
 # Project Video Links
 <ul>
