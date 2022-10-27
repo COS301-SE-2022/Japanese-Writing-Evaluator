@@ -25,7 +25,11 @@ export class DrawingPadPage implements AfterViewInit {
      private upload: UploadPage) { }
 
   ngAfterViewInit() {
-    this.signaturePad = new SignaturePad(this.canvasEl.nativeElement);
+    //this.signaturePad = new SignaturePad(this.canvasEl.nativeElement), {};
+
+    this.signaturePad = new SignaturePad(this.canvasEl.nativeElement, {
+      backgroundColor: 'rgba(255, 255, 255, 1)',
+    });
     this.characterImage = this.service.getTryImage();
   }
 
@@ -46,6 +50,7 @@ export class DrawingPadPage implements AfterViewInit {
   savePad() {
     const base64Data = this.signaturePad.toDataURL();
     this.signatureImg = base64Data;
+
     this.upload.evaluateImage(this.signatureImg,this.signatureImg,this.uploadImageName,this.signatureImg,this.characterImage);
   }
 
