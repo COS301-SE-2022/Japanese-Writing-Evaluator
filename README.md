@@ -15,13 +15,14 @@
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/COS301-SE-2022/Japanese-Writing-Evaluator?color=orange&style=plastic"></div>
 
 # Project Discription
-The system should allow the user to log into the system using their own credentials and it should match the user to existing users in the database, if the user is not recognized it should allow them to register their profile. Once a user is logged in it should allow them to upload an image of a symbol/word/sentence that they have written and detect which symbol it is supposed to be, the writing style (Kanji, Katakana or Hiragana), compare strokes and give the user points of improvement on the symbol(s) with a score of how well their symbol(s) matches the actual one. The system should also allow users to log out or either remember their credentials and keep them logged in after they have stopped using the app.
+Japan is a country that heavily relies on paper to do day to day activities.The Japanese Language has three writing styles Hirgana , Katakna , Kanji . This application will be aiding users to practise and perfect their penmaniship for the Japanese charcters and give them personlised feedback. Dont take our word for it.Try it out! 
+
 
 # Project Video Links
 <ul>
-  <li><a href = "https://drive.google.com/file/d/1Tegiw4NPC2admJlBITNJOjY-gKk1QB7e/view?usp=sharing">Demo </a></li>
-  <li><a href = "">Advertisement</a></li>
-  <li><a href = "">Tutorial</a></li>
+  <li><a href = "https://drive.google.com/file/d/1Tegiw4NPC2admJlBITNJOjY-gKk1QB7e/view?usp=sharing">Demo </a></li> 
+  <li><a href = "https://drive.google.com/file/d/1_HZ54AIoSGjxGK7LcLAInVBqLwINSLgz/view?usp=sharing">Advertisement</a></li>
+  <li><a href = "https://drive.google.com/file/d/1Q6XxgKvvB06nX7a-h9nBY0XgzFAsd1gB/view?usp=sharing">Tutorial</a></li>
 </ul>
 
 # Link to Deployed System
@@ -39,7 +40,20 @@ The system should allow the user to log into the system using their own credenti
 </ul>
 
 # Download and install application
-<p></p>
+<p>For the android app:</p>
+<ol>
+  <li>
+    Download the apk from the following link, or scan the QR code below:<br/>
+    <a href="https://drive.google.com/file/d/1hQ1GIoWLjsrp24TwRBX1n_1zOVHebCek/view?usp=sharing">Click here to download android app</a>
+    <h4>OR</h4>
+    <img width="180px" height = "250px" src="https://user-images.githubusercontent.com/49733146/197443922-2de00a81-806d-4e09-adc5-18423277eff3.png" alt="App QR code">
+  </li>
+  <li>Once downloaded, your mobile device will prompt you to install the app.</li>
+  <li>Click install</li>
+  <li>Once installed, look for Japanese Writing Evaluator in your app list in your home screen</li>
+  <li>Click on the app to open it</li>
+  <li>Enjoy using the app!</li>
+</ol>
 
 # How to participate in the development of the project
 <ol>
